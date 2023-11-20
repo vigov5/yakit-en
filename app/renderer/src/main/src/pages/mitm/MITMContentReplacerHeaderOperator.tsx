@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Button, Divider, Form, Space, Spin, Tag} from "antd";
 import {showModal} from "@/utils/showModal";
 import {InputInteger, InputItem, SelectOne, SwitchItem} from "@/utils/inputUtil";
-
+import i18next from "../../i18n"
 
 export interface HTTPHeader {
     Header: string
@@ -67,8 +67,7 @@ const InputHTTPCookieForm: React.FC<InputHTTPCookieFormProp> = (props) => {
             <InputItem required={true} label={"Cookie Value"} setValue={Value => setParams({...params, Value})}
                        value={params.Value}/>
             <Divider orientation={"left"}>
-                <Space>
-                    高级配置
+                <Space>{i18next.t("高级配置")}
                     <SwitchItem
                         value={advanced} setValue={setAdvanced} formItemStyle={{marginBottom: 0, width: 100}}
                         size={"small"}
@@ -82,21 +81,21 @@ const InputHTTPCookieForm: React.FC<InputHTTPCookieFormProp> = (props) => {
                             value={params.HttpOnly}/>
                 <SwitchItem
                     label={"Secure"} setValue={Secure => setParams({...params, Secure})} value={params.Secure}
-                    help={"仅允许 Cookie 在 HTTPS 生效"}
+                    help={i18next.t("仅允许 Cookie 在 HTTPS 生效")}
                 />
-                <SelectOne label={"SameSite 策略"} data={[
-                    {value: "default", text: "默认策略"},
-                    {value: "lax", text: "Lax 策略"},
-                    {value: "strict", text: "Strict 策略"},
-                    {value: "none", text: "不设置"},
+                <SelectOne label={i18next.t("SameSite 策略")} data={[
+                    {value: "default", text: i18next.t("默认策略")},
+                    {value: "lax", text: i18next.t("Lax 策略")},
+                    {value: "strict", text: i18next.t("Strict 策略")},
+                    {value: "none", text: i18next.t("不设置")},
                 ]} setValue={SameSiteMode => setParams({...params, SameSiteMode})} value={params.SameSiteMode}/>
-                <InputInteger label={"Expires 时间戳"} setValue={Expires => setParams({...params, Expires})}
+                <InputInteger label={i18next.t("Expires 时间戳")} setValue={Expires => setParams({...params, Expires})}
                               value={params.Expires}/>
                 <InputInteger label={"MaxAge"} setValue={MaxAge => setParams({...params, MaxAge})}
                               value={params.MaxAge}/>
             </>}
             <Form.Item colon={false} label={" "}>
-                <Button type="primary" htmlType="submit"> 添加该 Cookie </Button>
+                <Button type="primary" htmlType="submit">{i18next.t("添加该 Cookie")} </Button>
             </Form.Item>
         </Form>
     </>
@@ -167,7 +166,7 @@ const InputHTTPHeaderForm: React.FC<InputHTTPHeaderFormProps> = (props) => {
                 setValue={Value => setHeader({...header, Value})} value={header.Value}
             />
             <Form.Item colon={false} label={" "}>
-                <Button type="primary" htmlType="submit"> 设置该 Header </Button>
+                <Button type="primary" htmlType="submit">{i18next.t("设置该 Header")} </Button>
             </Form.Item>
         </Form>
     </>
@@ -190,7 +189,7 @@ export const InputHTTPHeader: React.FC<InputHTTPHeaderProp> = (props) => {
         <Button.Group size={"small"}>
             <Button type={"primary"} onClick={() => {
                 const m = showModal({
-                    title: "输入新的 HTTP Header",
+                    title: i18next.t("输入新的 HTTP Header"),
                     width: "50%",
                     content: (
                         <InputHTTPHeaderForm onChange={a => {
@@ -199,14 +198,14 @@ export const InputHTTPHeader: React.FC<InputHTTPHeaderProp> = (props) => {
                         }}/>
                     )
                 })
-            }}>新增 HTTP Header </Button>
+            }}>{i18next.t("新增 HTTP Header")} </Button>
         </Button.Group>
-        <div>新增额外 HTTP Header，强制覆盖或新增</div>
+        <div>{i18next.t("新增额外 HTTP Header，强制覆盖或新增")}</div>
     </Space>}>
         <Space>
             <Tag color={"green"} onClick={() => {
                 alert(JSON.stringify(headers))
-            }}>已设置{headers.length}个额外 Header</Tag>
+            }}>{i18next.t("已设置")}{headers.length}个额外 Header</Tag>
             {loading ? <Spin/> : headers.map((i, index) => {
                 return <Tag
                     color={"geekblue"}
@@ -244,7 +243,7 @@ export const InputHTTPCookie: React.FC<InputHTTPCookieProp> = (props) => {
         <Button.Group size={"small"}>
             <Button type={"primary"} onClick={() => {
                 const m = showModal({
-                    title: "输入新的 Cookie 值",
+                    title: i18next.t("输入新的 Cookie 值"),
                     width: "50%",
                     content: (
                         <InputHTTPCookieForm onChange={(e) => {
@@ -253,14 +252,14 @@ export const InputHTTPCookie: React.FC<InputHTTPCookieProp> = (props) => {
                         }}/>
                     )
                 })
-            }}>新增 HTTP Cookie </Button>
+            }}>{i18next.t("新增 HTTP Cookie")} </Button>
         </Button.Group>
-        <div>新增额外 HTTP Cookie，有较高优先级，覆盖现有设置或新增</div>
+        <div>{i18next.t("新增额外 HTTP Cookie，有较高优先级，覆盖现有设置或新增")}</div>
     </Space>}>
         <Space>
             <Tag color={"orange"} onClick={() => {
                 alert(JSON.stringify(cookies))
-            }}>已设置{cookies.length}个额外 Cookie</Tag>
+            }}>{i18next.t("已设置")}{cookies.length}个额外 Cookie</Tag>
             {loading ? <Spin/> : cookies.map((i, index) => {
                 return <Tag
                     closable={true}

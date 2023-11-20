@@ -14,6 +14,7 @@ import {yakitNotify} from "@/utils/notification"
 import styles from "./OnlineJudgment.module.scss"
 import Login from "@/pages/Login"
 import {useStore} from "@/store"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -52,7 +53,7 @@ export const OnlineJudgment: React.FC<OnlineJudgmentProps> = React.memo(
                 setLoading(false)
                 setOnlineResponseStatus({
                     code: 401,
-                    message: "未登录"
+                    message: i18next.t("未登录")
                 })
             } else {
                 if (networkState.online) {
@@ -74,7 +75,7 @@ export const OnlineJudgment: React.FC<OnlineJudgmentProps> = React.memo(
                 .invoke("fetch-netWork-status-by-request-interface")
                 .then((res) => {
                     if (res.code === -1) {
-                        yakitNotify("error", "连接失败:" + res.message)
+                        yakitNotify("error", i18next.t("连接失败:") + res.message)
                     }
                     setOnlineResponseStatus({
                         code: res.code,
@@ -82,7 +83,7 @@ export const OnlineJudgment: React.FC<OnlineJudgmentProps> = React.memo(
                     })
                 })
                 .catch((error) => {
-                    yakitNotify("error", "连接失败:" + error)
+                    yakitNotify("error", i18next.t("连接失败:") + error)
                 })
                 .finally(() =>
                     setTimeout(() => {
@@ -100,16 +101,15 @@ export const OnlineJudgment: React.FC<OnlineJudgmentProps> = React.memo(
                             <YakitEmpty
                                 image={<img src={Server} alt='' />}
                                 imageStyle={{width: 272, height: 265, marginBottom: 16}}
-                                title='服务器故障'
-                                description='服务器故障，请联系管理员修复'
+                                title={i18next.t("服务器故障")}
+                                description={i18next.t("服务器故障，请联系管理员修复")}
                             />
                             <YakitButton
                                 className={styles["refresh-button"]}
                                 type='outline1'
                                 icon={<OutlineRefreshIcon />}
                                 onClick={getNetWork}
-                            >
-                                刷新页面
+                            >{i18next.t("刷新页面")}
                             </YakitButton>
                         </>
                     )
@@ -121,33 +121,31 @@ export const OnlineJudgment: React.FC<OnlineJudgmentProps> = React.memo(
                                     <YakitEmpty
                                         image={<img src={NoPermissions} alt='' />}
                                         imageStyle={{width: 320, height: 250, marginBottom: 16}}
-                                        title='暂无访问权限'
-                                        description='登录后即可访问该页面'
+                                        title={i18next.t("暂无访问权限")}
+                                        description={i18next.t("登录后即可访问该页面")}
                                     />
                                     <YakitButton
                                         className={styles["refresh-button"]}
                                         type='outline1'
                                         onClick={onLogin}
-                                    >
-                                        立即登录
+                                    >{i18next.t("立即登录")}
                                     </YakitButton>
                                 </>
                             ) : (
                                 <YakitEmpty
                                     image={<img src={NoPermissions} alt='' />}
                                     imageStyle={{width: 320, height: 250, marginBottom: 16}}
-                                    title='暂无访问权限'
+                                    title={i18next.t("暂无访问权限")}
                                     description='请联系管理员分配权限'
                                 />
                             )} */}
                             <YakitEmpty
                                 image={<img src={NoPermissions} alt='' />}
                                 imageStyle={{width: 320, height: 250, marginBottom: 16}}
-                                title='暂无访问权限'
-                                description='登录后即可访问该页面'
+                                title={i18next.t("暂无访问权限")}
+                                description={i18next.t("登录后即可访问该页面")}
                             />
-                            <YakitButton className={styles["refresh-button"]} type='outline1' onClick={() => onLogin()}>
-                                立即登录
+                            <YakitButton className={styles["refresh-button"]} type='outline1' onClick={() => onLogin()}>{i18next.t("立即登录")}
                             </YakitButton>
                         </>
                     )
@@ -159,16 +157,15 @@ export const OnlineJudgment: React.FC<OnlineJudgmentProps> = React.memo(
                             <YakitEmpty
                                 image={<img src={Online} alt='' />}
                                 imageStyle={{width: 300, height: 210, marginBottom: 16}}
-                                title='请检查私有域配置与网络连接'
-                                description='连网后才可访问 Yakit 插件商店'
+                                title={i18next.t("请检查私有域配置与网络连接")}
+                                description={i18next.t("连网后才可访问 Yakit 插件商店")}
                             />
                             <YakitButton
                                 className={styles["refresh-button"]}
                                 type='outline1'
                                 icon={<OutlineRefreshIcon />}
                                 onClick={getNetWork}
-                            >
-                                刷新页面
+                            >{i18next.t("刷新页面")}
                             </YakitButton>
                         </>
                     )

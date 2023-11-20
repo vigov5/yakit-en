@@ -6,6 +6,7 @@ import {YakEditor} from "@/utils/editors"
 import {CaCertData} from "../MITMServerHijacking/MITMServerHijacking"
 import {useMemoizedFn} from "ahooks"
 import {saveABSFileToOpen} from "@/utils/openWebsite"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -29,26 +30,24 @@ const MITMCertificateDownloadModal: React.FC<MITMCertificateDownloadModalProps> 
      */
     const onDown = useMemoizedFn(() => {
         if (!caCerts.CaCerts) return
-        saveABSFileToOpen("yakit证书.crt.pem", caCerts.CaCerts)
+        saveABSFileToOpen(i18next.t("yakit证书.crt.pem"), caCerts.CaCerts)
     })
     return (
         <YakitModal
             visible={visible}
             onCancel={() => setVisible(false)}
             closable={true}
-            title='下载 SSL/TLS 证书以劫持 HTTPS'
+            title={i18next.t("下载 SSL/TLS 证书以劫持 HTTPS")}
             width={720}
             className={styles["mitm-certificate-download-modal"]}
-            okText='下载到本地并打开'
+            okText={i18next.t("下载到本地并打开")}
             footerExtra={
-                <div className={styles["certificate-download-modal-footer"]}>
-                    在设置代理后访问：
+                <div className={styles["certificate-download-modal-footer"]}>{i18next.t("在设置代理后访问：")}
                     <YakitTag
                         enableCopy
                         copyText='http://mitm'
                         iconColor='var(--yakit-primary-5)'
-                    />
-                    可自动下载证书
+                    />{i18next.t("可自动下载证书")}
                 </div>
             }
             onOk={() => onDown()}

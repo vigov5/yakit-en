@@ -11,6 +11,7 @@ import {YakitSwitch} from "@/components/yakitUI/YakitSwitch/YakitSwitch"
 import {YakitInput} from "@/components/yakitUI/YakitInput/YakitInput"
 import {YakitButton} from "@/components/yakitUI/YakitButton/YakitButton"
 import {showYakitModal} from "@/components/yakitUI/YakitModal/YakitModalConfirm"
+import i18next from "../i18n"
 
 export interface ExtractableValue {
     StringValue: string
@@ -49,7 +50,7 @@ const GeneralExporter: React.FC<GeneralExporterProp> = (props) => {
             setPaths(origin.map((v) => v))
         })
         ipcRenderer.on(`${token}-end`, () => {
-            info("导出结束")
+            info(i18next.t("导出结束"))
         })
         ipcRenderer.on(`${token}-error`, (_, e) => {})
 
@@ -60,7 +61,7 @@ const GeneralExporter: React.FC<GeneralExporterProp> = (props) => {
                 params: {JsonOutput, CSVOutput, DirName, FilePattern}
             })
             .then(() => {
-                info("发送生成文件配置成功...")
+                info(i18next.t("发送生成文件配置成功..."))
             })
         props.Data.forEach((value) => {
             ipcRenderer
@@ -80,7 +81,7 @@ const GeneralExporter: React.FC<GeneralExporterProp> = (props) => {
     }, [token])
 
     return (
-        <AutoCard title={"获取生成的文件（点击打开文件位置）"}>
+        <AutoCard title={i18next.t("获取生成的文件（点击打开文件位置）")}>
             <Space direction={"vertical"}>
                 {paths.map((i) => {
                     return (
@@ -101,7 +102,7 @@ const GeneralExporter: React.FC<GeneralExporterProp> = (props) => {
 
 export const exportData = (data: ExtractableData[]) => {
     showYakitModal({
-        title: "导出数据",
+        title: i18next.t("导出数据"),
         width: "60%",
         footer: null,
         content: (
@@ -142,7 +143,7 @@ const GeneralExporterForm: React.FC<GeneralExporterFormProp> = (props) => {
             wrapperCol={{span: 14}}
             onSubmitCapture={(e) => {
                 showYakitModal({
-                    title: "生成导出文件",
+                    title: i18next.t("生成导出文件"),
                     width: "50%",
                     footer: null,
                     content: <GeneralExporter {...params} Data={props.Data} />
@@ -150,32 +151,31 @@ const GeneralExporterForm: React.FC<GeneralExporterFormProp> = (props) => {
             }}
             style={{padding: 24}}
         >
-            <Form.Item label={"导出 JSON"} valuePropName='checked'>
+            <Form.Item label={i18next.t("导出 JSON")} valuePropName='checked'>
                 <YakitSwitch
                     onChange={(JsonOutput) => setParams({...params, JsonOutput})}
                     checked={params.JsonOutput}
                 />
             </Form.Item>
-            <Form.Item label={"导出 CSV"} valuePropName='checked'>
+            <Form.Item label={i18next.t("导出 CSV")} valuePropName='checked'>
                 <YakitSwitch onChange={(CSVOutput) => setParams({...params, CSVOutput})} checked={params.CSVOutput} />
             </Form.Item>
-            <Form.Item label={"输出到目录"} valuePropName='checked'>
+            <Form.Item label={i18next.t("输出到目录")} valuePropName='checked'>
                 <YakitInput
-                    placeholder={"可为空，默认为 yakit 临时目录"}
+                    placeholder={i18next.t("可为空，默认为 yakit 临时目录")}
                     onChange={(e) => setParams({...params, DirName: e.target.value})}
                     value={params.DirName}
                 />
             </Form.Item>
-            <Form.Item label={"文件名"} valuePropName='checked'>
+            <Form.Item label={i18next.t("文件名")} valuePropName='checked'>
                 <YakitInput
-                    placeholder={"'*' 可作为随机字符串填空，不需要填写后缀"}
+                    placeholder={i18next.t("'*' 可作为随机字符串填空，不需要填写后缀")}
                     onChange={(e) => setParams({...params, FilePattern: e.target.value})}
                     value={params.FilePattern}
                 />
             </Form.Item>
             <Form.Item colon={false} label={" "}>
-                <YakitButton type='primary' htmlType='submit'>
-                    生成数据到本地文件{" "}
+                <YakitButton type='primary' htmlType='submit'>{i18next.t("生成数据到本地文件")}{" "}
                 </YakitButton>
             </Form.Item>
         </Form>

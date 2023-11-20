@@ -31,6 +31,7 @@ import {PlusOutlined, EditOutlined, DeleteOutlined,RightOutlined} from "@ant-des
 import {DefaultOptionType} from "antd/lib/cascader"
 import {useStore} from "@/store"
 import { unReadable } from "../dynamicControl/DynamicControl"
+import i18next from "../../i18n"
 const {ipcRenderer} = window.require("electron")
 const {Option} = Select
 export interface ShowUserInfoProps extends API.NewUrmResponse {
@@ -39,19 +40,16 @@ export interface ShowUserInfoProps extends API.NewUrmResponse {
 const ShowUserInfo: React.FC<ShowUserInfoProps> = (props) => {
     const {user_name, password, onClose} = props
     const copyUserInfo = () => {
-        callCopyToClipboard(`用户名：${user_name}\n密码：${password}`)
+        callCopyToClipboard(i18next.t("用户名：${user_name}\n密码：${password}", { v1: user_name, v2: password }))
     }
     return (
         <div style={{padding: "0 10px"}}>
-            <div>
-                用户名：<span>{user_name}</span>
+            <div>{i18next.t("用户名：")}<span>{user_name}</span>
             </div>
-            <div>
-                密码：<span>{password}</span>
+            <div>{i18next.t("密码：")}<span>{password}</span>
             </div>
             <div style={{textAlign: "center", paddingTop: 10}}>
-                <Button type='primary' onClick={() => copyUserInfo()}>
-                    复制
+                <Button type='primary' onClick={() => copyUserInfo()}>{i18next.t("复制")}
                 </Button>
             </div>
         </div>
@@ -126,7 +124,7 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                 }
             })
             .catch((err) => {
-                failed("获取角色列表失败：" + err)
+                failed(i18next.t("获取角色列表失败：") + err)
             })
             .finally(() => {
                 setTimeout(() => {
@@ -173,13 +171,13 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                             setDepPagination({...pagination, Limit: res.pagemeta.limit, Page: res.pagemeta.page})
                         })
                         .catch((err) => {
-                            failed("失败：" + err)
+                            failed(i18next.t("失败：") + err)
                         })
                         .finally(() => {})
                 }
             })
             .catch((err) => {
-                failed("失败：" + err)
+                failed(i18next.t("失败：") + err)
             })
             .finally(() => {})
     }
@@ -215,7 +213,7 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                     }
                 })
                 .catch((err) => {
-                    failed("加载数据失败：" + err)
+                    failed(i18next.t("加载数据失败：") + err)
                 })
                 .finally(() => {
                     setTimeout(() => {
@@ -248,7 +246,7 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                     onCancel()
                 })
                 .catch((err) => {
-                    failed("修改账号失败：" + err)
+                    failed(i18next.t("修改账号失败：") + err)
                 })
                 .finally(() => {
                     setTimeout(() => {
@@ -273,13 +271,13 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                     onCancel()
                     refresh(departmentId)
                     const m = showModal({
-                        title: "账号信息",
+                        title: i18next.t("账号信息"),
                         content: <ShowUserInfo user_name={user_name} password={password} onClose={() => m.destroy()} />
                     })
                     return m
                 })
                 .catch((err) => {
-                    failed("创建账号失败：" + err)
+                    failed(i18next.t("创建账号失败：") + err)
                 })
                 .finally(() => {
                     setTimeout(() => {
@@ -324,7 +322,7 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                 }
             })
             .catch((err) => {
-                failed("失败：" + err)
+                failed(i18next.t("失败：") + err)
             })
             .finally(() => {})
     }
@@ -352,7 +350,7 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                 }
             })
             .catch((err) => {
-                failed("失败：" + err)
+                failed(i18next.t("失败：") + err)
             })
             .finally(() => {})
     }
@@ -366,14 +364,14 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
     return (
         <div style={{marginTop: 24}}>
             <Form {...layout} form={form} onFinish={onFinish}>
-                <Form.Item name='user_name' label='用户名' rules={[{required: true, message: "该项为必填"}]}>
-                    <Input placeholder='请输入用户名' allowClear />
+                <Form.Item name='user_name' label={i18next.t("用户名")} rules={[{required: true, message: i18next.t("该项为必填")}]}>
+                    <Input placeholder={i18next.t("请输入用户名")} allowClear />
                 </Form.Item>
-                <Form.Item name='department' label='组织架构' rules={[{required: true, message: "该项为必填"}]}>
+                <Form.Item name='department' label={i18next.t("组织架构")} rules={[{required: true, message: i18next.t("该项为必填")}]}>
                     <Cascader
                         options={depData}
                         loadData={loadData}
-                        placeholder='请选择组织架构'
+                        placeholder={i18next.t("请选择组织架构")}
                         changeOnSelect
                         onPopupScroll={(e) => {
                             const {target} = e
@@ -384,10 +382,10 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                         }}
                     />
                 </Form.Item>
-                <Form.Item name='role_id' label='角色' rules={[{required: true, message: "该项为必填"}]}>
+                <Form.Item name='role_id' label={i18next.t("角色")} rules={[{required: true, message: i18next.t("该项为必填")}]}>
                     <Select
                         showSearch
-                        placeholder='请选择角色'
+                        placeholder={i18next.t("请选择角色")}
                         optionFilterProp='children'
                         filterOption={(input, option) =>
                             (option!.children as unknown as string).toLowerCase().includes(input.toLowerCase())
@@ -409,8 +407,7 @@ const AccountForm: React.FC<AccountFormProps> = (props) => {
                     </Select>
                 </Form.Item>
                 <div style={{textAlign: "center"}}>
-                    <Button style={{width: 200}} type='primary' htmlType='submit' loading={loading}>
-                        确认
+                    <Button style={{width: 200}} type='primary' htmlType='submit' loading={loading}>{i18next.t("确认")}
                     </Button>
                 </div>
             </Form>
@@ -449,13 +446,13 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = (props) =>
         })
             .then((res: number) => {
                 if (res) {
-                    success("新建成功")
+                    success(i18next.t("新建成功"))
                     refresh({name: values.name, key: res})
                     onClose()
                 }
             })
             .catch((err) => {
-                failed("失败：" + err)
+                failed(i18next.t("失败：") + err)
             })
             .finally(() => {
                 setLoading(false)
@@ -464,12 +461,11 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = (props) =>
     return (
         <div style={{marginTop: 24}}>
             <Form {...layout} form={form} onFinish={onFinish}>
-                <Form.Item name='name' label='部门名称' rules={[{required: true, message: "该项为必填"}]}>
-                    <Input placeholder='请输入部门名称' allowClear />
+                <Form.Item name='name' label={i18next.t("部门名称")} rules={[{required: true, message: i18next.t("该项为必填")}]}>
+                    <Input placeholder={i18next.t("请输入部门名称")} allowClear />
                 </Form.Item>
                 <div style={{textAlign: "center"}}>
-                    <Button style={{width: 200}} type='primary' htmlType='submit' loading={loading}>
-                        确认
+                    <Button style={{width: 200}} type='primary' htmlType='submit' loading={loading}>{i18next.t("确认")}
                     </Button>
                 </div>
             </Form>
@@ -534,7 +530,7 @@ const OrganizationAdminPage: React.FC<OrganizationAdminPageProps> = (props) => {
         if (noDepartment && noDepartment > 0) {
             return [
                 {
-                    title: "无归属",
+                    title: i18next.t("无归属"),
                     key: -1,
                     userNum: noDepartment,
                     isLeaf: true,
@@ -637,7 +633,7 @@ const OrganizationAdminPage: React.FC<OrganizationAdminPageProps> = (props) => {
                 setNoDepartment(res.userNum)
             })
             .catch((err) => {
-                failed("失败：" + err)
+                failed(i18next.t("失败：") + err)
             })
             .finally(() => {
                 setLoading(false)
@@ -676,7 +672,7 @@ const OrganizationAdminPage: React.FC<OrganizationAdminPageProps> = (props) => {
                 setPagination({...pagination, Limit: res.pagemeta.limit})
             })
             .catch((err) => {
-                failed("失败：" + err)
+                failed(i18next.t("失败：") + err)
             })
             .finally(() => {
                 setLoading(false)
@@ -702,7 +698,7 @@ const OrganizationAdminPage: React.FC<OrganizationAdminPageProps> = (props) => {
         })
             .then((res: API.ActionSucceeded) => {
                 if (res.ok) {
-                    success("删除成功")
+                    success(i18next.t("删除成功"))
                     // 重置回显示全部
                     setSelectItemId(undefined)
                     setSelectTitle(undefined)
@@ -717,7 +713,7 @@ const OrganizationAdminPage: React.FC<OrganizationAdminPageProps> = (props) => {
                 }
             })
             .catch((err) => {
-                failed("失败：" + err)
+                failed(i18next.t("失败：") + err)
             })
             .finally(() => {})
     }
@@ -737,7 +733,7 @@ const OrganizationAdminPage: React.FC<OrganizationAdminPageProps> = (props) => {
         })
             .then((res: API.ActionSucceeded) => {
                 if (res) {
-                    success("修改成功")
+                    success(i18next.t("修改成功"))
                     // 第一层更新
                     if (pid === 0) {
                         setDepartment((origin) =>
@@ -759,7 +755,7 @@ const OrganizationAdminPage: React.FC<OrganizationAdminPageProps> = (props) => {
                 }
             })
             .catch((err) => {
-                failed("失败：" + err)
+                failed(i18next.t("失败：") + err)
             })
             .finally(() => {})
     }
@@ -823,7 +819,7 @@ const OrganizationAdminPage: React.FC<OrganizationAdminPageProps> = (props) => {
                     }
                 })
                 .catch((err) => {
-                    failed("失败：" + err)
+                    failed(i18next.t("失败：") + err)
                 })
                 .finally(() => {
                     resolve()
@@ -834,12 +830,12 @@ const OrganizationAdminPage: React.FC<OrganizationAdminPageProps> = (props) => {
     return (
         <div className='organization-admin-page'>
             <div className='organization-admin-page-title'>
-                <div className='title'>组织架构</div>
+                <div className='title'>{i18next.t("组织架构")}</div>
                 <div
                     className='add-icon'
                     onClick={() => {
                         const m = showModal({
-                            title: "添加一级部门",
+                            title: i18next.t("添加一级部门"),
                             width: 600,
                             content: (
                                 <CreateOrganizationForm
@@ -910,7 +906,7 @@ const OrganizationAdminPage: React.FC<OrganizationAdminPageProps> = (props) => {
                                                 <Space>
                                                     <Popover
                                                         trigger={"click"}
-                                                        title={"修改名称"}
+                                                        title={i18next.t("修改名称")}
                                                         content={
                                                             <Input
                                                                 size={"small"}
@@ -923,7 +919,7 @@ const OrganizationAdminPage: React.FC<OrganizationAdminPageProps> = (props) => {
                                                                             nodeData.pid
                                                                         )
                                                                     } else {
-                                                                        warn("不可为空")
+                                                                        warn(i18next.t("不可为空"))
                                                                     }
                                                                 }}
                                                             />
@@ -939,7 +935,7 @@ const OrganizationAdminPage: React.FC<OrganizationAdminPageProps> = (props) => {
                                                         />
                                                     </Popover>
                                                     <Popconfirm
-                                                        title={"确定删除此项吗？不可恢复"}
+                                                        title={i18next.t("确定删除此项吗？不可恢复")}
                                                         onConfirm={(e) => {
                                                             onRemove(nodeData.key, nodeData.pid)
                                                         }}
@@ -961,7 +957,7 @@ const OrganizationAdminPage: React.FC<OrganizationAdminPageProps> = (props) => {
                                                                 e?.stopPropagation()
                                                                 setSelectItemId(nodeData.key)
                                                                 const m = showModal({
-                                                                    title: "添加二级部门",
+                                                                    title: i18next.t("添加二级部门"),
                                                                     width: 600,
                                                                     content: (
                                                                         <CreateOrganizationForm
@@ -1116,7 +1112,7 @@ const AccountAdminPage: React.FC<AccountAdminPageProps> = (props) => {
                 }
             })
             .catch((err) => {
-                failed("获取账号列表失败：" + err)
+                failed(i18next.t("获取账号列表失败：") + err)
             })
             .finally(() => {
                 setTimeout(() => {
@@ -1148,7 +1144,7 @@ const AccountAdminPage: React.FC<AccountAdminPageProps> = (props) => {
             }
         })
             .then((res) => {
-                success("删除用户成功")
+                success(i18next.t("删除用户成功"))
                 update()
                 // 如若是默认展示的所有数据进行删除处理
                 if (!selectItemId) {
@@ -1171,7 +1167,7 @@ const AccountAdminPage: React.FC<AccountAdminPageProps> = (props) => {
                 }
             })
             .catch((err) => {
-                failed("删除账号失败：" + err)
+                failed(i18next.t("删除账号失败：") + err)
             })
             .finally(() => {})
     }
@@ -1189,13 +1185,13 @@ const AccountAdminPage: React.FC<AccountAdminPageProps> = (props) => {
                 update()
                 const {user_name, password} = res
                 const m = showModal({
-                    title: "账号信息",
+                    title: i18next.t("账号信息"),
                     content: <ShowUserInfo user_name={user_name} password={password} onClose={() => m.destroy()} />
                 })
                 return m
             })
             .catch((err) => {
-                failed("重置账号失败：" + err)
+                failed(i18next.t("重置账号失败：") + err)
             })
             .finally(() => {})
     }
@@ -1234,21 +1230,21 @@ const AccountAdminPage: React.FC<AccountAdminPageProps> = (props) => {
                 }
                 const showData = unReadable(resultObj)
                 ipcRenderer.invoke("set-copy-clipboard", showData)
-                success("复制远程连接成功")
+                success(i18next.t("复制远程连接成功"))
             } else {
-                failed(`暂无最新连接信息，请该用户发起远程连接后再操作`)
+                failed(i18next.t("暂无最新连接信息，请该用户发起远程连接后再操作"))
             }
         })
         .catch((err) => {
             setLoading(false)
-                failed(`复制远程连接失败:${err}`)
+                failed(i18next.t("复制远程连接失败:${err}", { v1: err }))
         })
         .finally(() => {})
     }
 
     const columns: ColumnsType<API.UrmUserList> = [
         {
-            title: "用户名",
+            title: i18next.t("用户名"),
             dataIndex: "user_name",
             render: (text: string, record) => (
                 <div>
@@ -1258,7 +1254,7 @@ const AccountAdminPage: React.FC<AccountAdminPageProps> = (props) => {
             )
         },
         {
-            title: "组织架构",
+            title: i18next.t("组织架构"),
             dataIndex: "department_name",
             render: (text, record) => {
                 return (
@@ -1270,16 +1266,16 @@ const AccountAdminPage: React.FC<AccountAdminPageProps> = (props) => {
             }
         },
         {
-            title: "角色",
+            title: i18next.t("角色"),
             dataIndex: "role_name"
         },
         {
-            title: "创建时间",
+            title: i18next.t("创建时间"),
             dataIndex: "created_at",
             render: (text) => <span>{moment.unix(text).format("YYYY-MM-DD HH:mm")}</span>
         },
         {
-            title: "操作",
+            title: i18next.t("操作"),
             render: (i) => (
                 <Space>
                     <Button
@@ -1289,30 +1285,26 @@ const AccountAdminPage: React.FC<AccountAdminPageProps> = (props) => {
                             setEditInfo(i)
                             setUserInfoForm(true)
                         }}
-                    >
-                        编辑
+                    >{i18next.t("编辑")}
                     </Button>
-                    <Popconfirm title={"确定要重置该用户密码吗？"} onConfirm={() => onReset(i.uid, i.user_name)}>
-                        <Button size='small' type="link">
-                            重置密码
+                    <Popconfirm title={i18next.t("确定要重置该用户密码吗？")} onConfirm={() => onReset(i.uid, i.user_name)}>
+                        <Button size='small' type="link">{i18next.t("重置密码")}
                         </Button>
                     </Popconfirm>
                     <Button
                         size='small'
                         type="link"
                         onClick={() => copySecretKey(i.user_name)}
-                    >
-                        复制远程连接
+                    >{i18next.t("复制远程连接")}
                     </Button>
                     <Popconfirm
-                        title={"确定删除该用户吗？"}
+                        title={i18next.t("确定删除该用户吗？")}
                         onConfirm={() => {
                             onRemove([i.uid], i.department_id)
                         }}
                         placement="right"
                     >
-                        <Button size={"small"} danger={true} type="link">
-                            删除
+                        <Button size={"small"} danger={true} type="link">{i18next.t("删除")}
                         </Button>
                     </Popconfirm>
                 </Space>
@@ -1325,7 +1317,7 @@ const AccountAdminPage: React.FC<AccountAdminPageProps> = (props) => {
             <div className='title-operation'>
                 <div className='filter'>
                     <Input.Search
-                        placeholder={"请输入用户名进行搜索"}
+                        placeholder={i18next.t("请输入用户名进行搜索")}
                         enterButton={true}
                         size={"small"}
                         style={{width: 200}}
@@ -1347,18 +1339,16 @@ const AccountAdminPage: React.FC<AccountAdminPageProps> = (props) => {
                     <Space>
                         {!!selectedRowKeys.length ? (
                             <Popconfirm
-                                title={"确定删除选择的用户吗？不可恢复"}
+                                title={i18next.t("确定删除选择的用户吗？不可恢复")}
                                 onConfirm={() => {
                                     onRemove(selectedRowKeys)
                                 }}
                             >
-                                <Button type='primary' htmlType='submit' size='small'>
-                                    批量删除
+                                <Button type='primary' htmlType='submit' size='small'>{i18next.t("批量删除")}
                                 </Button>
                             </Popconfirm>
                         ) : (
-                            <Button type='primary' size='small' disabled={true}>
-                                批量删除
+                            <Button type='primary' size='small' disabled={true}>{i18next.t("批量删除")}
                             </Button>
                         )}
                         <Button
@@ -1369,8 +1359,7 @@ const AccountAdminPage: React.FC<AccountAdminPageProps> = (props) => {
                                 setEditInfo(undefined)
                                 setUserInfoForm(!userInfoForm)
                             }}
-                        >
-                            创建账号
+                        >{i18next.t("创建账号")}
                         </Button>
                     </Space>
                 </div>
@@ -1401,7 +1390,7 @@ const AccountAdminPage: React.FC<AccountAdminPageProps> = (props) => {
                                     )}
                                 </>
                             ) : (
-                                "全部成员"
+                                i18next.t("全部成员")
                             )}
                         </div>
                         <Table
@@ -1433,7 +1422,7 @@ const AccountAdminPage: React.FC<AccountAdminPageProps> = (props) => {
 
             <Modal
                 visible={userInfoForm}
-                title={editInfo ? "编辑账号" : "创建账号"}
+                title={editInfo ? i18next.t("编辑账号") : i18next.t("创建账号")}
                 destroyOnClose={true}
                 maskClosable={false}
                 bodyStyle={{padding: "10px 24px 24px 24px"}}

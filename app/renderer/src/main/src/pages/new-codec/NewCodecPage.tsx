@@ -17,7 +17,7 @@ import { useMemoizedFn} from "ahooks"
 import {queryYakScriptList} from "@/pages/yakitStore/network";
 import {CodecPluginTemplate} from "@/pages/invoker/data/CodecPluginTemplate";
 import { YakParamProps } from "../plugins/pluginsType";
-
+import i18next from "../../i18n"
 
 export interface NewCodecPageProp {
 
@@ -50,176 +50,176 @@ interface NewCodeSubType {
 
 const codecAllList: NewCodecType[] = [
     {
-        verbose: "国密算法(sm4)对称加解密",
+        verbose: i18next.t("国密算法(sm4)对称加解密"),
         subTypes: [
-            {key: "sm4-cbc-encrypt", verbose: "SM4-CBC 加密",},
-            {key: "sm4-cbc-decrypt", verbose: "SM4-CBC 解密",},
-            {key: "sm4-cfb-encrypt", verbose: "SM4-CFB 加密",},
-            {key: "sm4-cfb-decrypt", verbose: "SM4-CFB 解密",},
-            {key: "sm4-ebc-encrypt", verbose: "SM4-EBC 加密",},
-            {key: "sm4-ebc-decrypt", verbose: "SM4-EBC 解密",},
-            {key: "sm4-ofb-encrypt", verbose: "SM4-OFB 加密",},
-            {key: "sm4-ofb-decrypt", verbose: "SM4-OFB 解密",},
-            {key: "sm4-gcm-encrypt", verbose: "SM4-GCM 加密",},
-            {key: "sm4-gcm-decrypt", verbose: "SM4-GCM 解密",}
+            {key: "sm4-cbc-encrypt", verbose: i18next.t("SM4-CBC 加密"),},
+            {key: "sm4-cbc-decrypt", verbose: i18next.t("SM4-CBC 解密"),},
+            {key: "sm4-cfb-encrypt", verbose: i18next.t("SM4-CFB 加密"),},
+            {key: "sm4-cfb-decrypt", verbose: i18next.t("SM4-CFB 解密"),},
+            {key: "sm4-ebc-encrypt", verbose: i18next.t("SM4-EBC 加密"),},
+            {key: "sm4-ebc-decrypt", verbose: i18next.t("SM4-EBC 解密"),},
+            {key: "sm4-ofb-encrypt", verbose: i18next.t("SM4-OFB 加密"),},
+            {key: "sm4-ofb-decrypt", verbose: i18next.t("SM4-OFB 解密"),},
+            {key: "sm4-gcm-encrypt", verbose: i18next.t("SM4-GCM 加密"),},
+            {key: "sm4-gcm-decrypt", verbose: i18next.t("SM4-GCM 解密"),}
         ]
     },
     {
-        verbose: "AES对称加解密",
+        verbose: i18next.t("AES对称加解密"),
         subTypes: [
-            {key: "aes-cbc-encrypt", verbose: "AES-CBC 加密",},
-            {key: "aes-cbc-decrypt", verbose: "AES-CBC 解密",},
-            {key: "aes-gcm-encrypt", verbose: "AES-GCM 加密",},
-            {key: "aes-gcm-decrypt", verbose: "AES-GCM 解密",}
+            {key: "aes-cbc-encrypt", verbose: i18next.t("AES-CBC 加密"),},
+            {key: "aes-cbc-decrypt", verbose: i18next.t("AES-CBC 解密"),},
+            {key: "aes-gcm-encrypt", verbose: i18next.t("AES-GCM 加密"),},
+            {key: "aes-gcm-decrypt", verbose: i18next.t("AES-GCM 解密"),}
         ]
     },
     {
         verbose: "Java",
         subTypes: [
-            {key: "java-unserialize-hex-dumper", verbose: "反序列化(SerialDumper)"},
-            {key: "java-unserialize-hex", verbose: "反序列化 Java 对象流(hex)"},
-            {key: "java-unserialize-base64", verbose: "反序列化 Java 对象流(base64)"},
-            {key: "java-serialize-json", verbose: "Java 对象流序列化（JSON=>HEX）"}
+            {key: "java-unserialize-hex-dumper", verbose: i18next.t("反序列化(SerialDumper)")},
+            {key: "java-unserialize-hex", verbose: i18next.t("反序列化 Java 对象流(hex)")},
+            {key: "java-unserialize-base64", verbose: i18next.t("反序列化 Java 对象流(base64)")},
+            {key: "java-serialize-json", verbose: i18next.t("Java 对象流序列化（JSON=>HEX）")}
         ]
     },
     {
-        verbose: "解码",
+        verbose: i18next.t("解码"),
         subTypes: [
-            {key: "base64-decode", verbose: "Base64 解码"},
-            {key: "htmldecode", verbose: "HTML 解码"},
-            {key: "urlunescape", verbose: "URL 解码"},
-            {key: "urlunescape-path", verbose: "URL 路径解码"},
-            {key: "double-urldecode", verbose: "双重 URL 解码"},
-            {key: "hex-decode", verbose: "十六进制解码"},
-            {key: "json-unicode-decode", verbose: "Unicode 中文解码"}
+            {key: "base64-decode", verbose: i18next.t("Base64 解码")},
+            {key: "htmldecode", verbose: i18next.t("HTML 解码")},
+            {key: "urlunescape", verbose: i18next.t("URL 解码")},
+            {key: "urlunescape-path", verbose: i18next.t("URL 路径解码")},
+            {key: "double-urldecode", verbose: i18next.t("双重 URL 解码")},
+            {key: "hex-decode", verbose: i18next.t("十六进制解码")},
+            {key: "json-unicode-decode", verbose: i18next.t("Unicode 中文解码")}
         ]
     },
     {
-        verbose: "编码",
+        verbose: i18next.t("编码"),
         subTypes: [
-            {key: "base64", verbose: "Base64 编码"},
-            {key: "htmlencode", verbose: "HTML 实体编码（强制）"},
-            {key: "htmlencode-hex", verbose: "HTML 实体编码（强制十六进制模式）"},
-            {key: "htmlescape", verbose: "HTML 实体编码（只编码特殊字符）"},
-            {key: "urlencode", verbose: "URL 编码（强制）"},
-            {key: "urlescape", verbose: "URL 编码（只编码特殊字符）"},
-            {key: "urlescape-path", verbose: "URL 路径编码（只编码特殊字符）"},
-            {key: "double-urlencode", verbose: "双重 URL 编码"},
-            {key: "hex-encode", verbose: "十六进制编码"},
-            {key: "json-unicode", verbose: "Unicode 中文编码"}
+            {key: "base64", verbose: i18next.t("Base64 编码")},
+            {key: "htmlencode", verbose: i18next.t("HTML 实体编码（强制）")},
+            {key: "htmlencode-hex", verbose: i18next.t("HTML 实体编码（强制十六进制模式）")},
+            {key: "htmlescape", verbose: i18next.t("HTML 实体编码（只编码特殊字符）")},
+            {key: "urlencode", verbose: i18next.t("URL 编码（强制）")},
+            {key: "urlescape", verbose: i18next.t("URL 编码（只编码特殊字符）")},
+            {key: "urlescape-path", verbose: i18next.t("URL 路径编码（只编码特殊字符）")},
+            {key: "double-urlencode", verbose: i18next.t("双重 URL 编码")},
+            {key: "hex-encode", verbose: i18next.t("十六进制编码")},
+            {key: "json-unicode", verbose: i18next.t("Unicode 中文编码")}
         ]
     },
     {
-        verbose: "计算(HASH)",
+        verbose: i18next.t("计算(HASH)"),
         subTypes: [
-            {key: "md5", verbose: "计算 md5"},
-            {key: "sm3", verbose: "计算 SM3(国密3)"},
-            {key: "sha1", verbose: "计算 Sha1"},
-            {key: "sha256", verbose: "计算 Sha256"},
-            {key: "sha512", verbose: "计算 Sha512"}
+            {key: "md5", verbose: i18next.t("计算 md5")},
+            {key: "sm3", verbose: i18next.t("计算 SM3(国密3)")},
+            {key: "sha1", verbose: i18next.t("计算 Sha1")},
+            {key: "sha256", verbose: i18next.t("计算 Sha256")},
+            {key: "sha512", verbose: i18next.t("计算 Sha512")}
         ]
     },
     {
-        verbose: "Json处理",
+        verbose: i18next.t("Json处理"),
         subTypes: [
-            {key: "json-formatter", verbose: "JSON 美化（缩进4）"},
-            {key: "json-formatter-2", verbose: "JSON 美化（缩进2）"},
-            {key: "json-inline", verbose: "JSON 压缩成一行"}
+            {key: "json-formatter", verbose: i18next.t("JSON 美化（缩进4）")},
+            {key: "json-formatter-2", verbose: i18next.t("JSON 美化（缩进2）")},
+            {key: "json-inline", verbose: i18next.t("JSON 压缩成一行")}
         ]
     },
     {
-        verbose: "美化",
+        verbose: i18next.t("美化"),
         subTypes: [
-            {key: "pretty-packet", verbose: "HTTP 数据包美化"},
-            {key: "json-formatter", verbose: "JSON 美化（缩进4）"},
-            {key: "json-formatter-2", verbose: "JSON 美化（缩进2）"},
-            {key: "json-inline", verbose: "JSON 压缩成一行"}
+            {key: "pretty-packet", verbose: i18next.t("HTTP 数据包美化")},
+            {key: "json-formatter", verbose: i18next.t("JSON 美化（缩进4）")},
+            {key: "json-formatter-2", verbose: i18next.t("JSON 美化（缩进2）")},
+            {key: "json-inline", verbose: i18next.t("JSON 压缩成一行")}
         ]
     },
     {
         verbose: "HTTP",
         subTypes: [
-            {key: "http-get-query", verbose: "解析 HTTP 参数"},
-            {key: "pretty-packet", verbose: "HTTP 数据包美化"},
-            {key: "packet-from-url", verbose: "从 URL 中加载数据包"},
-            {key: "packet-to-curl", verbose: "数据包转 CURL 命令"},
+            {key: "http-get-query", verbose: i18next.t("解析 HTTP 参数")},
+            {key: "pretty-packet", verbose: i18next.t("HTTP 数据包美化")},
+            {key: "packet-from-url", verbose: i18next.t("从 URL 中加载数据包")},
+            {key: "packet-to-curl", verbose: i18next.t("数据包转 CURL 命令")},
         ]
     },
     {
-        verbose: "模糊测试(标签同 Web Fuzzer)",
+        verbose: i18next.t("模糊测试(标签同 Web Fuzzer)"),
         subTypes: [
-            {key: "fuzz", verbose: "模糊测试(标签同 Web Fuzzer)"},
+            {key: "fuzz", verbose: i18next.t("模糊测试(标签同 Web Fuzzer)")},
         ]
     },
     {
-        verbose: "Codec插件与临时插件",
+        verbose: i18next.t("Codec插件与临时插件"),
         subTypes: [
-            {key: "custom-script", verbose: "临时插件"},
-            {key: "plugin", verbose: "Codec插件"}
+            {key: "custom-script", verbose: i18next.t("临时插件")},
+            {key: "plugin", verbose: i18next.t("Codec插件")}
         ]
     },
     {
-        verbose: "JWT解析与弱密码",
+        verbose: i18next.t("JWT解析与弱密码"),
         subTypes: [
-            {key: "jwt-parse-weak", verbose: "JWT解析与弱密码"}
+            {key: "jwt-parse-weak", verbose: i18next.t("JWT解析与弱密码")}
         ]
     }
 ]
 
 const AllTypeMap = new Map<string, string>([
-    ["java-unserialize-hex-dumper", "反序列化(SerialDumper)"],
-    ["java-unserialize-hex", "反序列化 Java 对象流(hex)"],
-    ["java-unserialize-base64", "反序列化 Java 对象流(base64)"],
-    ["java-serialize-json", "Java 对象流序列化（JSON=>HEX）"],
-    ["base64-decode", "Base64 解码"],
-    ["htmldecode", "HTML 解码"],
-    ["urlunescape", "URL 解码"],
-    ["urlunescape-path", "URL 路径解码"],
-    ["double-urldecode", "双重 URL 解码"],
-    ["hex-decode", "十六进制解码"],
-    ["json-unicode-decode", "Unicode 中文解码"],
-    ["base64", "Base64 编码"],
-    ["htmlencode", "HTML 实体编码（强制）"],
-    ["htmlencode-hex", "HTML 实体编码（强制十六进制模式）"],
-    ["htmlescape", "HTML 实体编码（只编码特殊字符）"],
-    ["urlencode", "URL 编码（强制）"],
-    ["urlescape", "URL 编码（只编码特殊字符）"],
-    ["urlescape-path", "URL 路径编码（只编码特殊字符）"],
-    ["double-urlencode", "双重 URL 编码"],
-    ["hex-encode", "十六进制编码"],
-    ["json-unicode", "Unicode 中文编码"],
-    ["md5", "计算 md5"],
-    ["sm3", "计算 SM3(国密3)"],
-    ["sha1", "计算 Sha1"],
-    ["sha256", "计算 Sha256"],
-    ["sha512", "计算 Sha512"],
-    ["json-formatter", "JSON 美化（缩进4）"],
-    ["json-formatter-2", "JSON 美化（缩进2）"],
-    ["json-inline", "JSON 压缩成一行"],
-    ["pretty-packet", "HTTP 数据包美化"],
-    ["json-formatter", "JSON 美化（缩进4）"],
-    ["json-formatter-2", "JSON 美化（缩进2）"],
-    ["json-inline", "JSON 压缩成一行"],
-    ["http-get-query", "解析 HTTP 参数"],
-    ["pretty-packet", "HTTP 数据包美化"],
-    ["packet-from-url", "从 URL 中加载数据包"],
-    ["packet-to-curl", "数据包转 CURL 命令"],
-    ["fuzz", "模糊测试(标签同 Web Fuzzer)"],
-    ["jwt-parse-weak", "JWT解析与弱密码"],
-    ["sm4-cbc-encrypt", "SM4-CBC 加密"],
-    ["sm4-cbc-decrypt", "SM4-CBC 解密"],
-    ["sm4-cfb-encrypt", "SM4-CFB 加密"],
-    ["sm4-cfb-decrypt", "SM4-CFB 解密"],
-    ["sm4-ebc-encrypt", "SM4-EBC 加密"],
-    ["sm4-ebc-decrypt", "SM4-EBC 解密",],
-    ["sm4-ofb-encrypt", "SM4-OFB 加密"],
-    ["sm4-ofb-decrypt", "SM4-OFB 解密"],
-    ["sm4-gcm-encrypt", "SM4-GCM 加密"],
-    ["sm4-gcm-decrypt", "SM4-GCM 解密"],
-    ["aes-cbc-encrypt", "AES-CBC 加密"],
-    ["aes-cbc-decrypt", "AES-CBC 解密"],
-    ["aes-gcm-encrypt", "AES-GCM 加密"],
-    ["aes-gcm-decrypt", "AES-GCM 解密"]
+    ["java-unserialize-hex-dumper", i18next.t("反序列化(SerialDumper)")],
+    ["java-unserialize-hex", i18next.t("反序列化 Java 对象流(hex)")],
+    ["java-unserialize-base64", i18next.t("反序列化 Java 对象流(base64)")],
+    ["java-serialize-json", i18next.t("Java 对象流序列化（JSON=>HEX）")],
+    ["base64-decode", i18next.t("Base64 解码")],
+    ["htmldecode", i18next.t("HTML 解码")],
+    ["urlunescape", i18next.t("URL 解码")],
+    ["urlunescape-path", i18next.t("URL 路径解码")],
+    ["double-urldecode", i18next.t("双重 URL 解码")],
+    ["hex-decode", i18next.t("十六进制解码")],
+    ["json-unicode-decode", i18next.t("Unicode 中文解码")],
+    ["base64", i18next.t("Base64 编码")],
+    ["htmlencode", i18next.t("HTML 实体编码（强制）")],
+    ["htmlencode-hex", i18next.t("HTML 实体编码（强制十六进制模式）")],
+    ["htmlescape", i18next.t("HTML 实体编码（只编码特殊字符）")],
+    ["urlencode", i18next.t("URL 编码（强制）")],
+    ["urlescape", i18next.t("URL 编码（只编码特殊字符）")],
+    ["urlescape-path", i18next.t("URL 路径编码（只编码特殊字符）")],
+    ["double-urlencode", i18next.t("双重 URL 编码")],
+    ["hex-encode", i18next.t("十六进制编码")],
+    ["json-unicode", i18next.t("Unicode 中文编码")],
+    ["md5", i18next.t("计算 md5")],
+    ["sm3", i18next.t("计算 SM3(国密3)")],
+    ["sha1", i18next.t("计算 Sha1")],
+    ["sha256", i18next.t("计算 Sha256")],
+    ["sha512", i18next.t("计算 Sha512")],
+    ["json-formatter", i18next.t("JSON 美化（缩进4）")],
+    ["json-formatter-2", i18next.t("JSON 美化（缩进2）")],
+    ["json-inline", i18next.t("JSON 压缩成一行")],
+    ["pretty-packet", i18next.t("HTTP 数据包美化")],
+    ["json-formatter", i18next.t("JSON 美化（缩进4）")],
+    ["json-formatter-2", i18next.t("JSON 美化（缩进2）")],
+    ["json-inline", i18next.t("JSON 压缩成一行")],
+    ["http-get-query", i18next.t("解析 HTTP 参数")],
+    ["pretty-packet", i18next.t("HTTP 数据包美化")],
+    ["packet-from-url", i18next.t("从 URL 中加载数据包")],
+    ["packet-to-curl", i18next.t("数据包转 CURL 命令")],
+    ["fuzz", i18next.t("模糊测试(标签同 Web Fuzzer)")],
+    ["jwt-parse-weak", i18next.t("JWT解析与弱密码")],
+    ["sm4-cbc-encrypt", i18next.t("SM4-CBC 加密")],
+    ["sm4-cbc-decrypt", i18next.t("SM4-CBC 解密")],
+    ["sm4-cfb-encrypt", i18next.t("SM4-CFB 加密")],
+    ["sm4-cfb-decrypt", i18next.t("SM4-CFB 解密")],
+    ["sm4-ebc-encrypt", i18next.t("SM4-EBC 加密")],
+    ["sm4-ebc-decrypt", i18next.t("SM4-EBC 解密"),],
+    ["sm4-ofb-encrypt", i18next.t("SM4-OFB 加密")],
+    ["sm4-ofb-decrypt", i18next.t("SM4-OFB 解密")],
+    ["sm4-gcm-encrypt", i18next.t("SM4-GCM 加密")],
+    ["sm4-gcm-decrypt", i18next.t("SM4-GCM 解密")],
+    ["aes-cbc-encrypt", i18next.t("AES-CBC 加密")],
+    ["aes-cbc-decrypt", i18next.t("AES-CBC 解密")],
+    ["aes-gcm-encrypt", i18next.t("AES-GCM 加密")],
+    ["aes-gcm-decrypt", i18next.t("AES-GCM 解密")]
 ])
 
 
@@ -404,10 +404,10 @@ const CodecWork: React.FC<workProps> = React.memo((props) => {
 
     switch (type) {
         case 'custom-script':
-            verbose = "临时插件"
+            verbose = i18next.t("临时插件")
             return <CustomWork isDragging={isDragging} verbose={verbose} index={index} type={type}></CustomWork>
         case 'plugin':
-            verbose = "社区插件"
+            verbose = i18next.t("社区插件")
             return <PluginWork isDragging={isDragging} verbose={verbose} index={index} type={type}></PluginWork>
         default:
             if (type.includes("sm4") || type.includes("aes")) {
@@ -485,7 +485,7 @@ const CustomWork = (props: workProps) => {
 
                     <div className={menuStyle["subMenu-edit-modal"]}>
                         <div className={menuStyle["subMenu-edit-modal-heard"]}>
-                            <div className={menuStyle["subMenu-edit-modal-title"]}>编写临时插件</div>
+                            <div className={menuStyle["subMenu-edit-modal-title"]}>{i18next.t("编写临时插件")}</div>
                             <div className={menuStyle["close-icon"]} onClick={() => setvisibleSubWork(false)}>
                                 <RemoveIcon/>
                             </div>
@@ -511,8 +511,7 @@ const CustomWork = (props: workProps) => {
                                 workFlow[index].Script = customScript
                                 setvisibleSubWork(false)
                                 setWorkFlow(workFlow)
-                            }}>
-                                确定
+                            }}>{i18next.t("确定")}
                             </YakitButton>
                         </div>
                     </div>
@@ -635,7 +634,7 @@ const ParamsWork = (props: workProps) => {
         return (_, value) => {
             const regex = new RegExp(reg)
             if (!regex.test(value)) {
-                return Promise.reject('不合法的' + checkTarget)
+                return Promise.reject(i18next.t("不合法的") + checkTarget)
             }
             return Promise.resolve();
         }
@@ -739,7 +738,7 @@ const ParamsWork = (props: workProps) => {
 
                     <div className={menuStyle["subMenu-edit-modal"]}>
                         <div className={menuStyle["subMenu-edit-modal-heard"]}>
-                            <div className={menuStyle["subMenu-edit-modal-title"]}>设置参数</div>
+                            <div className={menuStyle["subMenu-edit-modal-title"]}>{i18next.t("设置参数")}</div>
                             <div className={menuStyle["close-icon"]} onClick={() => setvisibleSubWork(false)}>
                                 <RemoveIcon/>
                             </div>
@@ -750,7 +749,7 @@ const ParamsWork = (props: workProps) => {
                                 <Form.Item
                                     {...formItemLayout}
                                     name="key"
-                                    label="密钥（HEX 编码）"
+                                    label={i18next.t("密钥（HEX 编码）")}
                                     rules={[
                                         {
                                             required: true,
@@ -767,7 +766,7 @@ const ParamsWork = (props: workProps) => {
                                     <Form.Item
                                         {...formItemLayout}
                                         name="iv"
-                                        label="IV-初始块（HEX 编码）"
+                                        label={i18next.t("IV-初始块（HEX 编码）")}
                                         rules={[
                                             {
                                                 required: true,
@@ -781,8 +780,7 @@ const ParamsWork = (props: workProps) => {
                                     </Form.Item>
                                 }
                                 <Form.Item {...formTailLayout}>
-                                    <YakitButton type="primary" onClick={updateParams}>
-                                        设置
+                                    <YakitButton type="primary" onClick={updateParams}>{i18next.t("设置")}
                                     </YakitButton>
                                 </Form.Item>
                             </Form>
@@ -834,7 +832,7 @@ const CodecEditor = () => {
 
             })
             .catch((err) => {
-                if (err) failed(`CODEC 解码失败：${err}`)
+                if (err) failed(i18next.t("CODEC 解码失败：${err}", { v1: err }))
             })
     }
 

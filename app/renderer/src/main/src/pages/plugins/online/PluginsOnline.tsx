@@ -84,6 +84,7 @@ import {usePageInfo} from "@/store/pageInfo"
 import {shallow} from "zustand/shallow"
 import classNames from "classnames"
 import "../plugins.scss"
+import i18next from "../../../i18n"
 
 /**插件商店页面的处理缓存中的搜索参数 */
 const getPluginOnlinePageData = (pluginOnlinePageData) => {
@@ -240,11 +241,11 @@ const PluginsOnlineList: React.FC<PluginsOnlineListProps> = React.memo((props, r
     const [otherSearch, setOtherSearch] = useState<OtherSearchProps>({
         timeType: {
             key: "allTimes",
-            label: "所有时间"
+            label: i18next.t("所有时间")
         },
         heatType: {
             key: "updated_at",
-            label: "默认排序"
+            label: i18next.t("默认排序")
         }
     })
 
@@ -474,7 +475,7 @@ const PluginsOnlineList: React.FC<PluginsOnlineListProps> = React.memo((props, r
             if (value) setSelectList([...selectList, data.uuid])
             else setSelectList(selectList.filter((item) => item !== data.uuid))
         } catch (error) {
-            yakitNotify("error", "勾选失败:" + error)
+            yakitNotify("error", i18next.t("勾选失败:") + error)
         }
     })
     /**全选 */
@@ -560,11 +561,11 @@ const PluginsOnlineList: React.FC<PluginsOnlineListProps> = React.memo((props, r
     })
     const onUploadAll = useMemoizedFn(() => {
         if (!userInfo.isLogin) {
-            yakitNotify("error", "请先登录")
+            yakitNotify("error", i18next.t("请先登录"))
             return
         }
         if (userInfo.role !== "admin") {
-            yakitNotify("error", "暂无权限")
+            yakitNotify("error", i18next.t("暂无权限"))
             return
         }
         setVisibleUploadAll(true)
@@ -613,8 +614,7 @@ const PluginsOnlineList: React.FC<PluginsOnlineListProps> = React.memo((props, r
                         className={classNames(styles["plugin-heard-title"], {
                             [styles["plugin-heard-title-hidden"]]: isShowRoll
                         })}
-                    >
-                        插件商店
+                    >{i18next.t("插件商店")}
                     </div>
                 }
                 hidden={!!plugin}
@@ -636,7 +636,7 @@ const PluginsOnlineList: React.FC<PluginsOnlineListProps> = React.memo((props, r
                                 icon={<OutlineClouddownloadIcon />}
                                 type='outline2'
                                 size='large'
-                                name={selectNum > 0 ? "下载" : "一键下载"}
+                                name={selectNum > 0 ? i18next.t("下载") : i18next.t("一键下载")}
                                 onClick={onDownloadBefore}
                                 loading={downloadLoading}
                                 disabled={initTotal === 0}
@@ -645,7 +645,7 @@ const PluginsOnlineList: React.FC<PluginsOnlineListProps> = React.memo((props, r
                                 maxWidth={1050}
                                 icon={<SolidPluscircleIcon />}
                                 size='large'
-                                name='新建插件'
+                                name={i18next.t("新建插件")}
                                 onClick={onNewAddPlugin}
                             />
                         </div>
@@ -683,10 +683,10 @@ const PluginsOnlineList: React.FC<PluginsOnlineListProps> = React.memo((props, r
                                     menu={{
                                         type: "grey",
                                         data: [
-                                            {key: "day", label: "今日"},
-                                            {key: "week", label: "本周"},
-                                            {key: "month", label: "本月"},
-                                            {key: "allTimes", label: "所有时间"}
+                                            {key: "day", label: i18next.t("今日")},
+                                            {key: "week", label: i18next.t("本周")},
+                                            {key: "month", label: i18next.t("本月")},
+                                            {key: "allTimes", label: i18next.t("所有时间")}
                                         ],
                                         onClick: ({key}) => {
                                             switch (key) {
@@ -695,7 +695,7 @@ const PluginsOnlineList: React.FC<PluginsOnlineListProps> = React.memo((props, r
                                                         ...otherSearch,
                                                         timeType: {
                                                             key: "day",
-                                                            label: "今日"
+                                                            label: i18next.t("今日")
                                                         }
                                                     })
                                                     break
@@ -704,7 +704,7 @@ const PluginsOnlineList: React.FC<PluginsOnlineListProps> = React.memo((props, r
                                                         ...otherSearch,
                                                         timeType: {
                                                             key: "week",
-                                                            label: "本周"
+                                                            label: i18next.t("本周")
                                                         }
                                                     })
                                                     break
@@ -713,7 +713,7 @@ const PluginsOnlineList: React.FC<PluginsOnlineListProps> = React.memo((props, r
                                                         ...otherSearch,
                                                         timeType: {
                                                             key: "month",
-                                                            label: "本月"
+                                                            label: i18next.t("本月")
                                                         }
                                                     })
                                                     break
@@ -722,7 +722,7 @@ const PluginsOnlineList: React.FC<PluginsOnlineListProps> = React.memo((props, r
                                                         ...otherSearch,
                                                         timeType: {
                                                             key: "allTimes",
-                                                            label: "所有时间"
+                                                            label: i18next.t("所有时间")
                                                         }
                                                     })
                                                     break
@@ -740,9 +740,9 @@ const PluginsOnlineList: React.FC<PluginsOnlineListProps> = React.memo((props, r
                                     name={otherSearch.heatType.label as string}
                                     menu={{
                                         data: [
-                                            {key: "updated_at", label: "默认排序"},
-                                            {key: "stars", label: "点赞最多"},
-                                            {key: "download_total", label: "下载最多"}
+                                            {key: "updated_at", label: i18next.t("默认排序")},
+                                            {key: "stars", label: i18next.t("点赞最多")},
+                                            {key: "download_total", label: i18next.t("下载最多")}
                                         ],
                                         className: styles["func-filter-dropdown-menu"],
                                         onClick: ({key}) => {
@@ -752,7 +752,7 @@ const PluginsOnlineList: React.FC<PluginsOnlineListProps> = React.memo((props, r
                                                         ...otherSearch,
                                                         heatType: {
                                                             key: "updated_at",
-                                                            label: "默认排序"
+                                                            label: i18next.t("默认排序")
                                                         }
                                                     })
                                                     break
@@ -761,7 +761,7 @@ const PluginsOnlineList: React.FC<PluginsOnlineListProps> = React.memo((props, r
                                                         ...otherSearch,
                                                         heatType: {
                                                             key: "stars",
-                                                            label: "点赞最多"
+                                                            label: i18next.t("点赞最多")
                                                         }
                                                     })
                                                     break
@@ -770,7 +770,7 @@ const PluginsOnlineList: React.FC<PluginsOnlineListProps> = React.memo((props, r
                                                         ...otherSearch,
                                                         heatType: {
                                                             key: "download_total",
-                                                            label: "下载最多"
+                                                            label: i18next.t("下载最多")
                                                         }
                                                     })
                                                     break
@@ -854,8 +854,8 @@ const PluginsOnlineList: React.FC<PluginsOnlineListProps> = React.memo((props, r
                         ) : (
                             <div className={styles["plugin-online-empty"]}>
                                 <YakitEmpty
-                                    title='暂无数据'
-                                    description={isCommunityEdition() ? "" : "可将本地所有插件一键上传"}
+                                    title={i18next.t("暂无数据")}
+                                    description={isCommunityEdition() ? "" : i18next.t("可将本地所有插件一键上传")}
                                 />
                                 <div className={styles["plugin-online-buttons"]}>
                                     {userInfo.role === "admin" && (
@@ -863,16 +863,14 @@ const PluginsOnlineList: React.FC<PluginsOnlineListProps> = React.memo((props, r
                                             type='outline1'
                                             icon={<OutlineClouduploadIcon />}
                                             onClick={onUploadAll}
-                                        >
-                                            一键上传
+                                        >{i18next.t("一键上传")}
                                         </YakitButton>
                                     )}
                                     <YakitButton
                                         type='outline1'
                                         icon={<OutlineRefreshIcon />}
                                         onClick={onRefListAndTotalAndGroup}
-                                    >
-                                        刷新
+                                    >{i18next.t("刷新")}
                                     </YakitButton>
                                 </div>
                             </div>
@@ -894,7 +892,7 @@ const PluginsUploadAll: React.FC<PluginsUploadAllProps> = React.memo((props) => 
     return (
         <YakitHint
             visible={visible}
-            title='一键上传'
+            title={i18next.t("一键上传")}
             heardIcon={<SolidClouduploadIcon style={{color: "var(--yakit-warning-5)"}} />}
             footer={null}
             isDrag={true}
@@ -932,7 +930,7 @@ const PluginsOnlineHeard: React.FC<PluginsOnlineHeardProps> = React.memo((props)
                 setCardImg(res.data || [])
             })
             .catch((err) => {
-                yakitNotify("error", "获取卡片导航失败:" + err)
+                yakitNotify("error", i18next.t("获取卡片导航失败:") + err)
             })
             .finally(() => {})
     })
@@ -950,9 +948,9 @@ const PluginsOnlineHeard: React.FC<PluginsOnlineHeardProps> = React.memo((props)
             <div className={styles["plugin-online-heard-content"]}>
                 <div className={styles["plugin-online-heard-content-top"]}>
                     <div className={styles["plugin-online-heard-content-top-tip"]}>Hello everyone! 👋</div>
-                    <div className={styles["plugin-online-heard-content-top-title"]}>Yakit 插件商店</div>
+                    <div className={styles["plugin-online-heard-content-top-title"]}>{i18next.t("Yakit 插件商店")}</div>
                     <div className={styles["plugin-online-heard-content-top-subTitle"]}>
-                        未封闭的牛头&nbsp;&nbsp;YAK&nbsp;等待你来填满
+                        {i18next.t("未封闭的牛头")}&nbsp;&nbsp;YAK&nbsp;{i18next.t("等待你来填满")}
                     </div>
                     <YakitCombinationSearchCircle value={search} onChange={setSearch} onSearch={onSearch} />
                 </div>
@@ -991,7 +989,7 @@ const PluginsOnlineHeard: React.FC<PluginsOnlineHeardProps> = React.memo((props)
                     </div>
                     <div className={styles["yakit-modal-code-content"]}>
                         <img alt='' src={codeUrl} className={styles["yakit-modal-code-content-url"]} />
-                        <span className={styles["yakit-modal-code-content-tip"]}>微信扫码关注公众号</span>
+                        <span className={styles["yakit-modal-code-content-tip"]}>{i18next.t("微信扫码关注公众号")}</span>
                     </div>
                 </div>
             </YakitModal>
@@ -1034,7 +1032,7 @@ const YakitCombinationSearchCircle: React.FC<YakitCombinationSearchCircleProps> 
         <div className={styles["yakit-combination-search-circle"]}>
             <YakitSelect
                 defaultValue='keyword'
-                wrapperStyle={{width: 75}}
+                wrapperStyle={{width: 96}}
                 wrapperClassName={styles["yakit-combination-search-circle-select-wrapper"]}
                 bordered={false}
                 options={funcSearchType}
@@ -1047,7 +1045,7 @@ const YakitCombinationSearchCircle: React.FC<YakitCombinationSearchCircleProps> 
                 className={styles["yakit-combination-search-circle-input"]}
                 wrapperClassName={styles["yakit-combination-search-circle-input-wrapper"]}
                 bordered={false}
-                placeholder='请输入关键词搜索插件'
+                placeholder={i18next.t("请输入关键词搜索插件")}
                 value={keyword}
                 onChange={onChangeInput}
                 onPressEnter={onSearch}

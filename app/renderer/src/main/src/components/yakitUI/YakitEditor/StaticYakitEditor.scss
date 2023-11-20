@@ -11,7 +11,7 @@
     }
 
     .content-length:hover::after {
-        content: "发包时自动修复，一般无需指定";
+        content: "Automatically correct during packet sending, usually not necessary to specify";
         background-color: #f9f9f9;
         color: #333;
         padding: 5px;
@@ -31,7 +31,7 @@
     }
 
     .host:hover::after {
-        content: " 如需 Host 碰撞请配置 - 高级配置->真实Host";
+        content: " If you need Host collision, please configure it in Advanced Settings ->Real Host";
         background-color: #f9f9f9;
         margin-left: 6px;
         color: #333;

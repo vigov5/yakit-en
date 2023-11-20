@@ -21,46 +21,48 @@ import { RemoteLinkInfo } from "../layout/UILayout"
 import { DynamicStatusProps } from "@/store"
 import yakitSE from "@/assets/yakitSE.png";
 import yakitEE from "@/assets/yakitEE.png";
+import { useTranslation } from "react-i18next"
+import i18next from "../../i18n";
 
 const {ipcRenderer} = window.require("electron")
 
 /** 首屏加载蒙层展示语 */
 const LoadingTitle: string[] = [
-    "没有困难的工作，只有勇敢的打工人。",
-    "打工累吗？累！但我不能哭，因为骑电动车擦眼泪不安全。",
-    "打工不仅能致富，还能交友娶媳妇",
-    "今天搬砖不狠，明天地位不稳",
-    "打工可能会少活十年，不打工你一天也活不下去。",
-    "有人相爱，有人夜里看海，有人七八个闹钟起不来，早安打工人!",
-    "打工人，打工魂，打工人是人上人",
-    "@所有人，据说用了Yakit后就不必再卷了！",
-    "再不用Yakit，卷王就是别人的了",
-    "来用Yakit啦？安全圈还是你最成功",
-    "这届网安人，人手一个Yakit，香惨了！",
+    i18next.t("没有困难的工作，只有勇敢的打工人。"),
+    i18next.t("打工累吗？累！但我不能哭，因为骑电动车擦眼泪不安全。"),
+    i18next.t("打工不仅能致富，还能交友娶媳妇"),
+    i18next.t("今天搬砖不狠，明天地位不稳"),
+    i18next.t("打工可能会少活十年，不打工你一天也活不下去。"),
+    i18next.t("有人相爱，有人夜里看海，有人七八个闹钟起不来，早安打工人!"),
+    i18next.t("打工人，打工魂，打工人是人上人"),
+    i18next.t("@所有人，据说用了Yakit后就不必再卷了！"),
+    i18next.t("再不用Yakit，卷王就是别人的了"),
+    i18next.t("来用Yakit啦？安全圈还是你最成功"),
+    i18next.t("这届网安人，人手一个Yakit，香惨了！"),
 
-    "webfuzzer时根目录插入字典，会有意想不到的收获 ——是果实菌啊",
-    "yakit写监听参数时不必写socks的版本号 ——是果实菌啊 ",
-    "使用热标签，可以中间处理des aes等加密，无需再碰py ——是果实菌啊",
-    "Yakit，为您提供渗透问题的完美解决方案 ——酒零",
-    "热加载fuzz快速定位，轻松挖洞无压力 ——k1115h0t",
-    "别让无聊占据你的时间，来探索新世界吧！——Chelth",
-    "<script>alert(‘Hello Yakit!’)</script> ——红炉点雪",
-    "你的鼠标，掌控世界！——Chelth"
+    i18next.t("webfuzzer时根目录插入字典，会有意想不到的收获 ——是果实菌啊"),
+    i18next.t("yakit写监听参数时不必写socks的版本号 ——是果实菌啊 "),
+    i18next.t("使用热标签，可以中间处理des aes等加密，无需再碰py ——是果实菌啊"),
+    i18next.t("Yakit，为您提供渗透问题的完美解决方案 ——酒零"),
+    i18next.t("热加载fuzz快速定位，轻松挖洞无压力 ——k1115h0t"),
+    i18next.t("别让无聊占据你的时间，来探索新世界吧！——Chelth"),
+    i18next.t("<script>alert(‘Hello Yakit!’)</script> ——红炉点雪"),
+    i18next.t("你的鼠标，掌控世界！——Chelth")
 ]
 
 export const EngineModeVerbose = (m: YaklangEngineMode,n?:DynamicStatusProps) => {
     if(n&&n.isDynamicStatus){
-        return "控制模式"
+        return i18next.t("控制模式")
     }
     switch (m) {
         // case "admin":
         //     return "管理权限"
         case "local":
-            return "本地模式"
+            return i18next.t("本地模式")
         case "remote":
-            return "远程模式"
+            return i18next.t("远程模式")
         default:
-            return "未知模式"
+            return i18next.t("未知模式")
     }
 }
 
@@ -120,6 +122,7 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
     /** 引擎日志展示倒计时 */
     const [__showLog, setShowLog, getShowLog] = useGetState<number>(0)
     const logTime = useRef<any>(null)
+    const { t } = useTranslation()
 
     /** 计时器清除 */
     const engineTimeClear = (type: "log" | "ready") => {
@@ -241,19 +244,19 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
                     isEnpriTraceAgent:isEnpriTraceAgent()
                 })
                 .then(() => {
-                    outputToWelcomeConsole("手动引擎启动成功！")
+                    outputToWelcomeConsole(i18next.t("手动引擎启动成功！"))
                     if (onEngineModeChange) {
                         onEngineModeChange(key, true)
                     }
                 })
                 .catch((e) => {
-                    outputToWelcomeConsole("手动引擎启动失败！")
-                    outputToWelcomeConsole(`失败原因:${e}`)
+                    outputToWelcomeConsole(i18next.t("手动引擎启动失败！"))
+                    outputToWelcomeConsole(i18next.t(`失败原因`) + `:${e}`)
                 })
         }
     })
 
-    /** 跳过倒计时 */
+    /** i18next.t("跳过倒计时") */
     const skipTime = useMemoizedFn(() => {
         setEngineReady(0)
         clearInterval(readyTime.current)
@@ -265,7 +268,7 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
     const manuallyStartEngine = useMemoizedFn(() => {
         setRestartLoading(true)
 
-        outputToWelcomeConsole("手动引擎启动成功！")
+        outputToWelcomeConsole(i18next.t("手动引擎启动成功！"))
 
         ipcRenderer.invoke("engine-ready-link")
         engineTime("log")
@@ -302,11 +305,11 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
                         label:
                             engineMode === "local" ? (
                                 <div className={styles["engine-mode-change-menu-item"]}>
-                                    本地模式
+                                    {i18next.t("本地模式")}
                                     <CheckIcon />
                                 </div>
                             ) : (
-                                "本地模式"
+                                i18next.t("本地模式")
                             )
                     },
                     {
@@ -314,11 +317,11 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
                         label:
                             engineMode === "remote" ? (
                                 <div className={styles["engine-mode-change-menu-item"]}>
-                                    远程模式
+                                    {i18next.t("远程模式")}
                                     <CheckIcon />
                                 </div>
                             ) : (
-                                "远程模式"
+                                i18next.t("远程模式")
                             )
                     }
                 ]}
@@ -350,53 +353,53 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
             isEnpriTraceAgent:isEnpriTraceAgent()
         })
         .then(() => {
-            outputToWelcomeConsole("手动引擎启动成功！")
+            outputToWelcomeConsole(i18next.t("手动引擎启动成功！"))
             if (onEngineModeChange) {
                 onEngineModeChange("local", true)
                 setRunRemote(false)
             }
         })
         .catch((e) => {
-            outputToWelcomeConsole("手动引擎启动失败！")
-            outputToWelcomeConsole(`失败原因:${e}`)
+            outputToWelcomeConsole(i18next.t("手动引擎启动失败！"))
+            outputToWelcomeConsole(i18next.t(`失败原因`) + `:${e}`)
         })
     }
 
     const hintTitle = useMemo(() => {
         if (loading) {
-            return <div className={styles["time-wait-title"]}>软件加载中 ...</div>
+            return <div className={styles["time-wait-title"]}>{i18next.t("软件加载中 ...")}</div>
         }
         if (yakitStatus === "ready") {
             if (__engineReady > 0) {
                 return (
                     <div className={styles["time-wait-title"]}>
-                        <span className={styles["time-link-title"]}>{`${__engineReady}s`}</span> 后自动连接引擎 ...
+                        <span className={styles["time-link-title"]}>{`${__engineReady}s`}</span> {i18next.t("后自动连接引擎 ...")}
                     </div>
                 )
             }
             if (__engineReady === 0 && __showLog < 5) {
-                return <div className={styles["time-link-title"]}>引擎连接中 ...</div>
+                return <div className={styles["time-link-title"]}>{i18next.t("引擎连接中 ...")}</div>
             }
             if (__showLog >= 5) {
-                return <div className={styles["time-out-title"]}>连接超时 ...</div>
+                return <div className={styles["time-out-title"]}>{i18next.t("连接超时 ...")}</div>
             }
             return <></>
         }
         if (yakitStatus === "error") {
             if (__showLog >= 5) {
-                return <div className={styles["time-out-title"]}>连接超时 ...</div>
+                return <div className={styles["time-out-title"]}>{i18next.t("连接超时 ...")}</div>
             } else {
-                return <div className={styles["time-link-title"]}>尝试重新连接引擎中 ...</div>
+                return <div className={styles["time-link-title"]}>{i18next.t("尝试重新连接引擎中 ...")}</div>
             }
         }
         if (yakitStatus === "break") {
             if (__showLog === 0) {
-                return <div className={styles["time-wait-title"]}>请选择连接模式</div>
+                return <div className={styles["time-wait-title"]}>{i18next.t("请选择连接模式")}</div>
             }
             if (__showLog >= 5) {
-                return <div className={styles["time-out-title"]}>连接超时 ...</div>
+                return <div className={styles["time-out-title"]}>{i18next.t("连接超时 ...")}</div>
             } else {
-                return <div className={styles["time-link-title"]}>引擎连接中 ...</div>
+                return <div className={styles["time-link-title"]}>{i18next.t("引擎连接中 ...")}</div>
             }
         }
 
@@ -407,10 +410,10 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
         if(yakitStatus === "control-remote"){
             return <>
                 <YakitButton className={styles["btn-style"]} size='max' onClick={refresh}>
-                    刷新
+                    {i18next.t("刷新")}
                 </YakitButton>
                 <YakitButton className={styles["btn-style"]} type='outline2' size='max' onClick={goBack}>
-                    返回
+                    {i18next.t("返回")}
                 </YakitButton>
             </>
         }
@@ -419,12 +422,12 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
                 return (
                     <>
                         <YakitButton className={styles["btn-style"]} size='max' disabled={loading} onClick={skipTime}>
-                            跳过倒计时
+                            {i18next.t("跳过倒计时")}
                         </YakitButton>
 
                         <Dropdown overlay={menu} placement='bottom' trigger={["click"]} onVisibleChange={changeMode}>
                             <YakitButton className={styles["btn-style"]} size='max' type='outline2' disabled={loading}>
-                                切换连接模式
+                                {i18next.t("切换连接模式")}
                             </YakitButton>
                         </Dropdown>
                     </>
@@ -440,11 +443,11 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
                             disabled={loading}
                             onClick={manuallyStartEngine}
                         >
-                            手动连接引擎
+                            {i18next.t("手动连接引擎")}
                         </YakitButton>
                         <Dropdown overlay={menu} placement='bottom' trigger={["click"]} onVisibleChange={changeMode}>
                             <YakitButton className={styles["btn-style"]} size='max' type='outline2' disabled={loading}>
-                                切换连接模式
+                                {i18next.t("切换连接模式")}
                             </YakitButton>
                         </Dropdown>
                         <YakitButton
@@ -453,7 +456,7 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
                             type='text'
                             onClick={() => setShowEngineLog(!showEngineLog)}
                         >
-                            {showEngineLog ? "隐藏日志" : "查看日志"}
+                            {showEngineLog ? i18next.t("隐藏日志") : i18next.t("查看日志")}
                         </YakitButton>
                     </>
                 )
@@ -472,11 +475,11 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
                             disabled={loading}
                             onClick={manuallyStartEngine}
                         >
-                            手动连接引擎
+                            {i18next.t("手动连接引擎")}
                         </YakitButton>
                         <Dropdown overlay={menu} placement='bottom' trigger={["click"]} onVisibleChange={changeMode}>
                             <YakitButton className={styles["btn-style"]} size='max' type='outline2' disabled={loading}>
-                                切换连接模式
+                                {i18next.t("切换连接模式")}
                             </YakitButton>
                         </Dropdown>
                         <YakitButton
@@ -485,7 +488,7 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
                             type='text'
                             onClick={() => setShowEngineLog(!showEngineLog)}
                         >
-                            {showEngineLog ? "隐藏日志" : "查看日志"}
+                            {showEngineLog ? i18next.t("隐藏日志") : i18next.t("查看日志")}
                         </YakitButton>
                     </>
                 )
@@ -505,11 +508,11 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
                             disabled={loading}
                             onClick={manuallyStartEngine}
                         >
-                            手动连接引擎
+                            {i18next.t("手动连接引擎")}
                         </YakitButton>
                         <Dropdown overlay={menu} placement='bottom' trigger={["click"]} onVisibleChange={changeMode}>
                             <YakitButton className={styles["btn-style"]} size='max' type='outline2' disabled={loading}>
-                                切换连接模式
+                                {i18next.t("切换连接模式")}
                             </YakitButton>
                         </Dropdown>
                     </>
@@ -525,11 +528,11 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
                             disabled={loading}
                             onClick={manuallyStartEngine}
                         >
-                            手动连接引擎
+                            {i18next.t("手动连接引擎")}
                         </YakitButton>
                         <Dropdown overlay={menu} placement='bottom' trigger={["click"]} onVisibleChange={changeMode}>
                             <YakitButton className={styles["btn-style"]} size='max' type='outline2' disabled={loading}>
-                                切换连接模式
+                                {i18next.t("切换连接模式")}
                             </YakitButton>
                         </Dropdown>
                         <YakitButton
@@ -538,7 +541,7 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
                             type='text'
                             onClick={() => setShowEngineLog(!showEngineLog)}
                         >
-                            {showEngineLog ? "隐藏日志" : "查看日志"}
+                            {showEngineLog ? i18next.t("隐藏日志") : i18next.t("查看日志")}
                         </YakitButton>
                     </>
                 )
@@ -566,7 +569,7 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
     /** 加载页随机宣传语 */
     const loadingTitle = useMemo(() => LoadingTitle[Math.floor(Math.random() * (LoadingTitle.length - 0)) + 0], [])
     /** Title */
-    const Title = useMemo(() => yakitStatus==="control-remote"?"远程控制中 ...":`欢迎使用 ${getReleaseEditionName()}`, [])
+    const Title = useMemo(() => yakitStatus==="control-remote"?i18next.t("远程控制中 ..."):i18next.t("欢迎使用 ${getReleaseEditionName()}", {v1: getReleaseEditionName()}), [])
     
     return (
         <div className={styles["yakit-loading-wrapper"]}>
@@ -592,7 +595,7 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
                     {
                         isEnpriTrace()&& <div className={styles["yakit-loading-icon-wrapper"]}>
                         <div className={styles["white-icon"]}>
-                            <img src={yakitEE} alt="暂无图片" />
+                            <img src={yakitEE} alt={i18next.t("暂无图片")} />
                         </div>
                     </div>
                     }
@@ -600,7 +603,7 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
                     {
                         isEnpriTraceAgent()&& <div className={styles["yakit-loading-icon-wrapper"]}>
                         <div className={styles["white-icon"]}>
-                            <img src={yakitSE} alt="暂无图片" />
+                            <img src={yakitSE} alt={i18next.t("暂无图片")} />
                         </div>
                     </div>
                     }
@@ -667,21 +670,21 @@ export const YakitControlLoading: React.FC<YakitControlLoadingProp> = (props) =>
             isEnpriTraceAgent:isEnpriTraceAgent()
         })
         .then(() => {
-            outputToWelcomeConsole("手动引擎启动成功！")
+            outputToWelcomeConsole(i18next.t("手动引擎启动成功！"))
             if (onEngineModeChange) {
                 onEngineModeChange("local", true)
             }
         })
         .catch((e) => {
-            outputToWelcomeConsole("手动引擎启动失败！")
-            outputToWelcomeConsole(`失败原因:${e}`)
+            outputToWelcomeConsole(i18next.t("手动引擎启动失败！"))
+            outputToWelcomeConsole(i18next.t(`失败原因`)+`:${e}`)
         })
     }
     return <div className={styles["yakit-loading-wrapper"]}>
     <div className={styles["yakit-loading-body"]}>
         <div className={styles["body-content"]}>
             <div className={styles["yakit-loading-title"]}>
-                <div className={styles["title-style"]}>远程控制中 ...</div>
+                <div className={styles["title-style"]}>{i18next.t("远程控制中 ...")}</div>
             </div>
 
             <div className={styles["yakit-loading-icon-wrapper"]}>
@@ -696,13 +699,13 @@ export const YakitControlLoading: React.FC<YakitControlLoadingProp> = (props) =>
             </div>
 
             <div className={styles["yakit-loading-content"]}>
-                {/* <div className={styles["time-wait-title"]}>远程控制中 ...</div> */}
+                {/* <div className={styles["time-wait-title"]}>{i18next.t("远程控制中 ...")}</div> */}
                 <div className={styles["engine-log-btn"]}>
                         <YakitButton className={styles["btn-style"]} size='max' onClick={refresh}>
-                            刷新
+                            {i18next.t("刷新")}
                         </YakitButton>
                         <YakitButton className={styles["btn-style"]} type='outline2' size='max' onClick={goBack}>
-                            返回
+                            {i18next.t("返回")}
                         </YakitButton>
                 </div>
             </div>
@@ -750,7 +753,7 @@ const DownloadYaklang: React.FC<DownloadYaklangProps> = React.memo((props) => {
             .then((data: string) => setLatestVersion(data))
             .catch((e: any) => {
                 if (isBreakRef.current) return
-                failed(`获取引擎最新版本失败 ${e}`)
+                failed(i18next.t(`获取引擎最新版本失败`) + ` ${e}`)
                 setIsFailed(true)
             })
             .finally(() => {
@@ -762,7 +765,7 @@ const DownloadYaklang: React.FC<DownloadYaklangProps> = React.memo((props) => {
                     .then(() => {
                         if (isBreakRef.current) return
 
-                        success("下载完毕")
+                        success(i18next.t("下载完毕"))
                         if (!getDownloadProgress()?.size) return
                         setDownloadProgress({
                             time: {
@@ -778,7 +781,7 @@ const DownloadYaklang: React.FC<DownloadYaklangProps> = React.memo((props) => {
                     })
                     .catch((e: any) => {
                         if (isBreakRef.current) return
-                        failed(`引擎下载失败: ${e}`)
+                        failed(i18next.t(`引擎下载失败`) + `: ${e}`)
                         setDownloadProgress(undefined)
                         setIsFailed(true)
                     })
@@ -813,10 +816,10 @@ const DownloadYaklang: React.FC<DownloadYaklangProps> = React.memo((props) => {
         ipcRenderer
             .invoke("install-yak-engine", latestVersion)
             .then(() => {
-                success(`安装成功，如未生效，重启 ${getReleaseEditionName()} 即可`)
+                success(i18next.t("安装成功，如未生效，重启 ${getReleaseEditionName()} 即可", {v1: getReleaseEditionName()}))
             })
             .catch((err: any) => {
-                failed(`安装失败: ${err.message.indexOf("operation not permitted") > -1 ? "请关闭引擎后重试" : err}`)
+                failed(i18next.t(`安装失败`) + `: ${err.message.indexOf("operation not permitted") > -1 ? i18next.t("请关闭引擎后重试") : err}`)
             })
             .finally(() => {
                 onInstallClose()
@@ -840,7 +843,7 @@ const DownloadYaklang: React.FC<DownloadYaklangProps> = React.memo((props) => {
         })
     })
 
-    /** 取消下载事件 */
+    /** i18next.t("取消")下载事件 */
     const onInstallClose = useMemoizedFn(() => {
         isBreakRef.current = true
         setDownloadProgress(undefined)
@@ -887,7 +890,7 @@ const DownloadYaklang: React.FC<DownloadYaklangProps> = React.memo((props) => {
 
                             <div className={styles["hint-right-wrapper"]}>
                                 <div className={styles["hint-right-download"]}>
-                                    <div className={styles["hint-right-title"]}>Yaklang 引擎下载中...</div>
+                                    <div className={styles["hint-right-title"]}>{i18next.t("Yaklang 引擎下载中...")}</div>
                                     <div className={styles["download-progress"]}>
                                         <Progress
                                             strokeColor='#F28B44'
@@ -896,20 +899,20 @@ const DownloadYaklang: React.FC<DownloadYaklangProps> = React.memo((props) => {
                                         />
                                     </div>
                                     <div className={styles["download-info-wrapper"]}>
-                                        <div>剩余时间 : {(downloadProgress?.time.remaining || 0).toFixed(2)}s</div>
+                                        <div>{i18next.t("剩余时间 :")} {(downloadProgress?.time.remaining || 0).toFixed(2)}s</div>
                                         <div className={styles["divider-wrapper"]}>
                                             <div className={styles["divider-style"]}></div>
                                         </div>
-                                        <div>耗时 : {(downloadProgress?.time.elapsed || 0).toFixed(2)}s</div>
+                                        <div>{i18next.t("耗时 :")} {(downloadProgress?.time.elapsed || 0).toFixed(2)}s</div>
                                         <div className={styles["divider-wrapper"]}>
                                             <div className={styles["divider-style"]}></div>
                                         </div>
-                                        <div>下载速度 : {((downloadProgress?.speed || 0) / 1000000).toFixed(2)}M/s</div>
+                                        <div>{i18next.t("下载速度 :")} {((downloadProgress?.speed || 0) / 1000000).toFixed(2)}M/s</div>
                                     </div>
                                     <div className={styles["download-btn"]}>
                                         {__isFailed && (
                                             <YakitButton size='max' type='outline2' onClick={() => fetchVersion()}>
-                                                重试
+                                                {i18next.t("重试")}
                                             </YakitButton>
                                         )}
                                         <YakitButton
@@ -925,7 +928,7 @@ const DownloadYaklang: React.FC<DownloadYaklangProps> = React.memo((props) => {
                                                 }, 100)
                                             }}
                                         >
-                                            取消
+                                            {i18next.t("取消")}
                                         </YakitButton>
                                     </div>
                                 </div>
@@ -954,17 +957,17 @@ const DatabaseErrorHint: React.FC<DatabaseErrorHintProps> = React.memo((props) =
     const [bounds, setBounds] = useState({left: 0, top: 0, bottom: 0, right: 0})
     const draggleRef = useRef<HTMLDivElement>(null)
 
-    /** 立即修复 */
+    /** i18next.t("立即修复") */
     const onRestart = useMemoizedFn(() => {
         setLoading(true)
         ipcRenderer
             .invoke("fix-local-database")
             .then((e) => {
-                info("修复成功")
+                info(i18next.t("修复成功"))
                 onSuccess()
             })
             .catch((e) => {
-                failed(`修复数据库权限错误：${e}`)
+                failed(i18next.t(`修复数据库权限错误`) + `：${e}`)
             })
             .finally(() => {
                 setTimeout(() => {
@@ -1015,16 +1018,16 @@ const DatabaseErrorHint: React.FC<DatabaseErrorHintProps> = React.memo((props) =
                             </div>
 
                             <div className={styles["hint-right-wrapper"]}>
-                                <div className={styles["hint-right-title"]}>yaklang 数据库错误</div>
+                                <div className={styles["hint-right-title"]}>{i18next.t("yaklang 数据库错误")}</div>
                                 <div className={styles["hint-right-content"]}>
-                                    尝试修复数据库写权限（可能要求 ROOT 权限）
+                                    {i18next.t("尝试修复数据库写权限（可能要求 ROOT 权限）")}
                                 </div>
 
                                 <div className={styles["hint-right-btn"]}>
                                     <div></div>
                                     <div className={styles["btn-group-wrapper"]}>
                                         <YakitButton size='max' loading={loading} onClick={onRestart}>
-                                            立即修复
+                                            {i18next.t("立即修复")}
                                         </YakitButton>
                                     </div>
                                 </div>

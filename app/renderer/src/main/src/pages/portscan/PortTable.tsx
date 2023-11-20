@@ -10,6 +10,7 @@ import {callCopyToClipboard} from "../../utils/basic"
 import {ExportExcel} from "@/components/DataExport/DataExport"
 import {useMemoizedFn} from "ahooks"
 import { YakitRoute } from "@/routes/newRoute"
+import i18next from "../../i18n"
 export interface PortTableProp {
     data: YakitPort[]
     isSimple?: boolean
@@ -52,7 +53,7 @@ export const OpenPortTableViewer: React.FC<PortTableProp> = (props) => {
 
     const getData = useMemoizedFn(() => {
         return new Promise((resolve) => {
-            const header = ["主机地址", "HTML Title", "指纹", "扫描时间"]
+            const header = [i18next.t("主机地址"), "HTML Title", i18next.t("指纹"), i18next.t("扫描时间")]
             const exportData = formatJson(["host", "htmlTitle", "fingerprint", "timestamp"], props.data)
             const params = {
                 header,
@@ -81,10 +82,10 @@ export const OpenPortTableViewer: React.FC<PortTableProp> = (props) => {
                 return (
                     <>
                         <Row>
-                            <Col span={12}>开放端口 / Open Ports</Col>
+                            <Col span={12}>{i18next.t("开放端口 / Open Ports")}</Col>
                             <Col span={12} style={{textAlign: "right"}}>
                                 {
-                                    isSimple&&<div style={{fontSize:14,color:"#1890ff",cursor:"pointer"}} onClick={openMenu}>查看完整数据</div>
+                                    isSimple&&<div style={{fontSize:14,color:"#1890ff",cursor:"pointer"}} onClick={openMenu}>{i18next.t("查看完整数据")}</div>
                                 }
                             </Col>
                         </Row>
@@ -101,26 +102,25 @@ export const OpenPortTableViewer: React.FC<PortTableProp> = (props) => {
                                         setCheckedAll(e.target.checked)
                                     }}
                                     disabled={props.data.length === 0}
-                                >
-                                    全选
+                                >{i18next.t("全选")}
                                 </Checkbox>
-                                {selectedRowKeys.length > 0 && <Tag color='blue'>已选{selectedRowKeys?.length}条</Tag>}
+                                {selectedRowKeys.length > 0 && <Tag color='blue'>{i18next.t("已选")}{selectedRowKeys?.length}条</Tag>}
                             </Col>
                             <Col span={12} style={{textAlign: "right"}}>
                                 {!isSimple && (
                                     <>
-                                        <ExportExcel getData={getData} btnProps={{size: "small"}} fileName='开放端口' />
+                                        <ExportExcel getData={getData} btnProps={{size: "small"}} fileName={i18next.t("开放端口")} />
                                         <DropdownMenu
                                             menu={{
                                                 data: [
-                                                    {key: "bug-test", title: "发送到漏洞检测"},
-                                                    {key: "brute", title: "发送到爆破"}
+                                                    {key: "bug-test", title: i18next.t("发送到漏洞检测")},
+                                                    {key: "brute", title: i18next.t("发送到爆破")}
                                                 ]
                                             }}
                                             dropdown={{placement: "bottomRight"}}
                                             onClick={(key) => {
                                                 if (checkedURL.length === 0) {
-                                                    failed("请最少选择一个选项再进行操作")
+                                                    failed(i18next.t("请最少选择一个选项再进行操作"))
                                                     return
                                                 }
                                                 ipcRenderer.invoke("send-to-tab", {
@@ -142,11 +142,11 @@ export const OpenPortTableViewer: React.FC<PortTableProp> = (props) => {
             scroll={{x: "auto"}}
             columns={[
                 {
-                    title: "主机地址",
+                    title: i18next.t("主机地址"),
                     render: (i: YakitPort) => {
                         const addr = `${i.host}:${i.port}`
                         return (
-                            <Tooltip title={`点击复制`}>
+                            <Tooltip title={i18next.t("点击复制")}>
                                 <a
                                     href='#'
                                     onClick={() => {
@@ -175,7 +175,7 @@ export const OpenPortTableViewer: React.FC<PortTableProp> = (props) => {
                     width: 150
                 },
                 {
-                    title: "指纹",
+                    title: i18next.t("指纹"),
                     render: (i: YakitPort) =>
                         i.fingerprint ? (
                             <>
@@ -188,7 +188,7 @@ export const OpenPortTableViewer: React.FC<PortTableProp> = (props) => {
                         ),
                     width: 230
                 },
-                {title: "扫描时间", render: (i: YakitPort) => <>{formatTimestamp(i.timestamp)}</>}
+                {title: i18next.t("扫描时间"), render: (i: YakitPort) => <>{formatTimestamp(i.timestamp)}</>}
             ]}
             pagination={{
                 size: "small",
@@ -216,12 +216,12 @@ export const ClosedPortTableViewer: React.FC<PortTableProp> = (props) => {
             size={"small"}
             bordered={true}
             title={(e) => {
-                return <>未开放的端口 / Closed Ports</>
+                return <>{i18next.t("未开放的端口 / Closed Ports")}</>
             }}
             dataSource={props.data}
             columns={[
-                {title: "主机地址", render: (i: YakitPort) => <CopyableField text={`${i.host}:${i.port}`} />},
-                {title: "扫描时间", render: (i: YakitPort) => <Tag>{formatTimestamp(i.timestamp)}</Tag>}
+                {title: i18next.t("主机地址"), render: (i: YakitPort) => <CopyableField text={`${i.host}:${i.port}`} />},
+                {title: i18next.t("扫描时间"), render: (i: YakitPort) => <Tag>{formatTimestamp(i.timestamp)}</Tag>}
             ]}
             pagination={{
                 size: "small",

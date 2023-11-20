@@ -11,6 +11,7 @@ import {ReverseNotification, ReverseNotificationTable} from "./ReverseNotificati
 import {ThunderboltOutlined, PoweroffOutlined} from "@ant-design/icons"
 import {FacadeOptions} from "./FacadesOptions"
 import {Color} from "bizcharts/lib/plots/core/dependents"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 export const BRIDGE_ADDR = "yak-bridge-addr"
@@ -241,7 +242,7 @@ export const ReverseServer_New: React.FC<FacadeOptionsProp> = (props) => {
                 ipcRenderer.removeAllListeners(`${token}-end`)
                 ipcRenderer.removeAllListeners(`${token}-error`)
                 ipcRenderer.removeAllListeners(`${token}-data`)
-                info("FacadeServer已关闭")
+                info(i18next.t("FacadeServer已关闭"))
             }
 
             // }
@@ -278,19 +279,19 @@ export const ReverseServer_New: React.FC<FacadeOptionsProp> = (props) => {
                             .then(() => {
                                 setFacadesLoading(true)
                                 setFacadesIsConnect(true)
-                                info("启动FacadeServer")
+                                info(i18next.t("启动FacadeServer"))
                                 loadAllClassForSelect()
                                 resolve()
                             })
                             .catch((e: any) => {
-                                failed("启动FacadeServer失败: " + `${e}`)
+                                failed(i18next.t("启动FacadeServer失败: ") + `${e}`)
                                 setFacadesIsConnect(false)
                                 reject(e)
                             })
                             .finally()
                     })
                     .catch((e: any) => {
-                        failed("获取远程地址失败: " + `${e}`)
+                        failed(i18next.t("获取远程地址失败: ") + `${e}`)
                         ipcRenderer.invoke("cancel-StartFacadesWithYsoObject", token)
                         setFacadesIsConnect(false)
                         reject(e)
@@ -304,14 +305,14 @@ export const ReverseServer_New: React.FC<FacadeOptionsProp> = (props) => {
                     .then(() => {
                         setFacadesLoading(true)
                         setFacadesIsConnect(true)
-                        info("启动FacadeServer")
+                        info(i18next.t("启动FacadeServer"))
                         setIsClearLog(true)
                         setLogs([])
                         loadAllClassForSelect()
                         resolve()
                     })
                     .catch((e: any) => {
-                        failed("启动FacadeServer失败: " + `${e}`)
+                        failed(i18next.t("启动FacadeServer失败: ") + `${e}`)
                         setFacadesIsConnect(false)
                         reject(e)
                     })
@@ -345,10 +346,10 @@ export const ReverseServer_New: React.FC<FacadeOptionsProp> = (props) => {
                 Token: token
             })
             .then((res) => {
-                info("应用到FacadeServer成功")
+                info(i18next.t("应用到FacadeServer成功"))
             })
             .catch((err) => {
-                failed(`应用到FacadeServer失败${err}`)
+                failed(i18next.t("应用到FacadeServer失败${err}", { v1: err }))
             })
     })
     return (
@@ -367,7 +368,7 @@ export const ReverseServer_New: React.FC<FacadeOptionsProp> = (props) => {
                     <Col span={6} style={{overflowY: "auto"}}>
                         <Form labelCol={{span: 6}} wrapperCol={{span: 24}}>
                             <Form.Item style={{margin: "1rem"}}>
-                                <Space style={{fontSize: "18px"}}>反连资源</Space>
+                                <Space style={{fontSize: "18px"}}>{i18next.t("反连资源")}</Space>
                                 <PoweroffOutlined
                                     style={{color: "red", fontSize: "18px", float: "right", marginTop: "6px"}}
                                     onClick={() => {
@@ -378,7 +379,7 @@ export const ReverseServer_New: React.FC<FacadeOptionsProp> = (props) => {
                                     }}
                                 />
                             </Form.Item>
-                            <Form.Item label='恶意类' name='select'>
+                            <Form.Item label={i18next.t("恶意类")} name='select'>
                                 <Select options={options} onChange={loadClassGeneraterOptions}></Select>
                             </Form.Item>
                             <Form
@@ -444,11 +445,10 @@ export const ReverseServer_New: React.FC<FacadeOptionsProp> = (props) => {
                                                             applyClassOptions(vals)
                                                         })
                                                         .catch(() => {
-                                                            failed("获取form参数错误")
+                                                            failed(i18next.t("获取form参数错误"))
                                                         })
                                                 }}
-                                            >
-                                                应用
+                                            >{i18next.t("应用")}
                                             </Button>
                                             <Button
                                                 type='primary'
@@ -466,22 +466,19 @@ export const ReverseServer_New: React.FC<FacadeOptionsProp> = (props) => {
                             </Form>
                             <Form.Item>
                                 <Space direction={"vertical"}>
-                                    <Space direction={"vertical"}>
-                                        HTTP反连地址
+                                    <Space direction={"vertical"}>{i18next.t("HTTP反连地址")}
                                         <CopyableField
                                             text={`http://${reverseAddr}/${generaterRequest.Class}`}
                                             style={{color: "blue", marginTop: "-12px"}}
                                         />
                                     </Space>
-                                    <Space direction={"vertical"}>
-                                        RMI反连地址
+                                    <Space direction={"vertical"}>{i18next.t("RMI反连地址")}
                                         <CopyableField
                                             text={`rmi://${reverseAddr}/${generaterRequest.Class}`}
                                             style={{color: "blue", marginTop: "-12px"}}
                                         />
                                     </Space>
-                                    <Space direction={"vertical"}>
-                                        LDAP反连地址
+                                    <Space direction={"vertical"}>{i18next.t("LDAP反连地址")}
                                         <CopyableField
                                             text={`ldap://${reverseAddr}/${generaterRequest.Class}`}
                                             style={{color: "blue", marginTop: "-12px"}}

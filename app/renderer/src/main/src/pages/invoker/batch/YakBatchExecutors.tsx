@@ -42,6 +42,7 @@ import "./YakBatchExecutors.css"
 import {SimpleQueryYakScriptSchema} from "./QueryYakScriptParam"
 import {ReadOnlyBatchExecutor, ReadOnlyBatchExecutorByMenuItem} from "./ReadOnlyBatchExecutorByMenuItem"
 import {defTargetRequest} from "./BatchExecutorPage"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 export const CustomBugList = "custom-bug-list"
@@ -72,12 +73,12 @@ export const BugList: BugInfoProps[] = [
     {key: "iis,IIS", title: "IIS", filter: defaultFilterByTags("iis")},
     {key: "ElasticSearch", title: "ElasticSearch", filter: defaultFilterByTags("elastic,elasticsearch")},
     {
-        key: "SeeyouOA,seeyou_oa,seeyouoa,seeyou,Seeyou,致远,Zhiyuan,zhiyuan",
-        title: "致远 OA",
+        key: i18next.t("SeeyouOA,seeyou_oa,seeyouoa,seeyou,Seeyou,致远,Zhiyuan,zhiyuan"),
+        title: i18next.t("致远 OA"),
         filter: defaultFilterByTags("seeyou,seeyon,zhiyuan")
     },
     {key: "exchange", title: "Exchange", filter: defaultFilterByTags("exchange")},
-    {key: "tongdaoa,TongdaOa,TongDa,TongDaOA", title: "通达 OA", filter: defaultFilterByTags("tongda")},
+    {key: "tongdaoa,TongdaOa,TongDa,TongDaOA", title: i18next.t("通达 OA"), filter: defaultFilterByTags("tongda")},
     {
         key: "phpmyadmin,PhpMyAdmin,PHPMyAdmin,Phpmyadmin",
         title: "PhpMyAdmin",
@@ -96,9 +97,9 @@ export const BugList: BugInfoProps[] = [
 ]
 
 const MenuList: MenuInfoProps[] = [
-    {key: "all", title: "关闭所有Tabs"},
-    {key: "route", title: "关闭同类Tabs"},
-    {key: "other", title: "关闭其他Tabs"}
+    {key: "all", title: i18next.t("关闭所有Tabs")},
+    {key: "route", title: i18next.t("关闭同类Tabs")},
+    {key: "other", title: i18next.t("关闭其他Tabs")}
 ]
 
 export interface YakBatchExecutorsProp {
@@ -228,7 +229,7 @@ export const YakBatchExecutors: React.FC<YakBatchExecutorsProp> = (props) => {
             return
         }
         if (!pocParams.key || !pocParams.title) {
-            failed("请填写标题和关键词后再次点击")
+            failed(i18next.t("请填写标题和关键词后再次点击"))
             return
         }
 
@@ -299,7 +300,7 @@ export const YakBatchExecutors: React.FC<YakBatchExecutorsProp> = (props) => {
                                                             (item) => item.key === key
                                                         )
                                                         if (list.length <= 0) {
-                                                            failed("BUG: 预设专项漏洞无法找到定义：" + key)
+                                                            failed(i18next.t("BUG: 预设专项漏洞无法找到定义：") + key)
                                                             return
                                                         }
                                                         const targetSchema = list[0]
@@ -323,7 +324,7 @@ export const YakBatchExecutors: React.FC<YakBatchExecutorsProp> = (props) => {
                                             </AutoSpin>
                                         </div>
                                         <div style={{textAlign: "center"}}>
-                                            <Tooltip title={"重构中... 临时可用【插件批量执行】代替"}>
+                                            <Tooltip title={i18next.t("重构中... 临时可用【插件批量执行】代替")}>
                                                 <Button
                                                     style={{height: 30}}
                                                     type='link'
@@ -331,8 +332,7 @@ export const YakBatchExecutors: React.FC<YakBatchExecutorsProp> = (props) => {
                                                         setVisible(true)
                                                     }}
                                                     disabled={true}
-                                                >
-                                                    配置自定义类型
+                                                >{i18next.t("配置自定义类型")}
                                                 </Button>
                                             </Tooltip>
                                         </div>
@@ -397,12 +397,12 @@ export const YakBatchExecutors: React.FC<YakBatchExecutorsProp> = (props) => {
                 })}
             </Tabs>
             <Modal
-                title='自定义POC种类'
+                title={i18next.t("自定义POC种类")}
                 width={625}
                 visible={visible}
                 maskClosable={false}
-                okText={editInfo ? "修改" : "新增"}
-                cancelText='取消'
+                okText={editInfo ? i18next.t("修改") : i18next.t("新增")}
+                cancelText={i18next.t("取消")}
                 onCancel={() => {
                     setVisible(false)
                     clearModal()
@@ -412,8 +412,7 @@ export const YakBatchExecutors: React.FC<YakBatchExecutorsProp> = (props) => {
                 <div className='extend-info-body'>
                     <div className='left-body'>
                         <div style={{textAlign: "left"}}>
-                            <Button className='add-btn' type='link' onClick={clearModal}>
-                                新增
+                            <Button className='add-btn' type='link' onClick={clearModal}>{i18next.t("新增")}
                             </Button>
                         </div>
                         <List
@@ -450,17 +449,17 @@ export const YakBatchExecutors: React.FC<YakBatchExecutorsProp> = (props) => {
                     <Divider type='vertical' style={{height: "auto"}} />
                     <div className='right-body'>
                         <Form labelCol={{span: 6}}>
-                            <Form.Item label='标题'>
+                            <Form.Item label={i18next.t("标题")}>
                                 <Input
-                                    placeholder='POC列表展示内容'
+                                    placeholder={i18next.t("POC列表展示内容")}
                                     value={pocParams.title}
                                     allowClear
                                     onChange={(e) => setPocParams({...pocParams, title: e.target.value})}
                                 />
                             </Form.Item>
-                            <Form.Item label='关键词'>
+                            <Form.Item label={i18next.t("关键词")}>
                                 <Input
-                                    placeholder='YAML POC标题的关键词'
+                                    placeholder={i18next.t("YAML POC标题的关键词")}
                                     value={pocParams.key}
                                     allowClear
                                     onChange={(e) => {
@@ -480,7 +479,7 @@ export const YakBatchExecutors: React.FC<YakBatchExecutorsProp> = (props) => {
                                             : {
                                                   size: "small",
                                                   total: pocList.total,
-                                                  showTotal: (total) => <span>{`共${total}个`}</span>,
+                                                  showTotal: (total) => <span>{i18next.t("共${total}个", { v1: total })}</span>,
                                                   showSizeChanger: false,
                                                   onChange: (page) => searchPoc(pocParams.key, page)
                                               }
@@ -650,7 +649,7 @@ const BugTestExecutor: React.FC<YakBatchExecutorsProp> = (props) => {
             setError(error)
         })
         ipcRenderer.on(endChannel, (e: any, data: any) => {
-            info("模块加载完成 / 执行完毕")
+            info(i18next.t("模块加载完成 / 执行完毕"))
             setExecuting(false)
             updateTasks()
         })
@@ -730,7 +729,7 @@ const BugTestExecutor: React.FC<YakBatchExecutorsProp> = (props) => {
     if (totalLoading) {
         return (
             <div style={{textAlign: "center", width: "100%", marginTop: 100}}>
-                <Spin>正在加载专用漏洞库</Spin>
+                <Spin>{i18next.t("正在加载专用漏洞库")}</Spin>
             </div>
         )
     }
@@ -746,20 +745,20 @@ const BugTestExecutor: React.FC<YakBatchExecutorsProp> = (props) => {
                             e.preventDefault()
 
                             if (tasks.length === 0) {
-                                Modal.error({title: "模块还未加载，请点击右上角配置进行YAML POC更新"})
+                                Modal.error({title: i18next.t("模块还未加载，请点击右上角配置进行YAML POC更新")})
                                 return
                             }
 
                             if (!params.Target) {
-                                Modal.error({title: "检测目标不能为空"})
+                                Modal.error({title: i18next.t("检测目标不能为空")})
                                 return
                             }
                             if (!params.Keyword) {
-                                Modal.error({title: "无 PoC 关键字选择"})
+                                Modal.error({title: i18next.t("无 PoC 关键字选择")})
                                 return
                             }
                             if (!token) {
-                                Modal.error({title: "BUG：无 Token 生成，请重新打开该页"})
+                                Modal.error({title: i18next.t("BUG：无 Token 生成，请重新打开该页")})
                             }
                             ipcRenderer.invoke("exec-batch-yak-script", params, token)
                             setExecuting(true)
@@ -773,7 +772,7 @@ const BugTestExecutor: React.FC<YakBatchExecutorsProp> = (props) => {
                                     beforeUpload={(f) => {
                                         const typeArr:string[] = ["text/plain",'.csv', '.xls', '.xlsx',"application/vnd.ms-excel","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
                                         if (!typeArr.includes(f.type)) {
-                                            failed(`${f.name}非txt、Excel文件，请上传txt、Excel格式文件！`)
+                                            failed(i18next.t("${f.name}非txt、Excel文件，请上传txt、Excel格式文件！", {v1: f.name}))
                                             return false
                                         }
 
@@ -786,30 +785,28 @@ const BugTestExecutor: React.FC<YakBatchExecutorsProp> = (props) => {
                                     }}
                                     item={{
                                         style: {textAlign: "left"},
-                                        label: "检测的目标"
+                                        label: i18next.t("检测的目标")
                                     }}
                                     textarea={{
                                         isBubbing: true,
                                         setValue: (Target) => setParams({...params, Target}),
                                         value: params.Target,
                                         rows: 1,
-                                        placeholder: "可接受输入为：URL / IP / 域名 / 主机:端口，逗号分隔"
+                                        placeholder: i18next.t("可接受输入为：URL / IP / 域名 / 主机:端口，逗号分隔")
                                     }}
                                     suffixNode={
                                         executing ? (
                                             <Popconfirm
-                                                title={"确定要停止该漏洞检测？"}
+                                                title={i18next.t("确定要停止该漏洞检测？")}
                                                 onConfirm={(e) =>
                                                     ipcRenderer.invoke("cancel-exec-batch-yak-script", token)
                                                 }
                                             >
-                                                <Button type='primary' danger>
-                                                    强制停止
+                                                <Button type='primary' danger>{i18next.t("强制停止")}
                                                 </Button>
                                             </Popconfirm>
                                         ) : (
-                                            <Button type='primary' htmlType='submit'>
-                                                开始检测
+                                            <Button type='primary' htmlType='submit'>{i18next.t("开始检测")}
                                             </Button>
                                         )
                                     }
@@ -817,14 +814,14 @@ const BugTestExecutor: React.FC<YakBatchExecutorsProp> = (props) => {
                             </Spin>
                             <div style={{width: "100%", textAlign: "left", paddingLeft: 84}}>
                                 <Space>
-                                    <Tag>并发/线程: {params.Concurrent}</Tag>
-                                    <Tag>总超时: {params.TotalTimeoutSeconds} sec</Tag>
+                                    <Tag>{i18next.t("并发/线程:")} {params.Concurrent}</Tag>
+                                    <Tag>{i18next.t("总超时:")} {params.TotalTimeoutSeconds} sec</Tag>
                                     <Button
                                         type={"link"}
                                         style={{margin: 0, paddingLeft: 0}}
                                         onClick={(e) => {
                                             showModal({
-                                                title: "设置批量检测额外参数",
+                                                title: i18next.t("设置批量检测额外参数"),
                                                 content: (
                                                     <>
                                                         <Form
@@ -833,14 +830,14 @@ const BugTestExecutor: React.FC<YakBatchExecutorsProp> = (props) => {
                                                             wrapperCol={{span: 14}}
                                                         >
                                                             <InputInteger
-                                                                label={"并发量(线程)"}
+                                                                label={i18next.t("并发量(线程)")}
                                                                 setValue={(Concurrent) =>
                                                                     setParams({...params, Concurrent})
                                                                 }
                                                                 defaultValue={params.Concurrent}
                                                             />
                                                             <InputInteger
-                                                                label={"总超时时间/s"}
+                                                                label={i18next.t("总超时时间/s")}
                                                                 setValue={(TotalTimeoutSeconds) =>
                                                                     setParams({
                                                                         ...params,
@@ -854,8 +851,7 @@ const BugTestExecutor: React.FC<YakBatchExecutorsProp> = (props) => {
                                                 )
                                             })
                                         }}
-                                    >
-                                        额外参数
+                                    >{i18next.t("额外参数")}
                                     </Button>
                                 </Space>
                             </div>
@@ -864,7 +860,7 @@ const BugTestExecutor: React.FC<YakBatchExecutorsProp> = (props) => {
                 </Col>
                 <Col span={3} style={{position: "relative"}}>
                     <div style={{width: 140, position: "absolute", right: 2, bottom: 2}}>
-                        <span style={{display: "inline-block", height: 22, marginRight: 5}}>只展示命中项</span>
+                        <span style={{display: "inline-block", height: 22, marginRight: 5}}>{i18next.t("只展示命中项")}</span>
                         <Switch checked={checked} onChange={(checked) => setChecked(checked)}></Switch>
                     </div>
                 </Col>
@@ -875,7 +871,7 @@ const BugTestExecutor: React.FC<YakBatchExecutorsProp> = (props) => {
                     <div>
                         <Empty
                             style={{marginTop: 75}}
-                            description={"模块还未加载，请点击右上角配置进行插件仓库更新"}
+                            description={i18next.t("模块还未加载，请点击右上角配置进行插件仓库更新")}
                         ></Empty>
                     </div>
                 ) : checked ? (
@@ -902,11 +898,11 @@ const BugTestExecutor: React.FC<YakBatchExecutorsProp> = (props) => {
                                                 size={"small"}
                                                 onClick={(e) => {
                                                     if (!ele.data.PoC) {
-                                                        Modal.error({title: "没有模块信息"})
+                                                        Modal.error({title: i18next.t("没有模块信息")})
                                                         return
                                                     }
                                                     showModal({
-                                                        title: `单体模块测试: ${ele.data.PoC.ScriptName}`,
+                                                        title: i18next.t("单体模块测试") + `: ${ele.data.PoC.ScriptName}`,
                                                         width: "75%",
                                                         content: (
                                                             <>
@@ -918,19 +914,18 @@ const BugTestExecutor: React.FC<YakBatchExecutorsProp> = (props) => {
                                                         )
                                                     })
                                                 }}
-                                            >
-                                                复测
+                                            >{i18next.t("复测")}
                                             </Button>
                                             <Button
                                                 size={"small"}
                                                 style={{marginRight: 8}}
                                                 onClick={(e) => {
                                                     if (!ele.data.PoC) {
-                                                        Modal.error({title: "没有模块信息"})
+                                                        Modal.error({title: i18next.t("没有模块信息")})
                                                         return
                                                     }
                                                     showModal({
-                                                        title: `源码: ${ele.data.PoC.ScriptName}`,
+                                                        title: i18next.t("源码") + `: ${ele.data.PoC.ScriptName}`,
                                                         width: "75%",
                                                         content: (
                                                             <>
@@ -945,8 +940,7 @@ const BugTestExecutor: React.FC<YakBatchExecutorsProp> = (props) => {
                                                         )
                                                     })
                                                 }}
-                                            >
-                                                源码
+                                            >{i18next.t("源码")}
                                             </Button>
                                         </Space>
                                     </div>
@@ -978,11 +972,11 @@ const BugTestExecutor: React.FC<YakBatchExecutorsProp> = (props) => {
                                                 size={"small"}
                                                 onClick={(e) => {
                                                     if (!ele.data.PoC) {
-                                                        Modal.error({title: "没有模块信息"})
+                                                        Modal.error({title: i18next.t("没有模块信息")})
                                                         return
                                                     }
                                                     showModal({
-                                                        title: `单体模块测试: ${ele.data.PoC.ScriptName}`,
+                                                        title: i18next.t("单体模块测试") + `: ${ele.data.PoC.ScriptName}`,
                                                         width: "75%",
                                                         content: (
                                                             <>
@@ -994,19 +988,18 @@ const BugTestExecutor: React.FC<YakBatchExecutorsProp> = (props) => {
                                                         )
                                                     })
                                                 }}
-                                            >
-                                                复测
+                                            >{i18next.t("复测")}
                                             </Button>
                                             <Button
                                                 size={"small"}
                                                 style={{marginRight: 8}}
                                                 onClick={(e) => {
                                                     if (!ele.data.PoC) {
-                                                        Modal.error({title: "没有模块信息"})
+                                                        Modal.error({title: i18next.t("没有模块信息")})
                                                         return
                                                     }
                                                     showModal({
-                                                        title: `源码: ${ele.data.PoC.ScriptName}`,
+                                                        title: i18next.t("源码") + `: ${ele.data.PoC.ScriptName}`,
                                                         width: "75%",
                                                         content: (
                                                             <>
@@ -1021,8 +1014,7 @@ const BugTestExecutor: React.FC<YakBatchExecutorsProp> = (props) => {
                                                         )
                                                     })
                                                 }}
-                                            >
-                                                源码
+                                            >{i18next.t("源码")}
                                             </Button>
                                         </Space>
                                     </div>
@@ -1039,13 +1031,13 @@ const BugTestExecutor: React.FC<YakBatchExecutorsProp> = (props) => {
 export const StatusToVerboseTag = (status: string) => {
     switch (status.toLowerCase()) {
         case "waiting":
-            return <Tag color={"geekblue"}>等待执行/Wait</Tag>
+            return <Tag color={"geekblue"}>{i18next.t("等待执行/Wait")}</Tag>
         case "data":
         case "executing":
         case "running":
-            return <Tag color={"orange"}>正在执行/Running</Tag>
+            return <Tag color={"orange"}>{i18next.t("正在执行/Running")}</Tag>
         case "end":
-            return <Tag color={"green"}>执行结束/End</Tag>
+            return <Tag color={"green"}>{i18next.t("执行结束/End")}</Tag>
         default:
             return <Tag color={"blue"}>{status}</Tag>
     }

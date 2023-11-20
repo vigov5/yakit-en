@@ -12,17 +12,18 @@ import {shallow} from "zustand/shallow"
 import emiter from "@/utils/eventBus/eventBus"
 import {getRemoteValue} from "@/utils/kv"
 import {WEB_FUZZ_Advanced_Config_Switch_Checked} from "../HTTPFuzzerPage"
+import i18next from "../../../i18n"
 const {ipcRenderer} = window.require("electron")
 
 const webFuzzerTabs = [
     {
         key: "config",
-        label: "Fuzzer 配置",
+        label: i18next.t("Fuzzer 配置"),
         icon: <OutlineAdjustmentsIcon />
     },
     {
         key: "sequence",
-        label: "Fuzzer 序列",
+        label: i18next.t("Fuzzer 序列"),
         icon: <OutlineCollectionIcon />
     }
 ]

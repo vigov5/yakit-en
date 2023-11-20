@@ -17,6 +17,7 @@ import classNames from "classnames"
 import {useHotkeys} from "react-hotkeys-hook"
 import {useStore} from "@/store/mitmState"
 import { HTTPHistory } from "@/components/HTTPHistory"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -39,7 +40,7 @@ const MITMHijackedContent: React.FC<MITMHijackedContentProps> = React.memo((prop
     const [hijackResponseType, setHijackResponseType] = useState<"onlyOne" | "all" | "never">("never") // 劫持类型
 
     const [forResponse, setForResponse] = useState(false)
-    const [urlInfo, setUrlInfo] = useState("监听中...")
+    const [urlInfo, setUrlInfo] = useState(i18next.t("监听中..."))
     const [ipInfo, setIpInfo] = useState("")
 
     // 当前正在劫持的请求/响应，是否是 Websocket
@@ -81,7 +82,7 @@ const MITMHijackedContent: React.FC<MITMHijackedContentProps> = React.memo((prop
 
     useEffect(() => {
         ipcRenderer.invoke("mitm-auto-forward", !isManual).finally(() => {
-            console.info(`设置服务端自动转发：${!isManual}`)
+            console.info(i18next.t(`设置服务端自动转发`) + `：${!isManual}`)
         })
     }, [autoForward])
     useEffect(() => {
@@ -101,7 +102,7 @@ const MITMHijackedContent: React.FC<MITMHijackedContentProps> = React.memo((prop
 
         if (msg.forResponse) {
             if (!msg.response || !msg.responseId) {
-                yakitFailed("BUG: MITM 错误，未能获取到正确的 Response 或 Response ID")
+                yakitFailed(i18next.t("BUG: MITM 错误，未能获取到正确的 Response 或 Response ID"))
                 return
             }
             if (!isManual) {
@@ -225,11 +226,11 @@ const MITMHijackedContent: React.FC<MITMHijackedContentProps> = React.memo((prop
                 if (currentPacketId > 0) {
                     allowHijackedResponseByRequest(currentPacketId)
                 }
-                info("劫持所有响应内容")
+                info(i18next.t("劫持所有响应内容"))
                 break
             case "never":
                 cancelHijackedResponseByRequest(currentPacketId)
-                info("仅劫持请求")
+                info(i18next.t("仅劫持请求"))
                 break
             default:
                 break
@@ -252,7 +253,7 @@ const MITMHijackedContent: React.FC<MITMHijackedContentProps> = React.memo((prop
                 // setTimeout(() => setLoading(false), 300)
             })
         }
-        setUrlInfo("监听中...")
+        setUrlInfo(i18next.t("监听中..."))
         setIpInfo("")
     })
     useHotkeys(
@@ -360,9 +361,9 @@ const MITMHijackedContent: React.FC<MITMHijackedContentProps> = React.memo((prop
                         buttonStyle='solid'
                         value={autoForward}
                         options={[
-                            {label: "手动劫持", value: "manual"},
-                            {label: "自动放行", value: "log"},
-                            {label: "被动日志", value: "passive"}
+                            {label: i18next.t("手动劫持"), value: "manual"},
+                            {label: i18next.t("自动放行"), value: "log"},
+                            {label: i18next.t("被动日志"), value: "passive"}
                         ]}
                         onChange={(e) => {
                             handleAutoForward(e.target.value)

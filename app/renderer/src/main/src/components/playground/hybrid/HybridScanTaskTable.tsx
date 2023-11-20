@@ -17,6 +17,7 @@ import {YakitButton} from "@/components/yakitUI/YakitButton/YakitButton";
 import {randomString} from "@/utils/randomUtil";
 import {failed, info} from "@/utils/notification";
 import {useGetState, useMemoizedFn} from "ahooks";
+import i18next from "../../../i18n"
 
 export interface HybridScanTaskTableProp {
 
@@ -82,8 +83,8 @@ export const HybridScanTaskTable: React.FC<HybridScanTaskTableProp> = (props) =>
         firstNode={<DemoVirtualTable<HybridScanTask>
             columns={[
                 {headerTitle: "ID", key: "Id", width: 80, colRender: i => i.Id},
-                {headerTitle: "任务ID", key: "Title", width: 300, colRender: i => i.TaskId},
-                {headerTitle: "当前状态", key: "Status", width: 300, colRender: i => i.Status},
+                {headerTitle: i18next.t("任务ID"), key: "Title", width: 300, colRender: i => i.TaskId},
+                {headerTitle: i18next.t("当前状态"), key: "Status", width: 300, colRender: i => i.Status},
             ]}
             rowClick={item => {
                 setSelected(item)
@@ -136,31 +137,31 @@ export const HybridScanTaskTable: React.FC<HybridScanTaskTableProp> = (props) =>
                     } as HybridScanControlRequest, token).then(() => {
                         setLoading(true)
                     })
-                }}>启动任务</YakitButton>
+                }}>{i18next.t("启动任务")}</YakitButton>
                 <YakitButton
                     disabled={!loading} danger={true}
                     onClick={() => {
                         cancel()
                     }}
-                >停止任务</YakitButton>
+                >{i18next.t("停止任务")}</YakitButton>
             </Space>}
         >
             <Space direction={"vertical"}>
                 <Space>
-                    <YakitTag>{"总目标"}: {status.TotalTargets}</YakitTag>
-                    <YakitTag>{"已完成目标"}: {status.FinishedTargets}</YakitTag>
-                    <YakitTag>{"正在执行的目标"}: {status.ActiveTargets}</YakitTag>
-                    <YakitTag>{"总任务量"}: {status.TotalTasks}</YakitTag>
-                    <YakitTag>{"正在执行的任务"}: {status.ActiveTasks}</YakitTag>
-                    <YakitTag>{"已经完成的任务"}: {status.FinishedTasks}</YakitTag>
+                    <YakitTag>{i18next.t("总目标")}: {status.TotalTargets}</YakitTag>
+                    <YakitTag>{i18next.t("已完成目标")}: {status.FinishedTargets}</YakitTag>
+                    <YakitTag>{i18next.t("正在执行的目标")}: {status.ActiveTargets}</YakitTag>
+                    <YakitTag>{i18next.t("总任务量")}: {status.TotalTasks}</YakitTag>
+                    <YakitTag>{i18next.t("正在执行的任务")}: {status.ActiveTasks}</YakitTag>
+                    <YakitTag>{i18next.t("已经完成的任务")}: {status.FinishedTasks}</YakitTag>
                 </Space>
                 <Divider/>
                 <Space direction={"vertical"}>
                     {activeTasks.map(i => {
-                        return <YakitTag>{i.Index}: [{i.PluginName}] 执行目标: {i.Url}</YakitTag>
+                        return <YakitTag>{i.Index}: [{i.PluginName}] {i18next.t("执行目标:")} {i.Url}</YakitTag>
                     })}
                 </Space>
             </Space>
-        </AutoCard> : "请选择一个任务"}
+        </AutoCard> : i18next.t("请选择一个任务")}
     />
 };

@@ -15,6 +15,7 @@ import styles from "./FuzzerSequence.module.scss"
 import {Divider, Result} from "antd"
 import {HTTPFuzzerPageTable, HTTPFuzzerPageTableQuery} from "../components/HTTPFuzzerPageTable/HTTPFuzzerPageTable"
 import {OutlineReplyIcon} from "@/assets/icon/outline"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -126,8 +127,7 @@ const ResponseCard: React.FC<ResponseCardProps> = React.memo((props) => {
                         setShowResponseInfoSecondEditor={()=>{}}
                     />
                     <Divider type='vertical' style={{marginRight: 0}} />
-                    <YakitButton onClick={() => setShowAllResponse()} type='text2' icon={<OutlineReplyIcon />}>
-                        返回
+                    <YakitButton onClick={() => setShowAllResponse()} type='text2' icon={<OutlineReplyIcon />}>{i18next.t("返回")}
                     </YakitButton>
                 </div>
             </div>

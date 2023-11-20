@@ -41,6 +41,7 @@ import {YakitSpin} from "@/components/yakitUI/YakitSpin/YakitSpin"
 
 import "../plugins.scss"
 import styles from "./pluginManage.module.scss"
+import i18next from "../../../i18n"
 
 const {TabPane} = Tabs
 
@@ -347,12 +348,12 @@ export const PluginManageDetail: React.FC<PluginManageDetailProps> = memo(
             }
             // 基础信息
             if (!infoRef.current) {
-                yakitNotify("error", "未获取到基础信息，请重试")
+                yakitNotify("error", i18next.t("未获取到基础信息，请重试"))
                 return
             }
             const info = await infoRef.current.onSubmit()
             if (!info) {
-                yakitNotify("error", "请完善必填的基础信息")
+                yakitNotify("error", i18next.t("请完善必填的基础信息"))
                 return
             } else {
                 data.Help = data.Kind === "bug" ? undefined : info?.Help
@@ -363,12 +364,12 @@ export const PluginManageDetail: React.FC<PluginManageDetailProps> = memo(
             }
             // 配置信息
             if (!settingRef.current) {
-                yakitNotify("error", "未获取到配置信息，请重试")
+                yakitNotify("error", i18next.t("未获取到配置信息，请重试"))
                 return
             }
             const setting = await settingRef.current.onSubmit()
             if (!setting) {
-                yakitNotify("error", "请完善必填的配置信息")
+                yakitNotify("error", i18next.t("请完善必填的配置信息"))
                 return
             } else {
                 data.Params = (setting?.Params || []).map((item) => {
@@ -521,7 +522,7 @@ export const PluginManageDetail: React.FC<PluginManageDetailProps> = memo(
 
         return (
             <PluginDetails<YakitPluginOnlineDetail>
-                title='插件管理'
+                title={i18next.t("插件管理")}
                 spinLoading={spinLoading}
                 search={searchs}
                 setSearch={setSearchs}
@@ -530,7 +531,7 @@ export const PluginManageDetail: React.FC<PluginManageDetailProps> = memo(
                     <div className={"details-filter-extra-wrapper"}>
                         <FilterPopoverBtn defaultFilter={filters} onFilter={onFilter} type='check' />
                         <div style={{height: 12}} className='divider-style'></div>
-                        <Tooltip title={selectNum > 0 ? "批量下载" : "一键下载"} overlayClassName='plugins-tooltip'>
+                        <Tooltip title={selectNum > 0 ? i18next.t("批量下载") : i18next.t("一键下载")} overlayClassName='plugins-tooltip'>
                             <YakitButton
                                 loading={downloadLoading}
                                 type='text2'
@@ -539,7 +540,7 @@ export const PluginManageDetail: React.FC<PluginManageDetailProps> = memo(
                             />
                         </Tooltip>
                         {/* <div style={{height: 12}} className='divider-style'></div>
-                        <Tooltip title='删除插件' overlayClassName='plugins-tooltip'>
+                        <Tooltip title={i18next.t("删除插件")} overlayClassName='plugins-tooltip'>
                             <YakitButton
                                 type='text2'
                                 loading={delLoading}
@@ -594,7 +595,7 @@ export const PluginManageDetail: React.FC<PluginManageDetailProps> = memo(
             >
                 <div className={styles["details-content-wrapper"]}>
                     <Tabs tabPosition='right' className='plugins-tabs'>
-                        <TabPane tab='源 码' key='code'>
+                        <TabPane tab={i18next.t("源 码")} key='code'>
                             <YakitSpin spinning={loading}>
                                 <div className={styles["plugin-info-wrapper"]}>
                                     <PluginDetailHeader
@@ -607,7 +608,7 @@ export const PluginManageDetail: React.FC<PluginManageDetailProps> = memo(
                                                 {+plugin.status !== 0 && (
                                                     <>
                                                         <Tooltip
-                                                            title={+plugin.status === 1 ? "改为未通过" : "改为通过"}
+                                                            title={+plugin.status === 1 ? i18next.t("改为未通过") : i18next.t("改为通过")}
                                                             overlayClassName='plugins-tooltip'
                                                         >
                                                             <YakitButton
@@ -623,7 +624,7 @@ export const PluginManageDetail: React.FC<PluginManageDetailProps> = memo(
                                                         <div style={{height: 12}} className='divider-style'></div>
                                                     </>
                                                 )}
-                                                <Tooltip title='删除插件' overlayClassName='plugins-tooltip'>
+                                                <Tooltip title={i18next.t("删除插件")} overlayClassName='plugins-tooltip'>
                                                     <YakitButton
                                                         type='text2'
                                                         icon={<OutlineTrashIcon />}
@@ -644,7 +645,7 @@ export const PluginManageDetail: React.FC<PluginManageDetailProps> = memo(
                                                             colors='danger'
                                                             icon={<SolidBanIcon />}
                                                             loading={statusLoading}
-                                                            name={"不通过"}
+                                                            name={i18next.t("不通过")}
                                                             onClick={onOpenReason}
                                                         />
                                                         <FuncBtn
@@ -652,7 +653,7 @@ export const PluginManageDetail: React.FC<PluginManageDetailProps> = memo(
                                                             colors='success'
                                                             icon={<SolidBadgecheckIcon />}
                                                             loading={statusLoading}
-                                                            name={"通过"}
+                                                            name={i18next.t("通过")}
                                                             onClick={onPass}
                                                         />
                                                     </>
@@ -686,8 +687,7 @@ export const PluginManageDetail: React.FC<PluginManageDetailProps> = memo(
                                                         </div>
                                                         <div className={styles["advice-body"]}>
                                                             <div className={styles["advice-content"]}>
-                                                                <div className={styles["content-title"]}>
-                                                                    修改内容描述
+                                                                <div className={styles["content-title"]}>{i18next.t("修改内容描述")}
                                                                 </div>
                                                                 <div className={styles["content-style"]}>
                                                                     {apply?.description || ""}
@@ -710,7 +710,7 @@ export const PluginManageDetail: React.FC<PluginManageDetailProps> = memo(
                                                 />
                                             </div>
                                             <div className={styles["plugin-setting-info"]}>
-                                                <div className={styles["setting-header"]}>插件配置</div>
+                                                <div className={styles["setting-header"]}>{i18next.t("插件配置")}</div>
                                                 <div className={styles["setting-body"]}>
                                                     <PluginModifySetting
                                                         ref={settingRef}
@@ -737,7 +737,7 @@ export const PluginManageDetail: React.FC<PluginManageDetailProps> = memo(
                                 </div>
                             </YakitSpin>
                         </TabPane>
-                        <TabPane tab='日 志(监修中)' key='log' disabled={true}>
+                        <TabPane tab={i18next.t('日 志(监修中)')} key='log' disabled={true}>
                             <div></div>
                         </TabPane>
                     </Tabs>

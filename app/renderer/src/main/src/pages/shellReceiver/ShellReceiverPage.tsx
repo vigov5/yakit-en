@@ -5,6 +5,7 @@ import {CreateShellReceiverForm} from "./CreateShellReceiver";
 import {failed, info, success} from "../../utils/notification";
 import {ShellItem} from "./ShellItem";
 import { AutoSpin } from "../../components/AutoSpin";
+import i18next from "../../i18n"
 
 import "./ShellReceiverPage.css"
 
@@ -28,7 +29,7 @@ export const ShellReceiverPage: React.FC<ShellReceiverPageProp> = (props) => {
     }
     const startListenPort = (addr: string) => {
         if (!addr.includes(":")) {
-            failed(`无法启动端口监听程序，端口格式不合理: [${addr}]`)
+            failed(i18next.t("无法启动端口监听程序，端口格式不合理: [${addr}]", { v1: addr }))
             return
         }
 
@@ -36,20 +37,20 @@ export const ShellReceiverPage: React.FC<ShellReceiverPageProp> = (props) => {
         const host = result[0];
         const port = result[1];
         if (!host || !port) {
-            failed(`无法解析主机/端口`)
+            failed(i18next.t("无法解析主机/端口"))
             return;
         }
 
         if (addrs.includes(addr)) {
-            Modal.error({title: "该地址已经被占用: " + addr})
-            failed("该地址已经被占用: " + addr)
+            Modal.error({ title: i18next.t("该地址已经被占用: ") + addr})
+            failed(i18next.t("该地址已经被占用: ") + addr)
             return;
         }
 
         setLoading(true)
         setTimeout(() => {
             ipcRenderer.invoke("listening-port", host, port).then(() => {
-                success("监听端口成功")
+                success(i18next.t("监听端口成功"))
             }).catch((e: any) => {
                 failed(`ERROR: ${JSON.stringify(e)}`)
             }).finally(() => {
@@ -77,7 +78,7 @@ export const ShellReceiverPage: React.FC<ShellReceiverPageProp> = (props) => {
 
     const createForm = () => {
         const m = showModal({
-            title: "开始监听一个 Yak 所属服务器的端口",
+            title: i18next.t("开始监听一个 Yak 所属服务器的端口"),
             width: "50%",
             content: <>
                 <CreateShellReceiverForm onCheck={addr => {
@@ -93,7 +94,7 @@ export const ShellReceiverPage: React.FC<ShellReceiverPageProp> = (props) => {
     useEffect(() => {
         const errorKey = "client-listening-port-end";
         ipcRenderer.on(errorKey, (e: any, data: any) => {
-            Modal.info({title: `端口[${data}]被关闭`})
+            Modal.info({title: i18next.t("端口[${data}]被关闭", { v1: data })})
         })
         return () => {
             ipcRenderer.removeAllListeners(errorKey)
@@ -106,7 +107,7 @@ export const ShellReceiverPage: React.FC<ShellReceiverPageProp> = (props) => {
             subTitle={
                 <Space>
                     {/*<Button type={"primary"}>开启端口并监听</Button>*/}
-                    <div>反弹 Shell 接收工具，可以在服务器上开启一个端口，进行监听，并进行交互。</div>
+                    <div>{i18next.t("反弹 Shell 接收工具，可以在服务器上开启一个端口，进行监听，并进行交互。")}</div>
                 </Space>
             }
         ></PageHeader>
@@ -134,9 +135,9 @@ export const ShellReceiverPage: React.FC<ShellReceiverPageProp> = (props) => {
                             )
                         })
                     ) : (
-                        <Tabs.TabPane closable={false} key={"empty"} tab={"开始监听端口"}>
+                        <Tabs.TabPane closable={false} key={"empty"} tab={i18next.t("开始监听端口")}>
                             <CreateShellReceiverForm
-                                title={"开始监听：在服务器上开启一个端口"}
+                                title={i18next.t("开始监听：在服务器上开启一个端口")}
                                 onCheck={(addr) => {
                                     return true
                                 }}

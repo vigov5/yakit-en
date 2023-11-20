@@ -1,6 +1,7 @@
 import React from "react";
 import {RequestYakURLResponse, YakURL} from "@/pages/yakURLTree/data";
 import {yakitFailed} from "@/utils/notification";
+import i18next from "../../i18n";
 
 const {ipcRenderer} = window.require("electron");
 
@@ -16,7 +17,7 @@ export const requestYakURLList = (url: YakURL, onResponse?: (response: RequestYa
         }
         return rsp
     }).catch(e => {
-        yakitFailed(`加载失败: ${e}`)
+        yakitFailed(i18next.t("加载失败") + `: ${e}`)
         if (onError) {
             onError(e)
         }
@@ -42,7 +43,7 @@ export const loadFromYakURLRaw = (url: string, onResponse?: (response: RequestYa
         }
         return rsp
     }).catch(e => {
-        yakitFailed(`加载失败: ${e}`)
+        yakitFailed(i18next.t("加载失败") + `: ${e}`)
         if (onError) {
             onError(e)
         }

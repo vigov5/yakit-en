@@ -2,6 +2,7 @@ import {memo, useEffect, useMemo, useRef} from "react"
 import {VirtualTableProps} from "./VirtualTableType"
 import {useGetState, useMemoizedFn, useThrottleFn, useVirtualList} from "ahooks"
 import {YakitSpin} from "@/components/yakitUI/YakitSpin/YakitSpin"
+import i18next from "../../i18n"
 
 import "../demoStyle.scss"
 
@@ -173,7 +174,7 @@ export const DemoVirtualTable: <T>(props: VirtualTableProps<T>) => any = memo((p
             <div className='list-body'>
                 <div ref={containerRef} className='list-container' onScroll={() => onScrollCapture.run()}>
                     <div ref={wrapperRef}>
-                        {!loading && data.length === 0 && <div className={"no-more-wrapper"}>暂无数据</div>}
+                        {!loading && data.length === 0 && <div className={"no-more-wrapper"}>{i18next.t("暂无数据")}</div>}
                         {/* {isTopLoadMore && loading && (
                             <div className='loading-wrapper'>
                                 <YakitSpin className='loading-style' />

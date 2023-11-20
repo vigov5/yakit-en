@@ -15,6 +15,7 @@ import {genDefaultPagination, QueryYakScriptRequest} from "@/pages/invoker/schem
 import {AutoCard} from "@/components/AutoCard"
 import ReactResizeDetector from "react-resize-detector"
 import {xtermFit} from "@/utils/xtermUtils"
+import i18next from "../../i18n"
 
 export interface PacketScannerProp {
     HttpFlowIds?: number[]
@@ -57,7 +58,7 @@ export const PacketScanner: React.FC<PacketScannerProp> = (props) => {
                             disabled={false}
                             readOnly={!!Keyword}
                             bordered={false}
-                            verbose={"插件"}
+                            verbose={i18next.t("插件")}
                             onSelected={(names) => {
                                 setPresetPacketScanPlugin(names)
                             }}

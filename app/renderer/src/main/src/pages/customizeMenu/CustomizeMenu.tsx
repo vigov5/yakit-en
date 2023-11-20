@@ -73,6 +73,7 @@ import {publicConvertDatabase, publicExchangeProps, publicUnionMenus} from "../l
 import {PrivateOutlineDefaultPluginIcon} from "@/routes/privateIcon"
 import {EnhancedCustomRouteMenuProps, filterCodeMenus, menusConvertJsonData} from "./utils"
 import {YakitPopconfirm} from "@/components/yakitUI/YakitPopconfirm/YakitPopconfirm"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -129,7 +130,7 @@ const CustomizeMenu: React.FC<CustomizeMenuProps> = React.memo((props) => {
     const [emptyMenuLength, setEmptyMenuLength] = useState<number>(0)
 
     const [destinationDrag, setDestinationDrag] = useState<string>("droppable2") // 右边得系统功能和插件拖拽后得目的地
-    const [tip, setTip] = useState<string>("保存")
+    const [tip, setTip] = useState<string>(i18next.t("保存"))
 
     const systemRouteMenuDataRef = useRef<EnhancedCustomRouteMenuProps[]>([]) // 系统功能列表数据
     const pluginLocalDataRef = useRef<YakScript[]>([]) // 本地插件列表数据
@@ -231,7 +232,7 @@ const CustomizeMenu: React.FC<CustomizeMenuProps> = React.memo((props) => {
                     })
             })
             .catch((err) => {
-                yakitFailed("获取菜单失败：" + err)
+                yakitFailed(i18next.t("获取菜单失败：") + err)
             })
     })
     /** @description 选中一级菜单项并展示该菜单项下的所有二级菜单 */
@@ -242,15 +243,15 @@ const CustomizeMenu: React.FC<CustomizeMenuProps> = React.memo((props) => {
     /** @description: 新增一级菜单 */
     const onAddFirstMenu = useMemoizedFn((value?: string) => {
         if (menuData.length >= UpperLimit) {
-            yakitNotify("error", `最多只能设置${UpperLimit}个`)
+            yakitNotify("error", i18next.t("最多只能设置${UpperLimit}个", { v1: UpperLimit }))
             return
         }
-        const length = menuData.filter((ele) => ele.label.includes("未命名")).length
+        const length = menuData.filter((ele) => ele.label.includes(i18next.t("未命名"))).length
         const menu: EnhancedCustomRouteMenuProps = {
             id: randomString(6),
             page: undefined,
-            label: value || `未命名${length + 1}`,
-            menuName: value || `未命名${length + 1}`,
+            label: value || i18next.t("未命名${length + 1}", {v1: length + 1}),
+            menuName: value || i18next.t("未命名${length + 1}", {v1: length + 1}),
             isNew: true
         }
         setCurrentFirstMenu({...menu})
@@ -307,7 +308,7 @@ const CustomizeMenu: React.FC<CustomizeMenuProps> = React.memo((props) => {
         }
         // 添加-上限判断
         if (subMenuData.length >= UpperLimit) {
-            yakitNotify("error", `最多只能设置${UpperLimit}个`)
+            yakitNotify("error", i18next.t("最多只能设置${UpperLimit}个", { v1: UpperLimit }))
             return
         }
         if (result.source.droppableId === "droppable3" && result.destination.droppableId === "droppable2") {
@@ -372,11 +373,11 @@ const CustomizeMenu: React.FC<CustomizeMenuProps> = React.memo((props) => {
     /** @description 添加二级菜单项(按钮的添加功能) */
     const onAddMenuData = useMemoizedFn((item: EnhancedCustomRouteMenuProps) => {
         if (!currentFirstMenu?.label) {
-            yakitNotify("error", "请先选择左边一级菜单")
+            yakitNotify("error", i18next.t("请先选择左边一级菜单"))
             return
         }
         if (subMenuData.length >= UpperLimit) {
-            yakitNotify("error", `最多只能设置${UpperLimit}个`)
+            yakitNotify("error", i18next.t("最多只能设置${UpperLimit}个", { v1: UpperLimit }))
             return
         }
 
@@ -410,7 +411,7 @@ const CustomizeMenu: React.FC<CustomizeMenuProps> = React.memo((props) => {
         if (length === 0) {
             type === "export" ? onImportJSON() : onSaveLocal()
         } else {
-            setTip(type === "export" ? "导出" : "保存")
+            setTip(type === "export" ? i18next.t("导出") : i18next.t("保存"))
             setEmptyMenuLength(length)
         }
     })
@@ -418,7 +419,7 @@ const CustomizeMenu: React.FC<CustomizeMenuProps> = React.memo((props) => {
     const onSaveLocal = useMemoizedFn(() => {
         let firstStageMenu = menuData.map((ele) => ele.label).sort()
         if (firstStageMenu.filter((ele) => !ele).length > 0) {
-            yakitNotify("error", `一级菜单名称不能为空`)
+            yakitNotify("error", i18next.t("一级菜单名称不能为空"))
             return
         }
         let repeatMenu = ""
@@ -429,7 +430,7 @@ const CustomizeMenu: React.FC<CustomizeMenuProps> = React.memo((props) => {
             }
         }
         if (repeatMenu) {
-            yakitNotify("error", `【${repeatMenu}】名称重复，请修改`)
+            yakitNotify("error", i18next.t("【${repeatMenu}】名称重复，请修改", { v1: repeatMenu }))
             return
         }
 
@@ -463,14 +464,14 @@ const CustomizeMenu: React.FC<CustomizeMenuProps> = React.memo((props) => {
                         })
                     })
                     .catch((e) => {
-                        yakitNotify("error", `保存菜单失败：${e}`)
+                        yakitNotify("error", i18next.t("保存菜单失败：${e}", { v1: e }))
                     })
                     .finally(() => {
                         setTimeout(() => setAddLoading(false), 300)
                     })
             })
             .catch((e: any) => {
-                yakitNotify("error", `更新菜单失败:${e}`)
+                yakitNotify("error", i18next.t("更新菜单失败:${e}", { v1: e }))
                 setTimeout(() => setAddLoading(false), 300)
             })
     })
@@ -488,11 +489,11 @@ const CustomizeMenu: React.FC<CustomizeMenuProps> = React.memo((props) => {
             onClose()
         } else {
             Modal.confirm({
-                title: "温馨提示",
+                title: i18next.t("温馨提示"),
                 icon: <ExclamationCircleOutlined />,
-                content: "请问是否要保存菜单并关闭页面？",
-                okText: "保存",
-                cancelText: "不保存",
+                content: i18next.t("请问是否要保存菜单并关闭页面？"),
+                okText: i18next.t("保存"),
+                cancelText: i18next.t("不保存"),
                 closable: true,
                 closeIcon: (
                     <div
@@ -550,10 +551,10 @@ const CustomizeMenu: React.FC<CustomizeMenuProps> = React.memo((props) => {
                         <ArrowLeftIcon className={style["content-icon"]} onClick={() => onTip()} />
                         <div className={style["left-title"]}>
                             {isCommunityEdition()
-                                ? "编辑常用插件"
+                                ? i18next.t("编辑常用插件")
                                 : patternMenu === "expert"
-                                ? "编辑专家模式"
-                                : "编辑扫描模式"}
+                                ? i18next.t("编辑专家模式")
+                                : i18next.t("编辑扫描模式")}
                         </div>
                         <div className={style["left-number"]}>
                             {menuData.length}/{UpperLimit}
@@ -573,17 +574,14 @@ const CustomizeMenu: React.FC<CustomizeMenuProps> = React.memo((props) => {
                     />
                 </div>
                 <div className={style["left-footer"]}>
-                    <YakitButton type='outline2' onClick={() => onTip()}>
-                        取消
+                    <YakitButton type='outline2' onClick={() => onTip()}>{i18next.t("取消")}
                     </YakitButton>
                     <div>
                         {!isCommunityEdition() && (
-                            <YakitButton type='outline1' onClick={() => onSave("export")}>
-                                导出 JSON
+                            <YakitButton type='outline1' onClick={() => onSave("export")}>{i18next.t("导出 JSON")}
                             </YakitButton>
                         )}
-                        <YakitButton type='primary' onClick={() => onSave()} loading={addLoading}>
-                            完成
+                        <YakitButton type='primary' onClick={() => onSave()} loading={addLoading}>{i18next.t("完成")}
                         </YakitButton>
                     </div>
                 </div>
@@ -620,7 +618,7 @@ const CustomizeMenu: React.FC<CustomizeMenuProps> = React.memo((props) => {
             >
                 <div className={style["subMenu-edit-modal"]}>
                     <div className={style["subMenu-edit-modal-heard"]}>
-                        <div className={style["subMenu-edit-modal-title"]}>修改菜单名称</div>
+                        <div className={style["subMenu-edit-modal-title"]}>{i18next.t("修改菜单名称")}</div>
                         <div className={style["close-icon"]} onClick={() => setVisibleSubMenu(false)}>
                             <RemoveIcon />
                         </div>
@@ -641,11 +639,9 @@ const CustomizeMenu: React.FC<CustomizeMenuProps> = React.memo((props) => {
                                 setVisibleSubMenu(false)
                                 setSubMenuName("")
                             }}
-                        >
-                            取消
+                        >{i18next.t("取消")}
                         </YakitButton>
-                        <YakitButton type='primary' onClick={() => onEditSubMenuName()}>
-                            确定
+                        <YakitButton type='primary' onClick={() => onEditSubMenuName()}>{i18next.t("确定")}
                         </YakitButton>
                     </div>
                 </div>
@@ -659,9 +655,8 @@ const CustomizeMenu: React.FC<CustomizeMenuProps> = React.memo((props) => {
             >
                 <div className={style["confirm-modal"]}>
                     <ShieldExclamationIcon className={style["confirm-icon"]} />
-                    <div className={style["confirm-text"]}>检测到有空菜单</div>
-                    <div className={style["confirm-tip"]}>
-                        有<span>{emptyMenuLength}</span>个菜单功能为空，空菜单不会{tip}，是否仍要继续{tip}？
+                    <div className={style["confirm-text"]}>{i18next.t("检测到有空菜单")}</div>
+                    <div className={style["confirm-tip"]}>{i18next.t("有")}<span>{emptyMenuLength}</span>{i18next.t("个菜单功能为空，空菜单不会")}{tip}，是否仍要继续{tip}？
                     </div>
                     <div className={style["confirm-buttons"]}>
                         <YakitButton
@@ -669,14 +664,13 @@ const CustomizeMenu: React.FC<CustomizeMenuProps> = React.memo((props) => {
                             size='large'
                             className={style["confirm-btn"]}
                             onClick={() => setEmptyMenuLength(0)}
-                        >
-                            取消
+                        >{i18next.t("取消")}
                         </YakitButton>
                         <YakitButton
                             type='primary'
                             size='large'
                             onClick={() => {
-                                if (tip === "导出") onImportJSON()
+                                if (tip === i18next.t("导出")) onImportJSON()
                                 else onSaveLocal()
                             }}
                         >
@@ -828,11 +822,11 @@ const SecondMenu: React.FC<SecondMenuProps> = React.memo((props) => {
             <div className={style["second-menu-heard"]}>
                 <div className={style["second-menu-heard-input"]}>
                     <Input
-                        placeholder='未命名1 (菜单名建议 4-16 个英文字符内最佳)'
+                        placeholder={i18next.t("未命名1 (菜单名建议 4-16 个英文字符内最佳)")}
                         bordered={false}
                         suffix={
                             <YakitPopconfirm
-                                title='是否要删除该菜单'
+                                title={i18next.t("是否要删除该菜单")}
                                 onConfirm={onRemoveFirstMenu}
                                 placement='bottomRight'
                             >
@@ -847,8 +841,7 @@ const SecondMenu: React.FC<SecondMenuProps> = React.memo((props) => {
                         }}
                     />
                 </div>
-                <div className={style["second-menu-heard-tip"]}>
-                    已添加功能 {subMenuData.length}/{UpperLimit}
+                <div className={style["second-menu-heard-tip"]}>{i18next.t("已添加功能")} {subMenuData.length}/{UpperLimit}
                 </div>
             </div>
 
@@ -891,11 +884,9 @@ const SecondMenu: React.FC<SecondMenuProps> = React.memo((props) => {
                                                     style["second-menu-text"],
                                                     style["second-menu-text-bold"]
                                                 )}
-                                            >
-                                                暂未未添加功能
+                                            >{i18next.t("暂未未添加功能")}
                                             </div>
-                                            <div className={style["second-menu-text"]}>
-                                                可通过拖拽或点击添加按钮，将功能添加至此处
+                                            <div className={style["second-menu-text"]}>{i18next.t("可通过拖拽或点击添加按钮，将功能添加至此处")}
                                             </div>
                                         </div>
                                     </div>
@@ -970,7 +961,7 @@ const FeaturesAndPlugin: React.FC<FeaturesAndPluginProps> = React.memo((props) =
         <>
             <div className={style["right-heard"]}>
                 {isCommunityEdition() ? (
-                    <div className={style["header-title"]}>插件商店</div>
+                    <div className={style["header-title"]}>{i18next.t("插件商店")}</div>
                 ) : (
                     <YakitRadioButtons
                         value={type}
@@ -982,17 +973,17 @@ const FeaturesAndPlugin: React.FC<FeaturesAndPluginProps> = React.memo((props) =
                         options={[
                             {
                                 value: "system",
-                                label: "系统功能"
+                                label: i18next.t("系统功能")
                             },
                             {
                                 value: "plugin",
-                                label: "插件"
+                                label: i18next.t("插件")
                             }
                         ]}
                     />
                 )}
                 <YakitInput.Search
-                    placeholder='请输入关键词搜索'
+                    placeholder={i18next.t("请输入关键词搜索")}
                     value={keywords}
                     onChange={(e) => setKeyWords(e.target.value)}
                     style={{maxWidth: 200}}
@@ -1000,7 +991,7 @@ const FeaturesAndPlugin: React.FC<FeaturesAndPluginProps> = React.memo((props) =
                     onPressEnter={() => setIsSearch(!isSearch)}
                 />
             </div>
-            <div className={style["right-help"]}>可通过拖拽或点击添加按钮，将功能添加至左侧菜单内</div>
+            <div className={style["right-help"]}>{i18next.t("可通过拖拽或点击添加按钮，将功能添加至左侧菜单内")}</div>
             {type === "system" && (
                 <SystemFunctionList
                     destinationDrag={props.destinationDrag}
@@ -1121,10 +1112,10 @@ const SystemRouteMenuDataItem: React.FC<SystemRouteMenuDataItemProps> = React.me
                 <>
                     {isHovering ? (
                         <div className={style["menu-cancel"]} onClick={() => onRemoveMenu(item)}>
-                            取&nbsp;消
+                            {i18next.t("取消")}
                         </div>
                     ) : (
-                        <div className={style["have-add"]}>已添加</div>
+                        <div className={style["have-add"]}>{i18next.t("已添加")}</div>
                     )}
                 </>
             )) || (
@@ -1133,8 +1124,7 @@ const SystemRouteMenuDataItem: React.FC<SystemRouteMenuDataItemProps> = React.me
                     onClick={() => {
                         onAddMenuData(item)
                     }}
-                >
-                    添加
+                >{i18next.t("添加")}
                 </YakitButton>
             )}
             {destinationDrag === "droppable3" && isDragging && (
@@ -1325,15 +1315,14 @@ const PluginLocalItem: React.FC<PluginLocalItemProps> = React.memo((props) => {
                 <>
                     {isHovering ? (
                         <div className={style["menu-cancel"]} onClick={() => onRemove()}>
-                            取&nbsp;消
+                            {i18next.t("取消")}
                         </div>
                     ) : (
-                        <div className={style["have-add"]}>已添加</div>
+                        <div className={style["have-add"]}>{i18next.t("已添加")}</div>
                     )}
                 </>
             )) || (
-                <YakitButton type='text' onClick={() => onAdd()}>
-                    添加
+                <YakitButton type='text' onClick={() => onAdd()}>{i18next.t("添加")}
                 </YakitButton>
             )}
 
@@ -1351,21 +1340,21 @@ export const PluginLocalInfoIcon: React.FC<PluginLocalInfoProps> = React.memo((p
     const renderIcon = useMemoizedFn(() => {
         if (plugin.OnlineOfficial) {
             return (
-                <Tooltip title='官方插件'>
+                <Tooltip title={i18next.t("官方插件")}>
                     <SolidOfficialpluginIcon className={style["plugin-local-icon"]} />
                 </Tooltip>
             )
         }
         if (plugin.OnlineIsPrivate) {
             return (
-                <Tooltip title='私有插件'>
+                <Tooltip title={i18next.t("私有插件")}>
                     <SolidPrivatepluginIcon className={style["plugin-local-icon"]} />
                 </Tooltip>
             )
         }
         if (plugin.UUID) {
             return (
-                <Tooltip title='云端插件'>
+                <Tooltip title={i18next.t("云端插件")}>
                     <SolidCloudpluginIcon className={style["plugin-local-icon"]} />
                 </Tooltip>
             )

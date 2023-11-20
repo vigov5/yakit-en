@@ -25,6 +25,7 @@ import "./BatchExecuteByFilter.css"
 import {Risk} from "../../risks/schema";
 import {RisksViewer} from "@/pages/risks/RisksViewer";
 import { YakitRoute, YakitRouteToPageInfo } from "@/routes/newRoute";
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron");
 
@@ -151,7 +152,7 @@ export const BatchExecuteByFilter: React.FC<BatchExecuteByFilterProp> = React.me
         ).then(() => {
             setExecuting(true)
         }).catch(e => {
-            failed(`启动批量执行插件失败：${e}`)
+            failed(i18next.t("启动批量执行插件失败：${e}", { v1: e }))
         })
     });
 
@@ -182,7 +183,7 @@ export const BatchExecuteByFilter: React.FC<BatchExecuteByFilterProp> = React.me
 
     return <AutoCard
         title={<Space>
-            {"已选插件"}
+            {i18next.t("已选插件")}
             <Tag>{`${total}`}</Tag>
         </Space>}
         size={"small"} bordered={false}
@@ -243,7 +244,7 @@ export const BatchExecutorResultByFilter: React.FC<BatchExecutorResultByFilterPr
                 return
             }
             console.info("call exception")
-            failed(`批量执行失败：${exception}`)
+            failed(i18next.t("批量执行失败：${exception}", { v1: exception }))
             console.info(exception)
         })
 
@@ -256,9 +257,9 @@ export const BatchExecutorResultByFilter: React.FC<BatchExecutorResultByFilterPr
             if (!removed && !!props.recoverUid) {
                 removed = true
                 ipcRenderer.invoke("PopExecBatchYakScriptUnfinishedTaskByUid", {Uid: props.recoverUid}).then(e => {
-                    info("未完成任务进度信息已更新")
+                    info(i18next.t("未完成任务进度信息已更新"))
                 }).catch(e => {
-                    failed("删除旧任务进度失败")
+                    failed(i18next.t("删除旧任务进度失败"))
                 })
             }
 
@@ -327,17 +328,17 @@ export const BatchExecutorResultByFilter: React.FC<BatchExecutorResultByFilterPr
     return <div className="batch-executor-result">
         <div className="result-notice-body">
             <div className="notice-body">
-                <div className="notice-body-header notice-font-in-progress">执行中状态</div>
-                <div className="notice-body-counter">{progressRunning}进程 / {scanTaskExecutingCount}任务</div>
+                <div className="notice-body-header notice-font-in-progress">{i18next.t("执行中状态")}</div>
+                <div className="notice-body-counter">{progressRunning} {i18next.t("进程")} / {scanTaskExecutingCount} {i18next.t("任务")}</div>
             </div>
             <Divider type="vertical" className="notice-divider"/>
             <div className="notice-body">
-                <div className="notice-body-header notice-font-completed">已结束/总进程</div>
+                <div className="notice-body-header notice-font-completed">{i18next.t("已结束/总进程")}</div>
                 <div className="notice-body-counter">{progressFinished}/{progressTotal}</div>
             </div>
             <Divider type="vertical" className="notice-divider"/>
             <div className="notice-body">
-                <div className="notice-body-header notice-font-vuln">命中风险/漏洞</div>
+                <div className="notice-body-header notice-font-vuln">{i18next.t("命中风险/漏洞")}</div>
                 <div className="notice-body-counter">{jsonRisks.length}</div>
             </div>
         </div>
@@ -345,11 +346,10 @@ export const BatchExecutorResultByFilter: React.FC<BatchExecutorResultByFilterPr
         <Divider style={{margin: 4}}/>
         <div className="result-table-body">
             <Tabs className="div-width-height-100 no-theme-tabs" activeKey={activeKey} onChange={setActiveKey} tabBarExtraContent={<div style={{textAlign: "right"}}>
-                <div className={"notice-hole-text"} onClick={openMenu}>
-                    查看完整漏洞
+                <div className={"notice-hole-text"} onClick={openMenu}>{i18next.t("查看完整漏洞")}
                 </div>
             </div>}>
-                <Tabs.TabPane tab="任务日志" key={"executing"}>
+                <Tabs.TabPane tab={i18next.t("任务日志")} key={"executing"}>
                     <div className="div-width-height-100" style={{overflow: "hidden"}}>
                         <Timeline className="body-time-line" pending={props.executing} reverse={true}>
                             {taskLog.map(item => {
@@ -363,7 +363,7 @@ export const BatchExecutorResultByFilter: React.FC<BatchExecutorResultByFilterPr
                         </Timeline>
                     </div>
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="命中风险与漏洞" key={"hitTable"}>
+                <Tabs.TabPane tab={i18next.t("命中风险与漏洞")} key={"hitTable"}>
                     <div style={{width: "100%", height: "100%"}}>
                         <ReactResizeDetector
                             onResize={(width, height) => {

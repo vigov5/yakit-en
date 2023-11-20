@@ -45,6 +45,7 @@ import imageLoadErrorDefault from "@/assets/imageLoadErrorDefault.png"
 import styles from "./PluginDebuggerPage.module.scss"
 import {YakitDropdownMenu} from "@/components/yakitUI/YakitDropdownMenu/YakitDropdownMenu"
 import {HTTPRequestBuilderParams} from "@/models/HTTPRequestBuilder";
+import i18next from "../../i18n"
 
 export interface PluginDebuggerPageProp {
     // 是否生成yaml模板
@@ -58,7 +59,7 @@ export interface PluginDebuggerPageProp {
 const {ipcRenderer} = window.require("electron")
 
 const pluginTypeData = [
-    {text: "端口扫描", value: "port-scan", tagVal: "PORT-SCAN", tagColor: "success"},
+    {text: i18next.t("端口扫描"), value: "port-scan", tagVal: "PORT-SCAN", tagColor: "success"},
     {text: "MITM", value: "mitm", tagVal: "MITM", tagColor: "blue"},
     {text: "Yaml-PoC", value: "nuclei", tagVal: "Nuclei-Yaml", tagColor: "purple"}
 ]
@@ -102,7 +103,7 @@ export const PluginDebuggerPage: React.FC<PluginDebuggerPageProp> = ({generateYa
                 setShowPluginExec(true)
             } else {
                 setShowPluginExec(false)
-                yakitNotify("info", "正在启动调试任务")
+                yakitNotify("info", i18next.t("正在启动调试任务"))
                 setTimeout(() => {
                     setShowPluginExec(true)
                 }, 300)
@@ -131,7 +132,7 @@ export const PluginDebuggerPage: React.FC<PluginDebuggerPageProp> = ({generateYa
     const handleChangePluginType = useMemoizedFn((v: PluginTypes) => {
         if (!!code) {
             const m = showYakitModal({
-                title: "切换类型将导致当前代码丢失",
+                title: i18next.t("切换类型将导致当前代码丢失"),
                 onOk: () => {
                     setPluginType(v)
                     setRefreshEditor(Math.random())
@@ -139,7 +140,7 @@ export const PluginDebuggerPage: React.FC<PluginDebuggerPageProp> = ({generateYa
                     setTabActiveKey("code")
                     m.destroy()
                 },
-                content: <div style={{margin: 24}}>确认插件类型切换？</div>,
+                content: <div style={{margin: 24}}>{i18next.t("确认插件类型切换？")}</div>,
                 onCancel: () => {
                 }
             })
@@ -159,14 +160,14 @@ export const PluginDebuggerPage: React.FC<PluginDebuggerPageProp> = ({generateYa
         <div className={styles.pluginDebuggerPage}>
             <YakitResizeBox
                 isVer={false}
-                firstMinSize={325}
-                firstRatio={"325px"}
+                firstMinSize={400}
+                firstRatio={"400px"}
                 secondMinSize={700}
                 lineDirection='left'
                 firstNodeStyle={{padding: 0}}
                 firstNode={
                     <AutoCard
-                        title='配置调试请求'
+                        title={i18next.t("配置调试请求")}
                         size='small'
                         bordered={false}
                         headStyle={{
@@ -186,8 +187,7 @@ export const PluginDebuggerPage: React.FC<PluginDebuggerPageProp> = ({generateYa
                         }}
                         extra={
                             <div className={styles.configTitleExtraBtns}>
-                                <YakitButton type='text' onClick={handleViewRequest}>
-                                    查看请求
+                                <YakitButton type='text' onClick={handleViewRequest}>{i18next.t("查看请求")}
                                     <OutlineEyeIcon/>
                                 </YakitButton>
                                 <Divider type='vertical' style={{marginLeft: 0}}/>
@@ -201,7 +201,7 @@ export const PluginDebuggerPage: React.FC<PluginDebuggerPageProp> = ({generateYa
                                             : !builder.Input
                                     }
                                 >
-                                    {!pluginExecuting ? "执行" : "停止执行"}
+                                    {!pluginExecuting ? i18next.t("执行") : i18next.t("停止执行")}
                                 </YakitButton>
                             </div>
                         }
@@ -246,7 +246,7 @@ export const PluginDebuggerPage: React.FC<PluginDebuggerPageProp> = ({generateYa
                                         code={code}
                                         targets={builder.Input || ""}
                                         onOperator={(obj) => {
-                                            yakitNotify("info", "初始化插件调试成功")
+                                            yakitNotify("info", i18next.t("初始化插件调试成功"))
                                             setOperator(obj)
                                         }}
                                         onExecuting={(result) => {
@@ -255,7 +255,7 @@ export const PluginDebuggerPage: React.FC<PluginDebuggerPageProp> = ({generateYa
                                     />
                                 ) : (
                                     <div className={styles.emptyPosition}>
-                                        <YakitEmpty description={"点击【执行插件】以开始"}/>
+                                        <YakitEmpty description={i18next.t("点击【执行插件】以开始")}/>
                                     </div>
                                 )}
                             </div>
@@ -305,7 +305,7 @@ const SecondNodeHeader: React.FC<SecondNodeHeaderProps> = React.memo(
         const [script, setScript] = useState<YakScript>()
         const [pluginBaseInspectVisible, setPluginBaseInspectVisible] = useState<boolean>(false)
         const [dropdownData, setDropdownData] = useState<{ key: string; label: string }[]>([
-            {key: "loadLocalPlugin", label: "加载本地插件"}
+            {key: "loadLocalPlugin", label: i18next.t("加载本地插件")}
         ])
         useEffect(() => {
             if(!scriptName)return
@@ -321,16 +321,16 @@ const SecondNodeHeader: React.FC<SecondNodeHeaderProps> = React.memo(
                     setTabActiveKey("code")
                 })
                 .catch((err) => {
-                    yakitNotify('error','获取本地插件数据失败:'+err)
+                    yakitNotify('error',i18next.t("获取本地插件数据失败:")+err)
                 })
         }, [scriptName])
         useEffect(() => {
             if (!currentPluginName && !generateYamlTemplate) {
                 setDropdownData([
-                    {key: "port-scan", label: "端口扫描"},
+                    {key: "port-scan", label: i18next.t("端口扫描")},
                     {key: "mitm", label: "MITM"},
                     {key: "nuclei", label: "Yaml-PoC"},
-                    {key: "loadLocalPlugin", label: "加载本地插件"}
+                    {key: "loadLocalPlugin", label: i18next.t("加载本地插件")}
                 ])
             }
         }, [currentPluginName, generateYamlTemplate])
@@ -359,7 +359,7 @@ const SecondNodeHeader: React.FC<SecondNodeHeaderProps> = React.memo(
                 // @ts-ignore
                 case "port-scan":
                     const m1 = showYakitModal({
-                        title: "切换本地插件将导致当前代码丢失",
+                        title: i18next.t("切换本地插件将导致当前代码丢失"),
                         onOk: () => {
                             setPluginType(i.Type as any)
                             setCode(i.Content)
@@ -371,20 +371,20 @@ const SecondNodeHeader: React.FC<SecondNodeHeaderProps> = React.memo(
                             m.destroy()
                             m1.destroy()
                         },
-                        content: <div style={{margin: 24}}>确认本地插件切换？</div>,
+                        content: <div style={{margin: 24}}>{i18next.t("确认本地插件切换？")}</div>,
                         onCancel: () => {
                         }
                     })
                     return
                 default:
-                    yakitFailed("暂不支持的插件类型")
+                    yakitFailed(i18next.t("暂不支持的插件类型"))
             }
         }
 
         // 选择要调试的插件
         const handleSelectDebugPlugin = useMemoizedFn(() => {
             const m = showYakitDrawer({
-                title: <div className={styles["debug-plugin-drawer-title"]}>选择要调试的插件</div>,
+                title: <div className={styles["debug-plugin-drawer-title"]}>{i18next.t("选择要调试的插件")}</div>,
                 width: "30%",
                 placement: "left",
                 content: (
@@ -441,13 +441,13 @@ const SecondNodeHeader: React.FC<SecondNodeHeaderProps> = React.memo(
             const m = showYakitModal({
                 title: null,
                 width: 1200,
-                onOkText: "合并",
+                onOkText: i18next.t("合并"),
                 closable: false,
                 content: (
                     <DataCompareModal
-                        leftTitle='原始源码'
+                        leftTitle={i18next.t("原始源码")}
                         leftCode={originCode}
-                        rightTitle='更新源码'
+                        rightTitle={i18next.t("更新源码")}
                         rightCode={code}
                         onClose={() => m.destroy()}
                     />
@@ -467,9 +467,9 @@ const SecondNodeHeader: React.FC<SecondNodeHeaderProps> = React.memo(
             try {
                 await ipcRenderer.invoke("SaveYakScript", {...script, Content: code})
                 m.destroy()
-                yakitNotify("success", "保存 Yak 脚本成功")
+                yakitNotify("success", i18next.t("保存 Yak 脚本成功"))
             } catch (error) {
-                yakitFailed(`保存 Yak 模块失败: ${error}`)
+                yakitFailed(i18next.t("保存 Yak 模块失败: ${error}", { v1: error }))
             }
         }
 
@@ -490,13 +490,13 @@ const SecondNodeHeader: React.FC<SecondNodeHeaderProps> = React.memo(
                     >
                         <YakitButton type='outline2' icon={<SolidCogIcon/>}/>
                     </YakitDropdownMenu>
-                    <span>插件代码配置</span>
+                    <span>{i18next.t("插件代码配置")}</span>
                     <YakitRadioButtons
                         buttonStyle='solid'
                         value={tabActiveKey}
                         options={[
-                            {value: "code", label: "源码"},
-                            {value: "execResult", label: "执行结果"}
+                            {value: "code", label: i18next.t("源码")},
+                            {value: "execResult", label: i18next.t("执行结果")}
                         ]}
                         onChange={(e) => setTabActiveKey(e.target.value)}
                     />
@@ -521,8 +521,7 @@ const SecondNodeHeader: React.FC<SecondNodeHeaderProps> = React.memo(
                                 type='outline2'
                                 icon={<OutlineSparklesIcon/>}
                                 onClick={() => setPluginBaseInspectVisible(true)}
-                            >
-                                自动评分
+                            >{i18next.t("自动评分")}
                             </YakitButton>
                         )}
                         <PluginBaseInspect
@@ -539,16 +538,14 @@ const SecondNodeHeader: React.FC<SecondNodeHeaderProps> = React.memo(
                                                     <YakitButton
                                                         icon={<OutlinePuzzleIcon/>}
                                                         onClick={openCompareModal}
-                                                    >
-                                                        合并代码
+                                                    >{i18next.t("合并代码")}
                                                     </YakitButton>
                                                 ) : (
                                                     <YakitButton
                                                         type='primary'
                                                         icon={<SolidStoreIcon/>}
                                                         onClick={handleSkipAddYakitScriptPage}
-                                                    >
-                                                        存为插件
+                                                    >{i18next.t("存为插件")}
                                                     </YakitButton>
                                                 )}
                                             </div>
@@ -558,16 +555,14 @@ const SecondNodeHeader: React.FC<SecondNodeHeaderProps> = React.memo(
                             }}
                         ></PluginBaseInspect>
                         {currentPluginName ? (
-                            <YakitButton icon={<OutlinePuzzleIcon/>} onClick={openCompareModal}>
-                                合并代码
+                            <YakitButton icon={<OutlinePuzzleIcon/>} onClick={openCompareModal}>{i18next.t("合并代码")}
                             </YakitButton>
                         ) : (
                             <YakitButton
                                 type='primary'
                                 icon={<SolidStoreIcon/>}
                                 onClick={handleSkipAddYakitScriptPage}
-                            >
-                                存为插件
+                            >{i18next.t("存为插件")}
                             </YakitButton>
                         )}
                     </>
@@ -610,7 +605,7 @@ const PluginBaseInspect: React.FC<PluginBaseInspectProps> = React.memo((props) =
                 setResponse(rsp)
             })
             .catch((e: any) => {
-                yakitNotify("error", `插件基础测试失败: ${e}`)
+                yakitNotify("error", i18next.t("插件基础测试失败: ${e}", { v1: e }))
             })
             .finally(() => {
                 setLoading(false)
@@ -619,7 +614,7 @@ const PluginBaseInspect: React.FC<PluginBaseInspectProps> = React.memo((props) =
 
     return (
         <YakitModal
-            title='插件基础检测'
+            title={i18next.t("插件基础检测")}
             type='white'
             width={506}
             centered={true}
@@ -632,19 +627,16 @@ const PluginBaseInspect: React.FC<PluginBaseInspectProps> = React.memo((props) =
         >
             <div className={styles["plugin-base-inspect-body"]}>
                 <div className={styles["header-wrapper"]}>
-                    <div className={styles["title-style"]}>检测项包含：</div>
+                    <div className={styles["title-style"]}>{i18next.t("检测项包含：")}</div>
                     <div className={styles["header-body"]}>
                         <div className={styles["opt-content"]}>
-                            <div className={styles["content-order"]}>1</div>
-                            基础编译测试，判断语法是否符合规范，是否存在不正确语法；
+                            <div className={styles["content-order"]}>1</div>{i18next.t("基础编译测试，判断语法是否符合规范，是否存在不正确语法；")}
                         </div>
                         <div className={styles["opt-content"]}>
-                            <div className={styles["content-order"]}>2</div>
-                            把基础防误报服务器作为测试基准，防止条件过于宽松导致的误报；
+                            <div className={styles["content-order"]}>2</div>{i18next.t("把基础防误报服务器作为测试基准，防止条件过于宽松导致的误报；")}
                         </div>
                         <div className={styles["opt-content"]}>
-                            <div className={styles["content-order"]}>3</div>
-                            检查插件执行过程是否会发生崩溃。
+                            <div className={styles["content-order"]}>3</div>{i18next.t("检查插件执行过程是否会发生崩溃。")}
                         </div>
                     </div>
                 </div>
@@ -655,9 +647,8 @@ const PluginBaseInspect: React.FC<PluginBaseInspectProps> = React.memo((props) =
                                 <YakitSpin spinning={true}/>
                             </div>
                             <div className={styles["loading-title"]}>
-                                <div className={styles["title-style"]}>检测中，请耐心等待...</div>
-                                <div className={styles["subtitle-style"]}>
-                                    一般来说，检测将会在 <span className={styles["active-style"]}>10-20s</span> 内结束
+                                <div className={styles["title-style"]}>{i18next.t("检测中，请耐心等待...")}</div>
+                                <div className={styles["subtitle-style"]}>{i18next.t("一般来说，检测将会在")} <span className={styles["active-style"]}>10-20s</span>{i18next.t("内结束")}
                                 </div>
                             </div>
                         </div>
@@ -686,8 +677,7 @@ const PluginBaseInspect: React.FC<PluginBaseInspectProps> = React.memo((props) =
                             <div className={styles.score} style={{color: response.Score < 55 ? "#F6544A" : "#56C991"}}>
                                 {response.Score}
                             </div>
-                            <div className={styles["res-feedback"]}>
-                                （表现{response.Score < 55 ? "不佳" : "良好"}）
+                            <div className={styles["res-feedback"]}>{i18next.t("（表现")}{response.Score < 55 ? i18next.t("不佳") : i18next.t("良好")}）
                             </div>
                         </div>
                         {renderBtnsFn(+response.Score)}
@@ -770,24 +760,22 @@ const PluginContList: React.FC<PluginContListProps> = React.memo(
             if (Number(total) === 0 && (tags.length > 0 || searchKeyword || includedScriptNames.length > 0)) {
                 return (
                     <div className={styles["plugin-empty"]}>
-                        <YakitEmpty title={null} description='搜索结果“空”'/>
+                        <YakitEmpty title={null} description={i18next.t("搜索结果“空”")}/>
                     </div>
                 )
             }
             if (Number(initialTotal) === 0) {
                 return (
                     <div className={styles["plugin-empty"]}>
-                        <YakitEmpty description='可一键获取官方云端插件，或导入外部插件源'/>
+                        <YakitEmpty description={i18next.t("可一键获取官方云端插件，或导入外部插件源")}/>
                         <div className={styles["plugin-buttons"]}>
                             <YakitButton
                                 type='outline1'
                                 icon={<CloudDownloadIcon/>}
                                 onClick={() => setVisibleOnline(true)}
-                            >
-                                获取云端插件
+                            >{i18next.t("获取云端插件")}
                             </YakitButton>
-                            <YakitButton type='outline1' icon={<ImportIcon/>} onClick={() => setVisibleImport(true)}>
-                                导入插件源
+                            <YakitButton type='outline1' icon={<ImportIcon/>} onClick={() => setVisibleImport(true)}>{i18next.t("导入插件源")}
                             </YakitButton>
                         </div>
                     </div>
@@ -861,7 +849,7 @@ const PluginContList: React.FC<PluginContListProps> = React.memo(
                                     onChange={(e) => handleSelectAll(e.target.checked)}
                                     indeterminate={!isSelectAll && selectedPlugins.length > 0}
                                 />
-                                <span className={styles["plugin-list-check-text"]}>全选</span>
+                                <span className={styles["plugin-list-check-text"]}>{i18next.t("全选")}</span>
                             </div>
                         )}
                         <div className={styles["number-warp"]}>
@@ -886,7 +874,7 @@ const PluginContList: React.FC<PluginContListProps> = React.memo(
                                 }}
                                 disabled={selectedPlugins.length === 0}
                             >
-                                清&nbsp;空
+                                {i18next.t("清空")}
                             </YakitButton>
                         </div>
                     )}

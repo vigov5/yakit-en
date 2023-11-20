@@ -4,6 +4,7 @@ import {DemoVirtualTable} from "@/demoComponents/virtualTable/VirtualTable";
 import {info} from "@/utils/notification";
 import {Paging} from "@/utils/yakQueryHTTPFlow";
 import {TrafficViewerControlIf} from "@/components/playground/traffic/base";
+import i18next from "../../../i18n"
 
 export interface DemoPacketTableProp extends TrafficViewerControlIf {
 
@@ -34,39 +35,39 @@ export const DemoPacketTable: React.FC<DemoPacketTableProp> = (props) => {
                 width: 90,
                 colRender: (item) => (item.Id),
             },
-            {headerTitle: "链路层", key: "LinkLayerType", width: 60, colRender: (item) => item.LinkLayerType},
+            {headerTitle: i18next.t("链路层"), key: "LinkLayerType", width: 60, colRender: (item) => item.LinkLayerType},
             {
-                headerTitle: "网络层",
+                headerTitle: i18next.t("网络层"),
                 key: "NetworkLayerType",
                 width: 50,
                 colRender: (item) => item.NetworkLayerType
             },
             {
-                headerTitle: "传输层",
+                headerTitle: i18next.t("传输层"),
                 key: "TransportLayerType",
                 width: 50,
                 colRender: (item) => item.TransportLayerType
             },
             {
-                headerTitle: "源IP",
+                headerTitle: i18next.t("源IP"),
                 key: "NetworkEndpointIPSrc",
                 width: 120,
                 colRender: (item) => item.NetworkEndpointIPSrc
             },
             {
-                headerTitle: "源端口",
+                headerTitle: i18next.t("源端口"),
                 key: "TransportEndpointPortSrc",
                 width: 60,
                 colRender: (item) => item.TransportEndpointPortSrc
             },
             {
-                headerTitle: "目的IP",
+                headerTitle: i18next.t("目的IP"),
                 key: "NetworkEndpointIPDst",
                 width: 120,
                 colRender: (item) => item.NetworkEndpointIPDst
             },
             {
-                headerTitle: "目的端口",
+                headerTitle: i18next.t("目的端口"),
                 key: "TransportEndpointPortDst",
                 width: 60,
                 colRender: (item) => item.TransportEndpointPortDst

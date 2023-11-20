@@ -10,6 +10,7 @@ import {AutoCard} from "@/components/AutoCard";
 import {YakitResizeBox} from "@/components/yakitUI/YakitResizeBox/YakitResizeBox";
 import {InputItem} from "@/utils/inputUtil";
 import { TreeNode } from "@/components/WebTree/WebTree";
+import i18next from "../../i18n"
 
 export interface YakURLTreeProp {
 
@@ -35,7 +36,7 @@ export const YakURLTree: React.FC<YakURLTreeProp> = (props) => {
                     isLeaf: !i.HaveChildrenNodes,
                 })))
             }).catch(e => {
-                yakitFailed(`加载失败: ${e}`)
+                yakitFailed(i18next.t("加载失败: ${e}", { v1: e }))
                 setData([])
             })
         }, [yakurl])
@@ -108,7 +109,7 @@ export const YakURLTree: React.FC<YakURLTreeProp> = (props) => {
                     treeData={data}
                 />}
                 secondNode={<div>
-                    {selected ? <div>SELECTED {`${JSON.stringify(selected)}`}</div> : <div>未选择</div>}
+                    {selected ? <div>SELECTED {`${JSON.stringify(selected)}`}</div> : <div>{i18next.t("未选择")}</div>}
                 </div>}
             />
         </AutoCard>

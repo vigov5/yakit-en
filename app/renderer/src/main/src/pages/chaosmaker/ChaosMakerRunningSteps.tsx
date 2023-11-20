@@ -10,6 +10,7 @@ import {AutoCard} from "@/components/AutoCard";
 import {PluginResultUI, StatusCardProps} from "@/pages/yakitStore/viewers/base";
 import {StatisticCard} from "@ant-design/pro-card";
 import {StatusCardViewer} from "@/pages/mitm/MITMYakScriptLoader";
+import i18next from "../../i18n"
 
 export interface ChaosMakerRunningStepsProp {
     params?: ExecuteChaosMakerRuleRequest
@@ -50,29 +51,26 @@ export const ChaosMakerRunningSteps: React.FC<ChaosMakerRunningStepsProp> = (pro
         >
             <Steps.Step
                 className={step === 0 ? "chaos-maker-rule-step-active" : "chaos-maker-rule-step"}
-                stepIndex={0} key={0} title={"参数"}
-                description={<div>
-                    设置额外参数 <br/>
-                    准备观察过程
+                stepIndex={0} key={0} title={i18next.t("参数")}
+                description={<div>{i18next.t("设置额外参数")} <br/>{i18next.t("准备观察过程")}
                 </div>}
             />
             <Steps.Step
                 className={step === 1 ? "chaos-maker-rule-step-active" : (
                     step > 1 ?  "chaos-maker-rule-step" :  "chaos-maker-rule-step-unactive"
                 )}
-                stepIndex={1} key={1} title={"进行模拟攻击"} description={(
+                stepIndex={1} key={1} title={i18next.t("进行模拟攻击")} description={(
                 <>
                     {
                         step === 1 && <Popconfirm
-                            title={"确定要停止当前进程？"}
+                            title={i18next.t("确定要停止当前进程？")}
                             onConfirm={() => {
                                 ipcRenderer.invoke("cancel-ExecuteChaosMakerRule", token)
                             }}
                         >
                             <YakitButton type="primary" colors="danger" onClick={() => {
 
-                            }}>
-                                停止模拟
+                            }}>{i18next.t("停止模拟")}
                             </YakitButton>
                         </Popconfirm>
 
@@ -82,9 +80,9 @@ export const ChaosMakerRunningSteps: React.FC<ChaosMakerRunningStepsProp> = (pro
             <Steps.Step className={step === 2 ? "chaos-maker-rule-step-active" : (
                 step > 2 ?  "chaos-maker-rule-step" :  "chaos-maker-rule-step-unactive"
             )} stepIndex={2}
-                        key={2} title={"模拟攻击报告"}/>
+                        key={2} title={i18next.t("模拟攻击报告")}/>
         </Steps>}
-        {!params && <Empty description={"请您选中你想要执行的剧本规则"}/>}
+        {!params && <Empty description={i18next.t("请您选中你想要执行的剧本规则")}/>}
         {step === 0 && <Form
             labelCol={{span: 5}} wrapperCol={{span: 14}}
             onSubmitCapture={e => {
@@ -94,18 +92,18 @@ export const ChaosMakerRunningSteps: React.FC<ChaosMakerRunningStepsProp> = (pro
                 ipcRenderer.invoke("ExecuteChaosMakerRule", params, token)
             }}
         >
-            <InputInteger label={"并发模拟数"} setValue={Concurrent => setParams({...params, Concurrent})}
-                          value={params.Concurrent} help={"并发数越高，模拟攻击速度越快"}/>
-            <SelectOne oldTheme={false} label={"重复模拟"} data={[
-                {text: "无限重复", value: -1},
-                {text: "不重复", value: 0},
-                {text: "重复10次", value: 10},
+            <InputInteger label={i18next.t("并发模拟数")} setValue={Concurrent => setParams({...params, Concurrent})}
+                          value={params.Concurrent} help={i18next.t("并发数越高，模拟攻击速度越快")}/>
+            <SelectOne oldTheme={false} label={i18next.t("重复模拟")} data={[
+                {text: i18next.t("无限重复"), value: -1},
+                {text: i18next.t("不重复"), value: 0},
+                {text: i18next.t("重复10次"), value: 10},
             ]} setValue={ExtraRepeat => setParams({...params, ExtraRepeat})} value={params.ExtraRepeat}/>
-            <InputInteger label={"剧本间隔"} help={"指在大类别的模拟攻击间隔的秒数"}
+            <InputInteger label={i18next.t("剧本间隔")} help={i18next.t("指在大类别的模拟攻击间隔的秒数")}
                           setValue={GroupGapSeconds => setParams({...params, GroupGapSeconds})}
                           value={params.GroupGapSeconds}/>
             <Form.Item colon={false} label={" "}>
-                <YakitButton size={"max"} type="primary" htmlType="submit"> 执行模拟攻击剧本 </YakitButton>
+                <YakitButton size={"max"} type="primary" htmlType="submit">{i18next.t("执行模拟攻击剧本")} </YakitButton>
             </Form.Item>
         </Form>}
         {step === 1 && <AutoCard style={{padding: 0, marginTop: 10, height: "100%"}} bordered={false} bodyStyle={{

@@ -23,6 +23,7 @@ import {onlineUseToLocalDetail} from "../utils"
 import "../plugins.scss"
 import styles from "./PluginsOnlineDetail.module.scss"
 import classNames from "classnames"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -107,7 +108,7 @@ export const PluginsOnlineDetail: React.FC<PluginsOnlineDetailProps> = (props) =
         }
     })
     const onCommentClick = useMemoizedFn(() => {
-        yakitNotify("success", "评论~~~")
+        yakitNotify("success", i18next.t("评论~~~"))
     })
     const onDownloadClick = useMemoizedFn(() => {
         if (plugin) {
@@ -130,7 +131,7 @@ export const PluginsOnlineDetail: React.FC<PluginsOnlineDetailProps> = (props) =
             if (value) setSelectList([...selectList, data.uuid])
             else setSelectList(selectList.filter((item) => item !== data.uuid))
         } catch (error) {
-            yakitNotify("error", "勾选失败:" + error)
+            yakitNotify("error", i18next.t("勾选失败:") + error)
         }
     })
     /**全选 */
@@ -170,7 +171,7 @@ export const PluginsOnlineDetail: React.FC<PluginsOnlineDetailProps> = (props) =
     if (!plugin) return null
     return (
         <PluginDetails<YakitPluginOnlineDetail>
-            title='插件商店'
+            title={i18next.t("插件商店")}
             filterExtra={
                 <div className={"details-filter-extra-wrapper"}>
                     <FilterPopoverBtn defaultFilter={filters} onFilter={onFilter} type='online' />
@@ -178,13 +179,12 @@ export const PluginsOnlineDetail: React.FC<PluginsOnlineDetailProps> = (props) =
                     {downloadLoading ? (
                         <LoadingOutlined className='loading-icon' />
                     ) : (
-                        <Tooltip title='下载插件' overlayClassName='plugins-tooltip'>
+                        <Tooltip title={i18next.t("下载插件")} overlayClassName='plugins-tooltip'>
                             <YakitButton type='text2' icon={<OutlineClouddownloadIcon />} onClick={onDownload} />
                         </Tooltip>
                     )}
                     <div style={{height: 12}} className='divider-style'></div>
-                    <YakitButton type='text' onClick={onNewAddPlugin}>
-                        新建插件
+                    <YakitButton type='text' onClick={onNewAddPlugin}>{i18next.t("新建插件")}
                     </YakitButton>
                 </div>
             }
@@ -233,7 +233,7 @@ export const PluginsOnlineDetail: React.FC<PluginsOnlineDetailProps> = (props) =
         >
             <div className={styles["details-content-wrapper"]}>
                 <Tabs tabPosition='right' className='plugins-tabs'>
-                    <TabPane tab='源 码' key='code'>
+                    <TabPane tab={i18next.t("源 码")} key='code'>
                         <div className={styles["plugin-info-wrapper"]}>
                             <PluginDetailHeader
                                 pluginName={plugin.script_name}
@@ -262,7 +262,7 @@ export const PluginsOnlineDetail: React.FC<PluginsOnlineDetailProps> = (props) =
                                         <FuncBtn
                                             maxWidth={1100}
                                             icon={<OutlineCursorclickIcon />}
-                                            name={"去使用"}
+                                            name={i18next.t("去使用")}
                                             onClick={onUse}
                                         />
                                     </div>
@@ -282,12 +282,12 @@ export const PluginsOnlineDetail: React.FC<PluginsOnlineDetailProps> = (props) =
                             </div>
                         </div>
                     </TabPane>
-                    <TabPane tab='评论' key='comment'>
+                    <TabPane tab={i18next.t("评论")} key='comment'>
                         <div className={styles["plugin-comment-wrapper"]} id='online-plugin-info-scroll'>
                             <PluginComment isLogin={userInfo.isLogin} plugin={{...plugin, default_open: false}} />
                         </div>
                     </TabPane>
-                    <TabPane tab='日志' key='log'>
+                    <TabPane tab={i18next.t("日志")} key='log'>
                         <div className={styles["plugin-log-wrapper"]}>
                             <YakitPluginOnlineJournal pluginId={plugin.id} />
                         </div>

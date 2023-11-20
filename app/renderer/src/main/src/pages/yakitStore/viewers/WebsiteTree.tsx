@@ -13,6 +13,7 @@ import {useGetState, useMemoizedFn} from "ahooks"
 import {ExportExcel} from "../../../components/DataExport/DataExport"
 import {ChevronDownIcon} from "@/assets/newIcon"
 import "./WebsiteTreeStyle.css"
+import i18next from "../../../i18n"
 
 export interface WebsiteTreeViewerProp {
     pageMode?: boolean
@@ -114,7 +115,7 @@ export const WebsiteTreeViewer: React.FC<WebsiteTreeViewerProp> = (props) => {
 
     const delManyReord = () => {
         if (delUrlArr.length === 0) {
-            warn("请选择")
+            warn(i18next.t("请选择"))
             return
         }
         let obj:any = {URLPrefixBatch: delUrlArr}
@@ -165,7 +166,7 @@ export const WebsiteTreeViewer: React.FC<WebsiteTreeViewerProp> = (props) => {
     const getData = useMemoizedFn((query) => {
         return new Promise((resolve) => {
             if (downLoadUrlArr.length === 0) {
-                warn("请选择")
+                warn(i18next.t("请选择"))
                 resolve(null)
             } else {
                 ipcRenderer
@@ -194,7 +195,7 @@ export const WebsiteTreeViewer: React.FC<WebsiteTreeViewerProp> = (props) => {
                         })
                     })
                     .catch((e: any) => {
-                        failed("数据导出失败 " + `${e}`)
+                        failed(i18next.t("数据导出失败 ") + `${e}`)
                     })
             }
         })
@@ -211,8 +212,7 @@ export const WebsiteTreeViewer: React.FC<WebsiteTreeViewerProp> = (props) => {
                                 <>
                                     <Space direction='vertical' style={{width: "100%"}}>
                                         <div style={{display:"flex",justifyContent:"space-between"}}>
-                                            <Space>
-                                                业务结构
+                                            <Space>{i18next.t("业务结构")}
                                                 <Button
                                                     type={"link"}
                                                     size={"small"}
@@ -231,7 +231,7 @@ export const WebsiteTreeViewer: React.FC<WebsiteTreeViewerProp> = (props) => {
                                                         size={"small"}
                                                     >
                                                         <SwitchItem
-                                                            label={"自动刷新"}
+                                                            label={i18next.t("自动刷新")}
                                                             formItemStyle={{marginBottom: 0}}
                                                             value={autoRefresh}
                                                             setValue={setAutoRefresh}
@@ -253,7 +253,7 @@ export const WebsiteTreeViewer: React.FC<WebsiteTreeViewerProp> = (props) => {
                                                 style={{justifyContent: "space-between"}}
                                             >
                                                 <InputItem
-                                                    label={"URL关键字"}
+                                                    label={i18next.t("URL关键字")}
                                                     value={searchTarget}
                                                     setValue={setSearchTarget}
                                                 />
@@ -279,8 +279,7 @@ export const WebsiteTreeViewer: React.FC<WebsiteTreeViewerProp> = (props) => {
                                                     }
                                                     setCheckedAll(e.target.checked)
                                                 }}
-                                            >
-                                                全选
+                                            >{i18next.t("全选")}
                                             </Checkbox>
                                             {delUrlArr.length === 0 ? (
                                                 <Button
@@ -289,8 +288,7 @@ export const WebsiteTreeViewer: React.FC<WebsiteTreeViewerProp> = (props) => {
                                                     onClick={(e) => {
                                                         e.stopPropagation()
                                                     }}
-                                                >
-                                                    批量操作
+                                                >{i18next.t("批量操作")}
                                                     <ChevronDownIcon style={{color: "#85899E"}} />
                                                 </Button>
                                             ) : (
@@ -300,18 +298,17 @@ export const WebsiteTreeViewer: React.FC<WebsiteTreeViewerProp> = (props) => {
                                                         <Menu className={style["http-history-table-drop-down-batch"]}>
                                                             <Menu.Item>
                                                                 <Popconfirm
-                                                                    title={"确定删除选择的URL吗？不可恢复"}
+                                                                    title={i18next.t("确定删除选择的URL吗？不可恢复")}
                                                                     onConfirm={() => {
                                                                         delManyReord()
                                                                     }}
-                                                                >
-                                                                    批量删除
+                                                                >{i18next.t("批量删除")}
                                                                 </Popconfirm>
                                                             </Menu.Item>
                                                             <Menu.Item>
                                                                 <ExportExcel
-                                                                    fileName='网站树视角'
-                                                                    text='批量导出'
+                                                                    fileName={i18next.t("网站树视角")}
+                                                                    text={i18next.t("批量导出")}
                                                                     showButton={false}
                                                                     getData={getData}
                                                                     btnProps={{size: "small"}}
@@ -328,8 +325,7 @@ export const WebsiteTreeViewer: React.FC<WebsiteTreeViewerProp> = (props) => {
                                                         onClick={(e) => {
                                                             e.stopPropagation()
                                                         }}
-                                                    >
-                                                        批量操作
+                                                    >{i18next.t("批量操作")}
                                                         <ChevronDownIcon style={{color: "#85899E"}} />
                                                     </Button>
                                                 </Popover>
@@ -416,12 +412,12 @@ export const WebsiteTreeViewer: React.FC<WebsiteTreeViewerProp> = (props) => {
                                     defaultExpandAll={true}
                                     onRightClick={({event, node}) => {
                                         let data = [
-                                            {key: "bug-test", title: "发送到漏洞检测"},
-                                            {key: "scan-port", title: "发送到端口扫描"},
-                                            {key: "brute", title: "发送到爆破"}
+                                            {key: "bug-test", title: i18next.t("发送到漏洞检测")},
+                                            {key: "scan-port", title: i18next.t("发送到端口扫描")},
+                                            {key: "brute", title: i18next.t("发送到爆破")}
                                         ]
                                         if (node.checkable === false) {
-                                            data.push({key: "del-item", title: "删除该记录"})
+                                            data.push({key: "del-item", title: i18next.t("删除该记录")})
                                         }
                                         showByContextMenu({
                                             data,
@@ -445,7 +441,7 @@ export const WebsiteTreeViewer: React.FC<WebsiteTreeViewerProp> = (props) => {
                                                     .invoke("QueryHTTPFlows", param)
                                                     .then((data: QueryGeneralResponse<HTTPFlow>) => {
                                                         if (data.Total > 100) {
-                                                            failed("该节点下的URL数量超过100个，请缩小范围后再重新操作")
+                                                            failed(i18next.t("该节点下的URL数量超过100个，请缩小范围后再重新操作"))
                                                             return
                                                         }
                                                         ipcRenderer.invoke("send-to-tab", {

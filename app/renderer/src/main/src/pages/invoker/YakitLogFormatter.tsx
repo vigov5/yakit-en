@@ -16,6 +16,7 @@ import {openABSFileLocated} from "../../utils/openWebsite";
 import {callCopyToClipboard} from "../../utils/basic";
 import {RiskDetails} from "../risks/RiskTable";
 import {Risk} from "../risks/schema";
+import i18next from "../../i18n"
 
 export interface YakitLogViewersProp {
     data: ExecResultLog[]
@@ -62,7 +63,7 @@ export const YakitLogFormatter: React.FC<YakitLogFormatterProp> = (props) => {
                         extra={<Space>
                             <Button size={"small"} onClick={() => {
                                 callCopyToClipboard(obj.path)
-                            }}>复制文件名</Button>
+                            }}>{i18next.t("复制文件名")}</Button>
                             <Button
                                 type={"primary"}
                                 size={"small"}
@@ -70,7 +71,7 @@ export const YakitLogFormatter: React.FC<YakitLogFormatterProp> = (props) => {
                                 onClick={() => {
                                     openABSFileLocated(obj.path)
                                 }}
-                            >打开文件位置</Button>
+                            >{i18next.t("打开文件位置")}</Button>
                         </Space>}
                     >
                         <Space direction={"vertical"}>
@@ -78,8 +79,8 @@ export const YakitLogFormatter: React.FC<YakitLogFormatterProp> = (props) => {
                                 {obj.description}
                             </div>}
                             <Space>
-                                {!obj.is_existed && <Tag color={"red"}>未创建成功</Tag>}
-                                {obj.is_dir ? <Tag color={"orange"}>文件夹</Tag> : <Tag>非文件夹</Tag>}
+                                {!obj.is_existed && <Tag color={"red"}>{i18next.t("未创建成功")}</Tag>}
+                                {obj.is_dir ? <Tag color={"orange"}>{i18next.t("文件夹")}</Tag> : <Tag>{i18next.t("非文件夹")}</Tag>}
                                 {obj.file_size && <Tag color={"geekblue"}>{obj.file_size}</Tag>}
                             </Space>
                             <div>{obj.path}</div>
@@ -119,7 +120,7 @@ export const YakitLogFormatter: React.FC<YakitLogFormatterProp> = (props) => {
             return <Space direction={"vertical"} style={{width: "100%"}}>
                 {props.timestamp > 0 &&
                 <Tag color={"geekblue"}>{formatTimestamp(props.timestamp, props.onlyTime)}</Tag>}
-                <Card size={"small"} title={<Tag color={"green"}>模块执行结果</Tag>}>
+                <Card size={"small"} title={<Tag color={"green"}>{i18next.t("模块执行结果")}</Tag>}>
                     {props.data}
                 </Card>
             </Space>
@@ -129,10 +130,10 @@ export const YakitLogFormatter: React.FC<YakitLogFormatterProp> = (props) => {
                 {props.timestamp > 0 &&
                 <Tag color={"geekblue"}>{formatTimestamp(props.timestamp, props.onlyTime)}</Tag>}
                 <Card
-                    size={"small"} title={<Tag color={"green"}>直接结果(表格)</Tag>}
+                    size={"small"} title={<Tag color={"green"}>{i18next.t("直接结果(表格)")}</Tag>}
                     extra={[
                         <Button onClick={e => showModal({
-                            title: "JSON 数据",
+                            title: i18next.t("JSON 数据"),
                             content: <>
                                 {JSON.stringify(obj)}
                             </>
@@ -173,10 +174,10 @@ export const YakitLogFormatter: React.FC<YakitLogFormatterProp> = (props) => {
                 {props.timestamp > 0 &&
                 <Tag color={"geekblue"}>{formatTimestamp(props.timestamp, props.onlyTime)}</Tag>}
                 <Card
-                    size={"small"} title={<Tag color={"green"}>直接结果(图)</Tag>}
+                    size={"small"} title={<Tag color={"green"}>{i18next.t("直接结果(图)")}</Tag>}
                     extra={[
                         <Button onClick={e => showModal({
-                            title: "JSON 数据",
+                            title: i18next.t("JSON 数据"),
                             content: <>
                                 {JSON.stringify(graphData)}
                             </>

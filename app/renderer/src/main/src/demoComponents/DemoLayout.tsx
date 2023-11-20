@@ -15,6 +15,7 @@ import {DemoVirtualTable} from "./virtualTable/VirtualTable"
 import {v4 as uuidv4} from "uuid"
 import {useMemoizedFn} from "ahooks"
 import {YakitButton} from "@/components/yakitUI/YakitButton/YakitButton"
+import i18next from "../i18n"
 interface InfoProps {
     id: number
     name: string
@@ -98,9 +99,9 @@ export const DemoLayout: React.FC<any> = (p) => {
                     value={oneSelect}
                     setValue={setOneSelect}
                     formItemStyle={{width: "80%"}}
-                    label='单选下拉框'
-                    help='这里是帮助信息'
-                    placeholder='请选择'
+                    label={i18next.t("单选下拉框")}
+                    help={i18next.t("这里是帮助信息")}
+                    placeholder={i18next.t("请选择")}
                     data={[
                         {label: "1", value: 1},
                         {label: "2", value: 2},
@@ -112,9 +113,9 @@ export const DemoLayout: React.FC<any> = (p) => {
                     value={multiSelect}
                     setValue={setMultiSelect}
                     formItemStyle={{width: "80%"}}
-                    label='多选下拉框'
-                    help='这里是帮助信息'
-                    placeholder='请选择'
+                    label={i18next.t("多选下拉框")}
+                    help={i18next.t("这里是帮助信息")}
+                    placeholder={i18next.t("请选择")}
                     allowClear={true}
                     data={[
                         {label: "1", value: "1"},
@@ -127,15 +128,15 @@ export const DemoLayout: React.FC<any> = (p) => {
                     value={switchValue}
                     setValue={setSwitchValue}
                     formItemStyle={{width: "80%"}}
-                    label='开关'
-                    help='这里是帮助信息'
+                    label={i18next.t("开关")}
+                    help={i18next.t("这里是帮助信息")}
                 />
                 <DemoItemRadio
                     value={radios}
                     setValue={setRadios}
                     formItemStyle={{width: "80%"}}
-                    label='单选组'
-                    help='这里是帮助信息'
+                    label={i18next.t("单选组")}
+                    help={i18next.t("这里是帮助信息")}
                     data={[
                         {label: "1", value: "1"},
                         {label: "2", value: "2"},
@@ -147,8 +148,8 @@ export const DemoLayout: React.FC<any> = (p) => {
                     value={radiosButton}
                     setValue={setRadiosButton}
                     formItemStyle={{width: "80%"}}
-                    label='单选按钮组'
-                    help='这里是帮助信息'
+                    label={i18next.t("单选按钮组")}
+                    help={i18next.t("这里是帮助信息")}
                     data={[
                         {label: "1", value: "1"},
                         {label: "2", value: "2"},
@@ -160,8 +161,8 @@ export const DemoLayout: React.FC<any> = (p) => {
                     value={checkboxs}
                     setValue={setCheckboxs}
                     formItemStyle={{width: "80%"}}
-                    label='复选框'
-                    help='这里是帮助信息'
+                    label={i18next.t("复选框")}
+                    help={i18next.t("这里是帮助信息")}
                     data={[
                         {label: "1", value: "1"},
                         {label: "2", value: "2"},
@@ -173,18 +174,18 @@ export const DemoLayout: React.FC<any> = (p) => {
                     value={inputs}
                     setValue={setInputs}
                     formItemStyle={{width: "80%"}}
-                    label='输入框'
-                    help='这里是帮助信息'
+                    label={i18next.t("输入框")}
+                    help={i18next.t("这里是帮助信息")}
                     required={true}
-                    placeholder='提示信息'
+                    placeholder={i18next.t("提示信息")}
                 />
                 <DemoItemTextArea
                     value={textareas}
                     setValue={setTextareas}
                     formItemStyle={{width: "80%"}}
-                    label='文本域'
-                    help='这里是帮助信息'
-                    placeholder='提示信息'
+                    label={i18next.t("文本域")}
+                    help={i18next.t("这里是帮助信息")}
+                    placeholder={i18next.t("提示信息")}
                     allowClear={true}
                     autoSize={{minRows: 1, maxRows: 3}}
                 />
@@ -192,18 +193,18 @@ export const DemoLayout: React.FC<any> = (p) => {
                     value={autoCompletes}
                     setValue={setAutoCompletes}
                     formItemStyle={{width: "80%"}}
-                    label='提示输入框'
-                    help='这里是帮助信息'
-                    placeholder='提示信息'
+                    label={i18next.t("提示输入框")}
+                    help={i18next.t("这里是帮助信息")}
+                    placeholder={i18next.t("提示信息")}
                     allowClear={true}
-                    autoComplete={["真的加的1", "真的加的2", "真的加的3", "真的加的4"]}
+                    autoComplete={[i18next.t("真的加的1"), i18next.t("真的加的2"), i18next.t("真的加的3"), i18next.t("真的加的4")]}
                 />
                 <DemoItemInputInteger
                     value={integers}
                     setValue={setIntegers}
                     formItemStyle={{width: "80%"}}
-                    label='整数框'
-                    help='这里是帮助信息'
+                    label={i18next.t("整数框")}
+                    help={i18next.t("这里是帮助信息")}
                     min={0}
                     max={10}
                 />
@@ -211,8 +212,8 @@ export const DemoLayout: React.FC<any> = (p) => {
                     value={floats}
                     setValue={setFloats}
                     formItemStyle={{width: "80%"}}
-                    label='浮点数框'
-                    help='这里是帮助信息'
+                    label={i18next.t("浮点数框")}
+                    help={i18next.t("这里是帮助信息")}
                     min={0}
                     max={10}
                     precision={2}
@@ -221,23 +222,23 @@ export const DemoLayout: React.FC<any> = (p) => {
                     value={path}
                     setValue={setPath}
                     formItemStyle={{width: "80%"}}
-                    label='input文件框'
-                    help='这里是帮助信息'
+                    label={i18next.t("input文件框")}
+                    help={i18next.t("这里是帮助信息")}
                 />
                 <DemoItemInputDraggerPath
                     value={path}
                     setValue={setPath}
                     formItemStyle={{width: "80%"}}
-                    label='textarea文件框'
-                    help='这里是帮助信息'
+                    label={i18next.t("textarea文件框")}
+                    help={i18next.t("这里是帮助信息")}
                     renderType='textarea'
                 />
                 <DemoItemInputDraggerPath
                     value={path}
                     setValue={setPath}
                     formItemStyle={{width: "80%"}}
-                    label='textarea文件夹框'
-                    help='这里是帮助信息'
+                    label={i18next.t("textarea文件夹框")}
+                    help={i18next.t("这里是帮助信息")}
                     selectType='folder'
                     renderType='textarea'
                 />
@@ -245,8 +246,8 @@ export const DemoLayout: React.FC<any> = (p) => {
             <div style={{width: "60%", height: "100%", display: "flex", flexDirection: "column"}}>
                 <div style={{width: "100%", height: 450, overflow: "hidden", display: "flex", flexDirection: "column"}}>
                     <div style={{display: "flex", gap: 10}}>
-                        <YakitButton onClick={() => setTriggetClear(!triggerClear)}>清空数据</YakitButton>
-                        <YakitButton onClick={() => setIsStop(!isStop)}>{isStop ? "开始更新" : "停止更新"}</YakitButton>
+                        <YakitButton onClick={() => setTriggetClear(!triggerClear)}>{i18next.t("清空数据")}</YakitButton>
+                        <YakitButton onClick={() => setIsStop(!isStop)}>{isStop ? i18next.t("开始更新") : i18next.t("停止更新")}</YakitButton>
                     </div>
                     <DemoVirtualTable
                         isTopLoadMore={true}
@@ -263,22 +264,22 @@ export const DemoLayout: React.FC<any> = (p) => {
                             },
                             {
                                 key: "name",
-                                headerTitle: "名字"
+                                headerTitle: i18next.t("名字")
                             },
                             {
                                 key: "time",
-                                headerTitle: "时间"
+                                headerTitle: i18next.t("时间")
                             },
                             {
                                 key: "content",
-                                headerTitle: "内容"
+                                headerTitle: i18next.t("内容")
                             },
                             {
                                 key: "op",
-                                headerTitle: "操作",
+                                headerTitle: i18next.t("操作"),
                                 width: 100,
                                 colRender: (info) => {
-                                    return <YakitButton type='text'>详情</YakitButton>
+                                    return <YakitButton type='text'>{i18next.t("详情")}</YakitButton>
                                 }
                             }
                         ]}

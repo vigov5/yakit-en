@@ -24,6 +24,7 @@ import {failed, info} from "../../utils/notification";
 import {ItemSelects} from "../../components/baseTemplate/FormItemUtil";
 import {getRemoteValue, setRemoteValue} from "@/utils/kv";
 import { YakParamProps } from "../plugins/pluginsType";
+import i18next from "../../i18n"
 
 const {Title} = Typography;
 
@@ -123,9 +124,9 @@ export const YakScriptParamsSetter: React.FC<YakScriptParamsSetterProps> = (prop
                             origin.Value = value.Value
                         })
                     })
-                    info("加载调试参数成功")
+                    info(i18next.t("加载调试参数成功"))
                 } catch (e) {
-                    failed("加载调试参数失败")
+                    failed(i18next.t("加载调试参数失败"))
                 }
             }).finally(() => {
                 setOriginParams(cloneParams)
@@ -185,9 +186,9 @@ export const YakScriptParamsSetter: React.FC<YakScriptParamsSetterProps> = (prop
                 validator: async (rule, value) => {
                     if (i.TypeVerbose === "boolean") return
                     else if (i.TypeVerbose === "float") {
-                        if (value === undefined || value === null) throw new Error('该参数为必填项!')
+                        if (value === undefined || value === null) throw new Error(i18next.t("该参数为必填项!"))
                     } else {
-                        if (required && (value || []).length === 0) throw new Error('该参数为必填项!')
+                        if (required && (value || []).length === 0) throw new Error(i18next.t("该参数为必填项!"))
                     }
                 }
             }]}
@@ -226,7 +227,7 @@ export const YakScriptParamsSetter: React.FC<YakScriptParamsSetterProps> = (prop
         try {
             extraSetting = JSON.parse(i.ExtraSetting || "{}")
         } catch (error) {
-            failed("获取参数配置数据错误，请重新打开该页面")
+            failed(i18next.t("获取参数配置数据错误，请重新打开该页面"))
         }
 
         if (i.TypeVerbose === "upload-path") {
@@ -279,8 +280,7 @@ export const YakScriptParamsSetter: React.FC<YakScriptParamsSetterProps> = (prop
                             ),
                             required: required,
                             help: (
-                                <div className='content-upload-input-help'>
-                                    点击此处
+                                <div className='content-upload-input-help'>{i18next.t("点击此处")}
                                     <Upload
                                         // accept={"text/plain"}
                                         accept={"*"}
@@ -292,7 +292,7 @@ export const YakScriptParamsSetter: React.FC<YakScriptParamsSetterProps> = (prop
                                             return false
                                         }}
                                     >
-                                        <span className='help-hint-title'>上传文件</span>
+                                        <span className='help-hint-title'>{i18next.t("上传文件")}</span>
                                     </Upload>
                                     <Divider style={{margin: "0 5px"}} type="vertical"/>
                                     <Upload
@@ -305,14 +305,14 @@ export const YakScriptParamsSetter: React.FC<YakScriptParamsSetterProps> = (prop
                                             return false
                                         }}
                                     >
-                                        <span className='help-hint-title'>上传文件夹</span>
+                                        <span className='help-hint-title'>{i18next.t("上传文件夹")}</span>
                                     </Upload>
                                 </div>
                             ),
                             name: ["originParams", `${index}`, "Value"],
                             rules: [{
                                 validator: async (rule, value) => {
-                                    if (required && (value || []).length === 0) throw new Error('该参数为必填项!')
+                                    if (required && (value || []).length === 0) throw new Error(i18next.t("该参数为必填项!"))
                                 }
                             }],
                         }}
@@ -324,7 +324,7 @@ export const YakScriptParamsSetter: React.FC<YakScriptParamsSetterProps> = (prop
                                 form.setFieldsValue({originParams: {...originParams}})
                             },
                             value: i.Value,
-                            placeholder: "获取文件路径，支持多选文件，文件夹，路径以逗号分隔",
+                            placeholder: i18next.t("获取文件路径，支持多选文件，文件夹，路径以逗号分隔"),
                             disabled: disabled
                         }}
                         textarea={{
@@ -336,7 +336,7 @@ export const YakScriptParamsSetter: React.FC<YakScriptParamsSetterProps> = (prop
                             },
                             rows: 1,
                             value: i.Value,
-                            placeholder: "获取文件路径，支持多选文件，文件夹，路径以逗号分隔",
+                            placeholder: i18next.t("获取文件路径，支持多选文件，文件夹，路径以逗号分隔"),
                             disabled: disabled
                         }}
                     />
@@ -365,7 +365,7 @@ export const YakScriptParamsSetter: React.FC<YakScriptParamsSetterProps> = (prop
                         required: required,
                         rules: [{
                             validator: async (rule, value) => {
-                                if (required && (value || []).length === 0) throw new Error('该参数为必填项!')
+                                if (required && (value || []).length === 0) throw new Error(i18next.t("该参数为必填项!"))
                             }
                         }],
                     }}
@@ -482,8 +482,7 @@ export const YakScriptParamsSetter: React.FC<YakScriptParamsSetterProps> = (prop
                         return <div key={`${index}`}>
                             <Title level={5} style={{fontSize: 14}}>
                                 <Space>
-                                    <span>
-                                    参数组：{i}
+                                    <span>{i18next.t("参数组：")}{i}
                                     </span>
                                     <Switch
                                         size={"small"}
@@ -542,8 +541,7 @@ export const YakScriptParamsSetter: React.FC<YakScriptParamsSetterProps> = (prop
                                         onClick={() => {
                                             if (props.onClearData) props.onClearData()
                                         }}
-                                    >
-                                        清除缓存
+                                    >{i18next.t("清除缓存")}
                                     </Button>
                                 )}
                                 {groupToParams.current.size > 0 &&
@@ -552,12 +550,11 @@ export const YakScriptParamsSetter: React.FC<YakScriptParamsSetterProps> = (prop
                                     ""
                                 ) : (
                                     <Popover
-                                        title={"设置额外参数"}
+                                        title={i18next.t("设置额外参数")}
                                         trigger={"click"}
                                         content={<div style={{width: 700}}>{renderExtraParams(true)}</div>}
                                     >
-                                        <Button size={"small"} type={"link"}>
-                                            额外参数
+                                        <Button size={"small"} type={"link"}>{i18next.t("额外参数")}
                                         </Button>
                                     </Popover>
                                 ))}
@@ -570,11 +567,11 @@ export const YakScriptParamsSetter: React.FC<YakScriptParamsSetterProps> = (prop
                                         }}
                                         type={"primary"}
                                     >
-                                        {props.cancelVerbose ? props.cancelVerbose : "停止任务"}
+                                        {props.cancelVerbose ? props.cancelVerbose : i18next.t("停止任务")}
                                     </Button>
                                 ) : (
                                     <Button style={{width: 120}} htmlType={"submit"} type={"primary"}>
-                                        {props.submitVerbose ? props.submitVerbose : "启动任务"}
+                                        {props.submitVerbose ? props.submitVerbose : i18next.t("启动任务")}
                                     </Button>
                                 )}
                             </Space>
@@ -592,22 +589,19 @@ export const YakScriptParamsSetter: React.FC<YakScriptParamsSetterProps> = (prop
                                             if (props.onCanceled) props.onCanceled()
                                         }}
                                         type={"primary"}
-                                    >
-                                        停止任务
+                                    >{i18next.t("停止任务")}
                                     </Button>
                                 ) : (
-                                    <Button style={{width: 200}} htmlType={"submit"} type={"primary"}>
-                                        启动任务
+                                    <Button style={{width: 200}} htmlType={"submit"} type={"primary"}>{i18next.t("启动任务")}
                                     </Button>
                                 )}
                                 {groupToParams.current.size > 0 && (
                                     <Popover
-                                        title={"设置额外参数"}
+                                        title={i18next.t("设置额外参数")}
                                         trigger={"click"}
                                         content={<div style={{width: 700}}>{renderExtraParams(true)}</div>}
                                     >
-                                        <Button size={"small"} type={"link"}>
-                                            额外参数
+                                        <Button size={"small"} type={"link"}>{i18next.t("额外参数")}
                                         </Button>
                                     </Popover>
                                 )}
@@ -639,10 +633,9 @@ export const YakScriptParamsSetter: React.FC<YakScriptParamsSetterProps> = (prop
                 {requiredParams.length > 0 && <>
                     <Title level={5} style={{fontSize: 14}}>
                         <Space>
-                        <span>
-                        必要参数
+                        <span>{i18next.t("必要参数")}
                         </span>
-                            <Tooltip title={'执行该脚本不可或缺的参数 / Necessary Params'}>
+                            <Tooltip title={i18next.t("执行该脚本不可或缺的参数 / Necessary Params")}>
                                 <Button icon={<QuestionOutlined/>} type={"link"} size={"small"}/>
                             </Tooltip>
                         </Space>
@@ -654,11 +647,11 @@ export const YakScriptParamsSetter: React.FC<YakScriptParamsSetterProps> = (prop
                 </>}
                 {renderExtraParams()}
                 {originParams.length <= 0 && <Form.Item label={" "} colon={false}>
-                    <h2>本模块无需设置额外参数</h2>
+                    <h2>{i18next.t("本模块无需设置额外参数")}</h2>
                 </Form.Item>}
                 <Form.Item colon={false} label={" "}>
                     <Button type="primary" loading={!!props.loading}
-                            htmlType="submit"> {props.submitVerbose ? props.submitVerbose : "提交已设置的参数"} </Button>
+                            htmlType="submit"> {props.submitVerbose ? props.submitVerbose : i18next.t("提交已设置的参数")} </Button>
                 </Form.Item>
             </Form>
         </Card>

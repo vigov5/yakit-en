@@ -72,6 +72,7 @@ import {SavePluginInfoSignalProps} from "../editDetails/PluginEditDetails"
 
 import "../plugins.scss"
 import styles from "./PluginsLocal.module.scss"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -255,7 +256,7 @@ export const PluginsLocal: React.FC<PluginsLocalProps> = React.memo((props) => {
                 })
                 .catch(() => {
                     fetchList(true)
-                    yakitNotify("error", "查询最新的本地数据失败,自动刷新列表")
+                    yakitNotify("error", i18next.t("查询最新的本地数据失败,自动刷新列表"))
                 })
         }
     })
@@ -270,7 +271,7 @@ export const PluginsLocal: React.FC<PluginsLocalProps> = React.memo((props) => {
             }, 200)
         },
         onUploadError: () => {
-            yakitNotify("error", "上传失败")
+            yakitNotify("error", i18next.t("上传失败"))
         }
     })
     const onRefLocalPluginList = useMemoizedFn(() => {
@@ -415,7 +416,7 @@ export const PluginsLocal: React.FC<PluginsLocalProps> = React.memo((props) => {
     /** 上传 */
     const onUploadPlugin = useMemoizedFn(async (data: YakScript) => {
         if (!userInfo.isLogin) {
-            yakitNotify("error", "登录后才可上传插件")
+            yakitNotify("error", i18next.t("登录后才可上传插件"))
             return
         }
         uploadPluginRef.current = data
@@ -430,7 +431,7 @@ export const PluginsLocal: React.FC<PluginsLocalProps> = React.memo((props) => {
         } else {
             const m = showYakitModal({
                 type: "white",
-                title: "上传插件",
+                title: i18next.t("上传插件"),
                 content: (
                     <PluginLocalUploadSingle
                         plugin={data}
@@ -594,7 +595,7 @@ export const PluginsLocal: React.FC<PluginsLocalProps> = React.memo((props) => {
     /**导出插件 */
     const onExport = useMemoizedFn((Ids: number[], callback?: () => void) => {
         showYakitModal({
-            title: "导出插件配置",
+            title: i18next.t("导出插件配置"),
             width: "40%",
             footer: null,
             content: (
@@ -673,13 +674,13 @@ export const PluginsLocal: React.FC<PluginsLocalProps> = React.memo((props) => {
     // })
     const onBatchUpload = useMemoizedFn((selectScriptNameList: string[]) => {
         if (!userInfo.isLogin) {
-            yakitNotify("error", "请登录后上传")
+            yakitNotify("error", i18next.t("请登录后上传"))
             return
         }
         if (selectScriptNameList.length === 0) return
         const m = showYakitModal({
             type: "white",
-            title: "批量上传插件",
+            title: i18next.t("批量上传插件"),
             content: (
                 <PluginLocalUpload
                     pluginNames={selectScriptNameList}
@@ -743,7 +744,7 @@ export const PluginsLocal: React.FC<PluginsLocalProps> = React.memo((props) => {
                 />
             )}
             <PluginsLayout
-                title='本地插件'
+                title={i18next.t("本地插件")}
                 hidden={!!plugin}
                 subTitle={<TypeSelect active={pluginTypeSelect} list={DefaultTypeList} setActive={onSetActive} />}
                 extraHeader={
@@ -754,7 +755,7 @@ export const PluginsLocal: React.FC<PluginsLocalProps> = React.memo((props) => {
                             <FuncFilterPopover
                                 maxWidth={1200}
                                 icon={<SolidChevrondownIcon />}
-                                name='批量操作'
+                                name={i18next.t("批量操作")}
                                 disabled={selectNum === 0}
                                 button={{
                                     type: "outline2",
@@ -763,9 +764,9 @@ export const PluginsLocal: React.FC<PluginsLocalProps> = React.memo((props) => {
                                 menu={{
                                     type: "primary",
                                     data: [
-                                        {key: "export", label: "导出"},
-                                        {key: "upload", label: "上传", disabled: allCheck},
-                                        {key: "remove", label: "删除"}
+                                        {key: "export", label: i18next.t("导出")},
+                                        {key: "upload", label: i18next.t("上传"), disabled: allCheck},
+                                        {key: "remove", label: i18next.t("删除")}
                                         // {key: "addToGroup", label: "添加至分组", disabled: allCheck} //第二版放出来
                                     ],
                                     onClick: ({key}) => {
@@ -795,7 +796,7 @@ export const PluginsLocal: React.FC<PluginsLocalProps> = React.memo((props) => {
                                 maxWidth={1050}
                                 icon={<SolidPluscircleIcon />}
                                 size='large'
-                                name='新建插件'
+                                name={i18next.t("新建插件")}
                                 onClick={onNewAddPlugin}
                             />
                         </div>
@@ -887,20 +888,18 @@ export const PluginsLocal: React.FC<PluginsLocalProps> = React.memo((props) => {
                         ) : (
                             <div className={styles["plugin-local-empty"]}>
                                 <YakitEmpty
-                                    title='暂无数据'
-                                    description='可新建插件同步至云端，创建属于自己的插件'
+                                    title={i18next.t("暂无数据")}
+                                    description={i18next.t("可新建插件同步至云端，创建属于自己的插件")}
                                     style={{marginTop: 80}}
                                 />
                                 <div className={styles["plugin-local-buttons"]}>
-                                    <YakitButton type='outline1' icon={<OutlinePlusIcon />} onClick={onNewAddPlugin}>
-                                        新建插件
+                                    <YakitButton type='outline1' icon={<OutlinePlusIcon />} onClick={onNewAddPlugin}>{i18next.t("新建插件")}
                                     </YakitButton>
                                     <YakitButton
                                         type='outline1'
                                         icon={<OutlineRefreshIcon />}
                                         onClick={onRefListAndTotalAndGroup}
-                                    >
-                                        刷新
+                                    >{i18next.t("刷新")}
                                     </YakitButton>
                                 </div>
                             </div>
@@ -911,13 +910,12 @@ export const PluginsLocal: React.FC<PluginsLocalProps> = React.memo((props) => {
             <AddLocalPluginGroup visible={addGroupVisible} setVisible={setAddGroupVisible} checkList={checkList} />
             <YakitHint
                 visible={removeCheckVisible}
-                title='是否要删除插件'
-                content='确认删除后，插件将彻底删除'
+                title={i18next.t("是否要删除插件")}
+                content={i18next.t("确认删除后，插件将彻底删除")}
                 onOk={onPluginRemoveCheckOk}
                 onCancel={() => setRemoveCheckVisible(false)}
                 footerExtra={
-                    <YakitCheckbox checked={pluginRemoveCheck} onChange={(e) => setPluginRemoveCheck(e.target.checked)}>
-                        下次不再提醒
+                    <YakitCheckbox checked={pluginRemoveCheck} onChange={(e) => setPluginRemoveCheck(e.target.checked)}>{i18next.t("下次不再提醒")}
                     </YakitCheckbox>
                 }
             />
@@ -946,11 +944,11 @@ export const LocalExtraOperate: React.FC<LocalExtraOperateProps> = React.memo((p
     const onEdit = useMemoizedFn((e) => {
         e.stopPropagation()
         if (data.IsCorePlugin) {
-            yakitNotify("error", "内置插件无法编辑，建议复制源码新建插件进行编辑。")
+            yakitNotify("error", i18next.t("内置插件无法编辑，建议复制源码新建插件进行编辑。"))
             return
         }
         if (data.Type === "packet-hack") {
-            yakitNotify("error", "该类型已下架，不可编辑")
+            yakitNotify("error", i18next.t("该类型已下架，不可编辑"))
             return
         }
         onEditPlugin()
@@ -977,16 +975,16 @@ export const LocalExtraOperate: React.FC<LocalExtraOperateProps> = React.memo((p
             {removeLoading ? (
                 <LoadingOutlined className={styles["loading-icon"]} />
             ) : (
-                <Tooltip title='删除' destroyTooltipOnHide={true}>
+                <Tooltip title={i18next.t("删除")} destroyTooltipOnHide={true}>
                     <YakitButton type='text2' icon={<OutlineTrashIcon onClick={onRemove} />} />
                 </Tooltip>
             )}
             <div className='divider-style' />
-            <Tooltip title='导出' destroyTooltipOnHide={true}>
+            <Tooltip title={i18next.t("导出")} destroyTooltipOnHide={true}>
                 <YakitButton type='text2' icon={<OutlineExportIcon onClick={onExport} />} />
             </Tooltip>
             <div className='divider-style' />
-            <Tooltip title='编辑' destroyTooltipOnHide={true}>
+            <Tooltip title={i18next.t("编辑")} destroyTooltipOnHide={true}>
                 <YakitButton type='text2' icon={<OutlinePencilaltIcon onClick={onEdit} />} />
             </Tooltip>
             {isShowUpload && (
@@ -997,8 +995,7 @@ export const LocalExtraOperate: React.FC<LocalExtraOperateProps> = React.memo((p
                         onClick={onUpload}
                         className={styles["cloud-upload-icon"]}
                         loading={uploadLoading}
-                    >
-                        上传
+                    >{i18next.t("上传")}
                     </YakitButton>
                 </>
             )}

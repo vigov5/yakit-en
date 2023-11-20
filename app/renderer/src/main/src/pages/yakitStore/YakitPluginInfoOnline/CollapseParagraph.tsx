@@ -1,6 +1,7 @@
 import React, {ReactNode, useState} from "react"
 import {Typography} from "antd"
 import {ParagraphProps} from "antd/lib/typography/Paragraph"
+import i18next from "../../../i18n"
 
 import "./CollapseParagraph.scss"
 
@@ -32,7 +33,7 @@ export const CollapseParagraph: React.FC<CollapseParagraphProps> = (props) => {
                     rows: !!isLine ? rows + 2 : rows,
                     expandable: true,
                     onExpand: onExpand,
-                    symbol: !!isLine ? <div className='collapse-paragraph-expand-btn'>展开</div> : "展开"
+                    symbol: !!isLine ? <div className='collapse-paragraph-expand-btn'>{i18next.t("展开")}</div> : i18next.t("展开")
                 }}
                 {...valueConfig}
                 className="paragraph"
@@ -40,13 +41,11 @@ export const CollapseParagraph: React.FC<CollapseParagraphProps> = (props) => {
                 {children}
                 {value}
                 {!!isLine && !fold && (
-                    <div className='collapse-paragraph-collapse-btn' onClick={onCollapse}>
-                        收起
+                    <div className='collapse-paragraph-collapse-btn' onClick={onCollapse}>{i18next.t("收起")}
                     </div>
                 )}
                 {!isLine && !fold && (
-                    <span className='collapse-paragraph-collapse-btn' onClick={onCollapse}>
-                        收起
+                    <span className='collapse-paragraph-collapse-btn' onClick={onCollapse}>{i18next.t("收起")}
                     </span>
                 )}
             </Paragraph>

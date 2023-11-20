@@ -8,6 +8,7 @@ import moment from "moment";
 import {YakScriptParamsSetter} from "../YakScriptParamsSetter";
 import {ImportMenuConfig} from "./consts_importConfigYakCode";
 import {startExecYakCode} from "../../../utils/basic";
+import i18next from "../../../i18n"
 
 export interface SaveConfigProp {
     QueryConfig: SimpleQueryYakScriptSchema
@@ -34,17 +35,17 @@ export const SaveConfig: React.FC<SaveConfigProp> = (props) => {
                 }
             }}
         >
-            <InputItem required={true} label={"一级菜单组"} setValue={Group => setParams({...params, group: Group})}
+            <InputItem required={true} label={i18next.t("一级菜单组")} setValue={Group => setParams({...params, group: Group})}
                        value={params.group}/>
-            <InputItem required={true} label={"二级菜单"} setValue={Name => setParams({...params, name: Name})}
+            <InputItem required={true} label={i18next.t("二级菜单")} setValue={Name => setParams({...params, name: Name})}
                        value={params.name}/>
-            <Form.Item label={"内容"}>
+            <Form.Item label={i18next.t("内容")}>
                 <div style={{height: 300}}>
                     <YakEditor type={"http"} readOnly={true} value={JSON.stringify(params.query)}/>
                 </div>
             </Form.Item>
             <Form.Item colon={false} label={" "}>
-                <Button type="primary" htmlType="submit"> 保存到本地 </Button>
+                <Button type="primary" htmlType="submit">{i18next.t("保存到本地")} </Button>
             </Form.Item>
         </Form>
     </div>
@@ -59,7 +60,7 @@ export const ImportConfig: React.FC<ImportConfigProp> = (props) => {
         <YakScriptParamsSetter
             Params={ImportMenuConfig.Params} primaryParamsOnly={true}
             onParamsConfirm={params => {
-                startExecYakCode("导入配置", {
+                startExecYakCode(i18next.t("导入配置"), {
                     Script: ImportMenuConfig.Code,
                     Params: params,
                 })

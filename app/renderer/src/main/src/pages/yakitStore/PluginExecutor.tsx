@@ -9,6 +9,7 @@ import { PluginResultUI } from "./viewers/base"
 import useHoldingIPCRStream from "../../hook/useHoldingIPCRStream"
 import { useMemoizedFn } from "ahooks"
 import "./PluginExecutor.scss"
+import i18next from "../../i18n"
 
 export interface PluginExecutorProp {
     script: YakScript
@@ -76,7 +77,7 @@ export const PluginExecutor: React.FC<PluginExecutorProp> = (props) => {
                         ipcRenderer.invoke("cancel-exec-yak-script", token)
                     }}
                     styleSize={props.size}
-                    submitVerbose={"开始执行"}
+                    submitVerbose={i18next.t("开始执行")}
                     primaryParamsOnly={true}
                 />
             </PageHeader>

@@ -7,6 +7,7 @@ import {LogLevelToCode} from "../../../components/HTTPFlowTable/HTTPFlowTable";
 import {showModal} from "../../../utils/showModal";
 import {Header} from "antd/es/layout/layout";
 import {useMemoizedFn} from "ahooks";
+import i18next from "../../../i18n"
 
 const {Text} = Typography;
 
@@ -73,7 +74,7 @@ export const ExecResultsViewer: React.FC<ExecResultsViewerProp> = (props) => {
         let progressBars: { id: string, node: React.ReactNode }[] = [];
         progressTable.forEach((v, k) => {
             progressBars.push({
-                id: k, node: <Card size={"small"} hoverable={false} bordered={true} title={`任务进度ID：${k}`}>
+                id: k, node: <Card size={"small"} hoverable={false} bordered={true} title={i18next.t("任务进度ID：${k}", { v1: k })}>
                     <Progress percent={parseInt((v * 100).toFixed(0))} status="active"/>
                 </Card>,
             })
@@ -84,8 +85,7 @@ export const ExecResultsViewer: React.FC<ExecResultsViewerProp> = (props) => {
             {haveCriticalResult && <Alert
                 style={{marginBottom: 8}}
                 type={"success"}
-                message={<div>
-                    ATTENTION: 本 PoC 输出相对关键的信息 / There is something important from current PoC.
+                message={<div>{i18next.t("ATTENTION: 本 PoC 输出相对关键的信息 / There is something important from current PoC.")}
                 </div>}
             />}
             {progressBars.map(i => i.node)}
@@ -119,14 +119,14 @@ export const ExecResultsViewer: React.FC<ExecResultsViewerProp> = (props) => {
         }} bordered={false} onClick={e => {
             showModal({
                 width: "75%",
-                title: "任务进度详情",
+                title: i18next.t("任务进度详情"),
                 content: <>
                     {full()}
                 </>
             })
         }}>
             <Space>
-                {haveCriticalResult ? <Tag color={"red"}>HIT</Tag> : <Tag color={"gray"}>暂无结果</Tag>}
+                {haveCriticalResult ? <Tag color={"red"}>HIT</Tag> : <Tag color={"gray"}>{i18next.t("暂无结果")}</Tag>}
                 {progressTable.size > 0 ? <Space>
                     {progressOneLine.map(i => i.node)}
                 </Space> : undefined}

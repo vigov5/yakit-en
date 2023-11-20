@@ -6,12 +6,13 @@ import {useDebounce, useGetState} from "ahooks"
 import ReactResizeDetector from "react-resize-detector"
 import {AutoCard} from "../../components/AutoCard"
 import {YakEditor} from "../../utils/editors"
+import i18next from "../../i18n"
 
 import "./reverseTable.scss"
 
 const DefaultType: {label: string; value: string}[] = [
-    {value: "rmi", label: "RMI连接"},
-    {value: "rmi-handshake", label: "RMI握手"},
+    {value: "rmi", label: i18next.t("RMI连接")},
+    {value: "rmi-handshake", label: i18next.t("RMI握手")},
     {value: "http", label: "HTTP"},
     {value: "https", label: "HTTPS"},
     {value: "tcp", label: "TCP"},
@@ -82,14 +83,13 @@ export const ReverseTable: React.FC<ReverseTableProps> = (props) => {
                 refreshRate={50}
             />
             <div className={`reverse-table-header ${width >= maxWidth ? "header-style" : "header-extra-style"}`}>
-                <div className='header-title title-style'>
-                    返回结果
+                <div className='header-title title-style'>{i18next.t("返回结果")}
                     {total !== undefined && <div className='header-title-total'>Total {total}</div>}
                 </div>
                 <Spin spinning={!!loading}>
                     <div className='header-extra'>
                         <div className='extra-opt'>
-                            <div className='opt-title'>只看 Token</div>
+                            <div className='opt-title'>{i18next.t("只看 Token")}</div>
                             <Switch
                                 size='small'
                                 checked={hasToken}
@@ -101,7 +101,7 @@ export const ReverseTable: React.FC<ReverseTableProps> = (props) => {
                         </div>
 
                         <div className='extra-opt'>
-                            <div className='opt-title'>类型</div>
+                            <div className='opt-title'>{i18next.t("类型")}</div>
                             <Select
                                 size='small'
                                 mode='multiple'
@@ -115,8 +115,7 @@ export const ReverseTable: React.FC<ReverseTableProps> = (props) => {
                                 maxTagCount='responsive'
                             />
                         </div>
-                        <Button danger={true} size='small' className='extra-opt' onClick={clearData}>
-                            清空
+                        <Button danger={true} size='small' className='extra-opt' onClick={clearData}>{i18next.t("清空")}
                         </Button>
                         {isShowExtra && (
                             <Button
@@ -154,7 +153,7 @@ export const ReverseTable: React.FC<ReverseTableProps> = (props) => {
                     columns={[
                         {
                             width: 120,
-                            title: "反连类型",
+                            title: i18next.t("反连类型"),
                             render: (i: ReverseNotification) => {
                                 const selectTag = DefaultType.filter((item) => item.value === i.type)
                                 let label = ""
@@ -185,7 +184,7 @@ export const ReverseTable: React.FC<ReverseTableProps> = (props) => {
                             )
                         },
                         {
-                            title: "连接来源",
+                            title: i18next.t("连接来源"),
                             render: (i: ReverseNotification) => (
                                 <CopyableField text={i.remote_addr} noCopy={!i.remote_addr} />
                             )
@@ -195,7 +194,7 @@ export const ReverseTable: React.FC<ReverseTableProps> = (props) => {
                             render: (i: ReverseNotification) => <CopyableField text={i.token} noCopy={!i.token} />
                         },
                         {
-                            title: "响应",
+                            title: i18next.t("响应"),
                             render: (i: ReverseNotification) => i.response_info
                         }
                     ]}

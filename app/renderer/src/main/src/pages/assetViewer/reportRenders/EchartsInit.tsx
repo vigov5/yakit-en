@@ -3,6 +3,7 @@ import * as echarts from "echarts"
 import styles from "./EchartsInit.module.scss"
 import classNames from "classnames"
 import { useSize } from "ahooks"
+import i18next from "../../../i18n"
 
 interface VerticalOptionBarProps {
     content: any
@@ -57,7 +58,7 @@ export const VerticalOptionBar: React.FC<VerticalOptionBarProps> = (props) => {
         ]
     })
     useEffect(() => {
-        if (content?.type_verbose === "通用KV") {
+        if (content?.type_verbose === i18next.t("通用KV")) {
             const {name_verbose, name, data, complexity_group, access_vector} = content
 
             let title: string[] = []
@@ -131,7 +132,7 @@ export const StackedVerticalBar: React.FC<VerticalOptionBarProps> = (props) => {
     const optionRef = useRef<any>({
         title: {
             left: "center",
-            text: "柱状图标题"
+            text: i18next.t("柱状图标题")
         },
         tooltip: {
             trigger: "axis",
@@ -143,7 +144,7 @@ export const StackedVerticalBar: React.FC<VerticalOptionBarProps> = (props) => {
             orient: "vertical", // 垂直方向
             y: "center",
             right: 0,
-            data: ["严重", "高危", "中危", "低危"]
+            data: [i18next.t("严重"), i18next.t("高危"), i18next.t("中危"), i18next.t("低危")]
         },
         grid: {
             left: "6%",
@@ -156,12 +157,12 @@ export const StackedVerticalBar: React.FC<VerticalOptionBarProps> = (props) => {
             data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
         },
         yAxis: {
-            name: "风险数(个)",
+            name: i18next.t("风险数(个)"),
             type: "value"
         },
         series: [
             {
-                name: "低危",
+                name: i18next.t("低危"),
                 type: "bar",
                 stack: "total",
                 label: {
@@ -175,7 +176,7 @@ export const StackedVerticalBar: React.FC<VerticalOptionBarProps> = (props) => {
                 barMaxWidth: 120 // 设置柱状图的最大宽度
             },
             {
-                name: "中危",
+                name: i18next.t("中危"),
                 type: "bar",
                 stack: "total",
                 label: {
@@ -189,7 +190,7 @@ export const StackedVerticalBar: React.FC<VerticalOptionBarProps> = (props) => {
                 barMaxWidth: 120
             },
             {
-                name: "高危",
+                name: i18next.t("高危"),
                 type: "bar",
                 stack: "total",
                 label: {
@@ -203,7 +204,7 @@ export const StackedVerticalBar: React.FC<VerticalOptionBarProps> = (props) => {
                 barMaxWidth: 120
             },
             {
-                name: "严重",
+                name: i18next.t("严重"),
                 type: "bar",
                 stack: "total",
                 label: {
@@ -286,13 +287,13 @@ export const HollowPie: React.FC<HollowPieProps> = (props) => {
     const ref = useRef(null);
     const size = useSize(ref);
     const newData = data.filter((item) => item.direction != "center" && item.value !== 0)
-    const centerData = data.filter((item) => item.direction === "center") || [{name: "资产", value: 0}]
+    const centerData = data.filter((item) => item.direction === "center") || [{name: i18next.t("资产"), value: 0}]
     const chartRef = useRef(null)
     const optionRef = useRef<any>({
         title: {
             show: true,
-            text: "资产",
-            subtext: ["{text|200}{small|台}"],
+            text: i18next.t("资产"),
+            subtext: [i18next.t("{text|200}{small|台}")],
             top: "44%",
             left: "37%",
             textAlign: "center",
@@ -411,7 +412,7 @@ export const HollowPie: React.FC<HollowPieProps> = (props) => {
         optionRef.current.series[0].color = (newData || []).map((item)=>item.color);
         optionRef.current.title.text = centerData[0].name
         optionRef.current.graphic[0].style.text = title || ""
-        optionRef.current.title.subtext = [`{text|${centerData[0].value}}{small|台}`]
+        optionRef.current.title.subtext = [i18next.t("{text|${centerData[0].value}}{small|台}", {v1: centerData[0].value})]
         // @ts-ignore
         const myChart = echarts.init(chartRef.current)
         myChart.setOption(optionRef.current)
@@ -477,7 +478,7 @@ export const MultiPie: React.FC<MultiPieProps> = (props) => {
             }
         },
         xAxis: {
-            data: ["数据"],
+            data: [i18next.t("数据")],
             axisLabel: {
                 color: "#A0A4AA"
             },

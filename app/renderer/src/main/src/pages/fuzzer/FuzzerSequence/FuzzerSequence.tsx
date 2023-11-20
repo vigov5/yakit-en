@@ -90,6 +90,7 @@ import {HTTPFuzzerHotPatch} from "../HTTPFuzzerHotPatch"
 import {ShareImportExportData} from "../components/ShareImportExportData"
 import {showByRightContext} from "@/components/yakitUI/YakitMenu/showByRightContext"
 import {YakitDropdownMenu} from "@/components/yakitUI/YakitDropdownMenu/YakitDropdownMenu"
+import i18next from "../../../i18n"
 
 const ResponseCard = React.lazy(() => import("./ResponseCard"))
 
@@ -382,7 +383,7 @@ const FuzzerSequence: React.FC<FuzzerSequenceProps> = React.memo((props) => {
             }, 300)
         })
         ipcRenderer.on(errToken, (e, details) => {
-            yakitNotify("error", `提交模糊测试请求失败 ${details}`)
+            yakitNotify("error", i18next.t("提交模糊测试请求失败 ${details}", { v1: details }))
             setTimeout(() => {
                 setLoading(false)
             }, 300)
@@ -689,7 +690,7 @@ const FuzzerSequence: React.FC<FuzzerSequenceProps> = React.memo((props) => {
         const i = sequenceList.findIndex((ele) => !ele.pageId)
         if (i !== -1) {
             setErrorIndex(i)
-            yakitNotify("error", "请配置序列后再执行")
+            yakitNotify("error", i18next.t("请配置序列后再执行"))
             return
         }
         setLoading(true)
@@ -707,7 +708,7 @@ const FuzzerSequence: React.FC<FuzzerSequenceProps> = React.memo((props) => {
     })
     const onAddSequenceNode = useMemoizedFn(() => {
         if (isEmptySequence(sequenceList)) {
-            yakitNotify("error", "已有空节点，请配置后再添加")
+            yakitNotify("error", i18next.t("已有空节点，请配置后再添加"))
             return
         }
         const addItem: SequenceProps = {
@@ -729,7 +730,7 @@ const FuzzerSequence: React.FC<FuzzerSequenceProps> = React.memo((props) => {
             ...extraSetting
         }))
         setSequenceList([...newSequenceList])
-        yakitNotify("success", "应用成功")
+        yakitNotify("success", i18next.t("应用成功"))
     })
     const onRemoveNode = useMemoizedFn((index: number) => {
         if (index === errorIndex) {
@@ -758,7 +759,7 @@ const FuzzerSequence: React.FC<FuzzerSequenceProps> = React.memo((props) => {
     })
     const onSelect = useMemoizedFn((val: SequenceProps) => {
         if (!val.pageId) {
-            yakitNotify("error", "请配置序列后再选中")
+            yakitNotify("error", i18next.t("请配置序列后再选中"))
             return
         }
         setCurrentSequenceItem({...val})
@@ -782,10 +783,9 @@ const FuzzerSequence: React.FC<FuzzerSequenceProps> = React.memo((props) => {
             >
                 <div className={styles["fuzzer-sequence-left"]}>
                     <div className={styles["fuzzer-sequence-left-heard"]}>
-                        <span>序列配置</span>
+                        <span>{i18next.t("序列配置")}</span>
                         <div className={styles["fuzzer-sequence-left-heard-extra"]}>
-                            <YakitButton type='text' disabled={loading} onClick={() => onAddSequenceNode()}>
-                                添加节点
+                            <YakitButton type='text' disabled={loading} onClick={() => onAddSequenceNode()}>{i18next.t("添加节点")}
                                 <SolidPlusIcon className={styles["plus-icon"]} />
                             </YakitButton>
                             {loading ? (
@@ -794,16 +794,14 @@ const FuzzerSequence: React.FC<FuzzerSequenceProps> = React.memo((props) => {
                                     icon={<SolidStopIcon className={styles["stop-icon"]} />}
                                     colors='danger'
                                     type={"primary"}
-                                >
-                                    强制停止
+                                >{i18next.t("强制停止")}
                                 </YakitButton>
                             ) : (
                                 <YakitButton
                                     onClick={onValidateMatcherAndExtraction}
                                     icon={<SolidPlayIcon className={styles["play-icon"]} />}
                                     type={"primary"}
-                                >
-                                    开始执行
+                                >{i18next.t("开始执行")}
                                 </YakitButton>
                             )}
                         </div>
@@ -884,7 +882,7 @@ const FuzzerSequence: React.FC<FuzzerSequenceProps> = React.memo((props) => {
                                 />
                             </div>
                         )}
-                        <div className={styles["to-end"]}>已经到底啦～</div>
+                        <div className={styles["to-end"]}>{i18next.t("已经到底啦～")}</div>
                     </div>
                 </div>
                 <div className={classNames(styles["fuzzer-sequence-content"])}>
@@ -915,7 +913,7 @@ const FuzzerSequence: React.FC<FuzzerSequenceProps> = React.memo((props) => {
                             />
                         </>
                     ) : (
-                        <YakitEmpty title='请选择 Web Fuzzer(如需使用序列，请将其他标签页拖入该分组)' />
+                        <YakitEmpty title={i18next.t("请选择 Web Fuzzer(如需使用序列，请将其他标签页拖入该分组)")} />
                     )}
                 </div>
             </div>
@@ -963,7 +961,7 @@ const SequenceItem: React.FC<SequenceItemProps> = React.memo((props) => {
     }, [pageNodeList])
     const tipText = useMemo(() => {
         const t: string[] = []
-        if (item?.inheritVariables) t.push("变量")
+        if (item?.inheritVariables) t.push(i18next.t("变量"))
         if (item?.inheritCookies) t.push("Cookie")
         return t.join("  ,  ")
     }, [item?.inheritVariables, item?.inheritCookies])
@@ -1032,7 +1030,7 @@ const SequenceItem: React.FC<SequenceItemProps> = React.memo((props) => {
                                             e.stopPropagation()
                                         }}
                                     >
-                                        <div className={styles["edit-name-popover-content-title"]}>修改名称</div>
+                                        <div className={styles["edit-name-popover-content-title"]}>{i18next.t("修改名称")}</div>
                                         <YakitInput
                                             defaultValue={item.name}
                                             value={name}
@@ -1045,11 +1043,11 @@ const SequenceItem: React.FC<SequenceItemProps> = React.memo((props) => {
                                             onBlur={(e) => {
                                                 const {value} = e.target
                                                 if (!value) {
-                                                    yakitNotify("error", "名称不能为空")
+                                                    yakitNotify("error", i18next.t("名称不能为空"))
                                                     return
                                                 }
                                                 if (value.length > 20) {
-                                                    yakitNotify("error", "不超过20个字符")
+                                                    yakitNotify("error", i18next.t("不超过20个字符"))
                                                     return
                                                 }
                                                 onUpdateItem({...item, name: value})
@@ -1088,7 +1086,7 @@ const SequenceItem: React.FC<SequenceItemProps> = React.memo((props) => {
                                     <YakitPopover
                                         title={
                                             <div className={styles["cog-popover-heard"]}>
-                                                <span className={styles["cog-popover-heard-title"]}>节点配置</span>
+                                                <span className={styles["cog-popover-heard-title"]}>{i18next.t("节点配置")}</span>
                                                 <span
                                                     className={styles["cog-popover-heard-extra"]}
                                                     onClick={(e) => {
@@ -1098,15 +1096,14 @@ const SequenceItem: React.FC<SequenceItemProps> = React.memo((props) => {
                                                             inheritCookies: item.inheritCookies
                                                         })
                                                     }}
-                                                >
-                                                    应用到其他节点
+                                                >{i18next.t("应用到其他节点")}
                                                 </span>
                                             </div>
                                         }
                                         content={
                                             <div className={styles["cog-popover-content"]}>
                                                 <LabelNodeItem
-                                                    label='继承变量'
+                                                    label={i18next.t("继承变量")}
                                                     labelClassName={styles["cog-popover-content-item"]}
                                                 >
                                                     <YakitSwitch
@@ -1117,7 +1114,7 @@ const SequenceItem: React.FC<SequenceItemProps> = React.memo((props) => {
                                                     />
                                                 </LabelNodeItem>
                                                 <LabelNodeItem
-                                                    label='继承 Cookie'
+                                                    label={i18next.t("继承 Cookie")}
                                                     labelClassName={styles["cog-popover-content-item"]}
                                                 >
                                                     <YakitSwitch
@@ -1147,7 +1144,7 @@ const SequenceItem: React.FC<SequenceItemProps> = React.memo((props) => {
                                 </>
                             )}
                             <Divider type='vertical' style={{margin: 0}} />
-                            <Tooltip title='前往Fuzzer配置'>
+                            <Tooltip title={i18next.t("前往Fuzzer配置")}>
                                 <OutlineArrowcirclerightIcon
                                     className={classNames(styles["list-item-icon"], {
                                         [styles["list-item-disabled-icon"]]: disabled
@@ -1156,7 +1153,7 @@ const SequenceItem: React.FC<SequenceItemProps> = React.memo((props) => {
                                         e.stopPropagation()
                                         if (disabled) return
                                         if (!item.pageId) {
-                                            yakitNotify("error", "请选择页面")
+                                            yakitNotify("error", i18next.t("请选择页面"))
                                         } else {
                                             onSelectSubMenuById(item.pageId)
                                         }
@@ -1277,8 +1274,8 @@ const SequenceResponseHeard: React.FC<SequenceResponseHeardProps> = React.memo((
                 <YakitDropdownMenu
                     menu={{
                         data: [
-                            {key: "pathTemplate", label: "生成为 Path 模板"},
-                            {key: "rawTemplate", label: "生成为 Raw 模板"}
+                            {key: "pathTemplate", label: i18next.t("生成为 Path 模板")},
+                            {key: "rawTemplate", label: i18next.t("生成为 Raw 模板")}
                         ],
                         onClick: ({key}) => {
                             switch (key) {
@@ -1298,12 +1295,10 @@ const SequenceResponseHeard: React.FC<SequenceResponseHeardProps> = React.memo((
                         placement: "bottom"
                     }}
                 >
-                    <YakitButton type='primary' icon={<OutlineCodeIcon />}>
-                        生成 Yaml 模板
+                    <YakitButton type='primary' icon={<OutlineCodeIcon />}>{i18next.t("生成 Yaml 模板")}
                     </YakitButton>
                 </YakitDropdownMenu>
-                <YakitButton type='primary' disabled={disabled} onClick={() => onShowAll()} style={{marginLeft: 8}}>
-                    展示全部响应
+                <YakitButton type='primary' disabled={disabled} onClick={() => onShowAll()} style={{marginLeft: 8}}>{i18next.t("展示全部响应")}
                 </YakitButton>
             </div>
         </div>
@@ -1417,7 +1412,7 @@ const SequenceResponse: React.FC<SequenceResponseProps> = React.memo(
                     }
                 } catch (error) {
                     reject(false)
-                    yakitNotify("error", "匹配器和提取器验证失败:" + error)
+                    yakitNotify("error", i18next.t("匹配器和提取器验证失败:") + error)
                 }
             })
         })
@@ -1509,8 +1504,7 @@ const SequenceResponse: React.FC<SequenceResponseProps> = React.memo(
                     onClick={() => {
                         hotPatchTrigger()
                     }}
-                >
-                    热加载
+                >{i18next.t("热加载")}
                 </YakitButton>
                 <div className={styles["resize-card-icon"]} onClick={() => setFirstFull(!firstFull)}>
                     {firstFull ? <ArrowsRetractIcon /> : <ArrowsExpandIcon />}
@@ -1731,7 +1725,7 @@ const SequenceResponse: React.FC<SequenceResponseProps> = React.memo(
                                                 )}
                                             </>
                                         ) : (
-                                            <Result status={"warning"} title={"请执行序列后进行查看"} />
+                                            <Result status={"warning"} title={i18next.t("请执行序列后进行查看")} />
                                         )}
                                     </div>
                                 </>

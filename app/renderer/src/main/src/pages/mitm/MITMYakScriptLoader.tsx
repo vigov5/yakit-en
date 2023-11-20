@@ -11,6 +11,7 @@ import {PluginLocalInfoIcon} from "../customizeMenu/CustomizeMenu"
 import classNames from "classnames"
 import {LightningBoltIcon} from "@/assets/newIcon"
 import {YakitPopconfirm} from "@/components/yakitUI/YakitPopconfirm/YakitPopconfirm"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -98,7 +99,7 @@ export const MITMYakScriptLoader = React.memo((p: MITMYakScriptLoaderProps) => {
             {status !== "idle" && (
                 <YakitPopconfirm
                     disabled={!p.onSendToPatch}
-                    title='发送到【热加载】中调试代码？'
+                    title={i18next.t("发送到【热加载】中调试代码？")}
                     onConfirm={() => {
                         if (!i.Content) {
                             getScriptInfo(i, true)
@@ -151,6 +152,6 @@ export interface MITMYakScriptLoaderProps {
 
 export function clearMITMPluginCache() {
     ipcRenderer.invoke("mitm-clear-plugin-cache").catch((e) => {
-        failed(`清除插件缓存失败: ${e}`)
+        failed(i18next.t("清除插件缓存失败: ${e}", { v1: e }))
     })
 }

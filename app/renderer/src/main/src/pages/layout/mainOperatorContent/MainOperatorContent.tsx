@@ -78,6 +78,7 @@ import {menuBodyHeight} from "@/pages/globalVariable"
 import {RemoteGV} from "@/yakitGV"
 import {PageNodeItemProps, PageProps, usePageInfo} from "@/store/pageInfo"
 import {startupDuplexConn, closeDuplexConn} from "@/utils/duplex/duplex"
+import i18next from "../../../i18n"
 
 const TabRenameModalContent = React.lazy(() => import("./TabRenameModalContent"))
 const PageItem = React.lazy(() => import("./renderSubPage/RenderSubPage"))
@@ -93,18 +94,17 @@ const droppable = "droppable"
 const droppableGroup = "droppableGroup"
 const pageTabItemRightOperation: YakitMenuItemType[] = [
     {
-        label: "重命名",
+        label: i18next.t("重命名"),
         key: "rename"
     },
     {
-        label: "将标签页移动到组",
+        label: i18next.t("将标签页移动到组"),
         key: "addToGroup",
         children: [
             {
                 label: (
                     <div className={styles["right-menu-item"]}>
-                        <OutlinePlusIcon />
-                        新建组
+                        <OutlinePlusIcon />{i18next.t("新建组")}
                     </div>
                 ),
                 key: "newGroup"
@@ -122,18 +122,18 @@ const pageTabItemRightOperation: YakitMenuItemType[] = [
     },
     // 组内的tab才有下面这个菜单
     // {
-    //     label: "从组中移出",
+    //     label: i18next.t("从组中移出"),
     //     key: "removeFromGroup"
     // },
     {
         type: "divider"
     },
     {
-        label: "关闭当前标签页",
+        label: i18next.t("关闭当前标签页"),
         key: "remove"
     },
     {
-        label: "关闭其他标签页",
+        label: i18next.t("关闭其他标签页"),
         key: "removeOtherItems"
     }
 ]
@@ -214,7 +214,7 @@ export const getInitPageCache: () => PageCache[] = () => {
         return [
             {
                 routeKey: routeConvertKey(YakitRoute.DB_ChaosMaker, ""),
-                verbose: "入侵模拟",
+                verbose: i18next.t("入侵模拟"),
                 menuName: YakitRouteToPageInfo[YakitRoute.DB_ChaosMaker].label,
                 route: YakitRoute.DB_ChaosMaker,
                 singleNode: true,
@@ -226,7 +226,7 @@ export const getInitPageCache: () => PageCache[] = () => {
     return [
         {
             routeKey: routeConvertKey(YakitRoute.NewHome, ""),
-            verbose: "首页",
+            verbose: i18next.t("首页"),
             menuName: YakitRouteToPageInfo[YakitRoute.NewHome].label,
             route: YakitRoute.NewHome,
             singleNode: true,
@@ -1162,7 +1162,7 @@ export const MainOperatorContent: React.FC<MainOperatorContentProps> = React.mem
             ipcRenderer.invoke("QueryYakScript", newParams).then((item: QueryYakScriptsResponse) => {
                 if (item.Data.length === 0) {
                     const m = showModal({
-                        title: "导入插件",
+                        title: i18next.t("导入插件"),
                         content: <DownloadAllPlugin type='modal' onClose={() => m.destroy()} />
                     })
                     return m
@@ -1226,7 +1226,7 @@ export const MainOperatorContent: React.FC<MainOperatorContentProps> = React.mem
                 const cache = JSON.parse(res || "[]")
                 setFuzzerSequenceCacheData(cache)
             } catch (error) {
-                yakitNotify("error", "webFuzzer序列化获取缓存数据解析失败:" + error)
+                yakitNotify("error", i18next.t("webFuzzer序列化获取缓存数据解析失败:") + error)
             }
         })
     })
@@ -1359,7 +1359,7 @@ export const MainOperatorContent: React.FC<MainOperatorContentProps> = React.mem
                 .catch((e) => {})
                 .finally(() => setTimeout(() => setLoading(false), 200))
         } catch (error) {
-            yakitNotify("error", "fetchFuzzerList失败:" + error)
+            yakitNotify("error", i18next.t("fetchFuzzerList失败:") + error)
         }
     })
     // 新增缓存数据
@@ -1404,7 +1404,7 @@ export const MainOperatorContent: React.FC<MainOperatorContentProps> = React.mem
             const index = pageCache.findIndex((ele) => ele.route === YakitRoute.HTTPFuzzer)
             if (index === -1) return
             const fuzzerMenuItem = structuredClone(pageCache[index])
-            newGroupItem.verbose = `未命名[${getGroupLength(fuzzerMenuItem.multipleNode)}]`
+            newGroupItem.verbose = i18next.t("未命名")+`[${getGroupLength(fuzzerMenuItem.multipleNode)}]`
             newGroupItem.sortFieId = fuzzerMenuItem.multipleNode.length + 1
             newGroupItem.color = getColor(fuzzerMenuItem.multipleNode)
             fuzzerMenuItem.multipleNode.push(newGroupItem)
@@ -1528,7 +1528,7 @@ export const MainOperatorContent: React.FC<MainOperatorContentProps> = React.mem
                 visible={bugTestShow}
                 onCancel={() => setBugTestShow(false)}
                 onOk={() => {
-                    if ((bugTestValue || []).length === 0) return yakitNotify("error", "请选择类型后再次提交")
+                    if ((bugTestValue || []).length === 0) return yakitNotify("error", i18next.t("请选择类型后再次提交"))
                     addBugTest(2)
                     setBugTestShow(false)
                 }}
@@ -1537,7 +1537,7 @@ export const MainOperatorContent: React.FC<MainOperatorContentProps> = React.mem
                 closable={true}
             >
                 <div style={{padding: "0 24px"}}>
-                    <Form.Item label='专项漏洞类型'>
+                    <Form.Item label={i18next.t("专项漏洞类型")}>
                         <YakitSelect
                             allowClear={true}
                             onChange={(value, option: any) => {
@@ -1692,15 +1692,15 @@ const TabList: React.FC<TabListProps> = React.memo((props) => {
                 type: "grey",
                 data: [
                     {
-                        label: "关闭当前标签页",
+                        label: i18next.t("关闭当前标签页"),
                         key: "removeCurrent"
                     },
                     {
-                        label: "关闭所有标签页",
+                        label: i18next.t("关闭所有标签页"),
                         key: "removeAll"
                     },
                     {
-                        label: "关闭其他标签页",
+                        label: i18next.t("关闭其他标签页"),
                         key: "removeOther"
                     }
                 ],
@@ -1734,8 +1734,8 @@ const TabList: React.FC<TabListProps> = React.memo((props) => {
         const m = YakitModalConfirm({
             width: 420,
             type: "white",
-            onCancelText: "取消",
-            onOkText: "关闭所有",
+            onCancelText: i18next.t("取消"),
+            onOkText: i18next.t("关闭所有"),
             icon: <ExclamationCircleOutlined />,
             onOk: () => {
                 // const newPage: PageCache | undefined = pageCache.find((p) => p.route === YakitRoute.NewHome)
@@ -1755,7 +1755,7 @@ const TabList: React.FC<TabListProps> = React.memo((props) => {
             onCancel: () => {
                 m.destroy()
             },
-            content: "是否关闭所有标签页"
+            content: i18next.t("是否关闭所有标签页")
         })
     })
     /**关闭其他标签页 如果有首页需要保留首页*/
@@ -1763,8 +1763,8 @@ const TabList: React.FC<TabListProps> = React.memo((props) => {
         const m = YakitModalConfirm({
             width: 420,
             type: "white",
-            onCancelText: "取消",
-            onOkText: "关闭其他",
+            onCancelText: i18next.t("取消"),
+            onOkText: i18next.t("关闭其他"),
             icon: <ExclamationCircleOutlined />,
             onOk: () => {
                 if (pageCache.length <= 0) return
@@ -1781,7 +1781,7 @@ const TabList: React.FC<TabListProps> = React.memo((props) => {
             onCancel: () => {
                 m.destroy()
             },
-            content: "是否保留当前标签页，关闭其他标签页"
+            content: i18next.t("是否保留当前标签页，关闭其他标签页")
         })
     })
     return (
@@ -2355,7 +2355,7 @@ const SubTabs: React.FC<SubTabsProps> = React.memo(
                 } else {
                     const groupLength = getGroupLength(subPage)
                     subPage[combineIndex].groupChildren = [{...subPage[combineIndex], groupId}, dropItem]
-                    subPage[combineIndex].verbose = `未命名[${groupLength}]`
+                    subPage[combineIndex].verbose = i18next.t("未命名[${groupLength}]", { v1: groupLength })
                     subPage[combineIndex].color = combineColorRef.current
                     subPage[combineIndex].expand = true
                     subPage[combineIndex].id = groupId
@@ -2426,7 +2426,7 @@ const SubTabs: React.FC<SubTabsProps> = React.memo(
             }
             const groupLength = getGroupLength(subPage)
             subPage[combineIndex].groupChildren = [{...subPage[combineIndex], groupId: newGroupId}, dropItem]
-            subPage[combineIndex].verbose = `未命名[${groupLength}]`
+            subPage[combineIndex].verbose = i18next.t("未命名[${groupLength}]", { v1: groupLength })
             subPage[combineIndex].color = combineColorRef.current || subPage[sourceIndex].color
             subPage[combineIndex].expand = true
             subPage[combineIndex].id = newGroupId
@@ -2643,7 +2643,7 @@ const SubTabs: React.FC<SubTabsProps> = React.memo(
         })
         const onAddSubPage = useMemoizedFn(() => {
             if (getSubPageTotal(subPage) >= 100) {
-                yakitNotify("error", "超过标签页数量限制")
+                yakitNotify("error", i18next.t("超过标签页数量限制"))
                 return
             }
             openMultipleMenuPage({
@@ -2773,7 +2773,7 @@ const SubTabs: React.FC<SubTabsProps> = React.memo(
                     const groupChildren = groupItem.groupChildren || []
                     const gLength = groupChildren.length
                     if (gLength > 0) {
-                        labelText = `“${groupChildren[0].verbose}”和另外 ${gLength - 1} 个标签页`
+                        labelText = i18next.t("“${groupChildren[0].verbose}”和另外 ${gLength - 1} 个标签页", {v1: groupChildren[0].verbose, v2: gLength - 1})
                     }
                 }
                 const node = {
@@ -2791,7 +2791,7 @@ const SubTabs: React.FC<SubTabsProps> = React.memo(
             const {subIndex} = getPageItemById(subPage, item.id)
             if (subIndex !== -1) {
                 menuData.splice(2, 0, {
-                    label: "从组中移出",
+                    label: i18next.t("从组中移出"),
                     key: "removeFromGroup"
                 })
             }
@@ -2837,14 +2837,14 @@ const SubTabs: React.FC<SubTabsProps> = React.memo(
                 content: (
                     <React.Suspense fallback={<div>loading...</div>}>
                         <TabRenameModalContent
-                            title='重命名'
+                            title={i18next.t("重命名")}
                             onClose={() => {
                                 m.destroy()
                             }}
                             name={item.verbose}
                             onOk={(val) => {
                                 if (val.length > 50) {
-                                    yakitNotify("error", "不能超过50个字符")
+                                    yakitNotify("error", i18next.t("不能超过50个字符"))
                                     return
                                 }
 
@@ -2898,7 +2898,7 @@ const SubTabs: React.FC<SubTabsProps> = React.memo(
             const newGroup: MultipleNodeInfo = {
                 id: groupId,
                 groupId: "0",
-                verbose: `未命名[${groupLength}]`,
+                verbose: i18next.t("未命名[${groupLength}]", { v1: groupLength }),
                 sortFieId: subPage.length,
                 groupChildren: [{...item, groupId}],
                 expand: true,
@@ -3031,8 +3031,8 @@ const SubTabs: React.FC<SubTabsProps> = React.memo(
                 const m = YakitModalConfirm({
                     width: 420,
                     type: "white",
-                    onCancelText: "取消",
-                    onOkText: "关闭其他",
+                    onCancelText: i18next.t("取消"),
+                    onOkText: i18next.t("关闭其他"),
                     icon: <ExclamationCircleOutlined />,
                     onOk: () => {
                         const newSubPage: MultipleNodeInfo[] = [item]
@@ -3060,15 +3060,15 @@ const SubTabs: React.FC<SubTabsProps> = React.memo(
                     onCancel: () => {
                         m.destroy()
                     },
-                    content: "是否保留当前标签页，关闭其他标签页"
+                    content: i18next.t("是否保留当前标签页，关闭其他标签页")
                 })
             } else {
                 // 关闭组内的其他tabs
                 const m = YakitModalConfirm({
                     width: 420,
                     type: "white",
-                    onCancelText: "取消",
-                    onOkText: "关闭组内其他",
+                    onCancelText: i18next.t("取消"),
+                    onOkText: i18next.t("关闭组内其他"),
                     icon: <ExclamationCircleOutlined />,
                     onOk: () => {
                         const groupItem = subPage[index]
@@ -3093,7 +3093,7 @@ const SubTabs: React.FC<SubTabsProps> = React.memo(
                     onCancel: () => {
                         m.destroy()
                     },
-                    content: "是否仅保留当前标签页，关闭组内其他标签页"
+                    content: i18next.t("是否仅保留当前标签页，关闭组内其他标签页")
                 })
             }
         })
@@ -3233,8 +3233,8 @@ const SubTabs: React.FC<SubTabsProps> = React.memo(
                 const m = YakitModalConfirm({
                     width: 420,
                     type: "white",
-                    onCancelText: "取消",
-                    onOkText: "关闭组",
+                    onCancelText: i18next.t("取消"),
+                    onOkText: i18next.t("关闭组"),
                     icon: <ExclamationCircleOutlined />,
                     onOk: () => {
                         getIsCloseGroupTip()
@@ -3269,8 +3269,8 @@ const SubTabs: React.FC<SubTabsProps> = React.memo(
             const m = YakitModalConfirm({
                 width: 420,
                 type: "white",
-                onCancelText: "取消",
-                onOkText: "关闭其他",
+                onCancelText: i18next.t("取消"),
+                onOkText: i18next.t("关闭其他"),
                 icon: <ExclamationCircleOutlined />,
                 onOk: () => {
                     const newPage = [{...groupItem}]
@@ -3304,7 +3304,7 @@ const SubTabs: React.FC<SubTabsProps> = React.memo(
                 onCancel: () => {
                     m.destroy()
                 },
-                content: "是否保留当前组及其组内标签页，关闭其他组和标签页"
+                content: i18next.t("是否保留当前组及其组内标签页，关闭其他组和标签页")
             })
         })
         /**
@@ -3767,7 +3767,7 @@ const SubTabGroupItem: React.FC<SubTabGroupItemProps> = React.memo((props) => {
 /**验证组名是否超过50个字符 */
 const onVerifyGroupName = (val: string) => {
     if (val.length > 50) {
-        yakitNotify("error", "不能超过50个字符")
+        yakitNotify("error", i18next.t("不能超过50个字符"))
         return false
     }
     return true
@@ -3832,15 +3832,15 @@ const GroupRightClickShowContent: React.FC<GroupRightClickShowContentProps> = Re
                 width={232}
                 data={[
                     {
-                        label: "取消组合",
+                        label: i18next.t("取消组合"),
                         key: "cancelGroup"
                     },
                     {
-                        label: "关闭组",
+                        label: i18next.t("关闭组"),
                         key: "closeGroup"
                     },
                     {
-                        label: "关闭其他标签页",
+                        label: i18next.t("关闭其他标签页"),
                         key: "closeOtherTabs"
                     }
                 ]}
@@ -3860,10 +3860,9 @@ const CloseGroupContent: React.FC = React.memo(() => {
     })
     return (
         <div className={styles["close-group-content"]}>
-            <div>是否关闭当前组,关闭后,组内的页面也会关闭</div>
+            <div>{i18next.t("是否关闭当前组,关闭后,组内的页面也会关闭")}</div>
             <label className={styles["close-group-check"]}>
-                <YakitCheckbox checked={tipChecked} onChange={(e) => onChecked(e.target.checked)} />
-                不再提示
+                <YakitCheckbox checked={tipChecked} onChange={(e) => onChecked(e.target.checked)} />{i18next.t("不再提示")}
             </label>
         </div>
     )
@@ -3931,8 +3930,8 @@ const onModalSecondaryConfirm = (props?: YakitSecondaryConfirmProps) => {
     let m = YakitModalConfirm({
         width: 420,
         type: "white",
-        onCancelText: "不保存",
-        onOkText: "保存",
+        onCancelText: i18next.t("不保存"),
+        onOkText: i18next.t("保存"),
         icon: <ExclamationCircleOutlined />,
         ...(props || {}),
         onOk: () => {

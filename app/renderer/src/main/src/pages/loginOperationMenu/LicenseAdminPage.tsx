@@ -25,6 +25,7 @@ import {PaginationSchema} from "../invoker/schema"
 import {showModal} from "@/utils/showModal"
 import {callCopyToClipboard} from "@/utils/basic"
 import {QuestionCircleOutlined} from "@ant-design/icons"
+import i18next from "../../i18n"
 const { Option } = Select;
 export interface ShowUserInfoProps {
     text: string
@@ -41,8 +42,7 @@ const ShowUserInfo: React.FC<ShowUserInfoProps> = (props) => {
                 <span>{text}</span>
             </div>
             <div style={{textAlign: "center", paddingTop: 10}}>
-                <Button style={{width: 200}} type='primary' onClick={() => copyUserInfo()}>
-                    复制
+                <Button style={{width: 200}} type='primary' onClick={() => copyUserInfo()}>{i18next.t("复制")}
                 </Button>
             </div>
         </div>
@@ -115,7 +115,7 @@ const CreateLicense: React.FC<CreateLicenseProps> = (props) => {
                 }
             })
             .catch((err) => {
-                failed("查看license失败：" + err)
+                failed(i18next.t("查看license失败：") + err)
             })
             .finally(() => {
                 setTimeout(() => {
@@ -144,13 +144,13 @@ const CreateLicense: React.FC<CreateLicenseProps> = (props) => {
                 onCancel()
                 refresh()
                 const m = showModal({
-                    title: "生成成功",
+                    title: i18next.t("生成成功"),
                     content: <ShowUserInfo text={text} onClose={() => m.destroy()} />
                 })
                 return m
             })
             .catch((err) => {
-                failed("企业操作失败：" + err)
+                failed(i18next.t("企业操作失败：") + err)
             })
             .finally(() => {
                 setTimeout(() => {
@@ -170,11 +170,11 @@ const CreateLicense: React.FC<CreateLicenseProps> = (props) => {
     return (
         <div style={{marginTop: 24}}>
             <Form {...layout} form={form} onFinish={onFinish}>
-                <Form.Item name='id' label='企业名称' rules={[{required: true, message: "该项为必选"}]}>
+                <Form.Item name='id' label={i18next.t("企业名称")} rules={[{required: true, message: i18next.t("该项为必选")}]}>
                     <Select
                         showSearch
                         optionFilterProp='children'
-                        placeholder='请选择企业名称'
+                        placeholder={i18next.t("请选择企业名称")}
                         filterOption={(input, option) =>
                             (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
                         }
@@ -192,18 +192,17 @@ const CreateLicense: React.FC<CreateLicenseProps> = (props) => {
                         dropdownRender={(originNode: React.ReactNode) => selectDropdown(originNode)}
                     />
                 </Form.Item>
-                <Form.Item name='company_version' label='版本' rules={[{required: true, message: "该项为必选"}]}>
-                    <Select placeholder='请选择版本' allowClear>
-                        <Option value='EnpriTrace'>企业版</Option>
-                        <Option value='EnpriTraceAgent'>便携版</Option>
+                <Form.Item name='company_version' label={i18next.t("版本")} rules={[{required: true, message: i18next.t("该项为必选")}]}>
+                    <Select placeholder={i18next.t("请选择版本")} allowClear>
+                        <Option value='EnpriTrace'>{i18next.t("企业版")}</Option>
+                        <Option value='EnpriTraceAgent'>{i18next.t("便携版")}</Option>
                     </Select>
                 </Form.Item>
-                <Form.Item name='license' label='申请码' rules={[{required: true, message: "该项为必选"}]}>
-                    <Input.TextArea placeholder='请输入申请码' allowClear rows={13} />
+                <Form.Item name='license' label={i18next.t("申请码")} rules={[{required: true, message: i18next.t("该项为必选")}]}>
+                    <Input.TextArea placeholder={i18next.t("请输入申请码")} allowClear rows={13} />
                 </Form.Item>
                 <div style={{textAlign: "center"}}>
-                    <Button style={{width: 200}} type='primary' htmlType='submit' loading={loading}>
-                        确认
+                    <Button style={{width: 200}} type='primary' htmlType='submit' loading={loading}>{i18next.t("确认")}
                     </Button>
                 </div>
             </Form>
@@ -254,7 +253,7 @@ const LicenseForm: React.FC<LicenseFormProps> = (props) => {
                 refresh()
             })
             .catch((err) => {
-                failed("企业操作失败：" + err)
+                failed(i18next.t("企业操作失败：") + err)
             })
             .finally(() => {
                 setTimeout(() => {
@@ -272,7 +271,7 @@ const LicenseForm: React.FC<LicenseFormProps> = (props) => {
         if (editInfo && values.maxUser > editInfo.maxUser) {
             params.maxActivationNum = values.maxActivationNum + 1
             Modal.info({
-                title: "由于修改用户总数需要修改私有部署服务器的License，会占用一次License生成次数，所以默认会把License总数加1",
+                title: i18next.t("由于修改用户总数需要修改私有部署服务器的License，会占用一次License生成次数，所以默认会把License总数加1"),
                 onOk() {
                     requestFun(params)
                 }
@@ -284,18 +283,18 @@ const LicenseForm: React.FC<LicenseFormProps> = (props) => {
     return (
         <div style={{marginTop: 24}}>
             <Form {...layout} form={form} onFinish={onFinish}>
-                <Form.Item name='company' label='企业名称' rules={[{required: true, message: "该项为必填"}]}>
-                    <Input placeholder='请输入企业名称' allowClear disabled={!!editInfo} />
+                <Form.Item name='company' label={i18next.t("企业名称")} rules={[{required: true, message: i18next.t("该项为必填")}]}>
+                    <Input placeholder={i18next.t("请输入企业名称")} allowClear disabled={!!editInfo} />
                 </Form.Item>
                 <Form.Item
                     name='maxActivationNum'
-                    label='License总数'
+                    label={i18next.t("License总数")}
                     rules={[
-                        {required: true, message: "该项为必填"},
+                        {required: true, message: i18next.t("该项为必填")},
                         {
                             validator: (rule, value) => {
                                 if (editInfo && value && value < editInfo.maxActivationNum) {
-                                    return Promise.reject("License总数仅能增加")
+                                    return Promise.reject(i18next.t("License总数仅能增加"))
                                 } else {
                                     setSubmitBtn(false)
                                     return Promise.resolve()
@@ -304,26 +303,25 @@ const LicenseForm: React.FC<LicenseFormProps> = (props) => {
                         }
                     ]}
                 >
-                    <InputNumber placeholder='请输入License总数' style={{width: "100%"}} />
+                    <InputNumber placeholder={i18next.t("请输入License总数")} style={{width: "100%"}} />
                 </Form.Item>
                 <Form.Item
                     name='maxUser'
                     label={
-                        <>
-                            用户总数
+                        <>{i18next.t("用户总数")}
                             {editInfo && (
-                                <Tooltip title='如修改用户总数则需要修改私有部署服务器的License'>
+                                <Tooltip title={i18next.t("如修改用户总数则需要修改私有部署服务器的License")}>
                                     <QuestionCircleOutlined style={{paddingLeft: 2, position: "relative", top: 1}} />
                                 </Tooltip>
                             )}
                         </>
                     }
                     rules={[
-                        {required: true, message: "该项为必填"},
+                        {required: true, message: i18next.t("该项为必填")},
                         {
                             validator: (rule, value) => {
                                 if (editInfo && value && value < editInfo.maxUser) {
-                                    return Promise.reject("用户总数不可减少")
+                                    return Promise.reject(i18next.t("用户总数不可减少"))
                                 } else {
                                     setSubmitBtn(false)
                                     return Promise.resolve()
@@ -332,26 +330,25 @@ const LicenseForm: React.FC<LicenseFormProps> = (props) => {
                         }
                     ]}
                 >
-                    <InputNumber placeholder='请输入用户总数' style={{width: "100%"}} />
+                    <InputNumber placeholder={i18next.t("请输入用户总数")} style={{width: "100%"}} />
                 </Form.Item>
                 <Form.Item
                     name='durationDate'
                     label={
-                        <>
-                            有效期
+                        <>{i18next.t("有效期")}
                             {editInfo && (
-                                <Tooltip title='如修改有效期，则所有License都需替换，已使用License数清零'>
+                                <Tooltip title={i18next.t("如修改有效期，则所有License都需替换，已使用License数清零")}>
                                     <QuestionCircleOutlined style={{paddingLeft: 2, position: "relative", top: 1}} />
                                 </Tooltip>
                             )}
                         </>
                     }
                     rules={[
-                        {required: true, message: "该项为必填"},
+                        {required: true, message: i18next.t("该项为必填")},
                         {
                             validator: (rule, value) => {
                                 if (editInfo && value && value.unix() < editInfo.durationDate) {
-                                    return Promise.reject("有效期不可缩短")
+                                    return Promise.reject(i18next.t("有效期不可缩短"))
                                 } else {
                                     setSubmitBtn(false)
                                     return Promise.resolve()
@@ -363,7 +360,7 @@ const LicenseForm: React.FC<LicenseFormProps> = (props) => {
                     <DatePicker
                         // showTime
                         format='YYYY-MM-DD'
-                        placeholder='点击这里设置有效期'
+                        placeholder={i18next.t("点击这里设置有效期")}
                         style={{width: "100%"}}
                     />
                 </Form.Item>
@@ -374,8 +371,7 @@ const LicenseForm: React.FC<LicenseFormProps> = (props) => {
                         type='primary'
                         htmlType='submit'
                         loading={loading}
-                    >
-                        确认
+                    >{i18next.t("确认")}
                     </Button>
                 </div>
             </Form>
@@ -436,7 +432,7 @@ const LicenseAdminPage: React.FC<LicenseAdminPageProps> = (props) => {
                 setTotal(res.pagemeta.total)
             })
             .catch((err) => {
-                failed("查看license失败：" + err)
+                failed(i18next.t("查看license失败：") + err)
             })
             .finally(() => {
                 setTimeout(() => {
@@ -458,11 +454,11 @@ const LicenseAdminPage: React.FC<LicenseAdminPageProps> = (props) => {
             }
         })
             .then((res) => {
-                success("删除企业成功")
+                success(i18next.t("删除企业成功"))
                 update()
             })
             .catch((err) => {
-                failed("删除企业失败：" + err)
+                failed(i18next.t("删除企业失败：") + err)
             })
             .finally(() => {})
     }
@@ -473,29 +469,29 @@ const LicenseAdminPage: React.FC<LicenseAdminPageProps> = (props) => {
         const differ = later - now
         const day = differ / 60 / 60 / 24
         if (day > 30) {
-            return <Tag color='green'>正常使用</Tag>
+            return <Tag color='green'>{i18next.t("正常使用")}</Tag>
         } else if (0 < day && day <= 30) {
-            return <Tag color='orange'>即将过期</Tag>
+            return <Tag color='orange'>{i18next.t("即将过期")}</Tag>
         } else {
-            return <Tag color='red'>已过期</Tag>
+            return <Tag color='red'>{i18next.t("已过期")}</Tag>
         }
     }
 
     const columns: ColumnsType<API.CompanyLicenseConfigList> = [
         {
-            title: "企业名称",
+            title: i18next.t("企业名称"),
             dataIndex: "company"
         },
         {
-            title: "状态",
+            title: i18next.t("状态"),
             dataIndex: "status",
             filters: [
                 {
-                    text: "已过期",
+                    text: i18next.t("已过期"),
                     value: 1
                 },
                 {
-                    text: "即将过期",
+                    text: i18next.t("即将过期"),
                     value: 2
                 }
             ],
@@ -503,7 +499,7 @@ const LicenseAdminPage: React.FC<LicenseAdminPageProps> = (props) => {
             render: (text, record) => countDay(record.currentTime, record.durationDate)
         },
         {
-            title: "有效期至",
+            title: i18next.t("有效期至"),
             dataIndex: "durationDate",
             render: (text) => <span>{moment.unix(text).format("YYYY-MM-DD")}</span>
         },
@@ -515,11 +511,11 @@ const LicenseAdminPage: React.FC<LicenseAdminPageProps> = (props) => {
             }
         },
         {
-            title: "用户总数",
+            title: i18next.t("用户总数"),
             dataIndex: "maxUser"
         },
         {
-            title: "操作",
+            title: i18next.t("操作"),
             render: (i) => (
                 <Space>
                     <Button
@@ -529,18 +525,16 @@ const LicenseAdminPage: React.FC<LicenseAdminPageProps> = (props) => {
                             setEditInfo(i)
                             setLicenseFormShow(true)
                         }}
-                    >
-                        编辑
+                    >{i18next.t("编辑")}
                     </Button>
                     <Popconfirm
-                        title={"确定删除该企业吗？"}
+                        title={i18next.t("确定删除该企业吗？")}
                         onConfirm={() => {
                             onRemove(i.id)
                         }}
                         placement='right'
                     >
-                        <Button size={"small"} danger={true} type='link'>
-                            删除
+                        <Button size={"small"} danger={true} type='link'>{i18next.t("删除")}
                         </Button>
                     </Popconfirm>
                 </Space>
@@ -580,7 +574,7 @@ const LicenseAdminPage: React.FC<LicenseAdminPageProps> = (props) => {
                         <div className='table-title'>
                             <div className='filter'>
                                 <Input.Search
-                                    placeholder={"请输入企业名称进行搜索"}
+                                    placeholder={i18next.t("请输入企业名称进行搜索")}
                                     enterButton={true}
                                     size={"small"}
                                     style={{width: 200}}
@@ -603,8 +597,7 @@ const LicenseAdminPage: React.FC<LicenseAdminPageProps> = (props) => {
                                             setLicenseFormShow(true)
                                             setEditInfo(undefined)
                                         }}
-                                    >
-                                        添加企业
+                                    >{i18next.t("添加企业")}
                                     </Button>
                                     <Button
                                         type='primary'
@@ -613,8 +606,7 @@ const LicenseAdminPage: React.FC<LicenseAdminPageProps> = (props) => {
                                         onClick={() => {
                                             setCreateLicenseModal(true)
                                         }}
-                                    >
-                                        生成License
+                                    >{i18next.t("生成License")}
                                     </Button>
                                 </Space>
                             </div>
@@ -629,7 +621,7 @@ const LicenseAdminPage: React.FC<LicenseAdminPageProps> = (props) => {
             />
             <Modal
                 visible={licenseFormShow}
-                title={editInfo ? "编辑企业" : "创建企业"}
+                title={editInfo ? i18next.t("编辑企业") : i18next.t("创建企业")}
                 destroyOnClose={true}
                 maskClosable={false}
                 bodyStyle={{padding: "10px 24px 24px 24px"}}
@@ -641,7 +633,7 @@ const LicenseAdminPage: React.FC<LicenseAdminPageProps> = (props) => {
             </Modal>
             <Modal
                 visible={createLicenseModal}
-                title={"生成License"}
+                title={i18next.t("生成License")}
                 destroyOnClose={true}
                 maskClosable={false}
                 bodyStyle={{padding: "10px 24px 24px 24px"}}

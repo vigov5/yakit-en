@@ -16,7 +16,7 @@ import {randomString} from "@/utils/randomUtil";
 import {failed, info} from "@/utils/notification";
 import {useCookieState, useGetState, useMap} from "ahooks";
 import {YakitTag} from "@/components/yakitUI/YakitTag/YakitTag";
-
+import i18next from "../../../i18n"
 export interface HybridScanDemoProp {
 
 }
@@ -37,7 +37,7 @@ export const HybridScanDemo: React.FC<HybridScanDemoProp> = (props) => {
         },
     })
     const [plugin, setPlugin] = React.useState<HybridScanPluginConfig>({
-        PluginNames: ["基础 XSS 检测", "开放 URL 重定向漏洞"],
+        PluginNames: [i18next.t("基础 XSS 检测"), i18next.t("开放 URL 重定向漏洞")],
         Filter: {Pagination: genDefaultPagination() /* Pagination is ignore for hybrid scan */}
     })
 
@@ -89,12 +89,12 @@ export const HybridScanDemo: React.FC<HybridScanDemoProp> = (props) => {
     return <YakitResizeBox
         firstRatio={"350px"}
         firstMinSize={"280px"}
-        firstNode={<AutoCard title={"设置参数"} size={"small"} extra={<div>
+        firstNode={<AutoCard title={i18next.t("设置参数")} size={"small"} extra={<div>
             <YakitButton disabled={loading} onClick={() => {
                 ipcRenderer.invoke("HybridScan", {
                     Control: true, HybridScanMode: "new",
                 } as HybridScanControlRequest, token).then(() => {
-                    info(`启动成功，任务ID: ${token}`)
+                    info(i18next.t("启动成功，任务ID: ${token}", { v1: token }))
                     setLoading(true)
 
                     // send target / plugin
@@ -102,41 +102,40 @@ export const HybridScanDemo: React.FC<HybridScanDemoProp> = (props) => {
                         Targets: target,
                         Plugin: plugin,
                     }, token).then(() => {
-                        info("发送扫描目标与插件成功")
+                        info(i18next.t("发送扫描目标与插件成功"))
                     })
                 })
-            }}>启动</YakitButton>
+            }}>{i18next.t("启动")}</YakitButton>
             <YakitButton danger={true} disabled={!loading} onClick={() => {
                 ipcRenderer.invoke("cancel-HybridScan", token)
                 setTimeout(() => {
                     setToken(randomString(40))
                 }, 100)
-            }}>
-                停止任务
+            }}>{i18next.t("停止任务")}
             </YakitButton>
         </div>}>
             <Space direction={"vertical"}>
-                <div>默认INPUT: {target.Input}</div>
-                <div>插件启用：</div>
+                <div>{i18next.t("默认INPUT:")} {target.Input}</div>
+                <div>{i18next.t("插件启用：")}</div>
                 {plugin.PluginNames.map(i => {
                     return <Tag>{i}</Tag>
                 })}
             </Space>
         </AutoCard>}
-        secondNode={<AutoCard title={"执行结果"} size={"small"}>
+        secondNode={<AutoCard title={i18next.t("执行结果")} size={"small"}>
             <Space direction={"vertical"}>
                 <Space>
-                    <YakitTag>{"总目标"}: {status.TotalTargets}</YakitTag>
-                    <YakitTag>{"已完成目标"}: {status.FinishedTargets}</YakitTag>
-                    <YakitTag>{"正在执行的目标"}: {status.ActiveTargets}</YakitTag>
-                    <YakitTag>{"总任务量"}: {status.TotalTasks}</YakitTag>
-                    <YakitTag>{"正在执行的任务"}: {status.ActiveTasks}</YakitTag>
-                    <YakitTag>{"已经完成的任务"}: {status.FinishedTasks}</YakitTag>
+                    <YakitTag>{i18next.t("总目标")}: {status.TotalTargets}</YakitTag>
+                    <YakitTag>{i18next.t("已完成目标")}: {status.FinishedTargets}</YakitTag>
+                    <YakitTag>{i18next.t("正在执行的目标")}: {status.ActiveTargets}</YakitTag>
+                    <YakitTag>{i18next.t("总任务量")}: {status.TotalTasks}</YakitTag>
+                    <YakitTag>{i18next.t("正在执行的任务")}: {status.ActiveTasks}</YakitTag>
+                    <YakitTag>{i18next.t("已经完成的任务")}: {status.FinishedTasks}</YakitTag>
                 </Space>
                 <Divider/>
                 <Space direction={"vertical"}>
                     {activeTasks.map(i => {
-                        return <YakitTag>{i.Index}: [{i.PluginName}] 执行目标: {i.Url}</YakitTag>
+                        return <YakitTag>{i.Index}: [{i.PluginName}] {i18next.t("执行目标:")} {i.Url}</YakitTag>
                     })}
                 </Space>
             </Space>

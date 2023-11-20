@@ -53,6 +53,7 @@ import "./YakExecutor.css"
 import {type} from "os"
 import {randomString} from "../../utils/randomUtil"
 import {values} from "@antv/util"
+import i18next from "../../i18n"
 const {ipcRenderer} = window.require("electron")
 const {Panel} = Collapse
 const RecentFileList = "recent-file-list"
@@ -61,14 +62,14 @@ const {TabPane} = Tabs
 const {Text, Paragraph} = Typography
 
 const tabMenu: CustomMenuProps[] = [
-    {key: "own", value: "关闭当前页"},
-    {key: "other", value: "关闭其他页"},
-    {key: "all", value: "关闭全部页"}
+    {key: "own", value: i18next.t("关闭当前页")},
+    {key: "other", value: i18next.t("关闭其他页")},
+    {key: "all", value: i18next.t("关闭全部页")}
 ]
 const fileMenu: CustomMenuProps[] = [
-    {key: "rename", value: "重命名"},
-    {key: "remove", value: "移除"},
-    {key: "delete", value: "删除"}
+    {key: "rename", value: i18next.t("重命名")},
+    {key: "remove", value: i18next.t("移除")},
+    {key: "delete", value: i18next.t("删除")}
 ]
 
 const CustomMenu = (
@@ -316,7 +317,7 @@ export const YakExecutor: React.FC<YakExecutorProp> = (props) => {
                 setTabList(tabList.concat([tab]))
             })
             .catch(() => {
-                failed("无法获取该文件内容，请检查后后重试！")
+                failed(i18next.t("无法获取该文件内容，请检查后后重试！"))
                 const files = cloneDeep(fileList)
                 for (let i in files) if (files[i].route === file.path) files.splice(i, 1)
                 setFileList(files)
@@ -454,7 +455,7 @@ export const YakExecutor: React.FC<YakExecutorProp> = (props) => {
                 setFileList(arr)
             })
             .catch(() => {
-                failed("文件删除失败！")
+                failed(i18next.t("文件删除失败！"))
             })
     })
     //重命名操作
@@ -617,7 +618,7 @@ export const YakExecutor: React.FC<YakExecutorProp> = (props) => {
             }
         })
         ipcRenderer.on("client-yak-end", () => {
-            info("Yak 代码执行完毕")
+            info(i18next.t("Yak 代码执行完毕"))
             setTriggerForUpdatingHistory(getRandomInt(100000))
             setTimeout(() => {
                 setExecuting(false)
@@ -754,7 +755,7 @@ export const YakExecutor: React.FC<YakExecutorProp> = (props) => {
                                                         setIsInteractive(Boolean(tabList[+activeTab]?.interactive))
                                                     }}
                                                 >
-                                                    {isInteractive ? "常规编辑" : "交互式编辑"}
+                                                    {isInteractive ? i18next.t("常规编辑") : i18next.t("交互式编辑")}
                                                 </Button>
 
                                                 {/* <Button
@@ -813,7 +814,7 @@ export const YakExecutor: React.FC<YakExecutorProp> = (props) => {
                                                 />
                                                 <Popover
                                                     trigger={["click"]}
-                                                    title={"设置命令行额外参数"}
+                                                    title={i18next.t("设置命令行额外参数")}
                                                     placement='bottomRight'
                                                     content={
                                                         <Space style={{width: 400}}>
@@ -848,12 +849,12 @@ export const YakExecutor: React.FC<YakExecutorProp> = (props) => {
                                                                                         )
                                                                                         setFileList(files)
                                                                                     }
-                                                                                    success("保存成功")
+                                                                                    success(i18next.t("保存成功"))
                                                                                 }}
                                                                             />
                                                                         </Space>
                                                                     ),
-                                                                    tooltip: "编辑/保存为该文件默认参数",
+                                                                    tooltip: i18next.t("编辑/保存为该文件默认参数"),
                                                                     onChange: setExtraParams
                                                                 }}
                                                             >
@@ -902,7 +903,7 @@ export const YakExecutor: React.FC<YakExecutorProp> = (props) => {
                                     {tabList.map((item, index) => {
                                         return (
                                             <TabPane
-                                                tab={item.isFile ? item.tab : `(未保存)${item.tab}`}
+                                                tab={item.isFile ? item.tab : i18next.t("(未保存)") + `${item.tab}`}
                                                 key={`${index}`}
                                             >
                                                 <div style={{height: "100%"}}>
@@ -948,12 +949,12 @@ export const YakExecutor: React.FC<YakExecutorProp> = (props) => {
                                                     rowClassName={"interactive-executor-table"}
                                                     columns={[
                                                         {
-                                                            title: "变量",
+                                                            title: i18next.t("变量"),
                                                             dataIndex: "varName",
                                                             key: "varName"
                                                         },
                                                         {
-                                                            title: "值",
+                                                            title: i18next.t("值"),
                                                             dataIndex: "value",
                                                             key: "value"
                                                         }
@@ -1002,8 +1003,8 @@ export const YakExecutor: React.FC<YakExecutorProp> = (props) => {
                                                         setValue={setOutputEncoding}
                                                         size={"small"}
                                                         data={[
-                                                            {text: "GBxxx编码", value: "latin1"},
-                                                            {text: "UTF-8编码", value: "utf8"}
+                                                            {text: i18next.t("GBxxx编码"), value: "latin1"},
+                                                            {text: i18next.t("UTF-8编码"), value: "utf8"}
                                                         ]}
                                                     />
                                                     <Button
@@ -1018,7 +1019,7 @@ export const YakExecutor: React.FC<YakExecutorProp> = (props) => {
                                             }
                                         >
                                             <TabPane
-                                                tab={<div style={{width: 50, textAlign: "center"}}>输出</div>}
+                                                tab={<div style={{width: 50, textAlign: "center"}}>{i18next.t("输出")}</div>}
                                                 key={"output"}
                                             >
                                                 <div style={{width: "100%", height: "100%"}}>
@@ -1063,7 +1064,7 @@ export const YakExecutor: React.FC<YakExecutorProp> = (props) => {
                                             <TabPane
                                                 tab={
                                                     <div style={{width: 50, textAlign: "center"}} key={"terminal"}>
-                                                        终端(监修中)
+                                                        {i18next.t("终端(监修中)")}
                                                     </div>
                                                 }
                                                 disabled
@@ -1078,7 +1079,7 @@ export const YakExecutor: React.FC<YakExecutorProp> = (props) => {
                         />
                     )}
                     {tabList.length === 0 && (
-                        <Empty className='right-empty' description={<p>请点击左侧打开或新建文件</p>}></Empty>
+                        <Empty className='right-empty' description={<p>{i18next.t("请点击左侧打开或新建文件")}</p>}></Empty>
                     )}
                 </div>
 
@@ -1086,30 +1087,26 @@ export const YakExecutor: React.FC<YakExecutorProp> = (props) => {
                     visible={hintShow}
                     onCancel={() => setHintShow(false)}
                     footer={[
-                        <Button key='link' onClick={() => setHintShow(false)}>
-                            取消
+                        <Button key='link' onClick={() => setHintShow(false)}>{i18next.t("取消")}
                         </Button>,
-                        <Button key='submit' onClick={() => ownCloseCode()}>
-                            不保存
+                        <Button key='submit' onClick={() => ownCloseCode()}>{i18next.t("不保存")}
                         </Button>,
-                        <Button key='back' type='primary' onClick={() => saveCode(tabList[hintIndex], hintIndex)}>
-                            保存
+                        <Button key='back' type='primary' onClick={() => saveCode(tabList[hintIndex], hintIndex)}>{i18next.t("保存")}
                         </Button>
                     ]}
                 >
                     <div style={{height: 40}}>
                         <ExclamationCircleOutlined style={{fontSize: 22, color: "#faad14"}} />
-                        <span style={{fontSize: 18, marginLeft: 15}}>文件未保存</span>
+                        <span style={{fontSize: 18, marginLeft: 15}}>{i18next.t("文件未保存")}</span>
                     </div>
-                    <p style={{fontSize: 15, marginLeft: 37}}>{`是否要保存${hintFile}里面的内容吗？`}</p>
+                    <p style={{fontSize: 15, marginLeft: 37}}>{i18next.t("是否要保存${hintFile}里面的内容吗？", { v1: hintFile })}</p>
                 </Modal>
 
                 <Modal
                     visible={renameHint}
                     onCancel={() => setHintShow(false)}
                     footer={[
-                        <Button key='link' onClick={() => setRenameHint(false)}>
-                            取消
+                        <Button key='link' onClick={() => setRenameHint(false)}>{i18next.t("取消")}
                         </Button>,
                         <Button
                             key='back'
@@ -1126,16 +1123,15 @@ export const YakExecutor: React.FC<YakExecutorProp> = (props) => {
                                     setRenameHint(false)
                                 })
                             }}
-                        >
-                            确定
+                        >{i18next.t("确定")}
                         </Button>
                     ]}
                 >
                     <div style={{height: 40}}>
                         <ExclamationCircleOutlined style={{fontSize: 22, color: "#faad14"}} />
-                        <span style={{fontSize: 18, marginLeft: 15}}>文件已存在</span>
+                        <span style={{fontSize: 18, marginLeft: 15}}>{i18next.t("文件已存在")}</span>
                     </div>
-                    <p style={{fontSize: 15, marginLeft: 37}}>{`是否要覆盖已存在的文件吗？`}</p>
+                    <p style={{fontSize: 15, marginLeft: 37}}>{i18next.t("是否要覆盖已存在的文件吗？")}</p>
                 </Modal>
             </div>
         </AutoCard>
@@ -1175,7 +1171,7 @@ const ExecutorFileList = (props: ExecutorFileListProps) => {
     return (
         <AutoCard
             className={"executor-file-list"}
-            title={<span style={{color: "#000", fontWeight: 400}}>近期文件</span>}
+            title={<span style={{color: "#000", fontWeight: 400}}>{i18next.t("近期文件")}</span>}
             headStyle={{
                 minHeight: 0,
                 fontSize: 14,
@@ -1242,7 +1238,7 @@ const ExecutorFileList = (props: ExecutorFileListProps) => {
                     description={
                         <div style={{marginTop: 90}}>
                             <Button type='link' icon={<FileAddOutlined style={{fontSize: 30}} />} onClick={newFile} />
-                            <p style={{marginTop: 10}}>新建文件</p>
+                            <p style={{marginTop: 10}}>{i18next.t("新建文件")}</p>
                         </div>
                     }
                 />

@@ -5,6 +5,7 @@ import {useMemoizedFn} from "ahooks"
 import {info, success} from "../../../utils/notification"
 import styles from "./MITMServerStartForm.module.scss"
 import {YakitSelect} from "@/components/yakitUI/YakitSelect/YakitSelect"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -45,7 +46,7 @@ export const MITMFilters: React.FC<MITMFiltersProp> = React.forwardRef((props, r
     return (
         <Spin spinning={loading}>
             <Form labelCol={{span: 6}} wrapperCol={{span: 16}} className={styles["mitm-filters-form"]}>
-                <Form.Item label='包含 Hostname'>
+                <Form.Item label={i18next.t("包含 Hostname")}>
                     <YakitSelect
                         mode='tags'
                         value={params?.includeHostname}
@@ -54,7 +55,7 @@ export const MITMFilters: React.FC<MITMFiltersProp> = React.forwardRef((props, r
                         }}
                     ></YakitSelect>
                 </Form.Item>
-                <Form.Item label='排除 Hostname'>
+                <Form.Item label={i18next.t("排除 Hostname")}>
                     <YakitSelect
                         mode='tags'
                         value={params?.excludeHostname || undefined}
@@ -64,8 +65,8 @@ export const MITMFilters: React.FC<MITMFiltersProp> = React.forwardRef((props, r
                     ></YakitSelect>
                 </Form.Item>
                 <Form.Item
-                    label='包含 URL 路径'
-                    help={"可理解为 URI 匹配，例如 /main/index.php?a=123 或者 /*/index 或 /admin* "}
+                    label={i18next.t("包含 URL 路径")}
+                    help={i18next.t("可理解为 URI 匹配，例如 /main/index.php?a=123 或者 /*/index 或 /admin* ")}
                 >
                     <YakitSelect
                         mode='tags'
@@ -75,7 +76,7 @@ export const MITMFilters: React.FC<MITMFiltersProp> = React.forwardRef((props, r
                         }}
                     ></YakitSelect>
                 </Form.Item>
-                <Form.Item label={"排除 URL 路径"} help={"可理解为 URI 过滤，例如 /main/index "}>
+                <Form.Item label={i18next.t("排除 URL 路径")} help={i18next.t("可理解为 URI 过滤，例如 /main/index ")}>
                     <YakitSelect
                         mode='tags'
                         value={params?.excludeUri || undefined}
@@ -84,7 +85,7 @@ export const MITMFilters: React.FC<MITMFiltersProp> = React.forwardRef((props, r
                         }}
                     ></YakitSelect>
                 </Form.Item>
-                <Form.Item label={"包含文件后缀"}>
+                <Form.Item label={i18next.t("包含文件后缀")}>
                     <YakitSelect
                         mode='tags'
                         value={params?.includeSuffix || undefined}
@@ -93,7 +94,7 @@ export const MITMFilters: React.FC<MITMFiltersProp> = React.forwardRef((props, r
                         }}
                     ></YakitSelect>
                 </Form.Item>
-                <Form.Item label={"排除文件后缀"}>
+                <Form.Item label={i18next.t("排除文件后缀")}>
                     <YakitSelect
                         mode='tags'
                         value={params?.excludeSuffix || undefined}
@@ -102,7 +103,7 @@ export const MITMFilters: React.FC<MITMFiltersProp> = React.forwardRef((props, r
                         }}
                     ></YakitSelect>
                 </Form.Item>
-                <Form.Item label={"排除 Content-Type"}>
+                <Form.Item label={i18next.t("排除 Content-Type")}>
                     <YakitSelect
                         mode='tags'
                         value={params?.excludeContentTypes || undefined}
@@ -111,7 +112,7 @@ export const MITMFilters: React.FC<MITMFiltersProp> = React.forwardRef((props, r
                         }}
                     ></YakitSelect>
                 </Form.Item>
-                <Form.Item label={"排除 HTTP 方法"}>
+                <Form.Item label={i18next.t("排除 HTTP 方法")}>
                     <YakitSelect
                         mode='tags'
                         value={params?.excludeMethod || undefined}

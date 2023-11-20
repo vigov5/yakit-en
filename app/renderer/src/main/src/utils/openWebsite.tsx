@@ -1,5 +1,6 @@
 import React from "react"
 import {success, yakitFailed} from "./notification"
+import i18next from "../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -25,7 +26,7 @@ export const saveABSFileToOpen = (name: string, data?: Uint8Array | string) => {
                 data: isArr ? new Buffer((data || []) as Uint8Array).toString() : data || ""
             })
             .then(() => {
-                success("下载完成")
+                success(i18next.t("下载完成"))
                 ipcRenderer.invoke("open-specified-file", res.filePath)
             })
     })
@@ -38,7 +39,7 @@ export const saveABSFileAnotherOpen = async (params: {
     errorMsg: string
     isOpenSpecifiedFile?: boolean
 }) => {
-    const {name, data, successMsg = "下载完成", errorMsg = "下载失败", isOpenSpecifiedFile = false} = params
+    const {name, data, successMsg = i18next.t("下载完成"), errorMsg = i18next.t("下载失败"), isOpenSpecifiedFile = false} = params
     const isArr = Array.isArray(data)
     const showSaveDialogRes = await ipcRenderer.invoke("show-save-dialog", name)
     if (showSaveDialogRes.canceled) return

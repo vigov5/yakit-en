@@ -5,6 +5,7 @@ import {Paging} from "@/utils/yakQueryHTTPFlow";
 import {DemoVirtualTable} from "@/demoComponents/virtualTable/VirtualTable";
 import {TrafficSession} from "@/models/Traffic";
 import {TrafficViewerControlIf} from "@/components/playground/traffic/base";
+import i18next from "../../../i18n"
 
 export interface DemoTrafficSessionTableProp extends TrafficViewerControlIf {
 
@@ -29,8 +30,8 @@ export const DemoTrafficSessionTable: React.FC<DemoTrafficSessionTableProp> = (p
     return <DemoVirtualTable<TrafficSession>
         columns={[
             {headerTitle: "ID", key: "Id", width: 80, colRender: i => i.Id},
-            {headerTitle: "类型", key: "Id", width: 80, colRender: i => i.SessionType},
-            {headerTitle: "设备类型", key: "Id", width: 80, colRender: i => i.DeviceType},
+            {headerTitle: i18next.t("类型"), key: "Id", width: 80, colRender: i => i.SessionType},
+            {headerTitle: i18next.t("设备类型"), key: "Id", width: 80, colRender: i => i.DeviceType},
         ]}
         rowClick={data => {
             setSelected(data)

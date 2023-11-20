@@ -3,6 +3,7 @@ import {Space, Table, Tag} from "antd";
 import {useMemoizedFn} from "ahooks";
 import {genDefaultPagination, QueryGeneralResponse} from "@/pages/invoker/schema";
 import {AutoCard} from "@/components/AutoCard";
+import i18next from "../../i18n"
 
 import styles from "./WebsocketFrameHistory.module.scss"
 
@@ -66,7 +67,7 @@ export const WebsocketFrameHistory: React.FC<WebsocketFrameHistoryProp> = (props
     }, [])
 
     return <AutoCard
-        title={"Websocket 数据帧"} size={"small"} bodyStyle={{overflowY: "auto", padding: 0}}
+        title={i18next.t("Websocket 数据帧")} size={"small"} bodyStyle={{overflowY: "auto", padding: 0}}
     >
         <Table
             className={styles['websocket-table-wrapper']}
@@ -90,10 +91,10 @@ export const WebsocketFrameHistory: React.FC<WebsocketFrameHistoryProp> = (props
                 }
             }}
             columns={[
-                {title: "顺序", width: 50, render: (i: WebsocketFlow) => i.FrameIndex},
+                {title: i18next.t("顺序"), width: 50, render: (i: WebsocketFlow) => i.FrameIndex},
                 {
-                    title: "数据方向", width: 100, render: (i: WebsocketFlow) => {
-                        return i.FromServer ? <Tag color={"green"}>服务端响应</Tag> : <Tag color={"orange"}>客户端请求</Tag>
+                    title: i18next.t("数据方向"), width: 100, render: (i: WebsocketFlow) => {
+                        return i.FromServer ? <Tag color={"green"}>{i18next.t("服务端响应")}</Tag> : <Tag color={"orange"}>{i18next.t("客户端请求")}</Tag>
                     }
                 },
                 {
@@ -105,7 +106,7 @@ export const WebsocketFrameHistory: React.FC<WebsocketFrameHistoryProp> = (props
                     }
                 },
                 {
-                    title: "预览", render: (i: WebsocketFlow) => {
+                    title: i18next.t("预览"), render: (i: WebsocketFlow) => {
                         return <>
                             {i.DataVerbose}
                         </>

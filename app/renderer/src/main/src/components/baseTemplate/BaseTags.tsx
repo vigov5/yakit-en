@@ -3,6 +3,7 @@ import {Select, Button, Tag, TagProps, SelectProps, Tooltip, Space, Checkbox} fr
 import {useGetState, useDebounce, useThrottle} from "ahooks"
 import {useHotkeys} from "react-hotkeys-hook"
 import {} from "@ant-design/icons"
+import i18next from "../../i18n"
 
 import "./BaseTags.scss"
 import classNames from "classnames"
@@ -301,7 +302,7 @@ export const TagsFilter: React.FC<TagsFilterProps> = (props) => {
                         onChange={handleCheckAllChange}
                         checked={checkAll}
                     >
-                        全选
+                        {i18next.t("全选")}
                     </Checkbox>
                 )}
                 <HighPowerList
@@ -382,10 +383,10 @@ export const TagsFilter: React.FC<TagsFilterProps> = (props) => {
                             <CheckboxOptions />
                             <div className='base-tags-filter-select'>
                                 <Button onClick={resetBtn} type='text' className='base-tags-filter-select-reset'>
-                                    重置
+                                    {i18next.t("重置")}
                                 </Button>
                                 <Button onClick={submitBtn} type='text' className='base-tags-filter-select-submit'>
-                                    确定
+                                    {i18next.t("确定")}
                                 </Button>
                             </div>
                         </>

@@ -13,6 +13,7 @@ import {CodecPluginTemplate} from "../invoker/data/CodecPluginTemplate"
 import {MITMPluginTemplate, PortScanPluginTemplate} from "../pluginDebugger/defaultData"
 import {SolidFlagIcon, SolidBadgecheckIcon, SolidBanIcon} from "@/assets/icon/solid"
 import {TypeSelectOpt} from "./funcTemplateType"
+import i18next from "../../i18n"
 
 export function GetPluginLanguage(type: string): string {
     return pluginTypeToName[type]?.language || type
@@ -37,24 +38,24 @@ interface PluginTypeInfoProps {
 /** @name 插件类型对应的详细信息 */
 export const pluginTypeToName: Record<string, PluginTypeInfoProps> = {
     yak: {
-        name: "Yak 原生插件",
-        description: "内置了众多网络安全常用库，可快速编写安全小工具，该原生模块只支持手动调用",
+        name: i18next.t("Yak 原生插件"),
+        description: i18next.t("内置了众多网络安全常用库，可快速编写安全小工具，该原生模块只支持手动调用"),
         icon: <SolidYakitPluginIcon />,
         color: "warning",
         content: "yakit.AutoInitYakit()\n\n# Input your code!\n\n",
         language: "yak"
     },
     mitm: {
-        name: "Yak-MITM 模块",
-        description: "专用于 MITM 模块中的模块，编写 MITM 插件，可以轻松对经过的流量进行修改",
+        name: i18next.t("Yak-MITM 模块"),
+        description: i18next.t("专用于 MITM 模块中的模块，编写 MITM 插件，可以轻松对经过的流量进行修改"),
         icon: <SolidPluginYakMitmIcon />,
         color: "blue",
         content: MITMPluginTemplate,
         language: "yak"
     },
     "port-scan": {
-        name: "Yak-端口扫描",
-        description: "该插件会对目标进行端口扫描，再对扫描的指纹结果做进一步的处理，常用场景先指纹识别，再 Poc 检测",
+        name: i18next.t("Yak-端口扫描"),
+        description: i18next.t("该插件会对目标进行端口扫描，再对扫描的指纹结果做进一步的处理，常用场景先指纹识别，再 Poc 检测"),
         icon: <SolidPluginProtScanIcon />,
         color: "success",
         content: PortScanPluginTemplate,
@@ -62,23 +63,23 @@ export const pluginTypeToName: Record<string, PluginTypeInfoProps> = {
     },
     codec: {
         name: "Yak-Codec",
-        description: "Yakit 中的编解码模块，可以自定义实现所需要的编解码、加解密",
+        description: i18next.t("Yakit 中的编解码模块，可以自定义实现所需要的编解码、加解密"),
         icon: <SolidSparklesPluginIcon />,
         color: "purple",
         content: CodecPluginTemplate,
         language: "yak"
     },
     lua: {
-        name: "Lua 模块",
-        description: "监修中，无法使用",
+        name: i18next.t("Lua 模块"),
+        description: i18next.t("监修中，无法使用"),
         icon: <SolidDocumentSearchPluginIcon />,
         color: "bluePurple",
         content: "",
         language: "lua"
     },
     nuclei: {
-        name: "Nuclei YamI 模块",
-        description: "使用 YakVM 构建了一个沙箱，可以兼容执行 Nuclei DSL ，无感使用 Nuclei 自带的 Yaml 模板",
+        name: i18next.t("Nuclei YamI 模块"),
+        description: i18next.t("使用 YakVM 构建了一个沙箱，可以兼容执行 Nuclei DSL ，无感使用 Nuclei 自带的 Yaml 模板"),
         icon: <SolidCollectionPluginIcon />,
         color: "cyan",
         content: "# Add your nuclei formatted PoC!",
@@ -136,9 +137,9 @@ export enum PluginGV {
 
 /** @name 审核状态对应展示名称 */
 export const aduitStatusToName: Record<string, {name: string; icon: ReactNode}> = {
-    "0": {name: "待审核", icon: <SolidFlagIcon className='aduit-status-flag-color' />},
-    "1": {name: "已通过", icon: <SolidBadgecheckIcon className='aduit-status-badge-check-color' />},
-    "2": {name: "未通过", icon: <SolidBanIcon className='aduit-status-ban-color' />}
+    "0": {name: i18next.t("待审核"), icon: <SolidFlagIcon className='aduit-status-flag-color' />},
+    "1": {name: i18next.t("已通过"), icon: <SolidBadgecheckIcon className='aduit-status-badge-check-color' />},
+    "2": {name: i18next.t("未通过"), icon: <SolidBanIcon className='aduit-status-ban-color' />}
 }
 /** @name 审核状态选择列表 */
 export const DefaultStatusList: TypeSelectOpt[] = [
@@ -149,8 +150,8 @@ export const DefaultStatusList: TypeSelectOpt[] = [
 
 /** @name 公开状态对应展示信息 */
 export const publicStatusToInfo: Record<string, {name: string; icon: ReactNode}> = {
-    "1": {name: "公开", icon: <SolidCloudpluginIcon />},
-    "2": {name: "私密", icon: <SolidPrivatepluginIcon />}
+    "1": {name: i18next.t("公开"), icon: <SolidCloudpluginIcon />},
+    "2": {name: i18next.t("私密"), icon: <SolidPrivatepluginIcon />}
 }
 /** @name 公开状态选择列表 */
 export const DefaultPublicStatusList: TypeSelectOpt[] = [

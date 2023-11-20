@@ -10,6 +10,7 @@ import {InputInteger, OneLine} from "../utils/inputUtil"
 import {YakFilterModuleList} from "@/pages/yakitStore/YakitStorePage"
 import "./PluginList.css"
 import {YakitEditor} from "@/components/yakitUI/YakitEditor/YakitEditor";
+import i18next from "../i18n"
 
 export interface PluginListProp extends AutoCardProps {
     loading: boolean
@@ -180,7 +181,7 @@ export const PluginList: React.FC<PluginListProp> = React.memo((props) => {
 
     const settingRender = () => (
         <Popover
-            title={"额外设置"}
+            title={i18next.t("额外设置")}
             trigger={["click"]}
             content={
                 <div>
@@ -192,14 +193,13 @@ export const PluginList: React.FC<PluginListProp> = React.memo((props) => {
                         }}
                     >
                         <InputInteger
-                            label={"插件展示数量"}
+                            label={i18next.t("插件展示数量")}
                             value={limit}
                             setValue={setLimit}
                             formItemStyle={{marginBottom: 4}}
                         />
                         <Form.Item colon={false} label={""} style={{marginBottom: 10}}>
-                            <Button type='primary' htmlType='submit'>
-                                刷新
+                            <Button type='primary' htmlType='submit'>{i18next.t("刷新")}
                             </Button>
                         </Form.Item>
                     </Form>
@@ -252,7 +252,7 @@ export const PluginList: React.FC<PluginListProp> = React.memo((props) => {
                                     style={{width: 140}}
                                 />
                                 <Popover
-                                    title={"额外设置"}
+                                    title={i18next.t("额外设置")}
                                     trigger={["click"]}
                                     content={
                                         <div>
@@ -264,14 +264,13 @@ export const PluginList: React.FC<PluginListProp> = React.memo((props) => {
                                                 }}
                                             >
                                                 <InputInteger
-                                                    label={"插件展示数量"}
+                                                    label={i18next.t("插件展示数量")}
                                                     value={limit}
                                                     setValue={setLimit}
                                                     formItemStyle={{marginBottom: 4}}
                                                 />
                                                 <Form.Item colon={false} label={""} style={{marginBottom: 10}}>
-                                                    <Button type='primary' htmlType='submit'>
-                                                        刷新
+                                                    <Button type='primary' htmlType='submit'>{i18next.t("刷新")}
                                                     </Button>
                                                 </Form.Item>
                                             </Form>
@@ -285,8 +284,7 @@ export const PluginList: React.FC<PluginListProp> = React.memo((props) => {
                                     indeterminate={indeterminate}
                                     onChange={(r) => allSelectScript(r.target.checked)}
                                     checked={checked}
-                                >
-                                    全选
+                                >{i18next.t("全选")}
                                 </Checkbox>
                             </Space>
                 }

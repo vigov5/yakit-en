@@ -7,6 +7,7 @@ import useHoldingIPCRStream from "@/hook/useHoldingIPCRStream";
 import {AutoCard} from "@/components/AutoCard";
 import {PluginResultUI} from "@/pages/yakitStore/viewers/base";
 import {HTTPRequestBuilderParams} from "@/models/HTTPRequestBuilder";
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron");
 
@@ -32,7 +33,7 @@ export const PluginDebuggerExec: React.FC<PluginDebuggerExecProp> = (props) => {
     }, xtermRef] = useHoldingIPCRStream("debug-plugin", "DebugPlugin", getToken(), () => {
         setTimeout(() => setLoading(false), 300)
     }, undefined, undefined, rId => {
-        info(`调试任务启动成功，运行时 ID: ${rId}`)
+        info(i18next.t("调试任务启动成功，运行时 ID: ${rId}", { v1: rId }))
         setRuntimeId(rId)
     })
 
@@ -46,13 +47,13 @@ export const PluginDebuggerExec: React.FC<PluginDebuggerExecProp> = (props) => {
             Input: copyBuilder.IsRawHTTPRequest ? "" : props.targets,
             HTTPRequestTemplate: copyBuilder,
         }, getToken()).then(() => {
-            info("启动任务成功")
+            info(i18next.t("启动任务成功"))
         })
     })
 
     const cancel = useMemoizedFn(() => {
         ipcRenderer.invoke("cancel-DebugPlugin", getToken(), {}).then(() => {
-            info("取消任务")
+            info(i18next.t("取消任务"))
         }).finally(() => {
             setToken(randomString(40))
         })

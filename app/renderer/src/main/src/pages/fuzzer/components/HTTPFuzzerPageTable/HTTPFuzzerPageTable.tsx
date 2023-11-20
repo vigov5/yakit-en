@@ -31,6 +31,7 @@ import {YakitResizeBox} from "@/components/yakitUI/YakitResizeBox/YakitResizeBox
 import emiter from "@/utils/eventBus/eventBus"
 import {YakitDropdownMenu} from "@/components/yakitUI/YakitDropdownMenu/YakitDropdownMenu"
 import { openABSFileLocated } from "@/utils/openWebsite"
+import i18next from "../../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -146,7 +147,7 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
             return success
                 ? [
                       {
-                          title: "请求",
+                          title: i18next.t("请求"),
                           dataKey: "Count",
                           render: (v, _, index) => index + 1,
                           width: 80,
@@ -164,7 +165,7 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                           }
                       },
                       {
-                          title: "状态",
+                          title: i18next.t("状态"),
                           dataKey: "StatusCode",
                           render: (v, rowData) =>
                               v ? (
@@ -208,7 +209,7 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                           }
                       },
                       {
-                          title: "响应大小",
+                          title: i18next.t("响应大小"),
                           dataKey: "BodyLength",
                           width: 120,
                           sorterProps: {
@@ -243,7 +244,7 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                           }
                       },
                       {
-                          title: "延迟(ms)",
+                          title: i18next.t("延迟(ms)"),
                           dataKey: "DurationMs",
                           width: 100,
                           sorterProps: {
@@ -267,7 +268,7 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                           render: (v) => (v ? v.join(",") : "-")
                       },
                       {
-                          title: "提取数据",
+                          title: i18next.t("提取数据"),
                           dataKey: "ExtractedResults",
                           width: 300,
                           beforeIconExtra: (
@@ -276,7 +277,7 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                                       checked={isHaveData}
                                       onChange={(e) => setIsHaveData(e.target.checked)}
                                   />
-                                  <span className={styles["tip"]}>不为空</span>
+                                  <span className={styles["tip"]}>{i18next.t("不为空")}</span>
                               </div>
                           ),
                           render: (item, record) =>
@@ -295,8 +296,7 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                                                   e.stopPropagation()
                                                   onViewExecResults(item)
                                               }}
-                                          >
-                                              详情
+                                          >{i18next.t("详情")}
                                           </YakitButton>
                                       )}
                                   </div>
@@ -305,7 +305,7 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                               )
                       },
                       {
-                          title: "响应相似度",
+                          title: i18next.t("响应相似度"),
                           dataKey: "BodySimilarity",
                           width: 120,
                           render: (v, rowData) => {
@@ -330,7 +330,7 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                           }
                       },
                       {
-                          title: "HTTP头相似度",
+                          title: i18next.t("HTTP头相似度"),
                           dataKey: "HeaderSimilarity",
                           render: (v) => (v ? parseFloat(`${v}`).toFixed(3) : "-"),
                           width: 120,
@@ -354,7 +354,7 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                           }
                       },
                       {
-                          title: "操作",
+                          title: i18next.t("操作"),
                           dataKey: "UUID",
                           fixed: "right",
                           width: isShowDebug !== false ? 85 : 60,
@@ -363,7 +363,7 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                                   <div className={styles["operate-icons"]}>
                                       {isShowDebug !== false && (
                                           <>
-                                              <Tooltip title='调试'>
+                                              <Tooltip title={i18next.t("调试")}>
                                                   <HollowLightningBoltIcon
                                                       onClick={(e) => {
                                                           e.stopPropagation()
@@ -410,7 +410,7 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                           }
                       },
                       {
-                          title: "失败原因",
+                          title: i18next.t("失败原因"),
                           dataKey: "Reason",
                           render: (v) => {
                               return v ? (
@@ -466,7 +466,7 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
         }, [])
         const onViewExecResults = useMemoizedFn((list) => {
             showYakitModal({
-                title: "提取结果",
+                title: i18next.t("提取结果"),
                 width: "60%",
                 footer: <></>,
                 content: <ExtractionResultsContent list={list} />
@@ -499,7 +499,7 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                     }
                 })
                     .catch((e) => {
-                        yakitFailed("搜索失败:" + e)
+                        yakitFailed(i18next.t("搜索失败:") + e)
                     })
                     .finally(() => {
                         setTimeout(() => {
@@ -595,7 +595,7 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                 }
                 // ------------  搜索 结束  ------------
             } catch (error) {
-                yakitFailed("搜索失败:" + error)
+                yakitFailed(i18next.t("搜索失败:") + error)
             }
         })
 
@@ -659,7 +659,7 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                     menu: [
                         {
                             key: "is-show-add-overlay-widgetv",
-                            label: showResponseInfoSecondEditor ? "隐藏响应信息" : "显示响应信息"
+                            label: showResponseInfoSecondEditor ? i18next.t("隐藏响应信息") : i18next.t("显示响应信息")
                         }
                     ],
                     onRun: () => {
@@ -712,7 +712,7 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                             isShowBeautifyRender={!currentSelectItem?.IsTooLargeResponse}
                             title={
                                 <div className={styles["second-node-title-wrapper"]}>
-                                    <span className={styles["second-node-title-text"]}>快速预览</span>
+                                    <span className={styles["second-node-title-text"]}>{i18next.t("快速预览")}</span>
                                     <div className={styles["second-node-title-btns"]}>
                                         <YakitRadioButtons
                                             size='small'
@@ -724,17 +724,16 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                                             options={[
                                                 {
                                                     value: "request",
-                                                    label: "请求"
+                                                    label: i18next.t("请求")
                                                 },
                                                 {
                                                     value: "response",
-                                                    label: "响应"
+                                                    label: i18next.t("响应")
                                                 }
                                             ]}
                                         />
                                         {currentSelectItem?.IsTooLargeResponse && (
-                                            <YakitTag style={{marginLeft: 8}} color='danger'>
-                                                超大响应
+                                            <YakitTag style={{marginLeft: 8}} color='danger'>{i18next.t("超大响应")}
                                             </YakitTag>
                                         )}
                                     </div>
@@ -765,8 +764,8 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                                     <YakitDropdownMenu
                                         menu={{
                                             data: [
-                                                {key: "tooLargeResponseHeaderFile", label: "查看Header"},
-                                                {key: "tooLargeResponseBodyFile", label: "查看Body"}
+                                                {key: "tooLargeResponseHeaderFile", label: i18next.t("查看Header")},
+                                                {key: "tooLargeResponseBodyFile", label: i18next.t("查看Body")}
                                             ],
                                             onClick: ({key}) => {
                                                 switch (key) {
@@ -777,7 +776,7 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                                                                 if (flag) {
                                                                     openABSFileLocated(currentSelectItem.TooLargeResponseHeaderFile)
                                                                 } else {
-                                                                    failed("目标文件已不存在!")
+                                                                    failed(i18next.t("目标文件已不存在!"))
                                                                 }
                                                             })
                                                             .catch(() => {})
@@ -789,7 +788,7 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                                                                 if (flag) {
                                                                     openABSFileLocated(currentSelectItem.TooLargeResponseBodyFile)
                                                                 } else {
-                                                                    failed("目标文件已不存在!")
+                                                                    failed(i18next.t("目标文件已不存在!"))
                                                                 }
                                                             })
                                                             .catch(() => {})
@@ -804,13 +803,11 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                                             placement: "bottom"
                                         }}
                                     >
-                                        <YakitButton type='primary' size='small'>
-                                            完整响应
+                                        <YakitButton type='primary' size='small'>{i18next.t("完整响应")}
                                         </YakitButton>
                                     </YakitDropdownMenu>
                                 ),
-                                <YakitButton size='small' onClick={onExecResults}>
-                                    提取数据
+                                <YakitButton size='small' onClick={onExecResults}>{i18next.t("提取数据")}
                                 </YakitButton>
                             ]}
                         />

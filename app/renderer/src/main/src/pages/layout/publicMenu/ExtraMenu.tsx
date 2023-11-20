@@ -8,6 +8,7 @@ import {useMemoizedFn} from "ahooks"
 import {RouteToPageProps} from "./PublicMenu"
 import { OutlineSaveIcon } from "@/assets/icon/outline"
 import { SolidCodecIcon, SolidPayloadIcon, SolidTerminalIcon } from "@/assets/icon/solid"
+import i18next from "../../../i18n"
 
 import styles from "./ExtraMenu.module.scss"
 
@@ -42,11 +43,11 @@ export const ExtraMenu: React.FC<ExtraMenuProps> = React.memo((props) => {
                 data={[
                     {
                         key: "import-plugin",
-                        label: "导入插件"
+                        label: i18next.t("导入插件")
                     },
                     {
                         key: "import-share",
-                        label: "导入分享数据"
+                        label: i18next.t("导入分享数据")
                     }
                 ]}
                 onClick={({key}) => importMenuSelect(key)}
@@ -71,8 +72,7 @@ export const ExtraMenu: React.FC<ExtraMenuProps> = React.memo((props) => {
                     style={{fontWeight: 500}}
                     onClick={(e) => e.preventDefault()}
                     icon={<OutlineSaveIcon />}
-                >
-                    导入资源
+                >{i18next.t("导入资源")}
                 </YakitButton>
             </YakitPopover>
             <YakitButton

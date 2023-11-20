@@ -54,6 +54,7 @@ import {onInsertYakFuzzer, showDictsAndSelect} from "@/pages/fuzzer/HTTPFuzzerPa
 import {openExternalWebsite} from "@/utils/openWebsite"
 import emiter from "@/utils/eventBus/eventBus"
 import {GetPluginLanguage} from "@/pages/plugins/builtInData"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -68,20 +69,20 @@ const keyToFontSize: Record<string, number> = {
 const DefaultMenuTop: EditorMenuItemType[] = [
     {
         key: "font-size",
-        label: "字体大小",
+        label: i18next.t("字体大小"),
         children: [
-            {key: "font-size-small", label: "小"},
-            {key: "font-size-middle", label: "中"},
-            {key: "font-size-large", label: "大"}
+            {key: "font-size-small", label: i18next.t("小")},
+            {key: "font-size-middle", label: i18next.t("中")},
+            {key: "font-size-large", label: i18next.t("大")}
         ]
     }
 ]
 
 /** 编辑器右键默认菜单 - 底部 */
 const DefaultMenuBottom: EditorMenuItemType[] = [
-    {key: "cut", label: "剪切"},
-    {key: "copy", label: "复制"},
-    {key: "paste", label: "粘贴"}
+    {key: "cut", label: i18next.t("剪切")},
+    {key: "copy", label: i18next.t("复制")},
+    {key: "paste", label: i18next.t("粘贴")}
 ]
 
 export const YakitEditor: React.FC<YakitEditorProps> = React.memo((props) => {
@@ -340,7 +341,7 @@ export const YakitEditor: React.FC<YakitEditorProps> = React.memo((props) => {
                 if (info.children && info.children.length > 0) {
                     info.children = contextMenuKeybindingHandle(info.key, info.children)
                 } else {
-                    if (info.key === "cut" && info.label === "剪切") {
+                    if (info.key === "cut" && info.label === i18next.t("剪切")) {
                         const keysContent = convertKeyboard(systemRef.current, [
                             systemRef.current === "Darwin" ? YakitEditorKeyCode.Meta : YakitEditorKeyCode.Control,
                             YakitEditorKeyCode.KEY_X
@@ -348,35 +349,35 @@ export const YakitEditor: React.FC<YakitEditorProps> = React.memo((props) => {
 
                         info.label = keysContent ? (
                             <div className={styles["editor-context-menu-keybind-wrapper"]}>
-                                <div className={styles["content-style"]}>剪切</div>
+                                <div className={styles["content-style"]}>{i18next.t("剪切")}</div>
                                 <div className={classNames(styles["keybind-style"], "keys-style")}>{keysContent}</div>
                             </div>
                         ) : (
                             info.label
                         )
                     }
-                    if (info.key === "copy" && info.label === "复制") {
+                    if (info.key === "copy" && info.label === i18next.t("复制")) {
                         const keysContent = convertKeyboard(systemRef.current, [
                             systemRef.current === "Darwin" ? YakitEditorKeyCode.Meta : YakitEditorKeyCode.Control,
                             YakitEditorKeyCode.KEY_C
                         ])
                         info.label = keysContent ? (
                             <div className={styles["editor-context-menu-keybind-wrapper"]}>
-                                <div className={styles["content-style"]}>复制</div>
+                                <div className={styles["content-style"]}>{i18next.t("复制")}</div>
                                 <div className={classNames(styles["keybind-style"], "keys-style")}>{keysContent}</div>
                             </div>
                         ) : (
                             info.label
                         )
                     }
-                    if (info.key === "paste" && info.label === "粘贴") {
+                    if (info.key === "paste" && info.label === i18next.t("粘贴")) {
                         const keysContent = convertKeyboard(systemRef.current, [
                             systemRef.current === "Darwin" ? YakitEditorKeyCode.Meta : YakitEditorKeyCode.Control,
                             YakitEditorKeyCode.KEY_V
                         ])
                         info.label = keysContent ? (
                             <div className={styles["editor-context-menu-keybind-wrapper"]}>
-                                <div className={styles["content-style"]}>粘贴</div>
+                                <div className={styles["content-style"]}>{i18next.t("粘贴")}</div>
                                 <div className={classNames(styles["keybind-style"], "keys-style")}>{keysContent}</div>
                             </div>
                         ) : (
@@ -423,7 +424,7 @@ export const YakitEditor: React.FC<YakitEditorProps> = React.memo((props) => {
         )
         return result
     })
-    /** yak后缀文件中，右键菜单增加'Yak 代码格式化'功能 */
+    /** yak后缀文件中，右键菜单增加i18next.t("Yak 代码格式化")功能 */
     useEffect(() => {
         /**
          * @description 使用下方的判断逻辑，将导致后续的(额外菜单变动)无法在右键菜单再渲染中生效
@@ -438,13 +439,13 @@ export const YakitEditor: React.FC<YakitEditorProps> = React.memo((props) => {
 
             if (type === "http") {
                 rightContextMenu.current = rightContextMenu.current.concat([
-                    {key: "http-show-break", label: getShowBreak() ? "隐藏换行符" : "显示换行符"}
+                    {key: "http-show-break", label: getShowBreak() ? i18next.t("隐藏换行符") : i18next.t("显示换行符")}
                 ])
             }
             if (language === "yak") {
                 rightContextMenu.current = rightContextMenu.current.concat([
                     {type: "divider"},
-                    {key: "yak-formatter", label: "Yak 代码格式化"}
+                    {key: "yak-formatter", label: i18next.t("Yak 代码格式化")}
                 ])
             }
             if (menuType.length > 0) {
@@ -488,7 +489,7 @@ export const YakitEditor: React.FC<YakitEditorProps> = React.memo((props) => {
      */
     const pasteWarning = useThrottleFn(
         () => {
-            failed("粘贴过快，请稍后再试")
+            failed(i18next.t("粘贴过快，请稍后再试"))
         },
         {wait: 500}
     )
@@ -613,7 +614,7 @@ export const YakitEditor: React.FC<YakitEditorProps> = React.memo((props) => {
         if (flag.length > 0 && type === "http") {
             for (let item of rightContextMenu.current) {
                 const info = item as EditorMenuItemProps
-                if (info?.key === "http-show-break") info.label = getShowBreak() ? "隐藏换行符" : "显示换行符"
+                if (info?.key === "http-show-break") info.label = getShowBreak() ? i18next.t("隐藏换行符") : i18next.t("显示换行符")
             }
         }
     }, [showBreak])
@@ -752,14 +753,14 @@ export const YakitEditor: React.FC<YakitEditorProps> = React.memo((props) => {
         const insertLabelFun = (v: QueryFuzzerLabelResponseProps) => {
             if (v.Label) {
                 editor && editor.trigger("keyboard", "type", {text: v.Label})
-            } else if (v.DefaultDescription === "插入文件-fixed") {
+            } else if (v.DefaultDescription === i18next.t("插入文件-fixed")) {
                 editor && insertFileFuzzTag((i) => monacoEditorWrite(editor, i), "file:line")
-            } else if (v.DefaultDescription === "插入Payload-fixed") {
+            } else if (v.DefaultDescription === i18next.t("插入Payload-fixed")) {
                 editor &&
                     showDictsAndSelect((i) => {
                         monacoEditorWrite(editor, i, editor.getSelection())
                     })
-            } else if (v.DefaultDescription === "插入临时字典-fixed") {
+            } else if (v.DefaultDescription === i18next.t("插入临时字典-fixed")) {
                 editor && insertTemporaryFileFuzzTag((i) => monacoEditorWrite(editor, i))
             }
         }

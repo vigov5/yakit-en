@@ -16,6 +16,7 @@ import styles from "./HTTPRequestBuilder.module.scss"
 import {PluginTypes} from "../pluginDebugger/PluginDebuggerPage"
 import {HTTPRequestBuilderParams} from "@/models/HTTPRequestBuilder"
 import {SetVariableItem} from "../fuzzer/HttpQueryAdvancedConfig/HttpQueryAdvancedConfig"
+import i18next from "../../i18n"
 
 const {YakitPanel} = YakitCollapse
 
@@ -60,7 +61,7 @@ export const HTTPRequestBuilder: React.FC<HTTPRequestBuilderProp> = (props) => {
     const [form] = Form.useForm()
     const [params, setParams] = useState(props.value || getDefaultHTTPRequestBuilderParams())
     const [reqType, setReqType] = useState<"raw" | "template">("template")
-    const [activeKey, setActiveKey] = useState<string[]>(["GET 参数"])
+    const [activeKey, setActiveKey] = useState<string[]>([i18next.t("GET 参数")])
     const getParamsRef = useRef<any>()
     const postParamsRef = useRef<any>()
     const headersRef = useRef<any>()
@@ -116,7 +117,7 @@ export const HTTPRequestBuilder: React.FC<HTTPRequestBuilderProp> = (props) => {
             })
             ref.current.setVariableActiveKey([...(ref.current.variableActiveKey || []), `${variables?.length || 0}`])
         } else {
-            yakitFailed(`请将已添加【变量${index}】设置完成后再进行添加`)
+            yakitFailed(i18next.t("请将已添加【变量${index}】设置完成后再进行添加", { v1: index }))
         }
         if (activeKey?.findIndex((ele) => ele === actKey) === -1) {
             setActiveKey([...activeKey, actKey])
@@ -164,7 +165,7 @@ export const HTTPRequestBuilder: React.FC<HTTPRequestBuilderProp> = (props) => {
                     <YakitSwitch />
                 </Form.Item>
             )}
-            <Form.Item label='请求类型' name='reqType' style={{marginBottom: 4}}>
+            <Form.Item label={i18next.t("请求类型")} name='reqType' style={{marginBottom: 4}}>
                 <YakitRadioButtons
                     size='small'
                     buttonStyle='solid'
@@ -173,17 +174,17 @@ export const HTTPRequestBuilder: React.FC<HTTPRequestBuilderProp> = (props) => {
                             ? [
                                   {
                                       value: "raw",
-                                      label: "原始请求"
+                                      label: i18next.t("原始请求")
                                   },
                                   {
                                       value: "template",
-                                      label: "请求配置"
+                                      label: i18next.t("请求配置")
                                   }
                               ]
                             : [
                                   {
                                       value: "template",
-                                      label: "请求配置"
+                                      label: i18next.t("请求配置")
                                   }
                               ]
                     }
@@ -208,16 +209,16 @@ export const HTTPRequestBuilder: React.FC<HTTPRequestBuilderProp> = (props) => {
             ) : (
                 <>
                     <Form.Item
-                        label='扫描目标'
+                        label={i18next.t("扫描目标")}
                         name='Input'
                         style={{marginBottom: 4}}
-                        rules={[{required: true, message: "请输入扫描目标"}]}
+                        rules={[{required: true, message: i18next.t("请输入扫描目标")}]}
                     >
-                        <YakitInput.TextArea placeholder='请输入扫描目标' size='small' />
+                        <YakitInput.TextArea placeholder={i18next.t("请输入扫描目标")} size='small' />
                     </Form.Item>
                     {pluginType !== "nuclei" && (
                         <>
-                            <Form.Item label='HTTP方法' name='Method' style={{marginBottom: 4}}>
+                            <Form.Item label={i18next.t("HTTP方法")} name='Method' style={{marginBottom: 4}}>
                                 <YakitSelect
                                     options={["GET", "POST", "DELETE", "PATCH", "HEAD", "OPTIONS", "CONNECT"].map(
                                         (item) => ({
@@ -228,14 +229,14 @@ export const HTTPRequestBuilder: React.FC<HTTPRequestBuilderProp> = (props) => {
                                     size='small'
                                 />
                             </Form.Item>
-                            <Form.Item label='请求路径' name='Path' style={{marginBottom: 12}}>
+                            <Form.Item label={i18next.t("请求路径")} name='Path' style={{marginBottom: 12}}>
                                 <YakitSelect
                                     allowClear
                                     options={["/", "/admin"].map((item) => ({value: item, label: item}))}
                                     size='small'
                                     mode='tags'
                                     maxTagCount='responsive'
-                                    placeholder='请输入...'
+                                    placeholder={i18next.t("请输入...")}
                                 />
                             </Form.Item>
                             <YakitCollapse
@@ -245,8 +246,8 @@ export const HTTPRequestBuilder: React.FC<HTTPRequestBuilderProp> = (props) => {
                                 className={styles["arg-keys-list"]}
                             >
                                 <YakitPanel
-                                    header='GET 参数'
-                                    key='GET 参数'
+                                    header={i18next.t("GET 参数")}
+                                    key={i18next.t("GET 参数")}
                                     // className={styles["arg-keys-list-panel"]}
                                     extra={
                                         <>
@@ -255,17 +256,15 @@ export const HTTPRequestBuilder: React.FC<HTTPRequestBuilderProp> = (props) => {
                                                 colors='danger'
                                                 onClick={(e) => handleReset(e, "GetParams", getParamsRef)}
                                                 size='small'
-                                            >
-                                                重置
+                                            >{i18next.t("重置")}
                                             </YakitButton>
                                             <Divider type='vertical' style={{margin: 0}} />
                                             <YakitButton
                                                 type='text'
-                                                onClick={(e) => handleAdd(e, "GetParams", "GET 参数", getParamsRef)}
+                                                onClick={(e) => handleAdd(e, "GetParams", i18next.t("GET 参数"), getParamsRef)}
                                                 style={{paddingRight: 0}}
                                                 size='small'
-                                            >
-                                                添加
+                                            >{i18next.t("添加")}
                                                 <PlusIcon />
                                             </YakitButton>
                                         </>
@@ -292,8 +291,8 @@ export const HTTPRequestBuilder: React.FC<HTTPRequestBuilderProp> = (props) => {
                                     ></VariableList>
                                 </YakitPanel>
                                 <YakitPanel
-                                    header='POST 参数'
-                                    key='POST 参数'
+                                    header={i18next.t("POST 参数")}
+                                    key={i18next.t("POST 参数")}
                                     extra={
                                         <>
                                             <YakitButton
@@ -301,17 +300,15 @@ export const HTTPRequestBuilder: React.FC<HTTPRequestBuilderProp> = (props) => {
                                                 colors='danger'
                                                 onClick={(e) => handleReset(e, "PostParams", postParamsRef)}
                                                 size='small'
-                                            >
-                                                重置
+                                            >{i18next.t("重置")}
                                             </YakitButton>
                                             <Divider type='vertical' style={{margin: 0}} />
                                             <YakitButton
                                                 type='text'
-                                                onClick={(e) => handleAdd(e, "PostParams", "POST 参数", postParamsRef)}
+                                                onClick={(e) => handleAdd(e, "PostParams", i18next.t("POST 参数"), postParamsRef)}
                                                 style={{paddingRight: 0}}
                                                 size='small'
-                                            >
-                                                添加
+                                            >{i18next.t("添加")}
                                                 <PlusIcon />
                                             </YakitButton>
                                         </>
@@ -347,8 +344,7 @@ export const HTTPRequestBuilder: React.FC<HTTPRequestBuilderProp> = (props) => {
                                                 colors='danger'
                                                 onClick={(e) => handleReset(e, "Headers", headersRef)}
                                                 size='small'
-                                            >
-                                                重置
+                                            >{i18next.t("重置")}
                                             </YakitButton>
                                             <Divider type='vertical' style={{margin: 0}} />
                                             <YakitButton
@@ -356,8 +352,7 @@ export const HTTPRequestBuilder: React.FC<HTTPRequestBuilderProp> = (props) => {
                                                 onClick={(e) => handleAdd(e, "Headers", "Header", headersRef)}
                                                 style={{paddingRight: 0}}
                                                 size='small'
-                                            >
-                                                添加
+                                            >{i18next.t("添加")}
                                                 <PlusIcon />
                                             </YakitButton>
                                         </>
@@ -393,8 +388,7 @@ export const HTTPRequestBuilder: React.FC<HTTPRequestBuilderProp> = (props) => {
                                                 colors='danger'
                                                 onClick={(e) => handleReset(e, "Cookie", cookieRef)}
                                                 size='small'
-                                            >
-                                                重置
+                                            >{i18next.t("重置")}
                                             </YakitButton>
                                             <Divider type='vertical' style={{margin: 0}} />
                                             <YakitButton
@@ -402,8 +396,7 @@ export const HTTPRequestBuilder: React.FC<HTTPRequestBuilderProp> = (props) => {
                                                 onClick={(e) => handleAdd(e, "Cookie", "Cookie", cookieRef)}
                                                 style={{paddingRight: 0}}
                                                 size='small'
-                                            >
-                                                添加
+                                            >{i18next.t("添加")}
                                                 <PlusIcon />
                                             </YakitButton>
                                         </>
@@ -468,7 +461,7 @@ const VariableList: React.FC<VariableListProps> = React.forwardRef(({extra, fiel
                             {fields.map(({key, name}, i) => (
                                 <YakitPanel
                                     key={`${key + ""}`}
-                                    header={`变量 ${name}`}
+                                    header={i18next.t("变量 ${name}", { v1: name })}
                                     className={styles["variable-list-panel"]}
                                     extra={extra(i)}
                                 >
@@ -489,8 +482,7 @@ const VariableList: React.FC<VariableListProps> = React.forwardRef(({extra, fiel
                                     }}
                                     icon={<PlusIcon />}
                                     block
-                                >
-                                    添加
+                                >{i18next.t("添加")}
                                 </YakitButton>
                             </>
                         )}

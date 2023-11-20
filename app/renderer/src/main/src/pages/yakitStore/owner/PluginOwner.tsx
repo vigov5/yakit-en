@@ -57,6 +57,7 @@ import {PluginGV} from "@/pages/plugins/builtInData"
 
 import style from "@/components/HTTPFlowTable/HTTPFlowTable.module.scss"
 import "../YakitStorePage.scss"
+import i18next from "../../../i18n"
 
 const {Search} = Input
 const {Option} = Select
@@ -116,18 +117,18 @@ const defQueryLocal: QueryYakScriptRequest = {
 }
 
 const statusType = {
-    "0": "待审核",
-    "1": "审核通过",
-    "2": "审核不通过"
+    "0": i18next.t("待审核"),
+    "1": i18next.t("审核通过"),
+    "2": i18next.t("审核不通过")
 }
 
 const queryTitle = {
-    Type: "插件类型",
+    Type: i18next.t("插件类型"),
     Tag: "TAG",
     tags: "TAG",
-    plugin_type: "插件类型",
-    status: "审核状态",
-    group: "插件分组"
+    plugin_type: i18next.t("插件类型"),
+    status: i18next.t("审核状态"),
+    group: i18next.t("插件分组")
 }
 /**@deprecated 暂时没有使用，已废弃 */
 export const PluginOwner: React.FC<PluginOwnerProp> = (props) => {
@@ -309,7 +310,7 @@ export const PluginOwner: React.FC<PluginOwnerProp> = (props) => {
                 setStatisticsDataOnlineOrUser(res)
             })
             .catch((err) => {
-                yakitNotify("error", "线上统计数据获取失败:" + err)
+                yakitNotify("error", i18next.t("线上统计数据获取失败:") + err)
             })
             .finally(() => {
                 setTimeout(() => {
@@ -333,7 +334,7 @@ export const PluginOwner: React.FC<PluginOwnerProp> = (props) => {
                 setYakScriptTagsAndType(res)
             })
             .catch((e) => {
-                yakitNotify("error", `获取本地插件统计数据展示错误:${e}`)
+                yakitNotify("error", i18next.t("获取本地插件统计数据展示错误:${e}", { v1: e }))
             })
             .finally(() => {
                 setTimeout(() => {
@@ -413,7 +414,7 @@ export const PluginOwner: React.FC<PluginOwnerProp> = (props) => {
                     title={
                         <Row gutter={12} className={isFull ? "plugin-title" : ""}>
                             <Col span={12} className='flex-align-center'>
-                                <div className='header-title'>我的插件</div>
+                                <div className='header-title'>{i18next.t("我的插件")}</div>
                                 <Button size={isFull ? "middle" : "small"} type={"link"} onClick={onRefList}>
                                     <ReloadOutlined style={{fontSize: isFull ? 16 : 14}} />
                                 </Button>
@@ -421,9 +422,9 @@ export const PluginOwner: React.FC<PluginOwnerProp> = (props) => {
                             <Col span={12}>
                                 <Input.Group className='search-input-body'>
                                     <Search
-                                        placeholder='输入关键字搜索'
+                                        placeholder={i18next.t("输入关键字搜索")}
                                         size={isFull ? "middle" : "small"}
-                                        enterButton={isFull ? "搜索" : undefined}
+                                        enterButton={isFull ? i18next.t("搜索") : undefined}
                                         onSearch={() => setIsRefList(!isRefList)}
                                         value={publicKeyword}
                                         onChange={(e) => {
@@ -477,8 +478,7 @@ export const PluginOwner: React.FC<PluginOwnerProp> = (props) => {
                                             onClick={() => {
                                                 onRefList(false)
                                             }}
-                                        >
-                                            返回
+                                        >{i18next.t("返回")}
                                         </Button>
                                         <Button
                                             icon={
@@ -523,7 +523,7 @@ export const PluginOwner: React.FC<PluginOwnerProp> = (props) => {
                                 />
                             </AutoCard>
                         ) : (
-                            <Empty style={{marginTop: 100}}>在左侧所选模块查看详情</Empty>
+                            <Empty style={{marginTop: 100}}>{i18next.t("在左侧所选模块查看详情")}</Empty>
                         )}
                     </div>
                 )}
@@ -532,14 +532,14 @@ export const PluginOwner: React.FC<PluginOwnerProp> = (props) => {
                         <Spin spinning={statisticsLoading || listLoading}>
                             {plugSource === "user" && userInfo.isLogin && (
                                 <div className='opt-list'>
-                                    <div className='opt-header'>私密/公开</div>
+                                    <div className='opt-header'>{i18next.t("私密/公开")}</div>
                                     <div
                                         className={`opt-list-item ${
                                             statisticsQueryUser.is_private === "true" && "opt-list-item-selected"
                                         }`}
                                         onClick={() => onSearch("is_private", "true")}
                                     >
-                                        <span className='item-name content-ellipsis'>私密</span>
+                                        <span className='item-name content-ellipsis'>{i18next.t("私密")}</span>
                                     </div>
                                     <div
                                         className={`opt-list-item ${
@@ -547,11 +547,11 @@ export const PluginOwner: React.FC<PluginOwnerProp> = (props) => {
                                         }`}
                                         onClick={() => onSearch("is_private", "false")}
                                     >
-                                        <span className='item-name content-ellipsis'>公开</span>
+                                        <span className='item-name content-ellipsis'>{i18next.t("公开")}</span>
                                     </div>
                                 </div>
                             )}
-                            {(statisticsIsNull && <Empty description='暂无统计数据' />) || (
+                            {(statisticsIsNull && <Empty description={i18next.t("暂无统计数据")} />) || (
                                 <>
                                     {Object.entries(
                                         plugSource === "local"
@@ -919,7 +919,7 @@ const YakFilterModuleList: React.FC<YakFilterModuleList> = (props) => {
                 .finally(() => {
                     // setReload(!reload)
                     setMenuList(nowData.current)
-                    yakitNotify("info", "添加插件组成功")
+                    yakitNotify("info", i18next.t("添加插件组成功"))
                     onClose()
                 })
         })
@@ -929,18 +929,18 @@ const YakFilterModuleList: React.FC<YakFilterModuleList> = (props) => {
                     <Form.Item
                         {...itemLayout}
                         name='name'
-                        label='名称'
-                        rules={[{required: true, message: "该项为必填"}]}
+                        label={i18next.t("名称")}
+                        rules={[{required: true, message: i18next.t("该项为必填")}]}
                     >
                         <AutoComplete
                             options={menuList.map((item) => ({value: item.name}))}
-                            placeholder='请输入插件组名'
+                            placeholder={i18next.t("请输入插件组名")}
                             filterOption={(inputValue, option) =>
                                 option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                             }
                         />
                     </Form.Item>
-                    <Form.Item {...itemLayout} label='插件'>
+                    <Form.Item {...itemLayout} label={i18next.t("插件")}>
                         <div style={{maxHeight: 460, overflow: "auto"}}>
                             {checkList.map((item) => (
                                 <span style={{paddingRight: 12}} key={item}>
@@ -951,9 +951,8 @@ const YakFilterModuleList: React.FC<YakFilterModuleList> = (props) => {
                     </Form.Item>
                     <div style={{textAlign: "right"}}>
                         <Space>
-                            <Button onClick={() => onClose()}>取消</Button>
-                            <Button type='primary' htmlType='submit'>
-                                添加
+                            <Button onClick={() => onClose()}>{i18next.t("取消")}</Button>
+                            <Button type='primary' htmlType='submit'>{i18next.t("添加")}
                             </Button>
                         </Space>
                     </div>
@@ -977,7 +976,7 @@ const YakFilterModuleList: React.FC<YakFilterModuleList> = (props) => {
                     }}
                 >
                     <Select.Option value='Tags'>Tag</Select.Option>
-                    <Select.Option value='Keyword'>关键字</Select.Option>
+                    <Select.Option value='Keyword'>{i18next.t("关键字")}</Select.Option>
                 </Select>
                 {(searchType === "Tags" && (
                     <>
@@ -1006,7 +1005,7 @@ const YakFilterModuleList: React.FC<YakFilterModuleList> = (props) => {
                                 onChange={(e) => {
                                     setTag(e as string[])
                                 }}
-                                placeholder='选择Tag'
+                                placeholder={i18next.t("选择Tag")}
                                 style={{width: "73%"}}
                                 loading={tagsLoading}
                                 onBlur={() => {
@@ -1033,7 +1032,7 @@ const YakFilterModuleList: React.FC<YakFilterModuleList> = (props) => {
                         onSearch={() => {
                             setRefresh(!refresh)
                         }}
-                        placeholder='搜索插件'
+                        placeholder={i18next.t("搜索插件")}
                         onChange={(e) => setSearchKeyword(e.target.value)}
                         size='small'
                         style={{width: "73%"}}
@@ -1042,8 +1041,7 @@ const YakFilterModuleList: React.FC<YakFilterModuleList> = (props) => {
             </Input.Group>
             <div className='plug-in-menu-box'>
                 <div className='check-box'>
-                    <Checkbox onChange={(e) => onCheckAllChange(e.target.checked)} checked={checkAll}>
-                        全选
+                    <Checkbox onChange={(e) => onCheckAllChange(e.target.checked)} checked={checkAll}>{i18next.t("全选")}
                     </Checkbox>
                 </div>
                 <div style={{marginLeft: 12}}>
@@ -1052,12 +1050,11 @@ const YakFilterModuleList: React.FC<YakFilterModuleList> = (props) => {
                             onClick={(e) => {
                                 e.preventDefault()
                                 if (menuList.length === 0) {
-                                    yakitNotify("info", "请先新建插件组")
+                                    yakitNotify("info", i18next.t("请先新建插件组"))
                                 }
                             }}
                         >
-                            <Space>
-                                插件组
+                            <Space>{i18next.t("插件组")}
                                 <DownOutlined />
                             </Space>
                         </a>
@@ -1067,11 +1064,11 @@ const YakFilterModuleList: React.FC<YakFilterModuleList> = (props) => {
                     className='add-icon'
                     onClick={() => {
                         if (checkList.length === 0) {
-                            yakitNotify("info", "选中数据未获取")
+                            yakitNotify("info", i18next.t("选中数据未获取"))
                             return
                         }
                         let m = showModal({
-                            title: "添加插件组",
+                            title: i18next.t("添加插件组"),
                             width: 520,
                             content: <AddPlugIn onClose={() => m.destroy()} />
                         })
@@ -1105,11 +1102,11 @@ const YakFilterModuleList: React.FC<YakFilterModuleList> = (props) => {
 }
 
 const PluginType = {
-    yak: "YAK 插件",
-    mitm: "MITM 插件",
-    "packet-hack": "数据包扫描",
-    "port-scan": "端口扫描插件",
-    codec: "CODEC插件",
+    yak: i18next.t("YAK 插件"),
+    mitm: i18next.t("MITM 插件"),
+    "packet-hack": i18next.t("数据包扫描"),
+    "port-scan": i18next.t("端口扫描插件"),
+    codec: i18next.t("CODEC插件"),
     nuclei: "YAML POC"
 }
 const PluginTypeText = (type) => {
@@ -1190,7 +1187,7 @@ const AddAllPlugin: React.FC<AddAllPluginProps> = (props) => {
             }, 500)
         })
         ipcRenderer.on(`${taskToken}-error`, (_, e) => {
-            yakitNotify("error", "插件下载失败:" + e)
+            yakitNotify("error", i18next.t("插件下载失败:") + e)
         })
         return () => {
             ipcRenderer.removeAllListeners(`${taskToken}-data`)
@@ -1200,7 +1197,7 @@ const AddAllPlugin: React.FC<AddAllPluginProps> = (props) => {
     }, [taskToken])
     const AddAllPlugin = useMemoizedFn(() => {
         if (user && !userInfo.isLogin) {
-            yakitNotify("warning", "我的插件需要先登录才能下载，请先登录")
+            yakitNotify("warning", i18next.t("我的插件需要先登录才能下载，请先登录"))
             return
         }
         if (selectedRowKeysRecord.length === 0 || isSelectAll) {
@@ -1227,7 +1224,7 @@ const AddAllPlugin: React.FC<AddAllPluginProps> = (props) => {
                 .invoke("DownloadOnlinePluginAll", addParams, taskToken)
                 .then(() => {})
                 .catch((e) => {
-                    yakitNotify("error", `添加失败:${e}`)
+                    yakitNotify("error", i18next.t("添加失败:${e}", { v1: e }))
                 })
         } else {
             // 批量添加
@@ -1244,11 +1241,11 @@ const AddAllPlugin: React.FC<AddAllPluginProps> = (props) => {
                     OnlineIDs: onlineIDs
                 } as DownloadOnlinePluginByIdsRequest)
                 .then(() => {
-                    yakitNotify("success", `共添加${selectedRowKeysRecord.length}条数据到本地`)
+                    yakitNotify("success", i18next.t("共添加${selectedRowKeysRecord.length}条数据到本地", { v1: selectedRowKeysRecord.length }))
                     onFinish()
                 })
                 .catch((e) => {
-                    yakitNotify("error", `添加失败:${e}`)
+                    yakitNotify("error", i18next.t("添加失败:${e}", { v1: e }))
                 })
                 .finally(() => {
                     setTimeout(() => {
@@ -1260,7 +1257,7 @@ const AddAllPlugin: React.FC<AddAllPluginProps> = (props) => {
     const StopAllPlugin = () => {
         setAddLoading(false)
         ipcRenderer.invoke("cancel-DownloadOnlinePluginAll", taskToken).catch((e) => {
-            yakitNotify("error", `停止添加失败:${e}`)
+            yakitNotify("error", i18next.t("停止添加失败:${e}", { v1: e }))
         })
     }
     return (
@@ -1277,8 +1274,7 @@ const AddAllPlugin: React.FC<AddAllPluginProps> = (props) => {
             {addLoading ? (
                 <>
                     {(size === "small" && <PoweroffOutlined className='filter-opt-btn' onClick={StopAllPlugin} />) || (
-                        <Button size='small' type='primary' danger onClick={StopAllPlugin}>
-                            停止
+                        <Button size='small' type='primary' danger onClick={StopAllPlugin}>{i18next.t("停止")}
                         </Button>
                     )}
                 </>
@@ -1286,16 +1282,15 @@ const AddAllPlugin: React.FC<AddAllPluginProps> = (props) => {
                 <>
                     {(oneImport && (
                         <Popconfirm
-                            title={user ? "确定将我的插件所有数据导入到本地吗?" : "确定将插件商店所有数据导入到本地吗?"}
+                            title={user ? i18next.t("确定将我的插件所有数据导入到本地吗?") : i18next.t("确定将插件商店所有数据导入到本地吗?")}
                             onConfirm={AddAllPlugin}
                             okText='Yes'
                             cancelText='No'
                             placement={size === "small" ? "top" : "topRight"}
                         >
-                            {/* <div className='operation-text'>一键导入</div> */}
+                            {/* <div className='operation-text'>{i18next.t("一键导入")}</div> */}
                             {(size === "small" && <></>) || (
-                                <Button type='primary' size='small'>
-                                    一键导入
+                                <Button type='primary' size='small'>{i18next.t("一键导入")}
                                 </Button>
                             )}
                         </Popconfirm>
@@ -1305,8 +1300,8 @@ const AddAllPlugin: React.FC<AddAllPluginProps> = (props) => {
                                 <Popconfirm
                                     title={
                                         user
-                                            ? "确定将我的插件所有数据导入到本地吗"
-                                            : "确定将插件商店所有数据导入到本地吗?"
+                                            ? i18next.t("确定将我的插件所有数据导入到本地吗?")
+                                            : i18next.t("确定将插件商店所有数据导入到本地吗?")
                                     }
                                     onConfirm={AddAllPlugin}
                                     okText='Yes'
@@ -1314,24 +1309,22 @@ const AddAllPlugin: React.FC<AddAllPluginProps> = (props) => {
                                     placement={size === "small" ? "top" : "topRight"}
                                 >
                                     {(size === "small" && (
-                                        <Tooltip title='下载'>
+                                        <Tooltip title={i18next.t("下载")}>
                                             <DownloadOutlined className='operation-icon ' />
                                         </Tooltip>
                                     )) || (
-                                        <Button type='primary' size='small'>
-                                            下载
+                                        <Button type='primary' size='small'>{i18next.t("下载")}
                                         </Button>
                                     )}
                                 </Popconfirm>
                             )) || (
                                 <>
                                     {(size === "small" && (
-                                        <Tooltip title='下载'>
+                                        <Tooltip title={i18next.t("下载")}>
                                             <DownloadOutlined className='operation-icon ' onClick={AddAllPlugin} />
                                         </Tooltip>
                                     )) || (
-                                        <Button type='primary' size='small' onClick={AddAllPlugin}>
-                                            下载
+                                        <Button type='primary' size='small' onClick={AddAllPlugin}>{i18next.t("下载")}
                                         </Button>
                                     )}
                                 </>
@@ -1455,7 +1448,7 @@ const YakModuleUser: React.FC<YakModuleUserProps> = (props) => {
     })
     const onGoRecycleBin = useMemoizedFn(() => {
         if (!userInfo.isLogin) {
-            yakitNotify("warning", "请先登陆")
+            yakitNotify("warning", i18next.t("请先登陆"))
             return
         }
         ipcRenderer.invoke("send-to-tab", {
@@ -1467,17 +1460,16 @@ const YakModuleUser: React.FC<YakModuleUserProps> = (props) => {
         <div className='height-100'>
             <Row className='row-body' gutter={12}>
                 <Col span={16} className='col user-col'>
-                    <Checkbox checked={isSelectAllUser} onChange={(e) => onSelectAllUser(e.target.checked)}>
-                        全选
+                    <Checkbox checked={isSelectAllUser} onChange={(e) => onSelectAllUser(e.target.checked)}>{i18next.t("全选")}
                     </Checkbox>
                     {selectedRowKeysRecordUser.length > 0 && (
-                        <Tag color='blue'>已选{isSelectAllUser ? totalUser : selectedRowKeysRecordUser.length}条</Tag>
+                        <Tag color='blue'>{i18next.t("已选")}{isSelectAllUser ? totalUser : selectedRowKeysRecordUser.length}条</Tag>
                     )}
                     <Tag>Total:{totalUser}</Tag>
                     <Divider type='vertical' />
                     <div className='recycle' onClick={onGoRecycleBin}>
                         <RecycleIcon />
-                        <span>回收站</span>
+                        <span>{i18next.t("回收站")}</span>
                     </div>
                 </Col>
                 <Col span={8} className='col-flex-end'>
@@ -1719,7 +1711,7 @@ const YakModuleOnlineList: React.FC<YakModuleOnlineListProps> = (props) => {
                 }
             })
             .catch((err) => {
-                yakitNotify("error", "插件列表获取失败:" + err)
+                yakitNotify("error", i18next.t("插件列表获取失败:") + err)
             })
             .finally(() => {
                 setTimeout(() => {
@@ -1750,11 +1742,11 @@ const YakModuleOnlineList: React.FC<YakModuleOnlineListProps> = (props) => {
         ipcRenderer
             .invoke("DownloadOnlinePluginById", params)
             .then(() => {
-                yakitNotify("success", "添加成功")
+                yakitNotify("success", i18next.t("添加成功"))
                 ipcRenderer.invoke("change-main-menu")
             })
             .catch((e) => {
-                yakitNotify("error", `添加失败:${e}`)
+                yakitNotify("error", i18next.t("添加失败:${e}", { v1: e }))
             })
             .finally(() => {
                 if (callback) callback()
@@ -1762,7 +1754,7 @@ const YakModuleOnlineList: React.FC<YakModuleOnlineListProps> = (props) => {
     })
     const starredPlugin = useMemoizedFn((info: API.YakitPluginDetail) => {
         if (!userInfo.isLogin) {
-            yakitNotify("warning", "请先登录")
+            yakitNotify("warning", i18next.t("请先登录"))
             return
         }
         const prams: StarsOperation = {
@@ -1792,7 +1784,7 @@ const YakModuleOnlineList: React.FC<YakModuleOnlineListProps> = (props) => {
                 }
             })
             .catch((err) => {
-                yakitNotify("error", "点星:" + err)
+                yakitNotify("error", i18next.t("点星:") + err)
             })
             .finally(() => {
                 setTimeout(() => setLoading(false), 200)
@@ -1802,7 +1794,7 @@ const YakModuleOnlineList: React.FC<YakModuleOnlineListProps> = (props) => {
         return (
             <List
                 dataSource={[]}
-                locale={{emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='未登录,请先登录' />}}
+                locale={{emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={i18next.t("未登录,请先登录")} />}}
             />
         )
     }
@@ -1811,7 +1803,7 @@ const YakModuleOnlineList: React.FC<YakModuleOnlineListProps> = (props) => {
         return (
             <List
                 dataSource={[]}
-                locale={{emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='未登录,请先登录' />}}
+                locale={{emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={i18next.t("未登录,请先登录")} />}}
             />
         )
     }
@@ -1860,9 +1852,9 @@ const YakModuleOnlineList: React.FC<YakModuleOnlineListProps> = (props) => {
 }
 
 const TagColor: {[key: string]: string} = {
-    failed: "color-bgColor-red|审核不通过",
-    success: "color-bgColor-green|审核通过",
-    not: "color-bgColor-blue|待审核"
+    failed: i18next.t("color-bgColor-red|审核不通过"),
+    success: i18next.t("color-bgColor-green|审核通过"),
+    not: i18next.t("color-bgColor-blue|待审核")
 }
 
 interface PluginListOptProps {
@@ -1952,7 +1944,7 @@ const PluginItemOnline: React.FC<PluginListOptProps> = (props) => {
                                         e.stopPropagation()
                                         add()
                                     }}
-                                    title='添加到插件仓库'
+                                    title={i18next.t("添加到插件仓库")}
                                 >
                                     <DownloadOutlined className='operation-icon ' />
                                 </div>
@@ -2089,14 +2081,14 @@ const QueryComponentOnline: React.FC<QueryComponentOnlineProps> = (props) => {
         <div ref={refTest} className='query-form-body'>
             <Form layout='vertical' form={form} name='control-hooks' onFinish={onFinish}>
                 {!user && (
-                    <Form.Item name='order_by' label='排序顺序'>
+                    <Form.Item name='order_by' label={i18next.t("排序顺序")}>
                         <Select size='small' getPopupContainer={() => refTest.current}>
-                            <Option value='created_at'>按时间</Option>
-                            <Option value='stars'>按热度</Option>
+                            <Option value='created_at'>{i18next.t("按时间")}</Option>
+                            <Option value='stars'>{i18next.t("按热度")}</Option>
                         </Select>
                     </Form.Item>
                 )}
-                <Form.Item name='plugin_type' label='插件类型'>
+                <Form.Item name='plugin_type' label={i18next.t("插件类型")}>
                     <Select size='small' getPopupContainer={() => refTest.current} mode='multiple'>
                         {Object.keys(PluginType).map((key) => (
                             <Option value={key} key={key}>
@@ -2106,17 +2098,17 @@ const QueryComponentOnline: React.FC<QueryComponentOnlineProps> = (props) => {
                     </Select>
                 </Form.Item>
                 {user && (
-                    <Form.Item name='is_private' label='私密/公开'>
+                    <Form.Item name='is_private' label={i18next.t("私密/公开")}>
                         <Select size='small' getPopupContainer={() => refTest.current} onSelect={onSelect}>
-                            <Option value='true'>私密</Option>
-                            <Option value='false'>公开</Option>
+                            <Option value='true'>{i18next.t("私密")}</Option>
+                            <Option value='false'>{i18next.t("公开")}</Option>
                         </Select>
                     </Form.Item>
                 )}
                 {((!user && isAdmin) || (user && isShowStatus) || (!user && userInfo.checkPlugin)) && (
-                    <Form.Item name='status' label='审核状态'>
+                    <Form.Item name='status' label={i18next.t("审核状态")}>
                         <Select size='small' getPopupContainer={() => refTest.current}>
-                            <Option value='all'>全部</Option>
+                            <Option value='all'>{i18next.t("全部")}</Option>
                             {Object.keys(statusType).map((key) => (
                                 <Option value={key} key={key}>
                                     {statusType[key]}
@@ -2126,11 +2118,9 @@ const QueryComponentOnline: React.FC<QueryComponentOnlineProps> = (props) => {
                     </Form.Item>
                 )}
                 <div className='form-btns'>
-                    <Button type='primary' htmlType='submit' size='small'>
-                        设置查询条件
+                    <Button type='primary' htmlType='submit' size='small'>{i18next.t("设置查询条件")}
                     </Button>
-                    <Button size='small' onClick={onReset}>
-                        重置搜索
+                    <Button size='small' onClick={onReset}>{i18next.t("重置搜索")}
                     </Button>
                 </div>
             </Form>
@@ -2158,7 +2148,7 @@ const PluginFilter: React.FC<PluginFilterProps> = (props) => {
             visible={visibleQuery}
         >
             {(size === "small" && (
-                <Tooltip title='查询'>
+                <Tooltip title={i18next.t("查询")}>
                     <FilterOutlined
                         className={`operation-icon ${isFilter && "operation-icon-active"}`}
                         onClick={() => setVisibleQuery(true)}
@@ -2169,8 +2159,7 @@ const PluginFilter: React.FC<PluginFilterProps> = (props) => {
                     className={`full-filter  ${isFilter && "operation-icon-active"}`}
                     onClick={() => setVisibleQuery(true)}
                 >
-                    <FilterOutlined className='filter-icon' />
-                    筛选
+                    <FilterOutlined className='filter-icon' />{i18next.t("筛选")}
                 </div>
             )}
         </Popconfirm>

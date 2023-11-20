@@ -17,6 +17,7 @@ import {YakitButton} from "../yakitUI/YakitButton/YakitButton"
 import {RefreshIcon} from "@/assets/newIcon"
 import {YakitSpin} from "../yakitUI/YakitSpin/YakitSpin"
 import styles from "./WebTree.module.scss"
+import i18next from "../../i18n"
 
 type TreeNodeType = "dir" | "file" | "query" | "path"
 export interface TreeNode extends DataNode {
@@ -41,7 +42,7 @@ interface WebTreeProp {
 export const WebTree: React.FC<WebTreeProp> = React.forwardRef((props, ref) => {
     const {
         height,
-        searchPlaceholder = "请输入关键词搜索",
+        searchPlaceholder = i18next.t("请输入关键词搜索"),
         treeQueryparams,
         refreshTreeFlag = false,
         onSelectNodes,
@@ -101,7 +102,7 @@ export const WebTree: React.FC<WebTreeProp> = React.forwardRef((props, ref) => {
                 }, 50)
             }).catch((error) => {
                 setTreeLoading(false)
-                yakitFailed(`加载失败: ${error}`)
+                yakitFailed(i18next.t("加载失败: ${error}", { v1: error }))
             })
         }, 30)
     }

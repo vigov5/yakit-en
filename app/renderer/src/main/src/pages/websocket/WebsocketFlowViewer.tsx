@@ -7,6 +7,7 @@ import {YakEditor} from "@/utils/editors";
 import {Uint8ArrayToString} from "@/utils/str";
 import {CopyOutlined} from "@ant-design/icons";
 import {callCopyToClipboard} from "@/utils/basic";
+import i18next from "../../i18n"
 
 export interface WebsocketFlowViewerProp {
     token: string
@@ -87,7 +88,7 @@ export const WebsocketFlowViewer: React.FC<WebsocketFlowViewerProp> = (props) =>
     return <ResizeBox
         isVer={true}
         firstNode={<AutoCard
-            title={"Websocket 数据帧实时预览"} size={"small"} bordered={false}
+            title={i18next.t("Websocket 数据帧实时预览")} size={"small"} bordered={false}
             bodyStyle={{overflowY: "auto", overflowX: "hidden", padding: 0}}
         >
             <List<WebsocketFlowFromFuzzer>
@@ -114,8 +115,8 @@ export const WebsocketFlowViewer: React.FC<WebsocketFlowViewerProp> = (props) =>
                                 {item.FromServer ? <Tag
                                         color={"orange"}
                                         style={{width: "76px"}}
-                                    >服务器响应</Tag> :
-                                    <Tag color={"green"} style={{width: "76px"}}>客户端请求</Tag>}
+                                    >{i18next.t("服务器响应")}</Tag> :
+                                    <Tag color={"green"} style={{width: "76px"}}>{i18next.t("客户端请求")}</Tag>}
                                 {item.IsJson && <Tag color={"geekblue"}>JSON</Tag>}
                                 {item.IsProtobuf && <Tag color={"red"}>Protobuf</Tag>}
                                 <div style={{width: "100%"}}>
@@ -129,14 +130,14 @@ export const WebsocketFlowViewer: React.FC<WebsocketFlowViewerProp> = (props) =>
         </AutoCard>}
         secondNode={selected ? <AutoCard
             title={<Space>
-                <div>数据帧详情</div>
+                <div>{i18next.t("数据帧详情")}</div>
                 {selected.FromServer ? <Tag
                         color={"orange"}
                         style={{width: "76px"}}
-                    >服务器响应</Tag> :
-                    <Tag color={"green"} style={{width: "76px"}}>客户端请求</Tag>}
+                    >{i18next.t("服务器响应")}</Tag> :
+                    <Tag color={"green"} style={{width: "76px"}}>{i18next.t("客户端请求")}</Tag>}
                 <Tag>Index: {selected?.DataFrameIndex}</Tag>
-                <Tag>数据大小: {selected.DataSizeVerbose}</Tag>
+                <Tag>{i18next.t("数据大小:")} {selected.DataSizeVerbose}</Tag>
             </Space>} size={"small"} bordered={true}
             bodyStyle={{padding: 0}}
             extra={<Space>
@@ -157,7 +158,7 @@ export const WebsocketFlowViewer: React.FC<WebsocketFlowViewerProp> = (props) =>
                 readOnly={true}
                 noMiniMap={true}
             />
-        </AutoCard> : <Empty description={"选择 Websocket Data Frame 以查看详情"}>
+        </AutoCard> : <Empty description={i18next.t("选择 Websocket Data Frame 以查看详情")}>
 
         </Empty>}
     />

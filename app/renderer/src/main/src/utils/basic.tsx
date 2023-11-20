@@ -25,6 +25,7 @@ import {PluginResultUI} from "../pages/yakitStore/viewers/base";
 import {AutoCard} from "../components/AutoCard";
 import { getReleaseEditionName, isCommunityEdition } from "./envfile";
 import {NetInterface} from "@/models/Traffic";
+import i18next from "../i18n"
 
 export interface YakVersionProp {
 
@@ -61,7 +62,7 @@ export const YakVersion: React.FC<YakVersionProp> = (props) => {
     }, [])
 
     if (!version) {
-        return <Spin tip={"正在加载 yak 版本"}/>
+        return <Spin tip={i18next.t("正在加载 yak 版本")}/>
     }
     const isDev = version.toLowerCase().includes("dev");
 
@@ -82,13 +83,10 @@ export const YakVersion: React.FC<YakVersionProp> = (props) => {
                         }
 
                         showModal({
-                            title: "有新的 Yak 核心引擎可升级！",
-                            content: <>
-                                如果你现在不是很忙
-                                <br/>
-                                我们推荐您退出当前引擎，点击欢迎界面的
-                                <br/>
-                                "安装/升级 Yak 引擎" 来免费升级
+                            title: i18next.t("有新的 Yak 核心引擎可升级！"),
+                            content: <>{i18next.t("如果你现在不是很忙")}
+                                <br/>{i18next.t("我们推荐您退出当前引擎，点击欢迎界面的")}
+                                <br/>{i18next.t(`"安装/升级 Yak 引擎" 来免费升级`)}
                             </>
                         })
                     }}>
@@ -110,7 +108,7 @@ export const YakitVersion: React.FC<YakVersionProp> = (props) => {
     }, [])
 
     if (!version) {
-        return <Spin tip={"正在加载 yakit 版本"}/>
+        return <Spin tip={i18next.t("正在加载 yakit 版本")}/>
     }
     const isDev = version.toLowerCase().includes("dev");
     const newVersion = latestVersion !== "" && latestVersion !== version
@@ -129,9 +127,8 @@ export const YakitVersion: React.FC<YakVersionProp> = (props) => {
                 }
 
                 showModal({
-                    title: `有新的 ${getReleaseEditionName()} 版本可升级！`,
-                    content: <>
-                        如果你现在不是很忙
+                    title: i18next.t("有新的 ${getReleaseEditionName()} 版本可升级！", {v1: getReleaseEditionName()}),
+                    content: <>{i18next.t("如果你现在不是很忙")}
                         <br/>
                         {/* 我们推荐您进入 <Button
                         type={"primary"}
@@ -139,7 +136,7 @@ export const YakitVersion: React.FC<YakVersionProp> = (props) => {
                             openExternalWebsite("https://github.com/yaklang/yakit/releases")
                         }}
                     >Yakit Github 发布界面</Button> 下载最新版并升级！ */}
-                        我们推荐您点击右上角退出到启用页升级最新版
+                        {i18next.t("我们推荐您点击右上角退出到启用页升级最新版")}
                     </>
                 })
             }}>
@@ -187,10 +184,10 @@ export const AutoUpdateYakModuleViewer: React.FC<AutoUpdateYakModuleViewerProp> 
         }
     }, [])
 
-    return <Card title={"自动更新进度"}>
+    return <Card title={i18next.t("自动更新进度")}>
         <Space direction={"vertical"} style={{width: "100%"}} size={12}>
             {error && <Alert type={"error"} message={error}/>}
-            {end && <Alert type={"info"} message={"更新进程已结束"}/>}
+            {end && <Alert type={"info"} message={i18next.t("更新进程已结束")}/>}
             <Timeline pending={!end} style={{marginTop: 20}}>
                 {(msg || []).filter(i => i.type === "log").map(i => i.content as ExecResultLog).map(e => {
                     return <Timeline.Item color={LogLevelToCode(e.level)}>
@@ -256,9 +253,9 @@ export const ConfigGlobalReverse = React.memo(() => {
                 ipcRenderer.invoke("SetYakBridgeLogServer", {
                     DNSLogAddr: addr, DNSLogSecret: password,
                 }).then(() => {
-                    info("配置全局 DNSLog 生效")
+                    info(i18next.t("配置全局 DNSLog 生效"))
                 }).catch(e => {
-                    failed(`配置全局 DNSLog 失败：${e}`)
+                    failed(i18next.t("配置全局 DNSLog 失败：${e}", { v1: e }))
                 })
             } else {
                 setRemoteValue(DNSLOG_ADDR, dnslogAddr)
@@ -266,9 +263,9 @@ export const ConfigGlobalReverse = React.memo(() => {
                 ipcRenderer.invoke("SetYakBridgeLogServer", {
                     DNSLogAddr: dnslogAddr, DNSLogSecret: dnslogPassword,
                 }).then(() => {
-                    info("配置全局 DNSLog 生效")
+                    info(i18next.t("配置全局 DNSLog 生效"))
                 }).catch(e => {
-                    failed(`配置全局 DNSLog 失败：${e}`)
+                    failed(i18next.t("配置全局 DNSLog 失败：${e}", { v1: e }))
                 })
             }
         }).catch(e => {
@@ -349,7 +346,7 @@ export const ConfigGlobalReverse = React.memo(() => {
 
     useEffect(() => {
         ipcRenderer.on("global-reverse-error", (e, data) => {
-            failed(`全局反连配置失败：${data}`)
+            failed(i18next.t("全局反连配置失败：${data}", { v1: data }))
         })
         return () => {
             ipcRenderer.removeAllListeners("global-reverse-error")
@@ -366,62 +363,61 @@ export const ConfigGlobalReverse = React.memo(() => {
                 setRemoteValue(DNSLOG_INHERIT_BRIDGE, `${inheritBridge}`)
             }} labelCol={{span: 5}} wrapperCol={{span: 14}}>
             <InputItem
-                label={"本地反连 IP"}
+                label={i18next.t("本地反连 IP")}
                 value={localIP} disable={ok}
                 setValue={setLocalIP}
                 autoComplete={ifaces.filter((item) => !!item.IP).map((item) => item.IP)}
                 help={<div>
                     <Button type={"link"} size={"small"} onClick={() => {
                         updateIface()
-                    }} icon={<ReloadOutlined/>}>
-                        更新 yak 引擎本地 IP
+                    }} icon={<ReloadOutlined/>}>{i18next.t("更新 yak 引擎本地 IP")}
                     </Button>
                 </div>}
             />
-            <Divider orientation={"left"}>公网反连配置</Divider>
+            <Divider orientation={"left"}>{i18next.t("公网反连配置")}</Divider>
             <Form.Item label={" "} colon={false}>
                 <Alert message={<Space direction={"vertical"}>
-                    <div>在公网服务器上运行</div>
+                    <div>{i18next.t("在公网服务器上运行")}</div>
                     <Text code={true} copyable={true}>yak bridge --secret [your-password]</Text>
-                    <div>或</div>
+                    <div>{i18next.t("或")}</div>
                     <Text code={true} copyable={true}>
                         docker run -it --rm --net=host v1ll4n/yak-bridge yak bridge --secret
                         [your-password]
                     </Text>
-                    <div>已配置</div>
+                    <div>{i18next.t("已配置")}</div>
                 </Space>}/>
             </Form.Item>
             <InputItem
-                label={"Yak Bridge 地址"} value={addr}
+                label={i18next.t("Yak Bridge 地址")} value={addr}
                 setValue={setAddr} disable={ok}
-                help={"格式 host:port, 例如 cybertunnel.run:64333"}
+                help={i18next.t("格式 host:port, 例如 cybertunnel.run:64333")}
             />
             <InputItem
-                label={"Yak Bridge 密码"}
+                label={i18next.t("Yak Bridge 密码")}
                 setValue={setPassword} value={password}
                 type={"password"} disable={ok}
-                help={`yak bridge 命令的 --secret 参数值`}
+                help={i18next.t("yak bridge 命令的 --secret 参数值")}
             />
-            <Divider orientation={"left"}>{isCommunityEdition()&&'Yakit'} 全局 DNSLog 配置</Divider>
+            <Divider orientation={"left"}>{isCommunityEdition()&&'Yakit'} {i18next.t("全局 DNSLog 配置")}</Divider>
             <SwitchItem
-                label={"复用 Yak Bridge 配置"} disabled={ok}
+                label={i18next.t("复用 Yak Bridge 配置")} disabled={ok}
                 value={inheritBridge} setValue={setInheritBridge}/>
             {!inheritBridge && <InputItem
-                label={"DNSLog 配置"} disable={ok}
+                label={i18next.t("DNSLog 配置")} disable={ok}
                 value={dnslogAddr}
-                help={"配置好 Yak Bridge 的 DNSLog 系统的地址：[ip]:[port]"}
+                help={i18next.t("配置好 Yak Bridge 的 DNSLog 系统的地址：[ip]:[port]")}
                 setValue={setDNSLogAddr}
             />}
             {!inheritBridge && <InputItem
-                label={"DNSLog 密码"} disable={ok}
+                label={i18next.t("DNSLog 密码")} disable={ok}
                 value={dnslogPassword}
                 setValue={setDNSLogPassword}
             />}
             <Form.Item colon={false} label={" "}>
-                <Button type="primary" htmlType="submit" disabled={ok}> 配置反连 </Button>
+                <Button type="primary" htmlType="submit" disabled={ok}>{i18next.t("配置反连")} </Button>
                 {ok && <Button type="primary" danger={true} onClick={() => {
                     cancel()
-                }}> 停止 </Button>}
+                }}>{i18next.t("停止")} </Button>}
             </Form.Item>
         </Form>
     </div>
@@ -437,7 +433,7 @@ export const startExecYakCode = (
     params: YakScriptParam) => {
     let m = showModal({
         width: "60%", maskClosable: false,
-        title: `正在执行：${verbose}`,
+        title: i18next.t("正在执行：${verbose}", { v1: verbose }),
         content: <div style={{height: 400, overflowY: "auto"}}>
             <AutoCard bodyStyle={{overflowY: "auto"}}>
                 <StartToExecYakScriptViewer script={params} verbose={verbose}/>
@@ -458,9 +454,9 @@ const StartToExecYakScriptViewer = React.memo((props: {
         token, () => setTimeout(() => setLoading(false), 300),
         () => {
             ipcRenderer.invoke("ExecYakCode", script, token).then(() => {
-                info(`执行 ${verbose} 成功`)
+                info(i18next.t("执行 ${verbose} 成功", { v1: verbose }))
             }).catch(e => {
-                failed(`执行 ${verbose} 遇到问题：${e}`)
+                failed(i18next.t("执行 ${verbose} 遇到问题：${e}", { v1: verbose, v2: e }))
             })
         }
     )

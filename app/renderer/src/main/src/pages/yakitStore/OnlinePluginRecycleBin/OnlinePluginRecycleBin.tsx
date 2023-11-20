@@ -11,6 +11,7 @@ import '../YakitStorePage.scss'
 import { useStore } from "@/store"
 import { LoadingOutlined, ReloadOutlined } from "@ant-design/icons"
 import { tips } from "@/alibaba/ali-react-table-dist/dist/pipeline/features"
+import i18next from "../../../i18n"
 
 const { Search } = Input
 
@@ -86,7 +87,7 @@ export const OnlinePluginRecycleBin: React.FC = () => {
                 onRefresh()
             })
             .catch((err) => {
-                failed("还原或者删除失败:" + err)
+                failed(i18next.t("还原或者删除失败:") + err)
             })
             .finally(() => {
                 setTimeout(() => setRecycleLoading(false), 200)
@@ -94,11 +95,11 @@ export const OnlinePluginRecycleBin: React.FC = () => {
     }
 
     const onTips = useMemoizedFn((type: boolean) => {
-        let typeTest = type ? '删除' : '还原'
+        let typeTest = type ? i18next.t("删除") : i18next.t("还原")
         if (isSelectAll || selectedRowKeysRecord.length === 0) {
-            return `是否${typeTest}所有的数据?${type && '不可恢复' || ''}`
+            return i18next.t("是否${typeTest}所有的数据?${type && '不可恢复' || ''}", {v1: typeTest, v2: type && i18next.t('不可恢复') || ''})
         } else {
-            return `是否${typeTest}所选择的的数据?${type && '不可恢复' || ''}`
+            return i18next.t("是否${typeTest}所选择的的数据?${type && '不可恢复' || ''}", {v1: typeTest, v2: type && i18next.t('不可恢复') || ''})
         }
     })
 
@@ -126,13 +127,13 @@ export const OnlinePluginRecycleBin: React.FC = () => {
             title={
                 <div className="recycle-search-input">
                     <div className="recycle-left">
-                        <div className="recycle-left-title">插件回收站</div>
+                        <div className="recycle-left-title">{i18next.t("插件回收站")}</div>
                         <ReloadOutlined className="recycle-left-refresh" onClick={onRefList} />
                     </div>
                     <Search
-                        placeholder='输入关键字搜索'
+                        placeholder={i18next.t("输入关键字搜索")}
                         size="middle"
-                        enterButton="搜索"
+                        enterButton={i18next.t("搜索")}
                         onSearch={() => onRefresh()}
                         value={queryRecycleBin.keywords}
                         onChange={(e) => {
@@ -150,11 +151,10 @@ export const OnlinePluginRecycleBin: React.FC = () => {
             <div className='height-100'>
                 <Row className='row-body' gutter={12}>
                     <Col span={16} className='col'>
-                        <Checkbox checked={isSelectAll} onChange={(e) => onSelectAll(e.target.checked)}>
-                            全选
+                        <Checkbox checked={isSelectAll} onChange={(e) => onSelectAll(e.target.checked)}>{i18next.t("全选")}
                         </Checkbox>
                         {selectedRowKeysRecord.length > 0 && (
-                            <Tag color='blue'>已选{isSelectAll ? total : selectedRowKeysRecord.length}条</Tag>
+                            <Tag color='blue'>{i18next.t("已选")}{isSelectAll ? total : selectedRowKeysRecord.length}条</Tag>
                         )}
                         <Tag>Total:{total}</Tag>
                     </Col>
@@ -166,7 +166,7 @@ export const OnlinePluginRecycleBin: React.FC = () => {
                             cancelText="No"
                             placement="topRight"
                         >
-                            <Button type="primary" size="small" danger disabled={!userInfo.isLogin}>删除</Button>
+                            <Button type="primary" size="small" danger disabled={!userInfo.isLogin}>{i18next.t("删除")}</Button>
                         </Popconfirm>
                         <Popconfirm
                             title={onTips(false)}
@@ -175,7 +175,7 @@ export const OnlinePluginRecycleBin: React.FC = () => {
                             cancelText="No"
                             placement="topRight"
                         >
-                            <Button type="primary" size="small" disabled={!userInfo.isLogin}>还原</Button>
+                            <Button type="primary" size="small" disabled={!userInfo.isLogin}>{i18next.t("还原")}</Button>
                         </Popconfirm>
                     </Col>
                 </Row>
@@ -202,7 +202,7 @@ export const OnlinePluginRecycleBin: React.FC = () => {
                                 onSelect={onSelect}
                                 onClick={(info) => { }}
                                 bind_me={true}
-                                extra={currentItem && currentItem.id === data.id && recycleLoading && <LoadingOutlined className='plugin-down' /> || <a href="#" onClick={() => onReduction(data)}>还原</a>}
+                                extra={currentItem && currentItem.id === data.id && recycleLoading && <LoadingOutlined className='plugin-down' /> || <a href="#" onClick={() => onReduction(data)}>{i18next.t("还原")}</a>}
                             />
                         )}
                     />

@@ -72,12 +72,13 @@ import styles from "./chatCS.module.scss"
 import {YakitDrawer} from "../yakitUI/YakitDrawer/YakitDrawer"
 import {SolidPaperairplaneIcon} from "@/assets/icon/solid"
 import { SolidYakitPluginGrayIcon, SolidYakitPluginIcon } from "@/assets/icon/colors"
+import i18next from "../../i18n"
 
 const TypeToContent: Record<string, string> = {
-    cs_info: "安全知识",
-    vuln_info: "威胁情报",
-    exp_info: "漏洞利用",
-    back_catch: "背景知识"
+    cs_info: i18next.t("安全知识"),
+    vuln_info: i18next.t("威胁情报"),
+    exp_info: i18next.t("漏洞利用"),
+    back_catch: i18next.t("背景知识")
 }
 
 /** 将 new Date 转换为日期 */
@@ -98,7 +99,7 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
         if (userInfo.platform === "github") return userInfo.githubName
         if (userInfo.platform === "wechat") return userInfo.wechatName
         if (userInfo.platform === "company") return userInfo.companyName
-        return "游客"
+        return i18next.t("游客")
     }, [userInfo])
 
     /** 获取缓存中的对话内容 */
@@ -157,7 +158,7 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
 
         const lists: CacheChatCSProps = {
             token: randomString(10),
-            name: `临时对话窗-${randomString(4)}`,
+            name: i18next.t("临时对话窗-${randomString(4)}", {v1: randomString(4)}),
             baseType,
             expInfo,
             backCatch,
@@ -258,7 +259,7 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
         if (!question || question.trim() === "") return
 
         if (!baseType && !expInfo && !backCatch) {
-            return yakitNotify("error", "请最少选择一个回答类型")
+            return yakitNotify("error", i18next.t("请最少选择一个回答类型"))
         }
 
         const data: ChatInfoProps = {
@@ -281,7 +282,7 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
         if (!content || content.trim() === "") return
 
         if (!baseType && !expInfo && !backCatch) {
-            return yakitNotify("error", "请最少选择一个回答类型")
+            return yakitNotify("error", i18next.t("请最少选择一个回答类型"))
         }
         const data: ChatInfoProps = {
             token: randomString(10),
@@ -323,9 +324,9 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                 } else {
                     chatHistory.push({
                         role: "assistant",
-                        content: ["暂无可用解答", "该类型请求异常，请稍后重试"].includes(stag)
-                            ? "回答中断"
-                            : stag || "回答中断"
+                        content: [i18next.t("暂无可用解答"), i18next.t("该类型请求异常，请稍后重试")].includes(stag)
+                            ? i18next.t("回答中断")
+                            : stag || i18next.t("回答中断")
                     })
                     chatHistory.push({role: "user", content: info.content})
                 }
@@ -433,21 +434,21 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                         // const answer: ChatCSAnswerProps | undefined = res?.data
                         // 正常数据中，如果没有答案，则后端返回的text为空，这种情况数据自动抛弃
                         // if (answer) {
-                        //     if (!answer.text) cs.content = "暂无可用解答"
+                        //     if (!answer.text) cs.content = i18next.t("暂无可用解答")
                         //     else cs.content = answer.text
                         //     cs.id = answer.id
                         //     setContentList(cs, contents, group)
                         // }
                         /** 流式输出逻辑 */
                         if (!cs.content) {
-                            cs.content = "暂无可用解答"
+                            cs.content = i18next.t("暂无可用解答")
                             setContentList(cs, contents, group)
                         }
                         resolve(`${params.intell_type}|success`)
                     })
                     .catch((e) => {
                         if (!cs.content) {
-                            cs.content = "该类型请求异常，请稍后重试"
+                            cs.content = i18next.t("该类型请求异常，请稍后重试")
                             setContentList(cs, contents, group)
                         }
                         resolve(`${params.intell_type}|error|${e}`)
@@ -464,7 +465,7 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                 ? group[filterIndex]
                 : {
                       token: randomString(10),
-                      name: `临时对话窗-${randomString(4)}`,
+                      name: i18next.t("临时对话窗-${randomString(4)}", {v1: randomString(4)}),
                       baseType,
                       expInfo,
                       backCatch,
@@ -837,13 +838,13 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                     <div className={styles["header-extra"]}>
                         {history.length !== 0 && (
                             <YakitButton disabled={loading} icon={<PlusIcon />} onClick={onAddChat}>
-                                {(+width || 351) < 350 ? undefined : "新会话"}
+                                {(+width || 351) < 350 ? undefined : i18next.t("新会话")}
                             </YakitButton>
                         )}
                         <div className={styles["extra-base-btn"]}>
                             {history.length !== 0 && (
                                 <>
-                                    <Tooltip overlayClassName={styles["tooltip-wrapper"]} title={"会话历史记录"}>
+                                    <Tooltip overlayClassName={styles["tooltip-wrapper"]} title={i18next.t("会话历史记录")}>
                                         <div
                                             className={classNames(styles["big-btn"], styles["btn-style"], {
                                                 [styles["disable-style"]]: loading
@@ -856,7 +857,7 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                                             <ClockIcon />
                                         </div>
                                     </Tooltip>
-                                    {/* <Tooltip overlayClassName={styles["tooltip-wrapper"]} title={"提示词"}>
+                                    {/* <Tooltip overlayClassName={styles["tooltip-wrapper"]} title={i18next.t("提示词")}>
                                         <div
                                             className={classNames(styles["big-btn"], styles["btn-style"], {
                                                 [styles["disable-style"]]: loading
@@ -903,11 +904,11 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                                         <div className={styles["welcome-header"]}>
                                             <div className={styles["header-title"]}>
                                                 <div className={classNames(styles["title-style"], "content-ellipsis")}>
-                                                    {`你好,${showName}`}
+                                                    {i18next.t("你好,${showName}", { v1: showName })}
                                                 </div>
                                                 👋
                                             </div>
-                                            <div className={styles["header-subTitle"]}>有什么我能帮助你的吗？</div>
+                                            <div className={styles["header-subTitle"]}>{i18next.t("有什么我能帮助你的吗？")}</div>
                                         </div>
                                         <div className={styles["welcome-preset-list"]}>
                                             <div className={styles["list-wrapper"]}>
@@ -925,8 +926,8 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                                                 })} */}
                                                 <div className={styles["info-hint-wrapper"]}>
                                                     <OutlineInformationcircleIcon />
-                                                    ChatCS模型参数：6.5b，训练Token: 1.5T
-                                                    显卡资源：A40*4，使用文心增强知识推理能力
+                                                    {i18next.t(`ChatCS模型参数：6.5b，训练Token: 1.5T
+                                                    显卡资源：A40*4，使用文心增强知识推理能力`)}
                                                 </div>
                                             </div>
                                         </div>
@@ -992,7 +993,7 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                                     <Input.TextArea
                                         className={styles["text-area-wrapper"]}
                                         bordered={false}
-                                        placeholder='问我任何问题...(shift + enter 换行)'
+                                        placeholder={i18next.t("问我任何问题...(shift + enter 换行)")}
                                         value={question}
                                         autoSize={true}
                                         onChange={(e) => setQuestion(e.target.value)}
@@ -1021,11 +1022,10 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                                                 content={
                                                     <div className={styles["footer-popover-wrapper"]}>
                                                         <div className={styles["footer-type-wrapper"]}>
-                                                            <div className={styles["type-title"]}>
-                                                                回答类型
+                                                            <div className={styles["type-title"]}>{i18next.t("回答类型")}
                                                                 <Tooltip
                                                                     overlayClassName={styles["tooltip-wrapper"]}
-                                                                    title={"ChatCS 将根据选择的类型回答你的问题"}
+                                                                    title={i18next.t("ChatCS 将根据选择的类型回答你的问题")}
                                                                 >
                                                                     <QuestionMarkCircleIcon />
                                                                 </Tooltip>
@@ -1045,8 +1045,7 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                                                                         if (baseType === "cs_info") setBaseType("")
                                                                         else setBaseType("cs_info")
                                                                     }}
-                                                                >
-                                                                    安全知识
+                                                                >{i18next.t("安全知识")}
                                                                 </div>
                                                                 <div
                                                                     className={classNames(
@@ -1061,8 +1060,7 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                                                                         if (baseType === "vuln_info") setBaseType("")
                                                                         else setBaseType("vuln_info")
                                                                     }}
-                                                                >
-                                                                    威胁情报
+                                                                >{i18next.t("威胁情报")}
                                                                 </div>
                                                             </div>
                                                             <div
@@ -1070,16 +1068,14 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                                                                     [styles["single-active-btn"]]: expInfo
                                                                 })}
                                                                 onClick={() => setExpInfo(!expInfo)}
-                                                            >
-                                                                漏洞利用
+                                                            >{i18next.t("漏洞利用")}
                                                             </div>
                                                             {/* <div
                                                                 className={classNames(styles["single-btn"], {
                                                                     [styles["single-active-btn"]]: backCatch
                                                                 })}
                                                                 onClick={() => setBackCatch(!backCatch)}
-                                                            >
-                                                                背景知识
+                                                            >{i18next.t("背景知识")}
                                                             </div> */}
                                                         </div>
                                                     </div>
@@ -1091,11 +1087,10 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                                             </YakitPopover>
                                         ) : (
                                             <div className={styles["footer-type-wrapper"]}>
-                                                <div className={styles["type-title"]}>
-                                                    回答类型
+                                                <div className={styles["type-title"]}>{i18next.t("回答类型")}
                                                     <Tooltip
                                                         overlayStyle={{paddingBottom: 5}}
-                                                        title={"ChatCS 将根据选择的类型回答你的问题"}
+                                                        title={i18next.t("ChatCS 将根据选择的类型回答你的问题")}
                                                     >
                                                         <QuestionMarkCircleIcon />
                                                     </Tooltip>
@@ -1110,8 +1105,7 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                                                             if (baseType === "cs_info") setBaseType("")
                                                             else setBaseType("cs_info")
                                                         }}
-                                                    >
-                                                        安全知识
+                                                    >{i18next.t("安全知识")}
                                                     </div>
                                                     <div
                                                         className={classNames(
@@ -1125,8 +1119,7 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                                                             if (baseType === "vuln_info") setBaseType("")
                                                             else setBaseType("vuln_info")
                                                         }}
-                                                    >
-                                                        威胁情报
+                                                    >{i18next.t("威胁情报")}
                                                     </div>
                                                 </div>
                                                 <div
@@ -1134,16 +1127,14 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                                                         [styles["single-active-btn"]]: expInfo
                                                     })}
                                                     onClick={() => setExpInfo(!expInfo)}
-                                                >
-                                                    漏洞利用
+                                                >{i18next.t("漏洞利用")}
                                                 </div>
                                                 {/* <div
                                                     className={classNames(styles["single-btn"], {
                                                         [styles["single-active-btn"]]: backCatch
                                                     })}
                                                     onClick={() => setBackCatch(!backCatch)}
-                                                >
-                                                    背景知识
+                                                >{i18next.t("背景知识")}
                                                 </div> */}
                                             </div>
                                         )}
@@ -1191,11 +1182,11 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                     width={modalWidth}
                     getContainer={divRef.current}
                     visible={addShow}
-                    title='超过对话框个数限制'
-                    content='新建会默认删除最早的对话框，确认新建吗？'
-                    okButtonText='仍要新建'
+                    title={i18next.t("超过对话框个数限制")}
+                    content={i18next.t("新建会默认删除最早的对话框，确认新建吗？")}
+                    okButtonText={i18next.t("仍要新建")}
                     okButtonProps={{loading: delLoading}}
-                    cancelButtonText='稍后再说'
+                    cancelButtonText={i18next.t("稍后再说")}
                     cancelButtonProps={{loading: delLoading}}
                     onOk={delToAdd}
                     onCancel={() => setAddShow(false)}
@@ -1287,8 +1278,7 @@ const ChatCSContent: React.FC<ChatCSContentProps> = memo((props) => {
                 </div>
                 <div className={showLoading ? styles["header-right-loading"] : styles["header-right"]}>
                     {showLoading ? (
-                        <YakitButton type='primary' colors='danger' icon={<StopIcon />} onClick={onStop}>
-                            停止
+                        <YakitButton type='primary' colors='danger' icon={<StopIcon />} onClick={onStop}>{i18next.t("停止")}
                         </YakitButton>
                     ) : (
                         <>
@@ -1357,7 +1347,7 @@ const ChatCSContent: React.FC<ChatCSContentProps> = memo((props) => {
                 ) : (
                     <div className={styles["content-style"]}>
                         {info.content.length === 0
-                            ? "请求出现错误，请稍候再试"
+                            ? i18next.t("请求出现错误，请稍候再试")
                             : info.content.map((item) => {
                                   return (
                                       <React.Fragment key={item.type}>
@@ -1408,7 +1398,7 @@ const HistoryDrawer: React.FC<HistoryDrawerProps> = memo((props) => {
         >
             <div className={styles["drawer-body"]}>
                 <div className={styles["body-header"]}>
-                    <div className={styles["header-title"]}>会话历史记录</div>
+                    <div className={styles["header-title"]}>{i18next.t("会话历史记录")}</div>
                     <div className={styles["header-close"]} onClick={() => setVisible(false)}>
                         <RemoveIcon />
                     </div>
@@ -1436,7 +1426,7 @@ const HistoryDrawer: React.FC<HistoryDrawerProps> = memo((props) => {
                                         <div className={styles["opt-operate"]}>
                                             <Tooltip
                                                 overlayClassName={styles["tooltip-wrapper"]}
-                                                title={"编辑对话标题"}
+                                                title={i18next.t("编辑对话标题")}
                                             >
                                                 <div
                                                     className={styles["operate-btn"]}
@@ -1448,7 +1438,7 @@ const HistoryDrawer: React.FC<HistoryDrawerProps> = memo((props) => {
                                                     <PencilAltIcon />
                                                 </div>
                                             </Tooltip>
-                                            <Tooltip overlayClassName={styles["tooltip-wrapper"]} title={"删除该对话"}>
+                                            <Tooltip overlayClassName={styles["tooltip-wrapper"]} title={i18next.t("删除该对话")}>
                                                 <div
                                                     className={styles["operate-btn"]}
                                                     onClick={(e) => {
@@ -1464,7 +1454,7 @@ const HistoryDrawer: React.FC<HistoryDrawerProps> = memo((props) => {
                                 )
                             })}
                         </div>
-                        <div className={styles["body-footer"]}>仅展示最近 5 个对话窗口</div>
+                        <div className={styles["body-footer"]}>{i18next.t("仅展示最近 5 个对话窗口")}</div>
                     </div>
                 </div>
             </div>
@@ -1608,19 +1598,19 @@ const PromptWidget: React.FC<PromptWidgetProps> = memo((props) => {
     const getLabelText = useMemoizedFn((v: PromptLabelItem) => {
         switch (v) {
             case "Team_all":
-                return "全部"
+                return i18next.t("全部")
             case "RedTeam_vuln":
-                return "漏洞情报"
+                return i18next.t("漏洞情报")
             case "BlueTeam_com":
-                return "应急响应"
+                return i18next.t("应急响应")
             case "RedTeam_code":
-                return "代码生成"
+                return i18next.t("代码生成")
             case "BlueTeam_code":
-                return "数据研判"
+                return i18next.t("数据研判")
             case "yak_memo":
                 return "Yak"
             default:
-                return "其他"
+                return i18next.t("其他")
         }
     })
 
@@ -1700,7 +1690,7 @@ const PromptWidget: React.FC<PromptWidgetProps> = memo((props) => {
                     <span className={styles["sub-title"]}>Prompt</span>
                 </div>
                 <div className={styles["extra"]}>
-                    <Tooltip placement='left' title='向右收起'>
+                    <Tooltip placement='left' title={i18next.t("向右收起")}>
                         <OutlineOpenIcon
                             className={styles["fold-icon"]}
                             onClick={() => {
@@ -1712,7 +1702,7 @@ const PromptWidget: React.FC<PromptWidgetProps> = memo((props) => {
             </div>
             <div className={styles["prompt-search"]}>
                 <YakitInput.Search
-                    placeholder='请输入关键词搜索'
+                    placeholder={i18next.t("请输入关键词搜索")}
                     size='large'
                     value={searchValue}
                     onChange={(e) => {
@@ -1758,12 +1748,11 @@ const PromptWidget: React.FC<PromptWidgetProps> = memo((props) => {
                         </div>
                         {!isOther(item.prompt_type) && (
                             <>
-                                <div className={styles["sub-title"]}>
-                                    只需输入
+                                <div className={styles["sub-title"]}>{i18next.t("只需输入")}
                                     {item.templateArr.map((itemIn) => (
                                         <span className={styles["span-label"]}>{itemIn}</span>
                                     ))}
-                                    将自动为你生成 Prompt
+                                    {i18next.t("将自动为你生成 Prompt")}
                                 </div>
                                 <ExampleCard content={item.eg[0]} />
                             </>
@@ -1810,7 +1799,7 @@ const ChatCsPromptForm: React.FC<ChatCsPromptFormProps> = memo((props) => {
     const onSubmit = useMemoizedFn(() => {
         if (Object.keys(inputObj).length !== selectItem.templateArr.length) {
             let arr = selectItem.templateArr.filter((item) => !Object.keys(inputObj).includes(item))
-            yakitNotify("error", `请输入${arr.join()}`)
+            yakitNotify("error", i18next.t("请输入${arr.join()}", {v1: arr.join()}))
             return
         }
 
@@ -1845,7 +1834,7 @@ const ChatCsPromptForm: React.FC<ChatCsPromptFormProps> = memo((props) => {
                                     autoSize={true}
                                     bordered={false}
                                     className={styles["text-area-wrapper"]}
-                                    placeholder={`请输入${item}`}
+                                    placeholder={i18next.t("请输入${item}", { v1: item })}
                                     onChange={(e) => {
                                         if (e.target.value.length === 0 && inputObj.hasOwnProperty(item)) {
                                             const newInputObj = JSON.parse(JSON.stringify(inputObj))
@@ -1877,8 +1866,7 @@ const ChatCsPromptForm: React.FC<ChatCsPromptFormProps> = memo((props) => {
                 </div> */}
                 <ExampleCard content={selectItem.eg[0]} background='#F8F8F8' />
             </div>
-            <YakitButton icon={<SolidPaperairplaneIcon />} onClick={onSubmit} className={styles["submit"]} size='large'>
-                发送
+            <YakitButton icon={<SolidPaperairplaneIcon />} onClick={onSubmit} className={styles["submit"]} size='large'>{i18next.t("发送")}
             </YakitButton>
         </div>
     )
@@ -1897,7 +1885,7 @@ const ExampleCard: React.FC<ExampleCardProps> = memo((props) => {
     })
     return (
         <div className={styles["example-card"]} style={background ? {background} : {}}>
-            <div className={styles["example"]}>示例</div>
+            <div className={styles["example"]}>{i18next.t("示例")}</div>
             {/* markdown显示 */}
             <div className={styles["detail-content"]}>
                 <ChatMarkdown content={highlightStr(content)} />
@@ -1927,7 +1915,7 @@ const HintDrawer: React.FC<HintDrawerProps> = memo((props) => {
         >
             <div className={styles["drawer-body"]}>
                 <div className={styles["body-header"]}>
-                    <div className={styles["header-title"]}>提示词</div>
+                    <div className={styles["header-title"]}>{i18next.t("提示词")}</div>
                     <div className={styles["header-close"]} onClick={() => setVisible(false)}>
                         <RemoveIcon />
                     </div>
@@ -1953,7 +1941,7 @@ const HintDrawer: React.FC<HintDrawerProps> = memo((props) => {
                                 )
                             })}
                         </div>
-                        <div className={styles["body-footer"]}>已经到底啦～</div>
+                        <div className={styles["body-footer"]}>{i18next.t("已经到底啦～")}</div>
                     </div>
                 </div>
             </div>
@@ -1989,7 +1977,7 @@ const EditNameModal: React.FC<EditNameModalProps> = memo((props) => {
 
     const onSubmit = useMemoizedFn(() => {
         if (!name) {
-            yakitNotify("error", "请输入对话标题")
+            yakitNotify("error", i18next.t("请输入对话标题"))
             return
         }
         setLoading(true)
@@ -2010,7 +1998,7 @@ const EditNameModal: React.FC<EditNameModalProps> = memo((props) => {
         >
             <div className={styles["name-edit-modal"]}>
                 <div className={styles["name-edit-modal-heard"]}>
-                    <div className={styles["name-edit-modal-title"]}>修改对话标题</div>
+                    <div className={styles["name-edit-modal-title"]}>{i18next.t("修改对话标题")}</div>
                     <div className={styles["close-icon"]} onClick={() => setVisible(false)}>
                         <RemoveIcon />
                     </div>
@@ -2032,11 +2020,9 @@ const EditNameModal: React.FC<EditNameModalProps> = memo((props) => {
                     />
                 </div>
                 <div className={styles["name-edit-modal-footer"]}>
-                    <YakitButton type='outline2' loading={loading} onClick={() => setVisible(false)}>
-                        取消
+                    <YakitButton type='outline2' loading={loading} onClick={() => setVisible(false)}>{i18next.t("取消")}
                     </YakitButton>
-                    <YakitButton type='primary' loading={loading} onClick={onSubmit}>
-                        确定
+                    <YakitButton type='primary' loading={loading} onClick={onSubmit}>{i18next.t("确定")}
                     </YakitButton>
                 </div>
             </div>

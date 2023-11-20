@@ -15,6 +15,7 @@ import {DemoPacketTable} from "@/components/playground/traffic/DemoPacketTable";
 import {DemoTCPReassembled} from "@/components/playground/traffic/DemoTCPReassembled";
 import {DemoTrafficSessionTable} from "@/components/playground/traffic/DemoTrafficSessionTable";
 import { DemoItemRadioButton } from "@/demoComponents/itemRadioAndCheckbox/RadioAndCheckbox";
+import i18next from "../../i18n"
 
 export interface PacketListProp {
     onLoadingChanged?: (loading: boolean) => void
@@ -49,14 +50,14 @@ export const PacketListDemo: React.FC<PacketListProp> = (props) => {
             size={"small"} bordered={false}
             title={<Form layout={"inline"} onSubmitCapture={e => e.preventDefault()}>
                 <DemoItemRadioButton data={[
-                    {value: "packet", label: "数据包"},
-                    {value: "session", label: "会话"},
-                    {value: "tcp-reassembled", label: "TCP数据帧"},
+                    {value: "packet", label: i18next.t("数据包")},
+                    {value: "session", label: i18next.t("会话")},
+                    {value: "tcp-reassembled", label: i18next.t("TCP数据帧")},
                 ]} value={viewer} setValue={setViewer}/>
             </Form>}
             extra={<Form layout={"inline"} size={"small"}>
-                <DemoItemSwitch label={"实时"} value={realtime} setValue={setRealtime}/>
-                <YakitButton danger={true} onClick={clear}>清空</YakitButton>
+                <DemoItemSwitch label={i18next.t("实时")} value={realtime} setValue={setRealtime}/>
+                <YakitButton danger={true} onClick={clear}>{i18next.t("清空")}</YakitButton>
             </Form>}
         >
             {viewer === "packet" &&

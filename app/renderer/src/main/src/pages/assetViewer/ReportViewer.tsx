@@ -18,6 +18,7 @@ import html2canvas from "html2canvas"
 import {YakitButton} from "@/components/yakitUI/YakitButton/YakitButton"
 import {YakitPopover} from "@/components/yakitUI/YakitPopover/YakitPopover"
 import {YakitMenu} from "@/components/yakitUI/YakitMenu/YakitMenu"
+import i18next from "../../i18n"
 export interface ReportViewerProp {
     id?: number
 }
@@ -115,7 +116,7 @@ export const ReportViewer: React.FC<ReportViewerProp> = (props) => {
         }
         // word报告不要附录 table添加边框 移除南丁格尔玫瑰图点击详情(图像中已含)
         const wordStr: string = contentHTML.outerHTML
-            .substring(0, contentHTML.outerHTML.indexOf("附录："))
+            .substring(0, contentHTML.outerHTML.indexOf(i18next.t("附录：")))
             .replace(/<table(.*?)>/g, '<table$1 border="1">')
             .replace(/<th(.*?)>/g, '<th$1 style="width: 10%">')
             .replace(/<div[^>]*id=("nightingle-rose-title"|"nightingle-rose-content")[^>]*>[\s\S]*?<\/div>/g, "")
@@ -133,7 +134,7 @@ export const ReportViewer: React.FC<ReportViewerProp> = (props) => {
     if (report.Id <= 0) {
         return (
             <AutoCard loading={loading}>
-                <Empty>{"选择报告以在此查看内容"}</Empty>
+                <Empty>{i18next.t("选择报告以在此查看内容")}</Empty>
             </AutoCard>
         )
     }
@@ -174,7 +175,7 @@ export const ReportViewer: React.FC<ReportViewerProp> = (props) => {
     const downloadHtml = () => {
         ipcRenderer
             .invoke("openDialog", {
-                title: "请选择文件夹",
+                title: i18next.t("请选择文件夹"),
                 properties: ["openDirectory"]
             })
             .then((data: any) => {
@@ -190,7 +191,7 @@ export const ReportViewer: React.FC<ReportViewerProp> = (props) => {
                         .then((r) => {
                             console.log(r)
                             if (r?.ok) {
-                                success("报告导出成功")
+                                success(i18next.t("报告导出成功"))
                                 r?.outputDir && openABSFileLocated(r.outputDir)
                             }
                         })
@@ -293,7 +294,7 @@ export const ReportViewer: React.FC<ReportViewerProp> = (props) => {
                                 visible={show}
                                 onVisibleChange={(visible) => setShow(visible)}
                             >
-                                <YakitButton size='small'>下载</YakitButton>
+                                <YakitButton size='small'>{i18next.t("下载")}</YakitButton>
                             </YakitPopover>
                         </Space>
                     }

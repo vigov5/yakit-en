@@ -18,6 +18,7 @@ import {setRemoteValue} from "@/utils/kv"
 import {useMemoizedFn} from "ahooks"
 import {HTTPFuzzerHotPatch} from "../HTTPFuzzerHotPatch"
 import {yakitNotify} from "@/utils/notification"
+import i18next from "../../../i18n"
 
 export interface WebFuzzerNewEditorProps {
     ref?: any
@@ -59,7 +60,7 @@ export const WebFuzzerNewEditor: React.FC<WebFuzzerNewEditorProps> = React.memo(
                     return
                 }
             } catch (e) {
-                yakitNotify("error", "初始化 EOL CRLF 失败")
+                yakitNotify("error", i18next.t("初始化 EOL CRLF 失败"))
             }
         }, [reqEditor])
         const hotPatchTrigger = useMemoizedFn(() => {
@@ -98,13 +99,13 @@ export const WebFuzzerNewEditor: React.FC<WebFuzzerNewEditorProps> = React.memo(
                         {type: "divider"},
                         {
                             key: "insert-label-tag",
-                            label: "插入标签/字典",
+                            label: i18next.t("插入标签/字典"),
                             children: [
-                                {key: "insert-nullbyte", label: "插入空字节标签: {{hexd(00)}}"},
-                                {key: "insert-temporary-file-tag", label: "插入临时字典"},
-                                {key: "insert-intruder-tag", label: "插入模糊测试字典标签"},
-                                {key: "insert-hotpatch-tag", label: "插入热加载标签"},
-                                {key: "insert-fuzzfile-tag", label: "插入文件标签"}
+                                {key: "insert-nullbyte", label: i18next.t("插入空字节标签: {{hexd(00)}}")},
+                                {key: "insert-temporary-file-tag", label: i18next.t("插入临时字典")},
+                                {key: "insert-intruder-tag", label: i18next.t("插入模糊测试字典标签")},
+                                {key: "insert-hotpatch-tag", label: i18next.t("插入热加载标签")},
+                                {key: "insert-fuzzfile-tag", label: i18next.t("插入文件标签")}
                             ]
                         }
                     ],
@@ -135,8 +136,8 @@ export const WebFuzzerNewEditor: React.FC<WebFuzzerNewEditorProps> = React.memo(
                 },
                 copyURL: {
                     menu: [
-                        {key: "copy-as-url", label: "复制为 URL"},
-                        {key: "copy-as-curl", label: "复制 curl 命令"}
+                        {key: "copy-as-url", label: i18next.t("复制为 URL")},
+                        {key: "copy-as-curl", label: i18next.t("复制 curl 命令")}
                     ],
                     onRun: (editor, key) => {
                         switch (key) {
@@ -148,7 +149,7 @@ export const WebFuzzerNewEditor: React.FC<WebFuzzerNewEditorProps> = React.memo(
                                     {Key: "https", Value: isHttps ? "true" : ""}
                                 ]).then((data) => {
                                     callCopyToClipboard(data)
-                                    yakitNotify("info", "复制到剪贴板")
+                                    yakitNotify("info", i18next.t("复制到剪贴板"))
                                 })
                                 return
                             default:

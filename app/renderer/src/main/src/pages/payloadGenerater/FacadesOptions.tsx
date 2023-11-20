@@ -4,6 +4,7 @@ import {InputInteger, InputItem, SwitchItem, InputStringOrJsonItem} from "../../
 import {useGetState, useMemoizedFn} from "ahooks"
 import {getRemoteValue, setRemoteValue} from "../../utils/kv"
 import {NetInterface} from "@/models/Traffic";
+import i18next from "../../i18n"
 const {ipcRenderer} = window.require("electron")
 export const BRIDGE_ADDR = "yak-bridge-addr"
 export const BRIDGE_SECRET = "yak-bridge-secret"
@@ -77,13 +78,13 @@ export const FacadeOptions: React.FC<FacadeOptionsProp> = (props) => {
                             setParams({...params, IsRemote})
                         }}
                         value={params.IsRemote}
-                        label={"启用公网反连"}
+                        label={i18next.t("启用公网反连")}
                     ></SwitchItem>
 
                     {params.IsRemote ? (
                         <>
                             <InputItem
-                                label={"Bridge地址"}
+                                label={i18next.t("Bridge地址")}
                                 value={params.BridgeParam.Addr}
                                 setValue={(BridgeAddr) => {
                                     params.BridgeParam.Addr = BridgeAddr
@@ -92,7 +93,7 @@ export const FacadeOptions: React.FC<FacadeOptionsProp> = (props) => {
                             />
                             <InputItem
                                 type='password'
-                                label={"密码"}
+                                label={i18next.t("密码")}
                                 value={params.BridgeParam.Secret}
                                 setValue={(Secret) => {
                                     params.BridgeParam.Secret = Secret
@@ -100,7 +101,7 @@ export const FacadeOptions: React.FC<FacadeOptionsProp> = (props) => {
                                 }}
                             />
                             <InputInteger
-                                label={"反连端口"}
+                                label={i18next.t("反连端口")}
                                 setValue={(ReversePort) => {
                                     setParams({...params, ReversePort})
                                 }}
@@ -110,14 +111,14 @@ export const FacadeOptions: React.FC<FacadeOptionsProp> = (props) => {
                     ) : (
                         <>
                             <InputItem
-                                label={"反连地址"}
+                                label={i18next.t("反连地址")}
                                 value={params.ReverseHost}
                                 setValue={(host) => {
                                     setParams({...params, ReverseHost: host})
                                 }}
                             />
                             <InputInteger
-                                label={"反连端口"}
+                                label={i18next.t("反连端口")}
                                 setValue={(ReversePort) => {
                                     setParams({...params, ReversePort})
                                 }}
@@ -128,7 +129,7 @@ export const FacadeOptions: React.FC<FacadeOptionsProp> = (props) => {
                     <Form.Item colon={false} label={""}>
                         <Button type='primary' htmlType='submit'>
                             {" "}
-                            启动FacadeServer{" "}
+                            {i18next.t("启动FacadeServer")}{" "}
                         </Button>
                     </Form.Item>
                 </Form>

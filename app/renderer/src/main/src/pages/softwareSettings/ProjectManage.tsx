@@ -46,6 +46,7 @@ import {showByRightContext} from "@/components/yakitUI/YakitMenu/showByRightCont
 
 import classNames from "classnames"
 import styles from "./ProjectManage.module.scss"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -110,15 +111,15 @@ interface FilterInfoProps {
 
 /** 项目名过滤项 */
 const typeFilter: FilterInfoProps[] = [
-    {key: "all", label: "全部文件", itemIcon: <ProjectViewGridSvgIcon className={styles["type-filter-icon-style"]} />},
+    {key: "all", label: i18next.t("全部文件"), itemIcon: <ProjectViewGridSvgIcon className={styles["type-filter-icon-style"]} />},
     {
         key: "project",
-        label: "项目",
+        label: i18next.t("项目"),
         itemIcon: <ProjectDocumentTextSvgIcon className={styles["type-filter-icon-style"]} />
     },
     {
         key: "file",
-        label: "文件夹",
+        label: i18next.t("文件夹"),
         itemIcon: <ProjectFolderOpenSvgIcon className={styles["type-filter-icon-style"]} />
     }
 ]
@@ -128,8 +129,8 @@ for (let item of typeFilter) typeToName[item.key] = item.label
 
 /** 时间过滤项 */
 const timeFilter: FilterInfoProps[] = [
-    {key: "created_at", label: "创建时间"},
-    {key: "updated_at", label: "最近操作时间"}
+    {key: "created_at", label: i18next.t("创建时间")},
+    {key: "updated_at", label: i18next.t("最近操作时间")}
 ]
 /** 时间过滤项对应展示内容 */
 const timeToName: {[key: string]: string} = {}
@@ -281,10 +282,10 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                     )
                 }
             },
-            {key: "Description", name: "备注", width: "30%"},
+            {key: "Description", name: i18next.t("备注"), width: "30%"},
             {
                 key: "DatabasePath",
-                name: "存储路径",
+                name: i18next.t("存储路径"),
                 width: "30%",
                 render: (data, index) => {
                     return (
@@ -306,7 +307,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                                                 if (flag) {
                                                     openABSFileLocated(data.DatabasePath)
                                                 } else {
-                                                    failed("目标文件已不存在!")
+                                                    failed(i18next.t("目标文件已不存在!"))
                                                 }
                                             })
                                             .catch(() => {})
@@ -390,14 +391,14 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                             data: [
                                 {
                                     key: "newProject",
-                                    label: "新建子项目",
+                                    label: i18next.t("新建子项目"),
                                     itemIcon: (
                                         <ProjectDocumentTextSvgIcon className={styles["type-filter-icon-style"]} />
                                     )
                                 },
                                 {
                                     key: "newFolder",
-                                    label: "新建子文件夹",
+                                    label: i18next.t("新建子文件夹"),
                                     itemIcon: <ProjectFolderOpenSvgIcon className={styles["type-filter-icon-style"]} />
                                 }
                             ],
@@ -426,8 +427,8 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                         }}
                         menu={{
                             data: [
-                                {key: "encryption", label: "加密导出"},
-                                {key: "plaintext", label: "明文导出"}
+                                {key: "encryption", label: i18next.t("加密导出")},
+                                {key: "plaintext", label: i18next.t("明文导出")}
                             ],
                             className: styles["dropdown-menu-body"],
                             onClick: ({key}) => {
@@ -512,11 +513,11 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                     }
                     setSearch({name: param.ProjectName || "", total: +rsp.Total})
                 } catch (e) {
-                    failed("处理项目数据失败: " + `${e}`)
+                    failed(i18next.t("处理项目数据失败: ") + `${e}`)
                 }
             })
             .catch((e) => {
-                failed(`查询 Projects 失败：${e}`)
+                failed(i18next.t("查询 Projects 失败：${e}", { v1: e }))
             })
             .finally(() => {
                 setTimeout(() => {
@@ -530,7 +531,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
     const [delId, setDelId] = useState<{Id: number; Type: string}>({Id: -1, Type: "project"})
     const delProjectFolder = useMemoizedFn((isDel: boolean) => {
         if (delId.Id === -1) {
-            failed("该条项目无数据或无关键信息，无法删除!")
+            failed(i18next.t("该条项目无数据或无关键信息，无法删除!"))
             return
         }
 
@@ -544,7 +545,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                     ipcRenderer
                         .invoke("DeleteProject", {Id: +delId.Id, IsDeleteLocal: isDel})
                         .then((e) => {
-                            info("删除成功")
+                            info(i18next.t("删除成功"))
                             setData({
                                 ...getData(),
                                 Projects: getData().Projects.filter((item) => +item.Id !== +delId.Id),
@@ -555,7 +556,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                                 .then((rsp: ProjectDescription) => setLatestProject(rsp || undefined))
                         })
                         .catch((e) => {
-                            failed(`删除失败: ${e}`)
+                            failed(i18next.t("删除失败: ${e}", { v1: e }))
                         })
                         .finally(() => {
                             setDelId({Id: -1, Type: "project"})
@@ -564,7 +565,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                         })
                 })
                 .catch(() => {
-                    failed("删除失败，没有可以切换的默认数据库")
+                    failed(i18next.t("删除失败，没有可以切换的默认数据库"))
                     setDelId({Id: -1, Type: "project"})
                     setDelShow(false)
                     setTimeout(() => setLoading(false), 300)
@@ -573,7 +574,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
             ipcRenderer
                 .invoke("DeleteProject", {Id: +delId.Id, IsDeleteLocal: isDel})
                 .then((e) => {
-                    info("删除成功")
+                    info(i18next.t("删除成功"))
                     setData({
                         ...getData(),
                         Projects: getData().Projects.filter((item) => +item.Id !== +delId.Id),
@@ -584,7 +585,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                         .then((rsp: ProjectDescription) => setLatestProject(rsp || undefined))
                 })
                 .catch((e) => {
-                    failed(`删除失败: ${e}`)
+                    failed(i18next.t("删除失败: ${e}", { v1: e }))
                 })
                 .finally(() => {
                     setDelId({Id: -1, Type: "project"})
@@ -607,7 +608,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                 return
             case "encryption":
                 if (!data || !data.Id) {
-                    failed("该条项目无关键信息，无法导出!")
+                    failed(i18next.t("该条项目无关键信息，无法导出!"))
                     return
                 }
 
@@ -615,7 +616,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                 return
             case "plaintext":
                 if (!data || !data.Id) {
-                    failed("该条项目无关键信息，无法导出!")
+                    failed(i18next.t("该条项目无关键信息，无法导出!"))
                     return
                 }
                 setTransferShow({
@@ -630,34 +631,34 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                 return
             case "edit":
                 if (!data || !data.Id) {
-                    failed("该条项目无关键信息，请刷新列表后重试!")
+                    failed(i18next.t("该条项目无关键信息，请刷新列表后重试!"))
                     return
                 }
                 setModalInfo({visible: true, isFolder: data?.Type === "file", project: data})
                 return
             case "copyPath":
                 if (!data || !data.DatabasePath) {
-                    failed("该条项目无数据或无关键信息，复制失败!")
+                    failed(i18next.t("该条项目无数据或无关键信息，复制失败!"))
                     return
                 }
                 ipcRenderer.invoke("set-copy-clipboard", data.DatabasePath)
-                info("复制成功")
+                info(i18next.t("复制成功"))
                 return
             case "setCurrent":
                 if (!data || !data.Id) {
-                    failed("该条项目无数据或无关键信息，无法连接!")
+                    failed(i18next.t("该条项目无数据或无关键信息，无法连接!"))
                     return
                 }
                 setLoading(true)
                 ipcRenderer
                     .invoke("SetCurrentProject", {Id: data.Id})
                     .then((e) => {
-                        info("已切换数据库")
+                        info(i18next.t("已切换数据库"))
                         setRemoteValue(RemoteGV.LinkDatabase, `${data.Id}`)
                         onFinish()
                     })
                     .catch((e) => {
-                        failed("切换数据库失败：" + `${e}`)
+                        failed(i18next.t("切换数据库失败：") + `${e}`)
                     })
                     .finally(() => {
                         setTimeout(() => {
@@ -667,7 +668,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                 return
             case "openFile":
                 if (!data || !data?.Id || !data?.ProjectName) {
-                    failed("该条文件夹无数据或无关键信息，无法打开!")
+                    failed(i18next.t("该条文件夹无数据或无关键信息，无法打开!"))
                     return
                 }
                 if (files.length === 2) return
@@ -721,13 +722,13 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                         ipcRenderer
                             .invoke("NewProject", newProject)
                             .then(() => {
-                                info(projectInfo.Id ? "编辑项目成功" : "创建新项目成功")
+                                info(projectInfo.Id ? i18next.t("编辑项目成功") : i18next.t("创建新项目成功"))
                                 setModalInfo({visible: false})
                                 setParams({...params, Pagination: {...params.Pagination, Page: 1}})
                                 setTimeout(() => update(), 300)
                             })
                             .catch((e) => {
-                                failed(`${projectInfo.Id ? "编辑" : "创建新"}项目失败：${e}`)
+                                failed(`${projectInfo.Id ? i18next.t("编辑") : i18next.t("创建新")}` + i18next.t("项目失败") + `：${e}`)
                             })
                             .finally(() => {
                                 setTimeout(() => {
@@ -742,13 +743,13 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                                 ipcRenderer
                                     .invoke("NewProject", newProject)
                                     .then(() => {
-                                        info(projectInfo.Id ? "编辑项目成功" : "创建新项目成功")
+                                        info(projectInfo.Id ? i18next.t("编辑项目成功") : i18next.t("创建新项目成功"))
                                         setModalInfo({visible: false})
                                         setParams({...params, Pagination: {...params.Pagination, Page: 1}})
                                         setTimeout(() => update(), 300)
                                     })
                                     .catch((e) => {
-                                        failed(`${projectInfo.Id ? "编辑" : "创建新"}项目失败：${e}`)
+                                        failed(`${projectInfo.Id ? i18next.t("编辑") : i18next.t("创建新")}` + i18next.t("项目失败") + `：${e}`)
                                     })
                                     .finally(() => {
                                         setTimeout(() => {
@@ -757,7 +758,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                                     })
                             })
                             .catch((e) => {
-                                info(`${projectInfo.Id ? "编辑" : "创建新"}项目失败，项目名校验不通过：${e}`)
+                                info(`${projectInfo.Id ? i18next.t("编辑") : i18next.t("创建新")}` + i18next.t("项目失败，项目名校验不通过") + `：${e}`)
                                 setTimeout(() => {
                                     setModalLoading(false)
                                 }, 300)
@@ -780,13 +781,13 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                         ipcRenderer
                             .invoke("NewProject", newFolder)
                             .then(() => {
-                                info(folderInfo.Id ? "编辑文件夹成功" : "创建新文件夹成功")
+                                info(folderInfo.Id ? i18next.t("编辑文件夹成功") : i18next.t("创建新文件夹成功"))
                                 setModalInfo({visible: false})
                                 setParams({...params, Pagination: {...params.Pagination, Page: 1}})
                                 setTimeout(() => update(), 300)
                             })
                             .catch((e) => {
-                                info(`${folderInfo.Id ? "编辑" : "创建新"}文件夹失败：${e}`)
+                                info(`${folderInfo.Id ? i18next.t("编辑") : i18next.t("创建新")}` + i18next.t("文件夹失败") + `：${e}`)
                             })
                             .finally(() => {
                                 setTimeout(() => {
@@ -801,7 +802,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                                 ipcRenderer
                                     .invoke("NewProject", newFolder)
                                     .then(({Id, ProjectName}: {Id: number; ProjectName: string}) => {
-                                        info(folderInfo.Id ? "编辑文件夹成功" : "创建新文件夹成功")
+                                        info(folderInfo.Id ? i18next.t("编辑文件夹成功") : i18next.t("创建新文件夹成功"))
                                         setModalInfo({visible: false})
                                         if (folderInfo.Id) {
                                             setParams({...params, Pagination: {...params.Pagination, Page: 1}})
@@ -829,7 +830,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                                         setTimeout(() => update(), 300)
                                     })
                                     .catch((e) => {
-                                        info(`${folderInfo.Id ? "编辑" : "创建新"}文件夹失败：${e}`)
+                                        info(`${folderInfo.Id ? i18next.t("编辑") : i18next.t("创建新")}` + i18next.t("文件夹失败") + `：${e}`)
                                     })
                                     .finally(() => {
                                         setTimeout(() => {
@@ -838,7 +839,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                                     })
                             })
                             .catch((e) => {
-                                info(`${folderInfo.Id ? "编辑" : "创建新"}文件夹失败，文件夹名校验不通过：${e}`)
+                                info(`${folderInfo.Id ? i18next.t("编辑") : i18next.t("创建新")}` + i18next.t("文件夹失败，文件夹名校验不通过") + `：${e}`)
                                 setTimeout(() => {
                                     setModalLoading(false)
                                 }, 300)
@@ -884,35 +885,35 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
             data: [
                 {
                     key: "setCurrent",
-                    label: "打开项目"
+                    label: i18next.t("打开项目")
                 },
                 {
                     key: "export",
-                    label: "导出",
+                    label: i18next.t("导出"),
                     children: [
                         {
                             key: "encryption",
-                            label: "加密导出"
+                            label: i18next.t("加密导出")
                         },
                         {
                             key: "plaintext",
-                            label: "明文导出"
+                            label: i18next.t("明文导出")
                         }
                     ]
                 },
                 {
                     key: "edit",
-                    label: "编辑",
+                    label: i18next.t("编辑"),
                     disabled: project?.ProjectName === "[default]"
                 },
                 {
                     key: "copyPath",
-                    label: "复制路径"
+                    label: i18next.t("复制路径")
                 },
                 {type: "divider"},
                 {
                     key: "delete",
-                    label: "删除",
+                    label: i18next.t("删除"),
                     disabled: project?.ProjectName === "[default]"
                 }
             ],
@@ -930,14 +931,14 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
             <div className={styles["project-manage-container"]}>
                 <div className={styles["project-header"]}>
                     <div className={styles["header-title"]}>
-                        <div className={styles["title-style"]}>项目管理</div>
+                        <div className={styles["title-style"]}>{i18next.t("项目管理")}</div>
                         <div className={styles["total-style"]}>
                             Total <span className={styles["total-number"]}>{__data.ProjectToTal}</span>
                         </div>
                     </div>
                     <YakitInput.Search
                         size='large'
-                        placeholder='请输入项目名称'
+                        placeholder={i18next.t("请输入项目名称")}
                         value={params.ProjectName}
                         onChange={(e) =>
                             setParams({
@@ -978,7 +979,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                                     <div className={styles["title-style"]}>
                                         {latestProject?.ProjectName || "[default]"}
                                     </div>
-                                    <div className={styles["subtitle-style"]}>{`最近操作时间：${
+                                    <div className={styles["subtitle-style"]}>{i18next.t("最近操作时间") +`：${
                                         latestProject ? formatTimestamp(latestProject?.UpdateAt) : "- -"
                                     }`}</div>
                                 </div>
@@ -996,18 +997,18 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                                             data: [
                                                 {
                                                     key: "export",
-                                                    label: "导出",
+                                                    label: i18next.t("导出"),
                                                     itemIcon: (
                                                         <ExportIcon className={styles["type-filter-icon-style"]} />
                                                     ),
                                                     children: [
-                                                        {key: "encryption", label: "加密导出"},
-                                                        {key: "plaintext", label: "明文导出"}
+                                                        {key: "encryption", label: i18next.t("加密导出")},
+                                                        {key: "plaintext", label: i18next.t("明文导出")}
                                                     ]
                                                 },
                                                 {
                                                     key: "edit",
-                                                    label: "编辑",
+                                                    label: i18next.t("编辑"),
                                                     disabled: latestProject?.ProjectName === "[default]",
                                                     itemIcon: (
                                                         <PencilAltIcon
@@ -1021,7 +1022,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                                                 },
                                                 {
                                                     key: "copyPath",
-                                                    label: "复制路径",
+                                                    label: i18next.t("复制路径"),
                                                     itemIcon: (
                                                         <DocumentDuplicateSvgIcon
                                                             className={styles["type-filter-icon-style"]}
@@ -1031,7 +1032,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                                                 {type: "divider"},
                                                 {
                                                     key: "delete",
-                                                    label: "删除",
+                                                    label: i18next.t("删除"),
                                                     disabled: latestProject?.ProjectName === "[default]",
                                                     itemIcon: <TrashIcon className={styles["type-filter-icon-style"]} />
                                                 }
@@ -1068,8 +1069,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                     >
                         <div className={styles["btn-body"]}>
                             <div className={styles["body-title"]}>
-                                <DocumentAddSvgIcon />
-                                新建项目
+                                <DocumentAddSvgIcon />{i18next.t("新建项目")}
                             </div>
                             <div className={styles["icon-style"]}>
                                 <PlusBoldSvgIcon />
@@ -1083,8 +1083,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                     >
                         <div className={styles["btn-body"]}>
                             <div className={styles["body-title"]}>
-                                <FolderOpenSvgIcon />
-                                新建文件夹
+                                <FolderOpenSvgIcon />{i18next.t("新建文件夹")}
                             </div>
                             <div className={styles["icon-style"]}>
                                 <PlusBoldSvgIcon />
@@ -1099,8 +1098,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                         >
                             <div className={styles["btn-body"]}>
                                 <div className={styles["body-title"]}>
-                                    <DocumentDownloadSvgIcon />
-                                    导入
+                                    <DocumentDownloadSvgIcon />{i18next.t("导入")}
                                 </div>
                                 <div className={styles["icon-style"]}>
                                     <ImportSvgIcon />
@@ -1111,8 +1109,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                 </div>
 
                 {search.name && (
-                    <div className={styles["project-search"]}>
-                        搜索到 <span className={styles["total-style"]}>{search.total}</span> 条“{search.name}”相关内容
+                    <div className={styles["project-search"]}>{i18next.t("搜索到")} <span className={styles["total-style"]}>{search.total}</span>{i18next.t("条“")}{search.name}”相关内容
                     </div>
                 )}
 
@@ -1131,8 +1128,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                                     update()
                                 }, 500)
                             }}
-                        >
-                            本地文件
+                        >{i18next.t("本地文件")}
                         </div>
                         <ChevronRightIcon className={styles["icon-style"]} />
                         <div
@@ -1188,7 +1184,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                                     </div>
                                 </div>
                                 {/* { engineMode !== "remote" &&  */}
-                                <div style={{width: 120}}>操作</div>
+                                <div style={{width: 120}}>{i18next.t("操作")}</div>
                                 {/* } */}
                             </div>
 
@@ -1218,7 +1214,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                                                                         <span className={styles["file-style"]}>
                                                                             {files[files.length - 1].ProjectName}
                                                                         </span>{" "}
-                                                                        内暂无项目内容
+                                                                        {i18next.t("内暂无项目内容")}
                                                                     </div>
                                                                     <div className={styles["operate-btn"]}>
                                                                         <YakitButton
@@ -1229,8 +1225,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                                                                                     files[files.length - 1]
                                                                                 )
                                                                             }
-                                                                        >
-                                                                            新建项目
+                                                                        >{i18next.t("新建项目")}
                                                                         </YakitButton>
                                                                         <YakitButton
                                                                             size='max'
@@ -1241,8 +1236,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                                                                                     files[files.length - 1]
                                                                                 )
                                                                             }
-                                                                        >
-                                                                            导入项目
+                                                                        >{i18next.t("导入项目")}
                                                                         </YakitButton>
                                                                     </div>
                                                                 </>
@@ -1254,8 +1248,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                                                     <div className={styles["table-empty-wrapper"]}>
                                                         <YakitEmpty
                                                             descriptionReactNode={
-                                                                <div className={styles["title-style"]}>
-                                                                    搜索结果“空”
+                                                                <div className={styles["title-style"]}>{i18next.t("搜索结果“空”")}
                                                                 </div>
                                                             }
                                                         />
@@ -1324,7 +1317,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                                                 )
                                             })
                                         )}
-                                        {loadMore && <div className={styles["table-loading-more"]}>正在加载中...</div>}
+                                        {loadMore && <div className={styles["table-loading-more"]}>{i18next.t("正在加载中...")}</div>}
                                     </div>
                                 </div>
                             </div>
@@ -1349,12 +1342,12 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
 
             <YakitHint
                 visible={delShow}
-                title={delId.Type === "file" ? "删除文件夹" : "删除项目"}
+                title={delId.Type === "file" ? i18next.t("删除文件夹") : i18next.t("删除项目")}
                 content={
-                    delId.Type === "file" ? "删除文件夹是否同时清除文件夹里所有本地文件?" : "是否同时清除本地文件?"
+                    delId.Type === "file" ? i18next.t("删除文件夹是否同时清除文件夹里所有本地文件?") : i18next.t("是否同时清除本地文件?")
                 }
-                okButtonText='保留'
-                cancelButtonText='清除'
+                okButtonText={i18next.t("保留")}
+                cancelButtonText={i18next.t("清除")}
                 footerExtra={
                     <YakitButton
                         size='max'
@@ -1363,8 +1356,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                             setDelShow(false)
                             setDelId({Id: -1, Type: "project"})
                         }}
-                    >
-                        取消
+                    >{i18next.t("取消")}
                     </YakitButton>
                 }
                 onOk={() => delProjectFolder(false)}
@@ -1452,11 +1444,11 @@ export const NewProjectAndFolder: React.FC<NewProjectAndFolderProps> = memo((pro
                         setData([...getData()])
                     }, 300)
                 } catch (e) {
-                    failed("处理项目数据失败: " + `${e}`)
+                    failed(i18next.t("处理项目数据失败: ") + `${e}`)
                 }
             })
             .catch((e) => {
-                failed(`查询 Projects 失败：${e}`)
+                failed(i18next.t("查询 Projects 失败：${e}", { v1: e }))
             })
     })
 
@@ -1478,11 +1470,11 @@ export const NewProjectAndFolder: React.FC<NewProjectAndFolderProps> = memo((pro
                         })
                     )
                 } catch (e) {
-                    failed("处理项目数据失败: " + `${e}`)
+                    failed(i18next.t("处理项目数据失败: ") + `${e}`)
                 }
             })
             .catch((e) => {
-                failed(`查询 Projects 失败：${e}`)
+                failed(i18next.t("查询 Projects 失败：${e}", { v1: e }))
             })
     })
 
@@ -1565,20 +1557,20 @@ export const NewProjectAndFolder: React.FC<NewProjectAndFolderProps> = memo((pro
     const [isCheck, setIsCheck] = useState<boolean>(false)
 
     const headerTitle = useMemo(() => {
-        if (isNew && isFolder && !project) return "新建文件夹"
-        if (isNew && !isFolder && !project) return "新建项目"
-        if (isNew && isFolder && project) return "编辑文件夹"
-        if (isNew && !isFolder && project) return "编辑项目"
-        if (isExport) return "导出项目"
-        if (isImport) return "导入项目"
-        return "未知情况"
+        if (isNew && isFolder && !project) return i18next.t("新建文件夹")
+        if (isNew && !isFolder && !project) return i18next.t("新建项目")
+        if (isNew && isFolder && project) return i18next.t("编辑文件夹")
+        if (isNew && !isFolder && project) return i18next.t("编辑项目")
+        if (isExport) return i18next.t("导出项目")
+        if (isImport) return i18next.t("导入项目")
+        return i18next.t("未知情况")
     }, [isNew, isFolder, isExport, isImport, project])
 
     const submitTitle = useMemo(() => {
-        if (isNew && !project) return "创建"
-        if (isExport) return "导出"
-        if (isImport) return "导入"
-        return "确定"
+        if (isNew && !project) return i18next.t("创建")
+        if (isExport) return i18next.t("导出")
+        if (isImport) return i18next.t("导入")
+        return i18next.t("确定")
     }, [isNew, isExport, isImport, project])
 
     const [transferShow, setTransferShow] = useState<{
@@ -1599,7 +1591,7 @@ export const NewProjectAndFolder: React.FC<NewProjectAndFolderProps> = memo((pro
                 return
             }
             if (info.ProjectName.length > 100) {
-                failed("名称长度应小于100!")
+                failed(i18next.t("名称长度应小于100!"))
                 setTimeout(() => setLoading(false), 300)
                 return
             }
@@ -1623,7 +1615,7 @@ export const NewProjectAndFolder: React.FC<NewProjectAndFolderProps> = memo((pro
         }
         if (isExport) {
             if (!exportInfo.Id) {
-                failed("未获取到数据ID，请关闭弹窗后重试!")
+                failed(i18next.t("未获取到数据ID，请关闭弹窗后重试!"))
                 setTimeout(() => setLoading(false), 300)
                 return
             }
@@ -1632,7 +1624,7 @@ export const NewProjectAndFolder: React.FC<NewProjectAndFolderProps> = memo((pro
                 return
             }
             if (exportInfo.Password.length > 15) {
-                failed("密码最多15位")
+                failed(i18next.t("密码最多15位"))
                 setTimeout(() => setLoading(false), 300)
                 return
             }
@@ -1668,7 +1660,7 @@ export const NewProjectAndFolder: React.FC<NewProjectAndFolderProps> = memo((pro
                         })
                     })
                     .catch((e) => {
-                        failed("创建新项目失败，项目名校验不通过：" + `${e}`)
+                        failed(i18next.t("创建新项目失败，项目名校验不通过：") + `${e}`)
                         setTimeout(() => {
                             setLoading(false)
                         }, 300)
@@ -1678,7 +1670,7 @@ export const NewProjectAndFolder: React.FC<NewProjectAndFolderProps> = memo((pro
                     .invoke("fetch-path-file-name", importInfo.ProjectFilePath)
                     .then((fileName: string) => {
                         if (!fileName) {
-                            failed(`解析路径内文件名为空`)
+                            failed(i18next.t("解析路径内文件名为空"))
                             setTimeout(() => {
                                 setLoading(false)
                             }, 300)
@@ -1696,14 +1688,14 @@ export const NewProjectAndFolder: React.FC<NewProjectAndFolderProps> = memo((pro
                                 })
                             })
                             .catch((e) => {
-                                failed("创建新项目失败，项目名校验不通过：" + `${e}`)
+                                failed(i18next.t("创建新项目失败，项目名校验不通过：") + `${e}`)
                                 setTimeout(() => {
                                     setLoading(false)
                                 }, 300)
                             })
                     })
                     .catch((e) => {
-                        failed(`无法解析路径内的文件名 ${e}`)
+                        failed(i18next.t("无法解析路径内的文件名 ${e}", { v1: e }))
                         setTimeout(() => {
                             setLoading(false)
                         }, 300)
@@ -1742,14 +1734,14 @@ export const NewProjectAndFolder: React.FC<NewProjectAndFolderProps> = memo((pro
                         <Form.Item
                             label={
                                 <div>
-                                    {`${isFolder ? "文件夹名称" : "项目名称"}`}{" "}
+                                    {`${isFolder ? i18next.t("文件夹名称") : i18next.t("项目名称")}`}{" "}
                                     <span className={styles["required-style"]}>*</span> :
                                 </div>
                             }
                         >
                             <YakitInput
                                 size='large'
-                                placeholder='未命名'
+                                placeholder={i18next.t("未命名")}
                                 className={classNames({
                                     [styles["required-form-item-wrapper"]]: isCheck && !info.ProjectName
                                 })}
@@ -1762,13 +1754,13 @@ export const NewProjectAndFolder: React.FC<NewProjectAndFolderProps> = memo((pro
                                 label={
                                     !!project ? (
                                         <div className={styles["form-item-cascader"]}>
-                                            <div>{`所属文件夹 :`}</div>
+                                            <div>{i18next.t(i18next.t("所属文件夹 :"))}</div>
                                             {dropShow && (
                                                 <div className={styles["hint-style"]}>{cascaderValue.join("/")}</div>
                                             )}
                                         </div>
                                     ) : (
-                                        "所属文件夹 :"
+                                        i18next.t("所属文件夹 :")
                                     )
                                 }
                             >
@@ -1792,12 +1784,12 @@ export const NewProjectAndFolder: React.FC<NewProjectAndFolderProps> = memo((pro
                                 />
                             </Form.Item>
                         )}
-                        <Form.Item label={"备注 :"}>
+                        <Form.Item label={i18next.t("备注 :")}>
                             <YakitInput.TextArea
                                 autoSize={{minRows: 3, maxRows: 5}}
                                 showCount
                                 maxLength={100}
-                                placeholder='请输入描述与备注'
+                                placeholder={i18next.t("请输入描述与备注")}
                                 value={info.Description}
                                 onChange={(e) => setInfo({...info, Description: e.target.value})}
                             />
@@ -1806,13 +1798,12 @@ export const NewProjectAndFolder: React.FC<NewProjectAndFolderProps> = memo((pro
                 )}
                 {isExport && (
                     <>
-                        <Form.Item label={"项目名称 :"}>
+                        <Form.Item label={i18next.t("项目名称 :")}>
                             <YakitInput disabled={true} size='large' value={exportInfo.ProjectName} />
                         </Form.Item>
                         <Form.Item
                             label={
-                                <div>
-                                    密码 <span className={styles["required-style"]}>*</span> :
+                                <div>{i18next.t("密码")} <span className={styles["required-style"]}>*</span> :
                                 </div>
                             }
                             className={styles["export-form-item-password-wrapper"]}
@@ -1821,7 +1812,7 @@ export const NewProjectAndFolder: React.FC<NewProjectAndFolderProps> = memo((pro
                                 className={classNames({
                                     [styles["required-form-item-wrapper"]]: isCheck && !exportInfo.Password
                                 })}
-                                placeholder='为项目设置打开密码'
+                                placeholder={i18next.t("为项目设置打开密码")}
                                 value={exportInfo.Password}
                                 onChange={(e) => setExportInfo({...exportInfo, Password: e.target.value})}
                             />
@@ -1832,13 +1823,11 @@ export const NewProjectAndFolder: React.FC<NewProjectAndFolderProps> = memo((pro
                     <>
                         <Form.Item
                             label={
-                                <div>
-                                    选择项目文件 <span className={styles["required-style"]}>*</span> :
+                                <div>{i18next.t("选择项目文件")} <span className={styles["required-style"]}>*</span> :
                                 </div>
                             }
                             help={
-                                <div className={styles["import-form-item-help-wrapper"]}>
-                                    点击此处
+                                <div className={styles["import-form-item-help-wrapper"]}>{i18next.t("点击此处")}
                                     <Upload
                                         multiple={false}
                                         maxCount={1}
@@ -1848,8 +1837,7 @@ export const NewProjectAndFolder: React.FC<NewProjectAndFolderProps> = memo((pro
                                             return false
                                         }}
                                     >
-                                        <a className={styles["upload-btn"]} onClick={(e) => e.preventDefault()}>
-                                            上传文件
+                                        <a className={styles["upload-btn"]} onClick={(e) => e.preventDefault()}>{i18next.t("上传文件")}
                                         </a>
                                     </Upload>
                                 </div>
@@ -1860,35 +1848,34 @@ export const NewProjectAndFolder: React.FC<NewProjectAndFolderProps> = memo((pro
                                     [styles["required-form-item-wrapper"]]: isCheck && !importInfo.ProjectFilePath
                                 })}
                                 size='large'
-                                placeholder='请输入绝对路径'
+                                placeholder={i18next.t("请输入绝对路径")}
                                 value={importInfo.ProjectFilePath}
                                 onChange={(e) => setImportInfo({...importInfo, ProjectFilePath: e.target.value})}
                             />
                         </Form.Item>
                         <Form.Item
-                            label={"项目名称 :"}
+                            label={i18next.t("项目名称 :")}
                             help={
-                                <div className={styles["import-form-item-help-wrapper"]}>
-                                    项目名如果为空，则使用项目文件中的名字
+                                <div className={styles["import-form-item-help-wrapper"]}>{i18next.t("项目名如果为空，则使用项目文件中的名字")}
                                 </div>
                             }
                         >
                             <YakitInput
                                 size='large'
-                                placeholder='请输入项目名'
+                                placeholder={i18next.t("请输入项目名")}
                                 value={importInfo.LocalProjectName}
                                 onChange={(e) => setImportInfo({...importInfo, LocalProjectName: e.target.value})}
                             />
                         </Form.Item>
-                        <Form.Item label={"密码 :"} className={styles["export-form-item-password-wrapper"]}>
+                        <Form.Item label={i18next.t("密码 :")} className={styles["export-form-item-password-wrapper"]}>
                             <YakitInput.Password
-                                placeholder='如无密码则不填'
+                                placeholder={i18next.t("如无密码则不填")}
                                 value={importInfo.Password}
                                 onChange={(e) => setImportInfo({...importInfo, Password: e.target.value})}
                             />
                         </Form.Item>
                         {!parentNode && (
-                            <Form.Item label={"所属文件夹 :"}>
+                            <Form.Item label={i18next.t("所属文件夹 :")}>
                                 <Cascader
                                     options={data}
                                     fieldNames={{label: "ProjectName", value: "Id", children: "children"}}
@@ -1914,8 +1901,7 @@ export const NewProjectAndFolder: React.FC<NewProjectAndFolderProps> = memo((pro
                 )}
                 <Form.Item label={""}>
                     <div className={styles["form-btn-wrapper"]}>
-                        <YakitButton loading={loading} size='large' type='outline2' onClick={onClose}>
-                            取消
+                        <YakitButton loading={loading} size='large' type='outline2' onClick={onClose}>{i18next.t("取消")}
                         </YakitButton>
                         <YakitButton loading={loading} size='large' htmlType='submit'>
                             {submitTitle}
@@ -1973,7 +1959,7 @@ export const TransferProject: React.FC<TransferProjectProps> = memo((props) => {
             return
         }
         if ((!isExport && !isImport) || !data) {
-            failed("数据出错，请点击取消后再次尝试!")
+            failed(i18next.t("数据出错，请点击取消后再次尝试!"))
             return
         }
 
@@ -2071,8 +2057,8 @@ export const TransferProject: React.FC<TransferProjectProps> = memo((props) => {
 
                         <div className={styles["modal-right-wrapper"]}>
                             <div className={styles["modal-right-title"]}>
-                                {isExport && "项目导出中..."}
-                                {isImport && "项目导入中..."}
+                                {isExport && i18next.t("项目导出中...")}
+                                {isImport && i18next.t("项目导入中...")}
                             </div>
                             <div className={styles["download-progress"]}>
                                 <Progress
@@ -2080,7 +2066,7 @@ export const TransferProject: React.FC<TransferProjectProps> = memo((props) => {
                                     trailColor='#F0F2F5'
                                     percent={+percent.toFixed(2)}
                                     format={(p, sp) => {
-                                        return <div className={styles["progress-content-style"]}>{`进度 ${p}%`}</div>
+                                        return <div className={styles["progress-content-style"]}>{i18next.t("进度 ${p}%", { v1: p })}</div>
                                     }}
                                 />
                             </div>
@@ -2099,8 +2085,7 @@ export const TransferProject: React.FC<TransferProjectProps> = memo((props) => {
                                 })}
                             </div>
                             <div className={styles["modal-right-btn"]}>
-                                <YakitButton size='max' type='outline2' onClick={onClose}>
-                                    取消
+                                <YakitButton size='max' type='outline2' onClick={onClose}>{i18next.t("取消")}
                                 </YakitButton>
                             </div>
                         </div>

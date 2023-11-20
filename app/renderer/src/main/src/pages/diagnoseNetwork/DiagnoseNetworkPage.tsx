@@ -16,6 +16,7 @@ import {YakitResizeBox} from "@/components/yakitUI/YakitResizeBox/YakitResizeBox
 import {DiagnoseNetworkForm, DiagnoseNetworkParams} from "@/pages/diagnoseNetwork/DiagnoseNetworkForm";
 import {CloseCircleIcon} from "@/assets/newIcon";
 import {DiagnoseNetworkDNSForm} from "@/pages/diagnoseNetwork/DiagnoseNetworkDNSForm";
+import i18next from "../../i18n"
 
 export interface DiagnoseNetworkPageProp {
 
@@ -97,8 +98,7 @@ export const DiagnoseNetworkPage: React.FC<DiagnoseNetworkPageProp> = (props) =>
     }, [])
 
     return <AutoCard
-        title={<Space>
-            网络诊断
+        title={<Space>{i18next.t("网络诊断")}
             {loading && <AutoSpin size={"small"}/>}
             <YakitButton
                 type={"text"} colors="danger" icon={<CloseCircleIcon/>}

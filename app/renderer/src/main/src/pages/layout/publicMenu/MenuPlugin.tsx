@@ -14,6 +14,7 @@ import {getRemoteValue, setRemoteValue} from "@/utils/kv"
 
 import classNames from "classnames"
 import styles from "./MenuPlugin.module.scss"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -68,7 +69,7 @@ export const MenuPlugin: React.FC<MenuPluginProps> = React.memo((props) => {
                     })
             })
             .catch((e: any) => {
-                yakitNotify("error", `更新菜单失败:${e}`)
+                yakitNotify("error", i18next.t("更新菜单失败:${e}", { v1: e }))
             })
     })
 
@@ -144,11 +145,9 @@ export const MenuPlugin: React.FC<MenuPluginProps> = React.memo((props) => {
 
                 <div className={styles["list-custom"]}>
                     <div className={classNames(styles["btn-style"], styles["add-list"])} onClick={onCustom}>
-                        <SMViewGridAddIcon />
-                        自定义...
+                        <SMViewGridAddIcon />{i18next.t(i18next.t("自定义..."))}
                     </div>
-                    <div className={classNames(styles["btn-style"], styles["restore-style"])} onClick={onRestore}>
-                        复原菜单
+                    <div className={classNames(styles["btn-style"], styles["restore-style"])} onClick={onRestore}>{i18next.t(i18next.t("复原菜单"))}
                     </div>
                 </div>
             </div>
@@ -157,7 +156,7 @@ export const MenuPlugin: React.FC<MenuPluginProps> = React.memo((props) => {
 
     return (
         <div className={styles["menu-plugin-wrapper"]}>
-            <div className={styles["plugin-header"]}>常用插件</div>
+            <div className={styles["plugin-header"]}>{i18next.t(i18next.t("常用插件"))}</div>
             <div className={styles["plugin-wrapper"]}>
                 <div className={styles["plugin-content"]}>
                     <div className={styles["plugin-body"]}>

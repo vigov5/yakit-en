@@ -9,12 +9,15 @@ import "./yakitUI.scss"
 import "./theme/yakit.scss"
 import "./yakitLib.scss"
 import "./assets/global.scss"
+import TranslationProvider from './TranslationProvider';
 
 ReactDOM.render(
     // <React.StrictMode>
-    <DndProvider backend={HTML5Backend}>
-        <NewApp />
-    </DndProvider>,
+    <TranslationProvider>
+        <DndProvider backend={HTML5Backend}>
+            <NewApp />
+        </DndProvider>
+    </TranslationProvider>,
     // </React.StrictMode>,
     document.getElementById("root")
 )

@@ -7,6 +7,7 @@ import styles from "./CVETable.module.scss"
 import {useCreation} from "ahooks"
 import moment from "moment"
 import React, {ReactNode} from "react"
+import i18next from "../../i18n"
 const {ipcRenderer} = window.require("electron")
 const {TabPane} = Tabs
 
@@ -34,13 +35,13 @@ export const CVEDescription = React.memo(
 
         const color = useCreation(() => {
             let text = "success"
-            if (Severity === "严重") {
+            if (Severity === i18next.t("严重")) {
                 text = "serious"
             }
-            if (Severity === "高危") {
+            if (Severity === i18next.t("高危")) {
                 text = "danger"
             }
-            if (Severity === "中危") {
+            if (Severity === i18next.t("中危")) {
                 text = "warning"
             }
             return text
@@ -53,10 +54,10 @@ export const CVEDescription = React.memo(
         return (
             <div className={styles["description-content"]}>
                 <Descriptions bordered size='small' column={3}>
-                    <Descriptions.Item label='CVE编号' span={2} contentStyle={{fontSize: 16, fontWeight: "bold"}}>
+                    <Descriptions.Item label={i18next.t("CVE编号")} span={2} contentStyle={{fontSize: 16, fontWeight: "bold"}}>
                         {CVE || "-"}
                     </Descriptions.Item>
-                    <Descriptions.Item label='漏洞级别' span={1} contentStyle={{minWidth: 110}}>
+                    <Descriptions.Item label={i18next.t("漏洞级别")} span={1} contentStyle={{minWidth: 110}}>
                         {Severity === "-" ? (
                             "-"
                         ) : (
@@ -78,20 +79,20 @@ export const CVEDescription = React.memo(
                             </div>
                         )}
                     </Descriptions.Item>
-                    <Descriptions.Item label='标题' span={2}>
+                    <Descriptions.Item label={i18next.t("标题")} span={2}>
                         {Title || "-"}
                     </Descriptions.Item>
-                    <Descriptions.Item label='披露时间' span={1}>
+                    <Descriptions.Item label={i18next.t("披露时间")} span={1}>
                         {moment.unix(PublishedAt).format("YYYY/MM/DD")}
                     </Descriptions.Item>
-                    <Descriptions.Item label='漏洞总结' span={3}>
+                    <Descriptions.Item label={i18next.t("漏洞总结")} span={3}>
                         {DescriptionZh || DescriptionOrigin || "-"}
                     </Descriptions.Item>
 
-                    <Descriptions.Item label='利用路径' span={2}>
+                    <Descriptions.Item label={i18next.t("利用路径")} span={2}>
                         {AccessVector || "-"}
                     </Descriptions.Item>
-                    <Descriptions.Item label='利用难度' span={2}>
+                    <Descriptions.Item label={i18next.t("利用难度")} span={2}>
                         {AccessComplexity === "-" ? (
                             "-"
                         ) : (
@@ -100,8 +101,8 @@ export const CVEDescription = React.memo(
                                     styles["cve-list-product-success"],
                                     styles["cve-description-product-success"],
                                     {
-                                        [styles["cve-list-product-warning"]]: AccessComplexity === "一般",
-                                        [styles["cve-list-product-danger"]]: AccessComplexity === "困难"
+                                        [styles["cve-list-product-warning"]]: AccessComplexity === i18next.t("一般"),
+                                        [styles["cve-list-product-danger"]]: AccessComplexity === i18next.t("困难")
                                     }
                                 )}
                             >
@@ -112,14 +113,14 @@ export const CVEDescription = React.memo(
                             </div>
                         )}
                     </Descriptions.Item>
-                    <Descriptions.Item label='影响产品' span={3}>
+                    <Descriptions.Item label={i18next.t("影响产品")} span={3}>
                         {Product || "-"}
                     </Descriptions.Item>
 
-                    <Descriptions.Item label='解决方案' span={3}>
+                    <Descriptions.Item label={i18next.t("解决方案")} span={3}>
                         {Solution || "-"}
                     </Descriptions.Item>
-                    <Descriptions.Item label='参考链接' span={3}>
+                    <Descriptions.Item label={i18next.t("参考链接")} span={3}>
                         {
                             references_links.length > 0 ? (
                                 <div>
@@ -142,7 +143,7 @@ export const CVEDescription = React.memo(
                         }
                     </Descriptions.Item>
                 </Descriptions>
-                <div className={styles["no-more"]}>暂无更多</div>
+                <div className={styles["no-more"]}>{i18next.t("暂无更多")}</div>
             </div>
         )
     }
@@ -170,7 +171,7 @@ export const CWEDescription: React.FC<CWEDescriptionProps> = React.memo((props) 
                 {data.map((i: CWEDetail) => (
                     <TabPane tab={i.CWE} key={i.CWE}>
                         <CWEDescriptionItem item={i} onSelectCve={onSelectCve}/>
-                        <div className={styles["no-more"]}>暂无更多</div>
+                        <div className={styles["no-more"]}>{i18next.t("暂无更多")}</div>
                     </TabPane>
                 ))}
             </Tabs>
@@ -187,22 +188,22 @@ export const CWEDescriptionItem: React.FC<CWEDescriptionItemProps> = React.memo(
     const {item, onSelectCve} = props
     return (
         <Descriptions bordered size='small' column={3}>
-            <Descriptions.Item label={"CWE编号"} span={2} contentStyle={{fontSize: 16, fontWeight: "bold"}}>
+            <Descriptions.Item label={i18next.t("CWE编号")} span={2} contentStyle={{fontSize: 16, fontWeight: "bold"}}>
                 {item.CWE || "-"}
             </Descriptions.Item>
-            <Descriptions.Item label={"CWE 状态"} span={1}>
+            <Descriptions.Item label={i18next.t("CWE 状态")} span={1}>
                 {item.Status || "-"}
             </Descriptions.Item>
-            <Descriptions.Item label={"类型"} span={3}>
+            <Descriptions.Item label={i18next.t("类型")} span={3}>
                 {item.NameZh || item.Name || "-"}
             </Descriptions.Item>
-            <Descriptions.Item label={"描述信息"} span={3}>
+            <Descriptions.Item label={i18next.t("描述信息")} span={3}>
                 {item.DescriptionZh || item.Description || "-"}
             </Descriptions.Item>
-            <Descriptions.Item label={"修复方案"} span={3}>
+            <Descriptions.Item label={i18next.t("修复方案")} span={3}>
                 {item.Solution || "-"}
             </Descriptions.Item>
-            <Descriptions.Item label={"其他案例"} span={3} contentStyle={{paddingBottom: 8}}>
+            <Descriptions.Item label={i18next.t("其他案例")} span={3} contentStyle={{paddingBottom: 8}}>
                 {item.RelativeCVE.map((c) => (
                     <div key={c} className={styles["cwe-tag"]} onClick={() => onSelectCve(c)}>
                         {c}

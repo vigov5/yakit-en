@@ -126,6 +126,7 @@ import {PluginsOnline} from "@/pages/plugins/online/PluginsOnline"
 import {OnlineJudgment} from "@/pages/plugins/onlineJudgment/OnlineJudgment"
 import {isCommunityEdition} from "@/utils/envfile"
 import { NewPayload } from "@/pages/payloadManager/newPayload"
+import i18next from "../i18n"
 
 const HTTPHacker = React.lazy(() => import("../pages/hacker/httpHacker"))
 const CodecPage = React.lazy(() => import("../pages/codec/CodecPage"))
@@ -184,7 +185,7 @@ export enum YakitRoute {
     ControlAdminPage = "control-admin-page",
     // 插件批量页面中未完成页面的点击弹出页面
     BatchExecutorRecover = "batch-executor-recover",
-    // http-history页面右键菜单"数据包扫描"生成页面
+    // http-history页面右键菜单i18next.t("数据包扫描")生成页面
     PacketScanPage = "packet-scan-page",
     // 新建插件页面
     AddYakitScript = "add-yakit-script",
@@ -221,79 +222,79 @@ export enum YakitRoute {
  * * describe(非必需)-页面描述语
  */
 export const YakitRouteToPageInfo: Record<YakitRoute, {label: string; describe?: string}> = {
-    "new-home": {label: "首页"},
+    "new-home": {label: i18next.t("首页")},
     httpHacker: {
-        label: "MITM 交互式劫持",
-        describe: "安装 SSL/TLS 证书，劫持浏览器所有流量请求、响应数据包，提供手动劫持与被动扫描两种模式"
+        label: i18next.t("MITM 交互式劫持"),
+        describe: i18next.t("安装 SSL/TLS 证书，劫持浏览器所有流量请求、响应数据包，提供手动劫持与被动扫描两种模式")
     },
     httpFuzzer: {
         label: "Web Fuzzer",
-        describe: "通过核心模糊测试标签语法，实现了对 Burpsuite 的 Repeater 和 Intruder 的完美整合"
+        describe: i18next.t("通过核心模糊测试标签语法，实现了对 Burpsuite 的 Repeater 和 Intruder 的完美整合")
     },
     "websocket-fuzzer": {label: "Websocket Fuzzer"},
     codec: {
         label: "Codec",
-        describe: "可对数据进行各种处理（包括加密、解密、反序列化、Json 处理等等），还可通过插件自定义数据处理方法"
+        describe: i18next.t("可对数据进行各种处理（包括加密、解密、反序列化、Json 处理等等），还可通过插件自定义数据处理方法")
     },
-    dataCompare: {label: "数据对比", describe: "将数据进行对比，快速识别不同处"},
+    dataCompare: {label: i18next.t("数据对比"), describe: i18next.t("将数据进行对比，快速识别不同处")},
     "scan-port": {
-        label: "端口/指纹扫描",
-        describe: "对 IP、IP段、域名等端口进行 SYN、指纹检测、可编写插件进行检测、满足更个性化等需求"
+        label: i18next.t("端口/指纹扫描"),
+        describe: i18next.t("对 IP、IP段、域名等端口进行 SYN、指纹检测、可编写插件进行检测、满足更个性化等需求")
     },
-    poc: {label: "专项漏洞检测", describe: "通过预制漏洞源码，对特定目标进行专项漏洞检测，可以自定义新增 POC 种类"},
-    "plugin-op": {label: "插件"},
-    brute: {label: "弱口令检测", describe: "对目标的登录账号、密码等进行爆破，在爆破前会进行未授权检测"},
-    "plugin-store": {label: "插件商店", describe: "目前插件为6大类型，可根据需要灵活编写插件，支持从插件商店下载插件"},
-    "plugin-owner": {label: "我的插件"},
-    "plugin-local": {label: "本地插件"},
-    "batch-executor-page-ex": {label: "批量执行", describe: "自由选择需要的 POC 进行批量漏洞检测"},
-    dnslog: {label: "DNSLog", describe: "自动生成一个子域名，任何查询到这个子域名的 IP 被集合展示在列表中"},
-    "icmp-sizelog": {label: "ICMP-SizeLog", describe: "使用 ping 携带特定长度数据包判定 ICMP 反连"},
-    "tcp-portlog": {label: "TCP-PortLog", describe: "使用未开放的随机端口来判定 TCP 反连"},
-    PayloadGenerater_New: {label: "Yso-Java Hack", describe: "配置序列化 Payload 或恶意类"},
+    poc: {label: i18next.t("专项漏洞检测"), describe: i18next.t("通过预制漏洞源码，对特定目标进行专项漏洞检测，可以自定义新增 POC 种类")},
+    "plugin-op": {label: i18next.t("插件")},
+    brute: {label: i18next.t("弱口令检测"), describe: i18next.t("对目标的登录账号、密码等进行爆破，在爆破前会进行未授权检测")},
+    "plugin-store": {label: i18next.t("插件商店"), describe: i18next.t("目前插件为6大类型，可根据需要灵活编写插件，支持从插件商店下载插件")},
+    "plugin-owner": {label: i18next.t("我的插件")},
+    "plugin-local": {label: i18next.t("本地插件")},
+    "batch-executor-page-ex": {label: i18next.t("批量执行"), describe: i18next.t("自由选择需要的 POC 进行批量漏洞检测")},
+    dnslog: {label: "DNSLog", describe: i18next.t("自动生成一个子域名，任何查询到这个子域名的 IP 被集合展示在列表中")},
+    "icmp-sizelog": {label: "ICMP-SizeLog", describe: i18next.t("使用 ping 携带特定长度数据包判定 ICMP 反连")},
+    "tcp-portlog": {label: "TCP-PortLog", describe: i18next.t("使用未开放的随机端口来判定 TCP 反连")},
+    PayloadGenerater_New: {label: "Yso-Java Hack", describe: i18next.t("配置序列化 Payload 或恶意类")},
     ReverseServer_New: {
-        label: "反连服务器",
-        describe: "使用协议端口复用技术，同时在一个端口同时实现 HTTP / RMI / HTTPS 等协议的反连"
+        label: i18next.t("反连服务器"),
+        describe: i18next.t("使用协议端口复用技术，同时在一个端口同时实现 HTTP / RMI / HTTPS 等协议的反连")
     },
     shellReceiver: {
-        label: "端口监听器",
-        describe: "反弹 Shell 接收工具，可以在服务器上开启一个端口，进行监听，并进行交互"
+        label: i18next.t("端口监听器"),
+        describe: i18next.t("反弹 Shell 接收工具，可以在服务器上开启一个端口，进行监听，并进行交互")
     },
     "db-http-request": {label: "History"},
-    "db-reports-results": {label: "报告"},
-    "db-risks": {label: "漏洞"},
-    "db-ports": {label: "端口"},
-    "db-domains": {label: "域名"},
-    "website-tree": {label: "网站树"},
-    cve: {label: "CVE 管理"},
-    yakScript: {label: "Yak Runner", describe: "使用特有的 Yaklang 进行编程，直接调用引擎最底层能力 POC 种类"},
+    "db-reports-results": {label: i18next.t("报告")},
+    "db-risks": {label: i18next.t("漏洞")},
+    "db-ports": {label: i18next.t("端口")},
+    "db-domains": {label: i18next.t("域名")},
+    "website-tree": {label: i18next.t("网站树")},
+    cve: {label: i18next.t("CVE 管理")},
+    yakScript: {label: "Yak Runner", describe: i18next.t("使用特有的 Yaklang 进行编程，直接调用引擎最底层能力 POC 种类")},
     "payload-manager": {
         label: "Payload",
-        describe: "通过上传文件、手动删改等，自定义 Payload，可在爆破和 Web Fuzzer 中进行使用"
+        describe: i18next.t("通过上传文件、手动删改等，自定义 Payload，可在爆破和 Web Fuzzer 中进行使用")
     },
-    "account-admin-page": {label: "用户管理"},
-    "role-admin-page": {label: "角色管理"},
-    "hole-collect-page": {label: "漏洞汇总"},
-    "license-admin-page": {label: "License管理"},
-    "trust-list-admin-page": {label: "用户管理"},
-    "plug-in-admin-page": {label: "插件权限"},
-    "control-admin-page": {label: "远程管理"},
-    "batch-executor-recover": {label: "继续任务：批量执行插件"},
-    "packet-scan-page": {label: "数据包扫描"},
-    "add-yakit-script": {label: "新建插件"},
-    "modify-yakit-script": {label: "编辑插件"},
-    "yakit-plugin-journal-details": {label: "插件修改详情"},
-    "online-plugin-recycle-bin": {label: "线上插件回收站"},
-    simpleDetect: {label: "安全检测"},
-    "screen-recorder-page": {label: "录屏管理"},
-    "db-chaosmaker": {label: "BAS实验室"},
-    "beta-debug-plugin": {label: "插件调试"},
-    "beta-debug-monaco-editor": {label: "插件编辑器"},
-    "beta-vulinbox-manager": {label: "Vulinbox 管理器"},
-    "beta-diagnose-network": {label: "网络异常诊断"},
-    "beta-config-network": {label: "全局网络配置"},
-    "beta-codec": {label: "新版codec"},
-    "plugin-audit": {label: "插件管理"}
+    "account-admin-page": {label: i18next.t("用户管理")},
+    "role-admin-page": {label: i18next.t("角色管理")},
+    "hole-collect-page": {label: i18next.t("漏洞汇总")},
+    "license-admin-page": {label: i18next.t("License管理")},
+    "trust-list-admin-page": {label: i18next.t("用户管理")},
+    "plug-in-admin-page": {label: i18next.t("插件权限")},
+    "control-admin-page": {label: i18next.t("远程管理")},
+    "batch-executor-recover": {label: i18next.t("继续任务：批量执行插件")},
+    "packet-scan-page": {label: i18next.t("数据包扫描")},
+    "add-yakit-script": {label: i18next.t("新建插件")},
+    "modify-yakit-script": {label: i18next.t("编辑插件")},
+    "yakit-plugin-journal-details": {label: i18next.t("插件修改详情")},
+    "online-plugin-recycle-bin": {label: i18next.t("线上插件回收站")},
+    simpleDetect: {label: i18next.t("安全检测")},
+    "screen-recorder-page": {label: i18next.t("录屏管理")},
+    "db-chaosmaker": {label: i18next.t("BAS实验室")},
+    "beta-debug-plugin": {label: i18next.t("插件调试")},
+    "beta-debug-monaco-editor": {label: i18next.t("插件编辑器")},
+    "beta-vulinbox-manager": {label: i18next.t("Vulinbox 管理器")},
+    "beta-diagnose-network": {label: i18next.t("网络异常诊断")},
+    "beta-config-network": {label: i18next.t("全局网络配置")},
+    "beta-codec": {label: i18next.t("新版codec")},
+    "plugin-audit": {label: i18next.t("插件管理")}
 }
 /** 页面路由(无法多开的页面) */
 export const SingletonPageRoute: YakitRoute[] = [
@@ -435,11 +436,11 @@ function withRouteToPage(WrappedComponent) {
             <ErrorBoundary
                 FallbackComponent={({error, resetErrorBoundary}) => {
                     if (!error) {
-                        return <div>未知错误</div>
+                        return <div>{i18next.t("未知错误")}</div>
                     }
                     return (
                         <div>
-                            <p>逻辑性崩溃，请关闭重试！</p>
+                            <p>{i18next.t("逻辑性崩溃，请关闭重试！")}</p>
                             <pre>{error?.message}</pre>
                         </div>
                     )
@@ -733,7 +734,7 @@ export interface PublicRouteMenuProps {
 export const PublicRouteMenu: PublicRouteMenuProps[] = [
     {
         page: undefined,
-        label: "渗透测试",
+        label: i18next.t("渗透测试"),
         children: [
             {
                 page: YakitRoute.HTTPHacker,
@@ -762,24 +763,24 @@ export const PublicRouteMenu: PublicRouteMenuProps[] = [
     },
     {
         page: undefined,
-        label: "安全工具",
+        label: i18next.t("安全工具"),
         children: [
             {
                 page: YakitRoute.Mod_ScanPort,
                 ...YakitRouteToPageInfo[YakitRoute.Mod_ScanPort]
             },
             {page: YakitRoute.PoC, ...YakitRouteToPageInfo[YakitRoute.PoC]},
-            {page: YakitRoute.Plugin_OP, label: "子域名收集", yakScripName: ResidentPluginName.SubDomainCollection},
+            {page: YakitRoute.Plugin_OP, label: i18next.t("子域名收集"), yakScripName: ResidentPluginName.SubDomainCollection},
             {
                 page: YakitRoute.Plugin_OP,
-                label: "基础爬虫",
+                label: i18next.t("基础爬虫"),
                 yakScripName: ResidentPluginName.BasicCrawler,
-                describe: "通过爬虫可快速了解网站的整体架构"
+                describe: i18next.t("通过爬虫可快速了解网站的整体架构")
             },
-            {page: YakitRoute.Plugin_OP, label: "空间引擎", yakScripName: ResidentPluginName.SpaceEngine},
+            {page: YakitRoute.Plugin_OP, label: i18next.t("空间引擎"), yakScripName: ResidentPluginName.SpaceEngine},
             {
                 page: undefined,
-                label: "爆破与未授权检测",
+                label: i18next.t("爆破与未授权检测"),
                 children: [
                     {
                         page: YakitRoute.Mod_Brute,
@@ -787,9 +788,9 @@ export const PublicRouteMenu: PublicRouteMenuProps[] = [
                     },
                     {
                         page: YakitRoute.Plugin_OP,
-                        label: "目录扫描",
+                        label: i18next.t("目录扫描"),
                         yakScripName: ResidentPluginName.DirectoryScanning,
-                        describe: "带有内置字典的综合目录扫描与爆破"
+                        describe: i18next.t("带有内置字典的综合目录扫描与爆破")
                     }
                 ]
             }
@@ -797,7 +798,7 @@ export const PublicRouteMenu: PublicRouteMenuProps[] = [
     },
     {
         page: undefined,
-        label: "插件",
+        label: i18next.t("插件"),
         children: [
             {
                 page: YakitRoute.Plugin_Store,
@@ -819,11 +820,11 @@ export const PublicRouteMenu: PublicRouteMenuProps[] = [
     },
     {
         page: undefined,
-        label: "反连",
+        label: i18next.t("反连"),
         children: [
             {
                 page: undefined,
-                label: "反连触发器",
+                label: i18next.t("反连触发器"),
                 children: [
                     {
                         page: YakitRoute.DNSLog,
@@ -861,7 +862,7 @@ export const PublicRouteMenu: PublicRouteMenuProps[] = [
     },
     {
         page: undefined,
-        label: "数据库",
+        label: i18next.t("数据库"),
         children: [
             {
                 page: YakitRoute.DB_HTTPHistory,
@@ -883,14 +884,14 @@ export const PublicRouteMenu: PublicRouteMenuProps[] = [
 export const PublicCommonPlugins: PublicRouteMenuProps[] = [
     {
         page: undefined,
-        label: "子域名收集",
+        label: i18next.t("子域名收集"),
         children: ["crt子域名收集", "纯暴力子域名收集", "SEO综合查询", "被动子域名收集"].map((item) => {
             return {page: YakitRoute.Plugin_OP, label: item, yakScripName: item}
         })
     },
     {
         page: undefined,
-        label: "基础工具",
+        label: i18next.t("基础工具"),
         children: [
             "域名、IP提取",
             "域名批量转IP并查CDN",
@@ -921,13 +922,13 @@ export interface PrivateRouteMenuProps {
 /** 软件内定插件菜单的icon */
 export const getFixedPluginIcon = (name: string) => {
     switch (name) {
-        case "基础爬虫":
+        case i18next.t("基础爬虫"):
             return <PrivateOutlineBasicCrawlerIcon />
-        case "空间引擎集成版本":
+        case i18next.t("空间引擎集成版本"):
             return <PrivateOutlineSpaceEngineIcon />
-        case "子域名收集":
+        case i18next.t("子域名收集"):
             return <PrivateOutlineSubDomainCollectionIcon />
-        case "综合目录扫描与爆破":
+        case i18next.t("综合目录扫描与爆破"):
             return <PrivateOutlineDirectoryScanningIcon />
         default:
             return <PrivateOutlineDefaultPluginIcon />
@@ -936,13 +937,13 @@ export const getFixedPluginIcon = (name: string) => {
 /** 软件内定插件菜单的hover-icon */
 export const getFixedPluginHoverIcon = (name: string) => {
     switch (name) {
-        case "基础爬虫":
+        case i18next.t("基础爬虫"):
             return <PrivateSolidBasicCrawlerIcon />
-        case "空间引擎集成版本":
+        case i18next.t("空间引擎集成版本"):
             return <PrivateSolidSpaceEngineIcon />
-        case "子域名收集":
+        case i18next.t("子域名收集"):
             return <PrivateSolidSubDomainCollectionIcon />
-        case "综合目录扫描与爆破":
+        case i18next.t("综合目录扫描与爆破"):
             return <PrivateSolidDirectoryScanningIcon />
         default:
             return <PrivateSolidDefaultPluginIcon />
@@ -951,14 +952,14 @@ export const getFixedPluginHoverIcon = (name: string) => {
 /** 软件内定插件菜单的describe */
 export const getFixedPluginDescribe = (name: string) => {
     switch (name) {
-        case "基础爬虫":
-            return "通过爬虫可快速了解网站的整体架构"
-        case "空间引擎集成版本":
+        case i18next.t("基础爬虫"):
+            return i18next.t("通过爬虫可快速了解网站的整体架构")
+        case i18next.t("空间引擎集成版本"):
             return ""
-        case "子域名收集":
+        case i18next.t("子域名收集"):
             return ""
-        case "综合目录扫描与爆破":
-            return "带有内置字典的综合目录扫描与爆破"
+        case i18next.t("综合目录扫描与爆破"):
+            return i18next.t("带有内置字典的综合目录扫描与爆破")
         default:
             return ""
     }
@@ -1139,7 +1140,7 @@ export const InvalidFirstMenuItem = ""
  * @description 该菜单数据为开发者迭代版本所产生的已消失的页面菜单项
  * @description 每个菜单项由 '|' 字符进行分割
  */
-export const InvalidPageMenuItem = "项目管理(Beta*)|插件执行结果|api提取|"
+export const InvalidPageMenuItem = i18next.t("项目管理(Beta*)|插件执行结果|api提取|")
 /**
  * @name private版专家模式菜单配置数据
  * @description 修改只对专家模式有效，别的模式需取对应模式数据进行修改
@@ -1147,17 +1148,17 @@ export const InvalidPageMenuItem = "项目管理(Beta*)|插件执行结果|api�
 export const PrivateExpertRouteMenu: PrivateRouteMenuProps[] = [
     {
         page: undefined,
-        label: "手工渗透",
+        label: i18next.t("手工渗透"),
         children: routeToChildren([YakitRoute.HTTPHacker, YakitRoute.HTTPFuzzer, YakitRoute.WebsocketFuzzer])
     },
     {
         page: undefined,
-        label: "安全工具",
+        label: i18next.t("安全工具"),
         children: [
             PrivateAllMenus[YakitRoute.Mod_Brute],
             {
                 page: YakitRoute.Plugin_OP,
-                label: "基础爬虫",
+                label: i18next.t("基础爬虫"),
                 icon: getFixedPluginIcon(ResidentPluginName.BasicCrawler),
                 hoverIcon: getFixedPluginHoverIcon(ResidentPluginName.BasicCrawler),
                 describe: getFixedPluginDescribe(ResidentPluginName.BasicCrawler),
@@ -1165,7 +1166,7 @@ export const PrivateExpertRouteMenu: PrivateRouteMenuProps[] = [
             },
             {
                 page: YakitRoute.Plugin_OP,
-                label: "空间引擎",
+                label: i18next.t("空间引擎"),
                 icon: getFixedPluginIcon(ResidentPluginName.SpaceEngine),
                 hoverIcon: getFixedPluginHoverIcon(ResidentPluginName.SpaceEngine),
                 describe: getFixedPluginDescribe(ResidentPluginName.SpaceEngine),
@@ -1174,7 +1175,7 @@ export const PrivateExpertRouteMenu: PrivateRouteMenuProps[] = [
             PrivateAllMenus[YakitRoute.Mod_ScanPort],
             {
                 page: YakitRoute.Plugin_OP,
-                label: "子域名收集",
+                label: i18next.t("子域名收集"),
                 icon: getFixedPluginIcon(ResidentPluginName.SubDomainCollection),
                 hoverIcon: getFixedPluginHoverIcon(ResidentPluginName.SubDomainCollection),
                 describe: getFixedPluginDescribe(ResidentPluginName.SubDomainCollection),
@@ -1182,7 +1183,7 @@ export const PrivateExpertRouteMenu: PrivateRouteMenuProps[] = [
             },
             {
                 page: YakitRoute.Plugin_OP,
-                label: "目录扫描",
+                label: i18next.t("目录扫描"),
                 icon: getFixedPluginIcon(ResidentPluginName.DirectoryScanning),
                 hoverIcon: getFixedPluginHoverIcon(ResidentPluginName.DirectoryScanning),
                 describe: getFixedPluginDescribe(ResidentPluginName.DirectoryScanning),
@@ -1192,12 +1193,12 @@ export const PrivateExpertRouteMenu: PrivateRouteMenuProps[] = [
     },
     {
         page: undefined,
-        label: "专项漏洞检测",
+        label: i18next.t("专项漏洞检测"),
         children: routeToChildren([YakitRoute.PoC])
     },
     {
         page: undefined,
-        label: "插件",
+        label: i18next.t("插件"),
         children: routeToChildren([
             YakitRoute.Plugin_Store,
             YakitRoute.Plugin_Owner,
@@ -1207,7 +1208,7 @@ export const PrivateExpertRouteMenu: PrivateRouteMenuProps[] = [
     },
     {
         page: undefined,
-        label: "反连",
+        label: i18next.t("反连"),
         children: routeToChildren([
             YakitRoute.ShellReceiver,
             YakitRoute.ReverseServer_New,
@@ -1219,12 +1220,12 @@ export const PrivateExpertRouteMenu: PrivateRouteMenuProps[] = [
     },
     {
         page: undefined,
-        label: "数据处理",
+        label: i18next.t("数据处理"),
         children: routeToChildren([YakitRoute.Codec, YakitRoute.DataCompare])
     },
     {
         page: undefined,
-        label: "数据库",
+        label: i18next.t("数据库"),
         children: routeToChildren([
             YakitRoute.DB_Report,
             YakitRoute.DB_Ports,
@@ -1243,12 +1244,12 @@ export const PrivateExpertRouteMenu: PrivateRouteMenuProps[] = [
 export const PrivateScanRouteMenu: PrivateRouteMenuProps[] = [
     {
         page: undefined,
-        label: "安全工具",
+        label: i18next.t("安全工具"),
         children: [
             PrivateAllMenus[YakitRoute.Mod_Brute],
             {
                 page: YakitRoute.Plugin_OP,
-                label: "基础爬虫",
+                label: i18next.t("基础爬虫"),
                 icon: getFixedPluginIcon(ResidentPluginName.BasicCrawler),
                 hoverIcon: getFixedPluginHoverIcon(ResidentPluginName.BasicCrawler),
                 describe: getFixedPluginDescribe(ResidentPluginName.BasicCrawler),
@@ -1256,7 +1257,7 @@ export const PrivateScanRouteMenu: PrivateRouteMenuProps[] = [
             },
             {
                 page: YakitRoute.Plugin_OP,
-                label: "空间引擎",
+                label: i18next.t("空间引擎"),
                 icon: getFixedPluginIcon(ResidentPluginName.SpaceEngine),
                 hoverIcon: getFixedPluginHoverIcon(ResidentPluginName.SpaceEngine),
                 describe: getFixedPluginDescribe(ResidentPluginName.SpaceEngine),
@@ -1265,7 +1266,7 @@ export const PrivateScanRouteMenu: PrivateRouteMenuProps[] = [
             PrivateAllMenus[YakitRoute.Mod_ScanPort],
             {
                 page: YakitRoute.Plugin_OP,
-                label: "子域名收集",
+                label: i18next.t("子域名收集"),
                 icon: getFixedPluginIcon(ResidentPluginName.SubDomainCollection),
                 hoverIcon: getFixedPluginHoverIcon(ResidentPluginName.SubDomainCollection),
                 describe: getFixedPluginDescribe(ResidentPluginName.SubDomainCollection),
@@ -1273,7 +1274,7 @@ export const PrivateScanRouteMenu: PrivateRouteMenuProps[] = [
             },
             {
                 page: YakitRoute.Plugin_OP,
-                label: "目录扫描",
+                label: i18next.t("目录扫描"),
                 icon: getFixedPluginIcon(ResidentPluginName.DirectoryScanning),
                 hoverIcon: getFixedPluginHoverIcon(ResidentPluginName.DirectoryScanning),
                 describe: getFixedPluginDescribe(ResidentPluginName.DirectoryScanning),
@@ -1283,12 +1284,12 @@ export const PrivateScanRouteMenu: PrivateRouteMenuProps[] = [
     },
     {
         page: undefined,
-        label: "专项漏洞检测",
+        label: i18next.t("专项漏洞检测"),
         children: routeToChildren([YakitRoute.PoC])
     },
     {
         page: undefined,
-        label: "插件",
+        label: i18next.t("插件"),
         children: routeToChildren([
             YakitRoute.Plugin_Store,
             YakitRoute.Plugin_Owner,
@@ -1298,12 +1299,12 @@ export const PrivateScanRouteMenu: PrivateRouteMenuProps[] = [
     },
     {
         page: undefined,
-        label: "数据处理",
+        label: i18next.t("数据处理"),
         children: routeToChildren([YakitRoute.Codec, YakitRoute.DataCompare])
     },
     {
         page: undefined,
-        label: "数据库",
+        label: i18next.t("数据库"),
         children: routeToChildren([
             YakitRoute.DB_Report,
             YakitRoute.DB_Ports,
@@ -1323,7 +1324,7 @@ export const PrivateScanRouteMenu: PrivateRouteMenuProps[] = [
 export const PrivateSimpleRouteMenu: PrivateRouteMenuProps[] = [
     {
         page: undefined,
-        label: "安全检测",
+        label: i18next.t("安全检测"),
         children: [
             {
                 page: YakitRoute.SimpleDetect,
@@ -1335,7 +1336,7 @@ export const PrivateSimpleRouteMenu: PrivateRouteMenuProps[] = [
     },
     {
         page: undefined,
-        label: "插件",
+        label: i18next.t("插件"),
         children: [
             {
                 page: YakitRoute.Plugin_Store,
@@ -1365,7 +1366,7 @@ export const PrivateSimpleRouteMenu: PrivateRouteMenuProps[] = [
     },
     {
         page: undefined,
-        label: "数据库",
+        label: i18next.t("数据库"),
         children: [
             {
                 page: YakitRoute.DB_Report,

@@ -18,6 +18,7 @@ import {YakitModal} from "./components/yakitUI/YakitModal/YakitModal"
 import styles from "./app.module.scss"
 import { coordinate } from "./pages/globalVariable"
 import { remoteOperation } from "./pages/dynamicControl/DynamicControl"
+import i18next from "./i18n"
 
 /** 快捷键目录 */
 const InterceptKeyword = [
@@ -112,7 +113,7 @@ function NewApp() {
     useHotkeys("alt+a", (e) => {
         const a = getCompletions()
         showModal({
-            title: "补全内容",
+            title: i18next.t("补全内容"),
             width: "100%",
             content: (
                 <div style={{height: 600}}>
@@ -141,7 +142,7 @@ function NewApp() {
                         refreshLogin()
                     })
                     .catch((e) => {
-                        failed(`获取失败:${e}`)
+                        failed(i18next.t("获取失败:${e}", { v1: e }))
                     })
                     .finally(() => {
                         setOnlineProfileStatus(true)
@@ -158,7 +159,7 @@ function NewApp() {
                         setRemoteValue(RemoteGV.HttpSetting, JSON.stringify(values))
                         refreshLogin()
                     })
-                    .catch((e: any) => failed("设置私有域失败:" + e))
+                    .catch((e: any) => failed(i18next.t("设置私有域失败:") + e))
                     .finally(() => {
                         setOnlineProfileStatus(true)
                     })
@@ -238,7 +239,7 @@ function NewApp() {
         ipcRenderer.on("close-windows-renderer", async(e, res: any) => {
             // 通知应用退出
             if(dynamicStatus.isDynamicStatus){
-                warn("远程控制关闭中...")
+                warn(i18next.t("远程控制关闭中..."))
                 await remoteOperation(false,dynamicStatus)
                 ipcRenderer.invoke("app-exit") 
             }
@@ -256,12 +257,12 @@ function NewApp() {
             <>
                 <div className={styles["yakit-mask-drag-wrapper"]}></div>
                 <YakitModal
-                    title='用户协议'
+                    title={i18next.t("用户协议")}
                     centered={true}
                     visible={true}
                     closable={false}
                     width='75%'
-                    cancelText={"关闭 / Closed"}
+                    cancelText={i18next.t("关闭 / Closed")}
                     onCancel={() => ipcRenderer.invoke("UIOperate", "close")}
                     okButtonProps={
                         {
@@ -275,36 +276,27 @@ function NewApp() {
                     }}
                     okText={
                         readingSeconds > 0
-                            ? `我已认真阅读本协议(${readingSeconds}s)`
-                            : "我已认真阅读本协议，认同协议内容"
+                            ? i18next.t("我已认真阅读本协议(${readingSeconds}s)", { v1: readingSeconds })
+                            : i18next.t("我已认真阅读本协议，认同协议内容")
                     }
                 >
                     <div className={styles["yakit-agr-modal-body"]}>
-                        <div className={styles["body-title"]}>免责声明</div>
-                        <div className={styles["body-content"]}>
-                            1. 本工具仅面向 <span className={styles["sign-content"]}>合法授权</span>{" "}
-                            的企业安全建设行为与个人学习行为，如您需要测试本工具的可用性，请自行搭建靶机环境。
+                        <div className={styles["body-title"]}>{i18next.t("免责声明")}</div>
+                        <div className={styles["body-content"]}>{i18next.t("1. 本工具仅面向")} <span className={styles["sign-content"]}>{i18next.t("合法授权")}</span>{" "}
+                            {i18next.t("的企业安全建设行为与个人学习行为，如您需要测试本工具的可用性，请自行搭建靶机环境。")}
+                            <br />{i18next.t("2. 在使用本工具进行检测时，您应确保该行为符合当地的法律法规，并且已经取得了足够的授权。")}
+                            <span className={styles["underline-content"]}>{i18next.t("请勿对非授权目标进行扫描。")}</span>
+                            <br />{i18next.t("3. 禁止对本软件实施逆向工程、反编译、试图破译源代码，植入后门传播恶意软件等行为。")}
                             <br />
-                            2. 在使用本工具进行检测时，您应确保该行为符合当地的法律法规，并且已经取得了足够的授权。
-                            <span className={styles["underline-content"]}>请勿对非授权目标进行扫描。</span>
-                            <br />
-                            3. 禁止对本软件实施逆向工程、反编译、试图破译源代码，植入后门传播恶意软件等行为。
-                            <br />
-                            <span className={styles["sign-bold-content"]}>
-                                如果发现上述禁止行为，我们将保留追究您法律责任的权利。
+                            <span className={styles["sign-bold-content"]}>{i18next.t("如果发现上述禁止行为，我们将保留追究您法律责任的权利。")}
                             </span>
-                            <br />
-                            如您在使用本工具的过程中存在任何非法行为，您需自行承担相应后果，我们将不承担任何法律及连带责任。
-                            <br />
-                            在安装并使用本工具前，请您{" "}
-                            <span className={styles["sign-bold-content"]}>务必审慎阅读、充分理解各条款内容。</span>
-                            <br />
-                            限制、免责条款或者其他涉及您重大权益的条款可能会以{" "}
-                            <span className={styles["sign-bold-content"]}>加粗</span>、
-                            <span className={styles["underline-content"]}>加下划线</span>
-                            等形式提示您重点注意。
-                            <br />
-                            除非您已充分阅读、完全理解并接受本协议所有条款，否则，请您不要安装并使用本工具。您的使用行为或者您以其他任何明示或者默示方式表示接受本协议的，即视为您已阅读并同意本协议的约束。
+                            <br />{i18next.t("如您在使用本工具的过程中存在任何非法行为，您需自行承担相应后果，我们将不承担任何法律及连带责任。")}
+                            <br />{i18next.t("在安装并使用本工具前，请您")}{" "}
+                            <span className={styles["sign-bold-content"]}>{i18next.t("务必审慎阅读、充分理解各条款内容。")}</span>
+                            <br />{i18next.t("限制、免责条款或者其他涉及您重大权益的条款可能会以")}{" "}
+                            <span className={styles["sign-bold-content"]}>{i18next.t("加粗")}</span>、
+                            <span className={styles["underline-content"]}>{i18next.t("加下划线")}</span>{i18next.t("等形式提示您重点注意。")}
+                            <br />{i18next.t("除非您已充分阅读、完全理解并接受本协议所有条款，否则，请您不要安装并使用本工具。您的使用行为或者您以其他任何明示或者默示方式表示接受本协议的，即视为您已阅读并同意本协议的约束。")}
                         </div>
                     </div>
                 </YakitModal>

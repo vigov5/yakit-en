@@ -4,6 +4,7 @@ import {LogLevelToCode} from "./HTTPFlowTable/HTTPFlowTable";
 import {CopyableField} from "../utils/inputUtil";
 import {showModal} from "../utils/showModal";
 import {CodeViewer} from "../utils/codeViewer";
+import i18next from "../i18n"
 
 export interface HTTPFlowRiskViewerProp {
     risk: YakitHTTPFlowRisk
@@ -34,7 +35,7 @@ export const HTTPFlowRiskViewer: React.FC<HTTPFlowRiskViewerProp> = (props) => {
             <Divider type={"vertical"}/>
             {
                 highlight !== "" && (fragment || []).length > 0 ?
-                    <span style={{color: "#999"}}>详情：<Switch size={"small"} checked={showFragment}
+                    <span style={{color: "#999"}}>{i18next.t("详情：")}<Switch size={"small"} checked={showFragment}
                                                              onChange={setShowFragment}/></span> : undefined
             }
         </>}

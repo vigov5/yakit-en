@@ -14,6 +14,7 @@ import { NetWorkApi } from "@/services/fetch"
 import { API } from "@/services/swagger/resposeType"
 import { onLocalScriptToOnlinePlugin } from "@/components/SyncCloudButton/SyncCloudButton"
 import { useStore } from "@/store"
+import i18next from "../../../i18n"
 
 const { ipcRenderer } = window.require("electron")
 
@@ -138,7 +139,7 @@ export const YakitPluginJournalDetails: React.FC<YakitPluginJournalDetailsProps>
             setOriginalCode(originalItem?.content || '')
             setModifiedCode(modifiedItem?.content || '')
         }).catch((err) => {
-            failed("获取插件日志详情失败:" + err)
+            failed(i18next.t("获取插件日志详情失败:") + err)
         })
             .finally(() => {
                 setTimeout(() => {
@@ -164,7 +165,7 @@ export const YakitPluginJournalDetails: React.FC<YakitPluginJournalDetailsProps>
             // 同意后刷新页面，重新获取最新的数据
             getJournalDetails(journalDetailsId)
         }).catch((err) => {
-            failed("操作失败:" + err)
+            failed(i18next.t("操作失败:") + err)
         })
             .finally(() => {
                 setTimeout(() => {
@@ -175,11 +176,11 @@ export const YakitPluginJournalDetails: React.FC<YakitPluginJournalDetailsProps>
     return (
         <div className="journal-details-body">
             <Spin spinning={loading}>
-                <Card title="修改详情" bordered={false} bodyStyle={{ padding: '24px 12px' }} extra={`修改人:${journalDetails.user_name || '-'}`}>
+                <Card title={i18next.t("修改详情")} bordered={false} bodyStyle={{ padding: '24px 12px' }} extra={i18next.t("修改人")+`:${journalDetails.user_name || '-'}`}>
                     <Form {...defFromLayout}>
                         <YakScriptFormContent disabled={disabled} params={params} setParams={setParams} modified={params} isShowAuthor={false} />
                         <Form.Item
-                            label={"源码"}
+                            label={i18next.t("源码")}
                             help={
                                 <>
                                     <Space>
@@ -207,12 +208,11 @@ export const YakitPluginJournalDetails: React.FC<YakitPluginJournalDetailsProps>
                                                 marginBottom: 12,
                                                 marginTop: 6
                                             }}
-                                        >
-                                            大屏模式
+                                        >{i18next.t("大屏模式")}
                                         </Button>
                                         {!["packet-hack", "codec", "nuclei"].includes(params.Type) && (
                                             <Checkbox
-                                                name={"默认启动"}
+                                                name={i18next.t("默认启动")}
                                                 style={{
                                                     marginBottom: 12,
                                                     marginTop: 6
@@ -225,11 +225,10 @@ export const YakitPluginJournalDetails: React.FC<YakitPluginJournalDetailsProps>
                                                     })
                                                 }
                                                 disabled={disabled}
-                                            >
-                                                默认启动{" "}
+                                            >{i18next.t("默认启动")}{" "}
                                                 <Tooltip
                                                     title={
-                                                        "设置默认启动后，将在恰当时候启动该插件(Yak插件不会自动启动，但会自动增加在左侧基础安全工具菜单栏)"
+                                                        i18next.t("设置默认启动后，将在恰当时候启动该插件(Yak插件不会自动启动，但会自动增加在左侧基础安全工具菜单栏)")
                                                     }
                                                 >
                                                     <Button type={"link"} icon={<QuestionCircleOutlined />} />
@@ -255,11 +254,9 @@ export const YakitPluginJournalDetails: React.FC<YakitPluginJournalDetailsProps>
                             !disabled &&
                             <Form.Item colon={false} label={" "}>
                                 <Space>
-                                    <Button type='primary' danger onClick={() => onMergePlugin(false)} >
-                                        拒绝
+                                    <Button type='primary' danger onClick={() => onMergePlugin(false)} >{i18next.t("拒绝")}
                                     </Button>
-                                    <Button type='primary' onClick={() => onMergePlugin(true)} >
-                                        同意
+                                    <Button type='primary' onClick={() => onMergePlugin(true)} >{i18next.t("同意")}
                                     </Button>
                                 </Space>
                             </Form.Item>
@@ -291,7 +288,7 @@ const FullScreenCode: React.FC<FullScreenCodeProps> = (props) => {
     return (
         <Card
             bordered={false}
-            title="数据对比"
+            title={i18next.t("数据对比")}
             extra={
                 <Space>
                     <Button
@@ -344,8 +341,8 @@ export const CodeComparisonDiff: React.FC<CodeComparisonDiffProps> = (props) => 
     const { fullCodeComparisonRef, noWrap, setNoWrap, originalCode, setRightCode, rightCode, readOnly, className = '' } = props;
     return <div className={`code-comparison-diff ${className}`}>
         <div className="yak-editor-tip">
-            <div>插件源码</div>
-            <div>申请人提交源码</div>
+            <div>{i18next.t("插件源码")}</div>
+            <div>{i18next.t("申请人提交源码")}</div>
         </div>
         <div className="yak-editor-full-item">
             <CodeComparison

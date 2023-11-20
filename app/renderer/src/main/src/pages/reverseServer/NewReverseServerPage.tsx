@@ -18,6 +18,7 @@ import {getRemoteValue} from "@/utils/kv"
 
 import "./reverseServerPage.scss"
 import {NetInterface} from "@/models/Traffic";
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 const {Text} = Typography
@@ -58,11 +59,11 @@ export const NewReverseServerPage: React.FC<FacadeOptionsProp> = (props) => {
         ipcRenderer
             .invoke("StartFacadesWithYsoObject", startFacadeParams, token)
             .then(() => {
-                info("启动FacadeServer")
+                info(i18next.t("启动FacadeServer"))
                 setStatus("start")
             })
             .catch((e: any) => {
-                failed("启动FacadeServer失败: " + `${e}`)
+                failed(i18next.t("启动FacadeServer失败: ") + `${e}`)
             })
     })
 
@@ -78,8 +79,8 @@ export const NewReverseServerPage: React.FC<FacadeOptionsProp> = (props) => {
                 <PageHeader
                     className='reverse-server-page-head'
                     backIcon={false}
-                    title='反连服务器'
-                    subTitle='使用协议端口复用技术，同时在一个端口同时实现 HTTP / RMI / HTTPS 等协议的反连'
+                    title={i18next.t("反连服务器")}
+                    subTitle={i18next.t("使用协议端口复用技术，同时在一个端口同时实现 HTTP / RMI / HTTPS 等协议的反连")}
                 >
                     <SettingReverseServer
                         defaultSetting={{...addrParams}}
@@ -182,7 +183,7 @@ export const SettingReverseServer: React.FC<SettingReverseServerProp> = (props) 
             })
             .then((data: {IP: string}) => (remoteIp.current = data.IP))
             .catch((e: any) => {
-                failed("获取远程地址失败: " + `${e}`)
+                failed(i18next.t("获取远程地址失败: ") + `${e}`)
                 remoteIp.current = ""
             })
             .finally(() => setTimeout(() => setLoading(false), 300))
@@ -201,12 +202,12 @@ export const SettingReverseServer: React.FC<SettingReverseServerProp> = (props) 
                 <Form
                     form={formInstance}
                     initialValues={{...props.defaultSetting}}
-                    labelCol={{span: 5}}
+                    labelCol={{span: 10}}
                     wrapperCol={{span: 19}}
                     onFinish={submit}
                 >
                     <Form.Item
-                        label='启用公网穿透'
+                        label={i18next.t("启用公网穿透")}
                         name='IsRemote'
                         help={
                             params.IsRemote && (
@@ -214,12 +215,11 @@ export const SettingReverseServer: React.FC<SettingReverseServerProp> = (props) 
                                     className='setting-isremote-hint'
                                     type={"success"}
                                     message={
-                                        <div>
-                                            在自己的服务器安装 yak 核心引擎，执行{" "}
+                                        <div>{i18next.t("在自己的服务器安装 yak 核心引擎，执行")}{" "}
                                             <Text code={true} copyable={true}>
                                                 yak bridge --secret [your-pass]
                                             </Text>{" "}
-                                            启动 Yak Bridge 公网服务 <Divider type={"vertical"} />
+                                            {i18next.t("启动 Yak Bridge 公网服务")} <Divider type={"vertical"} />
                                             <Text style={{color: "#999"}}>yak version {`>=`} v1.0.11-sp9</Text>
                                         </div>
                                     }
@@ -233,7 +233,7 @@ export const SettingReverseServer: React.FC<SettingReverseServerProp> = (props) 
                     {params.IsRemote && (
                         <>
                             <Form.Item
-                                label='公网Bridge地址'
+                                label={i18next.t("公网Bridge地址")}
                                 name={["BridgeParam", "Addr"]}
                                 rules={[{required: true, message: ""}]}
                             >
@@ -246,7 +246,7 @@ export const SettingReverseServer: React.FC<SettingReverseServerProp> = (props) 
                                     }}
                                 />
                             </Form.Item>
-                            <Form.Item label='密码' name={["BridgeParam", "Secret"]}>
+                            <Form.Item label={i18next.t("密码")} name={["BridgeParam", "Secret"]}>
                                 <Input
                                     allowClear={true}
                                     value={params.BridgeParam.Secret}
@@ -259,7 +259,7 @@ export const SettingReverseServer: React.FC<SettingReverseServerProp> = (props) 
                         </>
                     )}
                     {!params.IsRemote && (
-                        <Form.Item label='反连地址' name='ReverseHost' rules={[{required: true, message: ""}]}>
+                        <Form.Item label={i18next.t("反连地址")} name='ReverseHost' rules={[{required: true, message: ""}]}>
                             <Input
                                 allowClear={true}
                                 value={params.ReverseHost}
@@ -267,7 +267,7 @@ export const SettingReverseServer: React.FC<SettingReverseServerProp> = (props) 
                             />
                         </Form.Item>
                     )}
-                    <Form.Item label='反连端口' name='ReversePort' rules={[{required: true, message: ""}]}>
+                    <Form.Item label={i18next.t("反连端口")} name='ReversePort' rules={[{required: true, message: ""}]}>
                         <InputNumber
                             width='100%'
                             min={0}
@@ -279,8 +279,7 @@ export const SettingReverseServer: React.FC<SettingReverseServerProp> = (props) 
                     </Form.Item>
 
                     <Form.Item wrapperCol={{offset: 8}}>
-                        <Button type='primary' htmlType='submit'>
-                            启动FacadeServer
+                        <Button type='primary' htmlType='submit'>{i18next.t("启动FacadeServer")}
                         </Button>
                     </Form.Item>
                 </Form>
@@ -389,8 +388,8 @@ export const StartReverseServer: React.FC<StartReverseServerProp> = (props) => {
         setClassRequest({...value})
         ipcRenderer
             .invoke("ApplyClassToFacades", {Token: token, GenerateClassParams: {...data}})
-            .then((res) => info("应用到FacadeServer成功"))
-            .catch((err) => failed(`应用到FacadeServer失败${err}`))
+            .then((res) => info(i18next.t("应用到FacadeServer成功")))
+            .catch((err) => failed(i18next.t("应用到FacadeServer失败${err}", { v1: err })))
             .finally(() => setTimeout(() => setLoading(false), 300))
         setCodeRefresh(!codeRefresh)
     })
@@ -426,12 +425,11 @@ export const StartReverseServer: React.FC<StartReverseServerProp> = (props) => {
                     <PageHeader
                         className='reverse-server-pagehead'
                         backIcon={false}
-                        title='反连服务器'
-                        subTitle='使用协议端口复用技术，同时在一个端口同时实现 HTTP / RMI / HTTPS 等协议的反连'
+                        title={i18next.t("反连服务器")}
+                        subTitle={i18next.t("使用协议端口复用技术，同时在一个端口同时实现 HTTP / RMI / HTTPS 等协议的反连")}
                         extra={
                             <div className='pagehead-extra-body'>
-                                <div>
-                                    Payload 配置:{" "}
+                                <div>{i18next.t("Payload 配置:")}{" "}
                                     <Switch
                                         size='small'
                                         checked={isExtra}
@@ -444,8 +442,7 @@ export const StartReverseServer: React.FC<StartReverseServerProp> = (props) => {
                                     danger={true}
                                     size='small'
                                     onClick={() => stop()}
-                                >
-                                    关闭反连
+                                >{i18next.t("关闭反连")}
                                 </Button>
                             </div>
                         }
@@ -454,24 +451,21 @@ export const StartReverseServer: React.FC<StartReverseServerProp> = (props) => {
                             type={"info"}
                             message={
                                 <Space direction={"vertical"}>
-                                    <div className='addr-body'>
-                                        HTTP反连地址&nbsp;&nbsp;
+                                    <div className='addr-body'>{i18next.t("HTTP反连地址")}&nbsp;&nbsp;
                                         <CopyableField
                                             width={"80%"}
                                             text={`http://${reverseAddr}/${classRequest?.ClassName || ""}`}
                                             style={{color: "blue"}}
                                         />
                                     </div>
-                                    <div className='addr-body'>
-                                        RMI反连地址&nbsp;&nbsp;
+                                    <div className='addr-body'>{i18next.t("RMI反连地址")}&nbsp;&nbsp;
                                         <CopyableField
                                             width={"80%"}
                                             text={`rmi://${reverseAddr}/${classRequest?.ClassName || ""}`}
                                             style={{color: "blue"}}
                                         />
                                     </div>
-                                    <div className='addr-body'>
-                                        LDAP反连地址&nbsp;&nbsp;
+                                    <div className='addr-body'>{i18next.t("LDAP反连地址")}&nbsp;&nbsp;
                                         <CopyableField
                                             width={"80%"}
                                             text={`ldap://${reverseAddr}/${classRequest?.ClassName || ""}`}

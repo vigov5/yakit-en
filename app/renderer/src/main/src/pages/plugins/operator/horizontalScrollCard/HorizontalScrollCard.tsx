@@ -10,20 +10,21 @@ import styles from "./HorizontalScrollCard.module.scss"
 import classNames from "classnames"
 import {OutlineChevrondoubleleftIcon, OutlineChevrondoublerightIcon, OutlineHashtagIcon} from "@/assets/icon/outline"
 import {useLongPress, useThrottleFn} from "ahooks"
+import i18next from "../../../../i18n"
 
 let testData: StatusCardListProps[] = [
     {
         id: "1",
-        tag: "成功次数",
+        tag: i18next.t("成功次数"),
         info: [{Data: "1", Id: "IDID", Timestamp: 111}]
     },
     {
         id: "2",
         tag: "mysql",
         info: [
-            {Id: "成功次数:mysql", Data: "1", Timestamp: 222, Tags: "mysql"},
-            {Id: "失败次数:mysql", Data: "2", Timestamp: 333, Tags: "mysql"},
-            {Id: "总尝试次数:mysql", Data: "3", Timestamp: 444, Tags: "mysql"}
+            {Id: i18next.t("成功次数:mysql"), Data: "1", Timestamp: 222, Tags: "mysql"},
+            {Id: i18next.t("失败次数:mysql"), Data: "2", Timestamp: 333, Tags: "mysql"},
+            {Id: i18next.t("总尝试次数:mysql"), Data: "3", Timestamp: 444, Tags: "mysql"}
         ]
     },
 
@@ -34,46 +35,46 @@ let testData: StatusCardListProps[] = [
     },
     {
         id: "4",
-        tag: "SYN扫描失败",
-        info: [{Data: "请安装Npcap", Id: "SYN失败", Timestamp: 666, Tags: "SYN扫描失败"}]
+        tag: i18next.t("SYN扫描失败"),
+        info: [{Data: i18next.t("请安装Npcap"), Id: i18next.t("SYN失败"), Timestamp: 666, Tags: i18next.t("SYN扫描失败")}]
     },
     {
         id: "5",
         tag: "mysql",
         info: [
-            {Id: "成功次数:mysql", Data: "1", Timestamp: 777, Tags: "mysql"},
-            {Id: "失败次数:mysql", Data: "2", Timestamp: 888, Tags: "mysql"},
-            {Id: "总尝试次数:mysql", Data: "3", Timestamp: 999, Tags: "mysql"}
+            {Id: i18next.t("成功次数:mysql"), Data: "1", Timestamp: 777, Tags: "mysql"},
+            {Id: i18next.t("失败次数:mysql"), Data: "2", Timestamp: 888, Tags: "mysql"},
+            {Id: i18next.t("总尝试次数:mysql"), Data: "3", Timestamp: 999, Tags: "mysql"}
         ]
     },
     {
         id: "6",
         tag: "mysql",
         info: [
-            {Id: "成功次数:mysql", Data: "1", Timestamp: 101010, Tags: "mysql"},
-            {Id: "失败次数:mysql", Data: "2", Timestamp: 111111, Tags: "mysql"},
-            {Id: "总尝试次数:mysql", Data: "3", Timestamp: 121212, Tags: "mysql"}
+            {Id: i18next.t("成功次数:mysql"), Data: "1", Timestamp: 101010, Tags: "mysql"},
+            {Id: i18next.t("失败次数:mysql"), Data: "2", Timestamp: 111111, Tags: "mysql"},
+            {Id: i18next.t("总尝试次数:mysql"), Data: "3", Timestamp: 121212, Tags: "mysql"}
         ]
     },
     {
         id: "7",
-        tag: "SYN扫描失败",
-        info: [{Data: "请安装Npcap", Id: "SYN失败", Timestamp: 141414, Tags: "SYN扫描失败"}]
+        tag: i18next.t("SYN扫描失败"),
+        info: [{Data: i18next.t("请安装Npcap"), Id: i18next.t("SYN失败"), Timestamp: 141414, Tags: i18next.t("SYN扫描失败")}]
     },
     {
         id: "8",
-        tag: "SYN扫描失败",
-        info: [{Data: "请安装Npcap", Id: "SYN失败", Timestamp: 151515, Tags: "SYN扫描失败"}]
+        tag: i18next.t("SYN扫描失败"),
+        info: [{Data: i18next.t("请安装Npcap"), Id: i18next.t("SYN失败"), Timestamp: 151515, Tags: i18next.t("SYN扫描失败")}]
     },
     {
         id: "9",
-        tag: "SYN扫描失败",
-        info: [{Data: "请安装Npcap", Id: "SYN失败", Timestamp: 161616, Tags: "SYN扫描失败"}]
+        tag: i18next.t("SYN扫描失败"),
+        info: [{Data: i18next.t("请安装Npcap"), Id: i18next.t("SYN失败"), Timestamp: 161616, Tags: i18next.t("SYN扫描失败")}]
     },
     {
         id: "10",
-        tag: "SYN扫描失败",
-        info: [{Data: "请安装Npcap", Id: "SYN失败", Timestamp: 171717, Tags: "SYN扫描失败"}]
+        tag: i18next.t("SYN扫描失败"),
+        info: [{Data: i18next.t("请安装Npcap"), Id: i18next.t("SYN失败"), Timestamp: 171717, Tags: i18next.t("SYN扫描失败")}]
     }
 ]
 
@@ -94,13 +95,13 @@ const getData = (): StatusCardListProps[] => {
 const getTextColor = (id: string) => {
     switch (true) {
         case id.includes("success"):
-        case id.includes("成功"):
+        case id.includes(i18next.t("成功")):
         case id.includes("succeeded"):
         case id.includes("finished"):
             return "success"
         case id.includes("error"):
-        case id.includes("失败"):
-        case id.includes("错误"):
+        case id.includes(i18next.t("失败")):
+        case id.includes(i18next.t("错误")):
         case id.includes("fatal"):
         case id.includes("missed"):
         case id.includes("miss"):

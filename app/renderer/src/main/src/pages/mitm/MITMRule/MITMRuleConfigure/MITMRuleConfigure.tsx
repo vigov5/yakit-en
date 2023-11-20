@@ -10,6 +10,7 @@ import styles from "./MITMRuleConfigure.module.scss"
 import {YakitButton} from "@/components/yakitUI/YakitButton/YakitButton"
 import {useMemoizedFn} from "ahooks"
 import defaultConfig from "./yakitMitmReplacerRulesConfig.json"
+import i18next from "../../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -24,16 +25,16 @@ export const MITMRuleExport: React.FC<MITMRuleExportProps> = (props) => {
                 setValue(r.JsonRaw)
             })
             .catch((e) => {
-                failed(`导出失败：${e}`)
+                failed(i18next.t("导出失败：${e}", { v1: e }))
             })
             .finally(() => setTimeout(() => setLoading(false), 300))
     }, [visible])
     return (
         <YakitModal
-            title='导出配置 JSON'
+            title={i18next.t("导出配置 JSON")}
             visible={visible}
             onCancel={() => setVisible(false)}
-            okText='另存为'
+            okText={i18next.t("另存为")}
             width={960}
             closable={true}
             onOk={() => {
@@ -61,7 +62,7 @@ export const MITMRuleImport: React.FC<MITMRuleImportProps> = (props) => {
     const [loading, setLoading] = useState(false)
     const onImport = useMemoizedFn(() => {
         if (!new Buffer(params.JsonRaw).toString("utf8")) {
-            failed("请填入数据!")
+            failed(i18next.t("请填入数据!"))
             return
         }
         try {
@@ -77,13 +78,13 @@ export const MITMRuleImport: React.FC<MITMRuleImportProps> = (props) => {
                     } else {
                         setVisible(false)
                     }
-                    info("导入成功")
+                    info(i18next.t("导入成功"))
                 })
                 .catch((e) => {
-                    failed("导入失败:" + e)
+                    failed(i18next.t("导入失败:") + e)
                 })
         } catch (error) {
-            failed("导入失败:" + error)
+            failed(i18next.t("导入失败:") + error)
         }
     })
     const onUseDefaultConfig = useMemoizedFn(() => {
@@ -94,24 +95,23 @@ export const MITMRuleImport: React.FC<MITMRuleImportProps> = (props) => {
     })
     return (
         <YakitModal
-            title='从 JSON 中导入'
+            title={i18next.t("从 JSON 中导入")}
             subTitle={
                 <div className={styles["modal-subTitle"]}>
-                    <span>可复制 JSON 代码到方框区域内</span>
-                    <YakitButton type='text' onClick={() => onUseDefaultConfig()}>
-                        使用默认配置
+                    <span>{i18next.t("可复制 JSON 代码到方框区域内")}</span>
+                    <YakitButton type='text' onClick={() => onUseDefaultConfig()}>{i18next.t("使用默认配置")}
                     </YakitButton>
                 </div>
             }
             visible={visible}
             onCancel={() => setVisible(false)}
-            okText='导入'
+            okText={i18next.t("导入")}
             width={960}
             closable={true}
             onOk={() => onImport()}
             footerExtra={
                 <div className={styles["modal-footer-extra"]}>
-                    <span className={styles["modal-footer-extra-text"]}>覆盖现有规则</span>
+                    <span className={styles["modal-footer-extra-text"]}>{i18next.t("覆盖现有规则")}</span>
                     <YakitSwitch
                         onChange={(ReplaceAll) => setParams({...params, ReplaceAll})}
                         checked={params.ReplaceAll}

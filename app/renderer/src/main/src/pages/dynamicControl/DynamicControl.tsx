@@ -21,6 +21,7 @@ import {getRemoteValue, setRemoteValue} from "@/utils/kv"
 import {RemoteGV} from "@/yakitGV"
 import {YakitMenu} from "@/components/yakitUI/YakitMenu/YakitMenu"
 import { getReleaseEditionName } from "@/utils/envfile"
+import i18next from "../../i18n"
 const {TextArea} = Input
 const {ipcRenderer} = window.require("electron")
 const {RangePicker} = DatePicker
@@ -43,9 +44,8 @@ export const ControlOperation: React.FC<ControlOperationProps> = (props) => {
     return (
         <div className={styles["control-operation"]}>
             <div className={styles["control-operation-box"]}>
-                <div className={styles["control-operation-title"]}>远程控制中</div>
-                <div className={styles["control-operation-seconend-title"]}>
-                    已被用户 {controlName} 远程控制，请勿关闭 {getReleaseEditionName()}
+                <div className={styles["control-operation-title"]}>{i18next.t("远程控制中")}</div>
+                <div className={styles["control-operation-seconend-title"]}>{i18next.t("已被用户")} {controlName} 远程控制，请勿关闭 {getReleaseEditionName()}
                 </div>
                 <div className={styles["control-operation-img"]}>
                     <ControlMyselfIcon />
@@ -56,8 +56,7 @@ export const ControlOperation: React.FC<ControlOperationProps> = (props) => {
                     type="primary"
                     colors="danger"
                     className={styles["control-operation-btn"]}
-                >
-                    退出远程
+                >{i18next.t("退出远程")}
                 </YakitButton>
                 <div className={styles["control-operation-left-bg"]}></div>
                 <div className={styles["control-operation-right-bg"]}></div>
@@ -150,20 +149,20 @@ export const ControlMyself: React.FC<ControlMyselfProps> = (props) => {
                                     setTextArea(showData)
                                     setLoading(false)
                                 } else {
-                                    failed(`获取远程连接信息/复制密钥失败`)
+                                    failed(i18next.t("获取远程连接信息/复制密钥失败"))
                                 }
                             })
                             .catch((err) => {
-                                failed(`获取远程连接信息/复制密钥失败:${err}`)
+                                failed(i18next.t("获取远程连接信息/复制密钥失败:${err}", { v1: err }))
                             })
                             .finally(() => {})
                     })
                     .catch((e) => {
-                        failed(`远程连接失败:${e}`)
+                        failed(i18next.t("远程连接失败:${e}", { v1: e }))
                     })
             })
             .catch((err) => {
-                failed(`获取server/secret失败:${err}`)
+                failed(i18next.t("获取server/secret失败:${err}", { v1: err }))
             })
             .finally(() => {})
     }
@@ -185,8 +184,7 @@ export const ControlMyself: React.FC<ControlMyselfProps> = (props) => {
                 />
             </Spin>
             <div className={styles["btn-box"]}>
-                <YakitButton type='outline2' style={{marginRight: 8}} onClick={goBack}>
-                    返回上一步
+                <YakitButton type='outline2' style={{marginRight: 8}} onClick={goBack}>{i18next.t("返回上一步")}
                 </YakitButton>
                 {restartBtn ? (
                     <YakitButton
@@ -198,18 +196,16 @@ export const ControlMyself: React.FC<ControlMyselfProps> = (props) => {
                                 run()
                             })
                         }}
-                    >
-                        重启服务
+                    >{i18next.t("重启服务")}
                     </YakitButton>
                 ) : (
                     <YakitButton
                         loading={loading}
                         onClick={() => {
                             ipcRenderer.invoke("set-copy-clipboard", textArea)
-                            success("复制成功")
+                            success(i18next.t("复制成功"))
                         }}
-                    >
-                        复制密钥
+                    >{i18next.t("复制密钥")}
                     </YakitButton>
                 )}
             </div>
@@ -240,7 +236,7 @@ export const ControlOther: React.FC<ControlOtherProps> = (props) => {
                 }
             }).then((res) => {
                 if (res.status) {
-                    warn("由于远程目标已在远程控制中，暂无法连接")
+                    warn(i18next.t("由于远程目标已在远程控制中，暂无法连接"))
                 } else {
                     // 如有受控端服务则杀掉
                     ipcRenderer.invoke("kill-dynamic-control")
@@ -255,7 +251,7 @@ export const ControlOther: React.FC<ControlOtherProps> = (props) => {
                 }
             })
         } else {
-            failed("密钥格式有误")
+            failed(i18next.t("密钥格式有误"))
         }
     }
     return (
@@ -273,7 +269,7 @@ export const ControlOther: React.FC<ControlOtherProps> = (props) => {
                             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                         ]
                         if (!typeArr.includes(f.type)) {
-                            failed(`${f.name}非txt、Excel文件，请上传txt、Excel格式文件！`)
+                            failed(i18next.t("${f.name}非txt、Excel文件，请上传txt、Excel格式文件！", {v1: f.name}))
                             return false
                         }
 
@@ -297,16 +293,14 @@ export const ControlOther: React.FC<ControlOtherProps> = (props) => {
                         setValue: (value) => setTextAreaValue(value),
                         value: textAreaValue,
                         autoSize: {minRows: 3, maxRows: 10},
-                        placeholder: "请将链接密钥粘贴/输入到文本框中"
+                        placeholder: i18next.t("请将链接密钥粘贴/输入到文本框中")
                     }}
                 />
             </Spin>
             <div className={styles["btn-box"]}>
-                <YakitButton type='outline2' style={{marginRight: 8}} onClick={goBack}>
-                    返回上一步
+                <YakitButton type='outline2' style={{marginRight: 8}} onClick={goBack}>{i18next.t("返回上一步")}
                 </YakitButton>
-                <YakitButton onClick={() => onFinish()} loading={loading} disabled={textAreaValue.length === 0}>
-                    远程连接
+                <YakitButton onClick={() => onFinish()} loading={loading} disabled={textAreaValue.length === 0}>{i18next.t("远程连接")}
                 </YakitButton>
             </div>
         </div>
@@ -328,8 +322,8 @@ export const SelectControlType: React.FC<SelectControlTypeProps> = (props) => {
                     <ControlMyselfIcon />
                 </div>
                 <div className={styles["type-content"]}>
-                    <div className={styles["type-title"]}>受控端</div>
-                    <div className={styles["type-text"]}>生成邀请密钥</div>
+                    <div className={styles["type-title"]}>{i18next.t("受控端")}</div>
+                    <div className={styles["type-text"]}>{i18next.t("生成邀请密钥")}</div>
                 </div>
             </div>
             <div className={styles["type-box"]} onClick={() => onControlOther(true)}>
@@ -337,8 +331,8 @@ export const SelectControlType: React.FC<SelectControlTypeProps> = (props) => {
                     <ControlOtherIcon />
                 </div>
                 <div className={styles["type-content"]}>
-                    <div className={styles["type-title"]}>控制端</div>
-                    <div className={styles["type-text"]}>可通过受控端分享的密钥远程控制他的 客户端</div>
+                    <div className={styles["type-title"]}>{i18next.t("控制端")}</div>
+                    <div className={styles["type-text"]}>{i18next.t("可通过受控端分享的密钥远程控制他的 客户端")}</div>
                 </div>
             </div>
         </div>
@@ -384,19 +378,16 @@ export interface ShowUserInfoProps extends API.NewUrmResponse {
 const ShowUserInfo: React.FC<ShowUserInfoProps> = (props) => {
     const {user_name, password, onClose} = props
     const copyUserInfo = () => {
-        callCopyToClipboard(`用户名：${user_name}\n密码：${password}`)
+        callCopyToClipboard(i18next.t("用户名：${user_name}\n密码：${password}", { v1: user_name, v2: password }))
     }
     return (
         <div style={{padding: "0 10px"}}>
-            <div>
-                用户名：<span>{user_name}</span>
+            <div>{i18next.t("用户名：")}<span>{user_name}</span>
             </div>
-            <div>
-                密码：<span>{password}</span>
+            <div>{i18next.t("密码：")}<span>{password}</span>
             </div>
             <div style={{textAlign: "center", paddingTop: 10}}>
-                <Button type='primary' onClick={() => copyUserInfo()}>
-                    复制
+                <Button type='primary' onClick={() => copyUserInfo()}>{i18next.t("复制")}
                 </Button>
             </div>
         </div>
@@ -458,7 +449,7 @@ export const ControlAdminPage: React.FC<ControlAdminPageProps> = (props) => {
                     setTotal(res.pagemeta.total)
                 })
                 .catch((err) => {
-                    failed("获取远程管理列表失败：" + err)
+                    failed(i18next.t("获取远程管理列表失败：") + err)
                 })
                 .finally(() => {
                     setTimeout(() => {
@@ -491,7 +482,7 @@ export const ControlAdminPage: React.FC<ControlAdminPageProps> = (props) => {
                 setTotal(res.pagemeta.total)
             })
             .catch((err) => {
-                failed("获取远程管理列表失败：" + err)
+                failed(i18next.t("获取远程管理列表失败：") + err)
             })
             .finally(() => {
                 setTimeout(() => {
@@ -517,7 +508,7 @@ export const ControlAdminPage: React.FC<ControlAdminPageProps> = (props) => {
 
     const columns: VirtualColumns[] = [
         {
-            title: "控制端",
+            title: i18next.t("控制端"),
             render: (record) => {
                 return (
                     <div>
@@ -528,35 +519,33 @@ export const ControlAdminPage: React.FC<ControlAdminPageProps> = (props) => {
             }
         },
         {
-            title: "远程地址",
+            title: i18next.t("远程地址"),
             dataIndex: "addr",
             render: (text) => <span>{text}</span>
         },
         {
-            title: "开始时间",
+            title: i18next.t("开始时间"),
             dataIndex: "created_at",
             render: (text) => <span>{moment.unix(text).format("YYYY-MM-DD HH:mm")}</span>
         },
         {
-            title: "结束时间",
+            title: i18next.t("结束时间"),
             dataIndex: "updated_at",
             render: (text, record) => {
                 return <span>{record.status ? "-" : moment.unix(text).format("YYYY-MM-DD HH:mm")}</span>
             }
         },
         {
-            title: "状态",
+            title: i18next.t("状态"),
             dataIndex: "status",
             render: (i: boolean) => {
                 return (
                     <div className={styles["radio-status"]}>
                         {i ? (
-                            <Radio className={styles["radio-status-active"]} defaultChecked={true}>
-                                远程中
+                            <Radio className={styles["radio-status-active"]} defaultChecked={true}>{i18next.t("远程中")}
                             </Radio>
                         ) : (
-                            <Radio disabled={true} checked={true}>
-                                已结束
+                            <Radio disabled={true} checked={true}>{i18next.t("已结束")}
                             </Radio>
                         )}
                     </div>
@@ -571,15 +560,15 @@ export const ControlAdminPage: React.FC<ControlAdminPageProps> = (props) => {
                         data={[
                             {
                                 key: "all",
-                                label: "全部"
+                                label: i18next.t("全部")
                             },
                             {
                                 key: "true",
-                                label: "远程中"
+                                label: i18next.t("远程中")
                             },
                             {
                                 key: "false",
-                                label: "已结束"
+                                label: i18next.t("已结束")
                             }
                         ]}
                         onClick={({key}) => setParams({...getParams(), status: key === "all" ? undefined : key})}
@@ -593,7 +582,7 @@ export const ControlAdminPage: React.FC<ControlAdminPageProps> = (props) => {
             <Spin spinning={resetLoading}>
                 <div className={styles["operation"]}>
                     <div className={styles["left-select"]}>
-                        <div className={styles["title-box"]}>远程管理</div>
+                        <div className={styles["title-box"]}>{i18next.t("远程管理")}</div>
 
                         <span className={styles["total-box"]}>
                             <span className={styles["title"]}>Total</span>{" "}
@@ -621,7 +610,7 @@ export const ControlAdminPage: React.FC<ControlAdminPageProps> = (props) => {
                             />
                         </div>
                         <YakitInput.Search
-                            placeholder={"请输入用户名"}
+                            placeholder={i18next.t("请输入用户名")}
                             enterButton={true}
                             size='middle'
                             style={{width: 200}}
@@ -669,7 +658,7 @@ export const remoteOperation = (status: boolean, dynamicStatus: DynamicStatusPro
             if (data.ok) {}
         })
         .catch((err) => {
-            failed(`连接远程/取消失败:${err}`)
+            failed(i18next.t("连接远程/取消失败:${err}", { v1: err }))
         })
         .finally(() => {
             resolve(true)

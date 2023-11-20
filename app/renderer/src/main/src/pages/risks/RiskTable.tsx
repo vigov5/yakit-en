@@ -22,6 +22,7 @@ import {onRemoveToolFC} from "../../utils/deleteTool"
 import {showByContextMenu} from "../../components/functionTemplate/showByContext"
 
 import "./RiskTable.css"
+import i18next from "../../i18n"
 
 export interface RiskTableProp {
     severity?: string
@@ -75,22 +76,22 @@ const mergeFieldNames = (f: Fields) => {
 }
 
 export const cellColorFontSetting = {
-    调试信息: {
+    "Debug Information": {
         font: {
             color: {rgb: "000000"}
         }
     },
-    "信息/指纹": {
+    "Information/Fingerprint": {
         font: {
             color: {rgb: "8c8c8c"}
         }
     },
-    中危: {
+    "Medium Risk": {
         font: {
             color: {rgb: "ff7a45"}
         }
     },
-    严重: {
+    "Critical": {
         font: {
             color: {rgb: "a8071a"}
         }
@@ -100,30 +101,30 @@ export const TitleColor = [
     {
         key: ["trace", "debug", "note"],
         value: "title-debug",
-        name: "调试信息",
+        name: i18next.t("调试信息"),
         img: debugImg,
         tag: "title-background-debug"
     },
     {
         key: ["info", "fingerprint", "infof", "default"],
         value: "title-info",
-        name: "信息/指纹",
+        name: i18next.t("信息/指纹"),
         img: infoImg,
         tag: "title-background-info"
     },
-    {key: ["low"], value: "title-low", name: "低危", img: lowImg, tag: "title-background-low"},
+    {key: ["low"], value: "title-low", name: i18next.t("低危"), img: lowImg, tag: "title-background-low"},
     {
         key: ["middle", "warn", "warning", "medium"],
         value: "title-middle",
-        name: "中危",
+        name: i18next.t("中危"),
         img: middleImg,
         tag: "title-background-middle"
     },
-    {key: ["high"], value: "title-high", name: "高危", img: highImg, tag: "title-background-high"},
+    {key: ["high"], value: "title-high", name: i18next.t("高危"), img: highImg, tag: "title-background-high"},
     {
         key: ["fatal", "critical", "panic"],
         value: "title-fatal",
-        name: "严重",
+        name: i18next.t("严重"),
         img: fatalImg,
         tag: "title-background-fatal"
     }
@@ -334,7 +335,7 @@ export const RiskTable: React.FC<RiskTableProp> = (props) => {
 
     const columns = [
         {
-            title: "标题",
+            title: i18next.t("标题"),
             dataIndex: "TitleVerbose",
             render: (_, i: Risk) => (
                 <Paragraph style={{maxWidth: 400, marginBottom: 0}} ellipsis={{tooltip: true}}>
@@ -351,7 +352,7 @@ export const RiskTable: React.FC<RiskTableProp> = (props) => {
                     params &&
                     setParams && (
                         <TableFilterDropdownString
-                            label={"搜索关键字"}
+                            label={i18next.t("搜索关键字")}
                             params={params}
                             setParams={setParams}
                             filterName={"Search"}
@@ -364,7 +365,7 @@ export const RiskTable: React.FC<RiskTableProp> = (props) => {
             }
         },
         {
-            title: "类型",
+            title: i18next.t("类型"),
             dataIndex: "RiskTypeVerbose",
             width: 90,
             filteredValue: (getParams()["RiskType"] && ["RiskTypeVerbose"]) || null,
@@ -377,7 +378,7 @@ export const RiskTable: React.FC<RiskTableProp> = (props) => {
                     params &&
                     setParams && (
                         <TableFilterDropdownString
-                            label={"搜索类型关键字"}
+                            label={i18next.t("搜索类型关键字")}
                             params={params}
                             setParams={setParams}
                             filterName={"RiskType"}
@@ -390,7 +391,7 @@ export const RiskTable: React.FC<RiskTableProp> = (props) => {
             }
         },
         {
-            title: "等级",
+            title: i18next.t("等级"),
             dataIndex: "Severity",
             render: (_, i: Risk) => {
                 const title = TitleColor.filter((item) => item.key.includes(i.Severity || ""))[0]
@@ -411,7 +412,7 @@ export const RiskTable: React.FC<RiskTableProp> = (props) => {
                     params &&
                     setParams && (
                         <TableFilterDropdownString
-                            label={"搜索网段"}
+                            label={i18next.t("搜索网段")}
                             params={params}
                             setParams={setParams}
                             filterName={"Network"}
@@ -434,12 +435,12 @@ export const RiskTable: React.FC<RiskTableProp> = (props) => {
             width: 400
         },
         {
-            title: "发现时间",
+            title: i18next.t("发现时间"),
             dataIndex: "CreatedAt",
             render: (_, i: Risk) => <Tag>{i.CreatedAt > 0 ? formatTimestamp(i.CreatedAt) : "-"}</Tag>
         },
         {
-            title: "操作",
+            title: i18next.t("操作"),
             dataIndex: "Action",
             render: (_, i: Risk) => {
                 return (
@@ -450,7 +451,7 @@ export const RiskTable: React.FC<RiskTableProp> = (props) => {
                             onClick={() => {
                                 let m = showModal({
                                     width: "80%",
-                                    title: "详情",
+                                    title: i18next.t("详情"),
                                     content: (
                                         <div style={{overflow: "auto"}}>
                                             <RiskDetails info={i} onClose={() => m.destroy()} />
@@ -458,11 +459,9 @@ export const RiskTable: React.FC<RiskTableProp> = (props) => {
                                     )
                                 })
                             }}
-                        >
-                            详情
+                        >{i18next.t("详情")}
                         </Button>
-                        <Button size='small' type={"link"} danger onClick={() => delRisk(i.Hash)}>
-                            删除
+                        <Button size='small' type={"link"} danger onClick={() => delRisk(i.Hash)}>{i18next.t("删除")}
                         </Button>
                     </Space>
                 )
@@ -503,7 +502,7 @@ export const RiskTable: React.FC<RiskTableProp> = (props) => {
                     })
                 })
                 .catch((e) => {
-                    failed("数据导出失败 " + `${e}`)
+                    failed(i18next.t("数据导出失败 ") + `${e}`)
                 })
         })
     })
@@ -539,9 +538,8 @@ export const RiskTable: React.FC<RiskTableProp> = (props) => {
                         return (
                             <div>
                                 <div className='table-title'>
-                                    <Space>
-                                        风险与漏洞
-                                        <Tooltip title='刷新会重置所有查询条件'>
+                                    <Space>{i18next.t("风险与漏洞")}
+                                        <Tooltip title={i18next.t("刷新会重置所有查询条件")}>
                                             <Button
                                                 size={"small"}
                                                 type={"link"}
@@ -556,18 +554,17 @@ export const RiskTable: React.FC<RiskTableProp> = (props) => {
                                         <ExportExcel
                                             getData={getData}
                                             btnProps={{size: "small"}}
-                                            fileName='风险与漏洞'
+                                            fileName={i18next.t("风险与漏洞")}
                                         />
                                         <Popconfirm
                                             title={
                                                 selectedRowKeys.length > 0
-                                                    ? "确定删除选择的风险与漏洞吗？不可恢复"
-                                                    : "确定删除所有风险与漏洞吗? 不可恢复"
+                                                    ? i18next.t("确定删除选择的风险与漏洞吗？不可恢复")
+                                                    : i18next.t("确定删除所有风险与漏洞吗? 不可恢复")
                                             }
                                             onConfirm={onRemove}
                                         >
-                                            <Button size='small' danger={true}>
-                                                删除数据
+                                            <Button size='small' danger={true}>{i18next.t("删除数据")}
                                             </Button>
                                         </Popconfirm>
                                     </Space>
@@ -613,7 +610,7 @@ export const RiskTable: React.FC<RiskTableProp> = (props) => {
                         return {
                             onContextMenu: (event) => {
                                 showByContextMenu({
-                                    data: [{key: "delect-repeat", title: "删除重复标题数据"}],
+                                    data: [{key: "delect-repeat", title: i18next.t("删除重复标题数据")}],
                                     onClick: ({key}) => {
                                         if (key === "delect-repeat") {
                                             const newParams = {
@@ -644,7 +641,7 @@ export const RiskTable: React.FC<RiskTableProp> = (props) => {
             <div className='container-filter-body'>
                 {severities.length > 0 && (
                     <div className='filter-body-opt'>
-                        <div className='opt-header'>漏洞级别</div>
+                        <div className='opt-header'>{i18next.t("漏洞级别")}</div>
                         <div className='opt-list'>
                             {severities.map((item) => {
                                 const value = (item.Names || []).join(",")
@@ -669,7 +666,7 @@ export const RiskTable: React.FC<RiskTableProp> = (props) => {
 
                 {types.length > 0 && (
                     <div className='filter-body-opt'>
-                        <div className='opt-header'>漏洞/风险类型</div>
+                        <div className='opt-header'>{i18next.t("漏洞/风险类型")}</div>
                         <div className='opt-list'>
                             {types.map((item) => {
                                 const value = (item.Names || []).join(",")
@@ -750,8 +747,7 @@ export const TableFilterDropdownString: React.FC<FilterDropdownStringProp> = (pr
 
                 <Form.Item style={{marginBottom: 0, marginTop: 0}} colon={false} label={" "}>
                     <Space>
-                        <Button type='primary' htmlType='submit'>
-                            搜索
+                        <Button type='primary' htmlType='submit'>{i18next.t("搜索")}
                         </Button>
                         <Button
                             onClick={() => {
@@ -766,8 +762,7 @@ export const TableFilterDropdownString: React.FC<FilterDropdownStringProp> = (pr
                                     }, 50)
                                 }
                             }}
-                        >
-                            重置搜索
+                        >{i18next.t("重置搜索")}
                         </Button>
                     </Space>
                 </Form.Item>
@@ -934,7 +929,7 @@ export const RiskDetails: React.FC<RiskDetailsProp> = React.memo((props: RiskDet
                                         setShrink(!shrink)
                                     }}
                                 >
-                                    {shrink ? `展开详情` : `折叠详情`}
+                                    {shrink ? i18next.t("展开详情") : i18next.t("折叠详情")}
                                 </Button>
                             </Space>
                         </div>
@@ -950,16 +945,14 @@ export const RiskDetails: React.FC<RiskDetailsProp> = React.memo((props: RiskDet
                                 </Paragraph>
                             </div>
                             {isShowTime && (
-                                <div className='subtitle-spacing'>
-                                    发现时间
+                                <div className='subtitle-spacing'>{i18next.t("发现时间")}
                                     <span className='subtitle-font'>
                                         {info.CreatedAt > 0 ? formatTimestamp(info.CreatedAt) : "-"}
                                     </span>
                                 </div>
                             )}
                             {isShowTime && (
-                                <div>
-                                    最近更新时间
+                                <div>{i18next.t("最近更新时间")}
                                     <span className='subtitle-font'>
                                         {info.CreatedAt > 0 ? formatTimestamp(info.CreatedAt) : "-"}
                                     </span>
@@ -978,38 +971,38 @@ export const RiskDetails: React.FC<RiskDetailsProp> = React.memo((props: RiskDet
             <Descriptions.Item label='ID'>
                 <div>{info.Id || "-"}</div>
             </Descriptions.Item>
-            <Descriptions.Item label='端口'>
+            <Descriptions.Item label={i18next.t("端口")}>
                 <div>{info.Port || "-"}</div>
             </Descriptions.Item>
 
             <Descriptions.Item label='Host'>
                 <div>{info.Host || "-"}</div>
             </Descriptions.Item>
-            <Descriptions.Item label='类型'>
+            <Descriptions.Item label={i18next.t("类型")}>
                 <div>{(info?.RiskTypeVerbose || info.RiskType).replaceAll("NUCLEI-", "")}</div>
             </Descriptions.Item>
-            <Descriptions.Item label='来源'>
-                <div>{info?.FromYakScript || "漏洞检测"}</div>
+            <Descriptions.Item label={i18next.t("来源")}>
+                <div>{info?.FromYakScript || i18next.t("漏洞检测")}</div>
             </Descriptions.Item>
 
-            <Descriptions.Item label='反连Token'>
+            <Descriptions.Item label={i18next.t("反连Token")}>
                 <div>{info.ReverseToken || "-"}</div>
             </Descriptions.Item>
             <Descriptions.Item label='Hash'>
                 <div>{info.Hash || "-"}</div>
             </Descriptions.Item>
-            <Descriptions.Item label='验证状态'>
+            <Descriptions.Item label={i18next.t("验证状态")}>
                 <div style={{color: `${!info.WaitingVerified ? "#11AB4E" : "#FAAF2B"}`}}>
-                    {!info.WaitingVerified ? "已验证" : "未验证"}
+                    {!info.WaitingVerified ? i18next.t("已验证") : i18next.t("未验证")}
                 </div>
             </Descriptions.Item>
 
             {!shrink && (
                 <>
-                    <Descriptions.Item label='漏洞描述' span={3}>
+                    <Descriptions.Item label={i18next.t("漏洞描述")} span={3}>
                         <div style={{whiteSpace: "pre-wrap"}}>{info.Description || "-"}</div>
                     </Descriptions.Item>
-                    <Descriptions.Item label='解决方案' span={3}>
+                    <Descriptions.Item label={i18next.t("解决方案")} span={3}>
                         <div style={{whiteSpace: "pre-wrap"}}>{info.Solution || "-"}</div>
                     </Descriptions.Item>
                     <Descriptions.Item label='Parameter' span={3}>
@@ -1019,7 +1012,7 @@ export const RiskDetails: React.FC<RiskDetailsProp> = React.memo((props: RiskDet
                         <div>{info.Payload || "-"}</div>
                     </Descriptions.Item>
                     {items}
-                    <Descriptions.Item label='详情' span={3}>
+                    <Descriptions.Item label={i18next.t("详情")} span={3}>
                         <div style={{maxHeight: 180, overflow: "auto"}}>{`${info.Details}` || "-"}</div>
                     </Descriptions.Item>
                 </>

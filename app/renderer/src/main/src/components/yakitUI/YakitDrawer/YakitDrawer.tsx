@@ -7,6 +7,7 @@ import {RemoveIcon} from "@/assets/newIcon"
 import { ShowDrawerProps } from "@/utils/showModal"
 import ReactDOM from "react-dom"
 import { ErrorBoundary } from "react-error-boundary"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -88,11 +89,11 @@ export const showYakitDrawer = (props: ShowDrawerProps) => {
                         <ErrorBoundary
                             FallbackComponent={({error, resetErrorBoundary}) => {
                                 if (!error) {
-                                    return <div>未知错误</div>
+                                    return <div>{i18next.t("未知错误")}</div>
                                 }
                                 return (
                                     <div>
-                                        <p>弹框内逻辑性崩溃，请关闭重试！</p>
+                                        <p>{i18next.t("弹框内逻辑性崩溃，请关闭重试！")}</p>
                                         <pre>{error?.message}</pre>
                                     </div>
                                 )

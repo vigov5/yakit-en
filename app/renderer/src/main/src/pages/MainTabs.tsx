@@ -6,6 +6,7 @@ import {CloseOutlined, EditOutlined} from "@ant-design/icons"
 import {isEnpriTraceAgent} from "@/utils/envfile"
 import {useGetState} from "ahooks"
 import {NoPaddingRoute, YakitRoute} from "@/routes/newRoute"
+import i18next from "../i18n"
 
 import "./MainTabs.scss"
 import { MultipleNodeInfo } from "./layout/mainOperatorContent/MainOperatorContentType"
@@ -75,7 +76,7 @@ export const MainTabs: React.FC<MainTabsProp> = memo((props) => {
                     return (
                         <DropdownMenu
                             menu={{
-                                data: [{key: "other", title: "关闭其他Tabs"}]
+                                data: [{key: "other", title: i18next.t("关闭其他Tabs")}]
                             }}
                             dropdown={{trigger: ["contextMenu"]}}
                             onClick={(key) => {
@@ -150,7 +151,7 @@ export const MainTabs: React.FC<MainTabsProp> = memo((props) => {
                                     <Space>
                                         <Popover
                                             trigger={"click"}
-                                            title={"修改名称"}
+                                            title={i18next.t("修改名称")}
                                             content={
                                                 <>
                                                     <Input

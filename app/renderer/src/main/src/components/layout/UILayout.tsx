@@ -63,6 +63,7 @@ import yakitEE from "@/assets/yakitEE.png";
 import yakitSE from "@/assets/yakitSE.png";
 import yakitCattle from "@/assets/yakitCattle.png";
 import { NetWorkApi } from "@/services/fetch"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -128,23 +129,23 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
             .invoke("GetBuildInEngineVersion")
             .then((e) => {
                 if (e !== "") {
-                    outputToWelcomeConsole(`引擎内置自检成功！内置引擎：${e}`)
+                    outputToWelcomeConsole(i18next.t("引擎内置自检成功！内置引擎：${e}", { v1: e }))
                 } else {
-                    outputToWelcomeConsole(`引擎内置自检：无内置引擎标识 ${e}`)
+                    outputToWelcomeConsole(i18next.t("引擎内置自检：无内置引擎标识 ${e}", { v1: e }))
                 }
             })
             .catch((e) => {
-                outputToWelcomeConsole(`引擎内置自检：无内置引擎: ${e}`)
+                outputToWelcomeConsole(i18next.t("引擎内置自检：无内置引擎: ${e}", { v1: e }))
             })
             .finally(() => {
-                info("开始检查漏洞信息库")
+                info(i18next.t("开始检查漏洞信息库"))
                 ipcRenderer
                     .invoke("InitCVEDatabase")
                     .then(() => {
-                        info("漏洞信息库自检完成")
+                        info(i18next.t("漏洞信息库自检完成"))
                     })
                     .catch((e) => {
-                        info(`漏洞信息库检查错误：${e}`)
+                        info(i18next.t("漏洞信息库检查错误：${e}", { v1: e }))
                     })
             })
     }, [])
@@ -152,7 +153,7 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
     const getCacheEngineMode = useMemoizedFn(() => {
         setEngineMode(undefined)
         getLocalValue(LocalGV.YaklangEngineMode).then((val: YaklangEngineMode) => {
-            info(`加载上次引擎模式：${val}`)
+            info(i18next.t("加载上次引擎模式：${val}", { v1: val }))
             switch (val) {
                 case "remote":
                     setEngineMode("remote")
@@ -221,19 +222,19 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
                 isEngineInstalled.current = flag
                 if (!isEngineInstalled.current) {
                     setEngineMode(undefined)
-                    outputToWelcomeConsole("由于引擎未安装，仅开启远程模式或用户需安装核心引擎")
+                    outputToWelcomeConsole(i18next.t("由于引擎未安装，仅开启远程模式或用户需安装核心引擎"))
                     setTimeout(() => {
                         setYakitStatus("install")
                         cacheYakitStatus.current = "install"
                     }, 300)
                     return
                 } else {
-                    outputToWelcomeConsole("已安装引擎，开始检查数据库权限是否正常")
+                    outputToWelcomeConsole(i18next.t("已安装引擎，开始检查数据库权限是否正常"))
                     /** 引擎已安装的情况下，优先检查数据库权限 */
                     ipcRenderer
                         .invoke("check-local-database")
                         .then((e) => {
-                            if (e === "not allow to write") outputToWelcomeConsole("数据库权限错误，开始进行调整操作")
+                            if (e === "not allow to write") outputToWelcomeConsole(i18next.t("数据库权限错误，开始进行调整操作"))
                             databaseError.current = e === "not allow to write"
                         })
                         .finally(() => {
@@ -268,21 +269,21 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
      *    2) 如果有使用，引擎已安装，则正常连接上次使用状态的引擎
      */
     useEffect(() => {
-        outputToWelcomeConsole("识别引擎是否已安装...")
+        outputToWelcomeConsole(i18next.t("识别引擎是否已安装..."))
         ipcRenderer
             .invoke("is-yaklang-engine-installed")
             .then((flag: boolean) => {
                 if (flag) {
-                    outputToWelcomeConsole("引擎已安装")
+                    outputToWelcomeConsole(i18next.t("引擎已安装"))
                 } else {
-                    outputToWelcomeConsole("引擎未安装")
+                    outputToWelcomeConsole(i18next.t("引擎未安装"))
                 }
                 isEngineInstalled.current = flag
             })
             .finally(() => {
                 if (!isEngineInstalled.current) {
                     setEngineMode(undefined)
-                    outputToWelcomeConsole("由于引擎未安装，仅开启远程模式或用户需安装核心引擎")
+                    outputToWelcomeConsole(i18next.t("由于引擎未安装，仅开启远程模式或用户需安装核心引擎"))
                     getCacheEngineMode()
                     setTimeout(() => {
                         setYakitStatus("install")
@@ -291,12 +292,12 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
                     }, 300)
                     return
                 } else {
-                    outputToWelcomeConsole("已安装引擎，开始检查数据库权限是否正常")
+                    outputToWelcomeConsole(i18next.t("已安装引擎，开始检查数据库权限是否正常"))
                     /** 引擎已安装的情况下，优先检查数据库权限 */
                     ipcRenderer
                         .invoke("check-local-database")
                         .then((e) => {
-                            if (e === "not allow to write") outputToWelcomeConsole("数据库权限错误，开始进行调整操作")
+                            if (e === "not allow to write") outputToWelcomeConsole(i18next.t("数据库权限错误，开始进行调整操作"))
                             databaseError.current = e === "not allow to write"
                         })
                         .finally(() => {
@@ -359,10 +360,10 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
 
         if (!engineMode && engineMode === cacheEngineMode.current) return
 
-        outputToWelcomeConsole(`当前引擎模式为 ${engineMode}`)
+        outputToWelcomeConsole(i18next.t("当前引擎模式为 ${engineMode}", { v1: engineMode }))
         switch (engineMode) {
             case "local":
-                outputToWelcomeConsole(`本地普通权限引擎模式，开始启动本地引擎: ${localPort}`)
+                outputToWelcomeConsole(i18next.t("本地普通权限引擎模式，开始启动本地引擎: ${localPort}", { v1: localPort }))
                 setCredential({
                     Host: "127.0.0.1",
                     IsTLS: false,
@@ -378,11 +379,11 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
                 }, 100)
                 return
             case "remote":
-                outputToWelcomeConsole("远程模式或调试模式，需要用户手动启动引擎")
+                outputToWelcomeConsole(i18next.t("远程模式或调试模式，需要用户手动启动引擎"))
                 setStartAdminEngine(false)
                 return
             case "admin":
-                outputToWelcomeConsole(`管理员模式，启动本地引擎: ${adminPort}`)
+                outputToWelcomeConsole(i18next.t("管理员模式，启动本地引擎: ${adminPort}", { v1: adminPort }))
                 setCredential({
                     Host: "127.0.0.1",
                     IsTLS: false,
@@ -403,7 +404,7 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
 
     /** yaklang引擎切换启动模式 */
     const changeEngineMode = useMemoizedFn((type: YaklangEngineMode, keepalive?: boolean) => {
-        info(`引擎状态切换为: ${EngineModeVerbose(type as YaklangEngineMode)}`)
+        info(i18next.t("引擎状态切换为: ${EngineModeVerbose(type as YaklangEngineMode)}", {v1: EngineModeVerbose(type as YaklangEngineMode)}))
 
         setYakitStatus("")
         setKeepalive(false)
@@ -485,10 +486,10 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
             })
         })
         .catch((err) => {
-            warn(`Base64 解码失败:${err}`)
+            warn(i18next.t("Base64 解码失败:${err}", { v1: err }))
         })
         } catch (error) {
-            warn(`解析失败:${error}`)
+            warn(i18next.t("解析失败:${error}", { v1: error }))
         }
     })
 
@@ -609,7 +610,7 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
                 return
             case "adminMode":
                 if (engineMode === "admin") {
-                    info("当前已是管理员模式")
+                    info(i18next.t("当前已是管理员模式"))
                     return
                 }
                 setStartAdminEngine(true)
@@ -631,7 +632,7 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
                 return
             case "encryptionProject":
                 if (!currentProject || !currentProject.Id) {
-                    failed("当前项目无关键信息，无法导出!")
+                    failed(i18next.t("当前项目无关键信息，无法导出!"))
                     return
                 }
                 setLinkDatabase(true)
@@ -639,7 +640,7 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
                 return
             case "plaintextProject":
                 if (!currentProject || !currentProject.Id) {
-                    failed("当前项目无关键信息，无法导出!")
+                    failed(i18next.t("当前项目无关键信息，无法导出!"))
                     return
                 }
                 setLinkDatabase(true)
@@ -718,7 +719,7 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
                     if (+hosts[1]) port = +hosts[1] || 0
                 })
                 .catch((e) => {
-                    failed(`获取引擎进程错误 ${e}`)
+                    failed(i18next.t("获取引擎进程错误 ${e}", { v1: e }))
                     setTimeout(() => setKillLoading(false), 300)
                     isFailed = true
                 })
@@ -900,13 +901,13 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
             data={[
                 {
                     key: "official_website",
-                    label: "官方网站"
+                    label: i18next.t("官方网站")
                 },
                 {
                     key: "Github",
                     label: "Github",
                     children: [
-                        {label: "功能建议", key: "feature_request"},
+                        {label: i18next.t("功能建议"), key: "feature_request"},
                         {label: "BUG", key: "report_bug"}
                     ]
                 }
@@ -928,7 +929,7 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
                 let feature_tpl = FeatureRequest()
                 ipcRenderer.invoke(
                     "open-url",
-                    `https://github.com/yaklang/yakit/issues/new?title=【需求】需求标题&body=${feature_tpl}&labels=enhancement`
+                    `i18next.t("https://github.com/yaklang/yakit/issues/new?title=【需求】需求标题&body=${feature_tpl}&labels=enhancement`
                 )
                 return
             case "official_website":
@@ -967,7 +968,7 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
                         <div className={styles["stop-icon"]}>
                             <StopIcon />
                         </div>
-                        <span className={styles["stop-text"]}>录屏中</span>
+                        <span className={styles["stop-text"]}>{i18next.t("录屏中")}</span>
                     </YakitButton>
                 )}
             </>
@@ -1355,8 +1356,8 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
 
             <YakitHint
                 visible={linkDatabaseHint}
-                title='是否进入项目管理'
-                content='如果有正在进行中的任务，回到项目管理页则都会停止，确定回到项目管理页面吗?'
+                title={i18next.t("是否进入项目管理")}
+                content={i18next.t("如果有正在进行中的任务，回到项目管理页则都会停止，确定回到项目管理页面吗?")}
                 onOk={() => {
                     setYakitMode("soft")
                     setLinkDatabase(true)
@@ -1371,9 +1372,9 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
                         <div className={styles['hint-modal-wrapper']}>
                             <div className={styles['modal-content']}>
                                 <div className={styles['content-style']}>ChatCS</div>
-                                <div className={styles['subcontent-style']}>与安全有关的问题都可以问牛牛哦~</div>
+                                <div className={styles['subcontent-style']}>{i18next.t("与安全有关的问题都可以问牛牛哦~")}</div>
                             </div>
-                            <div className={styles['modal-btn']} onClick={onChatCS}>我知道了</div>
+                            <div className={styles['modal-btn']} onClick={onChatCS}>{i18next.t("我知道了")}</div>
                         </div>
                         <div className={styles['hint-modal-arrow']}>
                             <PolygonIcon />
@@ -1503,20 +1504,20 @@ const RemoteYaklangEngine: React.FC<RemoteYaklangEngineProps> = React.memo((prop
                         {isCommunityEdition() && <YakitThemeSvgIcon style={{fontSize: 64}} />}
                         {isEnpriTrace()&& 
                             <div className={styles["logo-img"]}>
-                                <img src={yakitEE} alt="暂无图片" />
+                                <img src={yakitEE} alt={i18next.t("暂无图片")} />
                             </div>
                         }
                         {isEnpriTraceAgent()&& 
                             <div className={styles["logo-img"]}>
-                                <img src={yakitSE} alt="暂无图片" />
+                                <img src={yakitSE} alt={i18next.t("暂无图片")} />
                             </div>
                         }
-                        <div className={styles["title-style"]}>远程模式</div>
+                        <div className={styles["title-style"]}>{i18next.t("远程模式")}</div>
                         <div className={styles["remote-history"]}>
-                            <div className={styles["select-title"]}>连接历史</div>
+                            <div className={styles["select-title"]}>{i18next.t("连接历史")}</div>
                             <Select
                                 className={styles["select-style"]}
-                                placeholder='请选择...'
+                                placeholder={i18next.t("请选择...")}
                                 onSelect={(value) => {
                                     const info = auths.filter((item) => item.name === value)[0]
                                     if (!info) return
@@ -1547,7 +1548,7 @@ const RemoteYaklangEngine: React.FC<RemoteYaklangEngineProps> = React.memo((prop
                     <div className={styles["rmeote-divider"]}></div>
                     <div className={styles["remote-info"]}>
                         <Form colon={false} labelAlign='right' labelCol={{span: 8}}>
-                            <Form.Item label='Yak gRPC 主机地址:' required={true}>
+                            <Form.Item label={i18next.t("Yak gRPC 主机地址:")} required={true}>
                                 <Input
                                     className={classNames(styles["input-style"], {
                                         [styles["error-border"]]: isCheck && !remote.host
@@ -1556,7 +1557,7 @@ const RemoteYaklangEngine: React.FC<RemoteYaklangEngineProps> = React.memo((prop
                                     onChange={(e) => setRemote({...remote, host: e.target.value})}
                                 />
                             </Form.Item>
-                            <Form.Item label='Yak gRPC 端口:' required={true}>
+                            <Form.Item label={i18next.t("Yak gRPC 端口:")} required={true}>
                                 <Input
                                     className={classNames(styles["input-style"], {
                                         [styles["error-border"]]: isCheck && !remote.port
@@ -1565,7 +1566,7 @@ const RemoteYaklangEngine: React.FC<RemoteYaklangEngineProps> = React.memo((prop
                                     onChange={(e) => setRemote({...remote, port: e.target.value})}
                                 />
                             </Form.Item>
-                            <Form.Item label='启用通信加密认证 TLS:'>
+                            <Form.Item label={i18next.t("启用通信加密认证 TLS:")}>
                                 <YakitSwitch
                                     size='large'
                                     checked={remote.tls}
@@ -1602,7 +1603,7 @@ const RemoteYaklangEngine: React.FC<RemoteYaklangEngineProps> = React.memo((prop
                                             />
                                         </div>
                                     </Form.Item>
-                                    <Form.Item label='密码'>
+                                    <Form.Item label={i18next.t("密码")}>
                                         <Input
                                             className={styles["input-style"]}
                                             value={remote.password}
@@ -1613,8 +1614,7 @@ const RemoteYaklangEngine: React.FC<RemoteYaklangEngineProps> = React.memo((prop
                             )}
                             <Form.Item
                                 label={
-                                    <div className={styles["pem-title"]}>
-                                        保存为历史连接{" "}
+                                    <div className={styles["pem-title"]}>{i18next.t("保存为历史连接")}{" "}
                                         <PEMHint setShow={setShowAllow}>
                                             <HelpSvgIcon
                                                 className={showAllow ? styles["icon-show-style"] : styles["icon-style"]}
@@ -1632,9 +1632,9 @@ const RemoteYaklangEngine: React.FC<RemoteYaklangEngineProps> = React.memo((prop
                             </Form.Item>
                             {remote.allowSave && (
                                 <Form.Item
-                                    label='连接名:'
+                                    label={i18next.t("连接名:")}
                                     required={true}
-                                    help='填写后，本次记录会保存到连接历史中，之后可以快捷调用'
+                                    help={i18next.t("填写后，本次记录会保存到连接历史中，之后可以快捷调用")}
                                 >
                                     <Input
                                         className={classNames(styles["input-style"], {
@@ -1646,8 +1646,7 @@ const RemoteYaklangEngine: React.FC<RemoteYaklangEngineProps> = React.memo((prop
                                 </Form.Item>
                             )}
                             <Form.Item label=' ' style={{marginTop: 24}}>
-                                <YakitButton size='max' onClick={submit}>
-                                    启动连接
+                                <YakitButton size='max' onClick={submit}>{i18next.t("启动连接")}
                                 </YakitButton>
                                 {!props.engineNotInstalled ? (
                                     <>
@@ -1678,8 +1677,7 @@ const RemoteYaklangEngine: React.FC<RemoteYaklangEngineProps> = React.memo((prop
                                         size='max'
                                         type='outline2'
                                         onClick={() => onCancel()}
-                                    >
-                                        取消
+                                    >{i18next.t("取消")}
                                     </YakitButton>
                                 )}
                             </Form.Item>
@@ -1723,11 +1721,9 @@ const PEMExample: React.FC<PEMExampleProps> = React.memo((props) => {
 
     const content = (
         <div className={styles["pem-wrapper"]}>
-            <div className={styles["title-style"]}>需要 PEM 格式的证书</div>
-            在通过 <div className={styles["content-code"]}>yak grpc --tls</div> 启动核心服务器的时候，会把 RootCA
-            打印到屏幕上，复制到该输入框即可：
-            <br />
-            例如如下内容：
+            <div className={styles["title-style"]}>{i18next.t("需要 PEM 格式的证书")}</div>{i18next.t("在通过")} <div className={styles["content-code"]}>yak grpc --tls</div>{i18next.t(`启动核心服务器的时候，会把 RootCA
+            打印到屏幕上，复制到该输入框即可：`)}
+            <br />{i18next.t("例如如下内容：")}
             <br />
             <div className={styles["code-pem"]}>
                 <YakEditor readOnly={true} value={PemPlaceHolder} />
@@ -1753,17 +1749,15 @@ const PEMHint: React.FC<PEMExampleProps> = React.memo((props) => {
 
     const copyCommand = useMemoizedFn(() => {
         ipcRenderer.invoke("set-copy-clipboard", CodeGV.RemoteLinkPath)
-        success("复制成功")
+        success(i18next.t("复制成功"))
     })
     const openFile = () => {
         ipcRenderer.invoke("open-remote-link")
     }
 
     const content = (
-        <div style={{width: 430}} className={styles["pem-wrapper"]}>
-            注意：{getReleaseEditionName()} 并不会把历史记录上传到互联网
-            <br />
-            你可以在你的本地目录（客户端目录）下找到远程登录信息
+        <div style={{width: 430}} className={styles["pem-wrapper"]}>{i18next.t("注意：")}{getReleaseEditionName()} 并不会把历史记录上传到互联网
+            <br />{i18next.t("你可以在你的本地目录（客户端目录）下找到远程登录信息")}
             <br />
             <div className={styles["path-wrapper"]}>
                 <div className={styles["link-wrapper"]}>
@@ -1772,8 +1766,7 @@ const PEMHint: React.FC<PEMExampleProps> = React.memo((props) => {
                         <YakitCopySvgIcon />
                     </div>
                 </div>
-                <div className={styles["link-open"]} onClick={openFile}>
-                    打开远程信息储存位置
+                <div className={styles["link-open"]} onClick={openFile}>{i18next.t("打开远程信息储存位置")}
                 </div>
             </div>
         </div>
@@ -1840,7 +1833,7 @@ const DownloadYakit: React.FC<DownloadYakitProps> = React.memo((props) => {
                             .invoke("download-latest-yakit", version, isEnterpriseEdition())
                             .then(() => {
                                 if (!isBreakRef.current) return
-                                success("下载完毕")
+                                success(i18next.t("下载完毕"))
                                 if (!getDownloadProgress()?.size) return
                                 setDownloadProgress({
                                     time: {
@@ -1857,7 +1850,7 @@ const DownloadYakit: React.FC<DownloadYakitProps> = React.memo((props) => {
                             })
                             .catch((e: any) => {
                                 if (!isBreakRef.current) return
-                                failed(`下载失败: ${e}`)
+                                failed(i18next.t("下载失败: ${e}", { v1: e }))
                             })
                             .finally(() => setVisible(false))
                     })
@@ -1891,7 +1884,7 @@ const DownloadYakit: React.FC<DownloadYakitProps> = React.memo((props) => {
                                 .invoke("download-enpriTrace-latest-yakit", url)
                                 .then(() => {
                                     if (!isBreakRef.current) return
-                                    success("下载完毕")
+                                    success(i18next.t("下载完毕"))
                                     if (!getDownloadProgress()?.size) return
                                     setDownloadProgress({
                                         time: {
@@ -1908,14 +1901,14 @@ const DownloadYakit: React.FC<DownloadYakitProps> = React.memo((props) => {
                                 })
                                 .catch((e: any) => {
                                     if (!isBreakRef.current) return
-                                    failed(`下载失败: ${e}`)
+                                    failed(i18next.t("下载失败: ${e}", { v1: e }))
                                 })
                                 .finally(() => setVisible(false))
                             })
                         }
                     })
                     .catch((err) => {
-                        failed(`下载yakit安装包失败${err}`)
+                        failed(i18next.t("下载yakit安装包失败${err}", { v1: err }))
                     })
                 })
                 
@@ -2007,19 +2000,18 @@ const DownloadYakit: React.FC<DownloadYakitProps> = React.memo((props) => {
                                         />
                                     </div>
                                     <div className={styles["download-info-wrapper"]}>
-                                        <div>剩余时间 : {(downloadProgress?.time.remaining || 0).toFixed(2)}s</div>
+                                        <div>{i18next.t("剩余时间 :")} {(downloadProgress?.time.remaining || 0).toFixed(2)}s</div>
                                         <div className={styles["divider-wrapper"]}>
                                             <div className={styles["divider-style"]}></div>
                                         </div>
-                                        <div>耗时 : {(downloadProgress?.time.elapsed || 0).toFixed(2)}s</div>
+                                        <div>{i18next.t("耗时 :")} {(downloadProgress?.time.elapsed || 0).toFixed(2)}s</div>
                                         <div className={styles["divider-wrapper"]}>
                                             <div className={styles["divider-style"]}></div>
                                         </div>
-                                        <div>下载速度 : {((downloadProgress?.speed || 0) / 1000000).toFixed(2)}M/s</div>
+                                        <div>{i18next.t("下载速度 :")} {((downloadProgress?.speed || 0) / 1000000).toFixed(2)}M/s</div>
                                     </div>
                                     <div style={{marginTop: 24}}>
-                                        <YakitButton size='max' type='outline2' onClick={onCancel}>
-                                            取消
+                                        <YakitButton size='max' type='outline2' onClick={onCancel}>{i18next.t("取消")}
                                         </YakitButton>
                                     </div>
                                 </div>
@@ -2059,7 +2051,7 @@ const YakitQuestionModal: React.FC<AgrAndQSModalProps> = React.memo((props) => {
 
     const copyCommand = useMemoizedFn(() => {
         ipcRenderer.invoke("set-copy-clipboard", CodeGV.HomeWebsite)
-        success("复制成功")
+        success(i18next.t("复制成功"))
     })
     const onStart = useMemoizedFn((_event: DraggableEvent, uiData: DraggableData) => {
         const {clientWidth, clientHeight} = window.document.documentElement
@@ -2111,7 +2103,7 @@ const YakitQuestionModal: React.FC<AgrAndQSModalProps> = React.memo((props) => {
                                         </div>
                                     )}
                                 </div>
-                                <span>Yakit 软件官网下载链接</span>
+                                <span>{i18next.t("Yakit 软件官网下载链接")}</span>
                             </div>
                         ) : (
                             <div
@@ -2122,17 +2114,16 @@ const YakitQuestionModal: React.FC<AgrAndQSModalProps> = React.memo((props) => {
                                 onMouseOut={() => setDisabled(true)}
                                 onMouseDown={() => setIsTop(2)}
                             >
-                                <span className={styles["header-title"]}>Yakit 软件官网下载链接</span>
+                                <span className={styles["header-title"]}>{i18next.t("Yakit 软件官网下载链接")}</span>
                                 <div className={styles["close-wrapper"]} onClick={() => setVisible(false)}>
                                     <WinUIOpCloseSvgIcon className={styles["icon-style"]} />
                                 </div>
                             </div>
                         )}
                         <div className={styles["modal-body"]}>
-                            <div className={styles["yakit-update-hint"]}>如遇网络问题无法下载，可到官网下载安装：</div>
+                            <div className={styles["yakit-update-hint"]}>{i18next.t("如遇网络问题无法下载，可到官网下载安装：")}</div>
 
-                            <div className={styles["yakit-update-link"]}>
-                                官网地址
+                            <div className={styles["yakit-update-link"]}>{i18next.t("官网地址")}
                                 <div className={styles["link-wrapper"]}>
                                     {CodeGV.HomeWebsite}
                                     <div className={styles["copy-icon"]} onClick={copyCommand}>
@@ -2168,9 +2159,8 @@ const KillOldEngineProcess: React.FC<KillOldEngineProcessProps> = React.memo((pr
                     </div>
 
                     <div className={styles["hint-right-wrapper"]}>
-                        <div className={styles["hint-right-title"]}>发现新引擎版本</div>
-                        <div className={styles["hint-right-content"]}>
-                            发现本地引擎存在新版本待使用，是否关闭引擎使用新版本？
+                        <div className={styles["hint-right-title"]}>{i18next.t("发现新引擎版本")}</div>
+                        <div className={styles["hint-right-content"]}>{i18next.t("发现本地引擎存在新版本待使用，是否关闭引擎使用新版本？")}
                         </div>
 
                         <div className={styles["hint-right-btn"]}>
@@ -2181,11 +2171,9 @@ const KillOldEngineProcess: React.FC<KillOldEngineProcessProps> = React.memo((pr
                                     size='max'
                                     type='outline2'
                                     onClick={() => setVisible(false)}
-                                >
-                                    取消
+                                >{i18next.t("取消")}
                                 </YakitButton>
-                                <YakitButton loading={loading} size='max' onClick={onSubmit}>
-                                    确定
+                                <YakitButton loading={loading} size='max' onClick={onSubmit}>{i18next.t("确定")}
                                 </YakitButton>
                             </div>
                         </div>
@@ -2210,23 +2198,19 @@ const StartAdminEngineHint: React.FC<KillOldEngineProcessProps> = React.memo((pr
                     </div>
 
                     <div className={styles["hint-right-wrapper"]}>
-                        <div className={styles["hint-right-title"]}>启动管理员权限引擎</div>
-                        <div className={styles["hint-right-content"]}>
-                            是否启动并连接管理员权限引擎
+                        <div className={styles["hint-right-title"]}>{i18next.t("启动管理员权限引擎")}</div>
+                        <div className={styles["hint-right-content"]}>{i18next.t("是否启动并连接管理员权限引擎")}
                             <br />
-                            <span className={styles["warning-content"]}>
-                                由于后续功能规划，管理员权限将逐步进行下架，建议使用本地模式，如出现问题，使用“设置-网卡权限修复”即可
+                            <span className={styles["warning-content"]}>{i18next.t("由于后续功能规划，管理员权限将逐步进行下架，建议使用本地模式，如出现问题，使用“设置-网卡权限修复”即可")}
                             </span>
                         </div>
 
                         <div className={styles["hint-right-btn"]}>
                             <div></div>
                             <div className={styles["btn-group-wrapper"]}>
-                                <YakitButton size='max' type='outline2' onClick={() => setVisible(false)}>
-                                    取消
+                                <YakitButton size='max' type='outline2' onClick={() => setVisible(false)}>{i18next.t("取消")}
                                 </YakitButton>
-                                <YakitButton size='max' onClick={onSubmit}>
-                                    确定
+                                <YakitButton size='max' onClick={onSubmit}>{i18next.t("确定")}
                                 </YakitButton>
                             </div>
                         </div>

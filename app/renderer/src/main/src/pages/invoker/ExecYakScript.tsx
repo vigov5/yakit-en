@@ -9,6 +9,7 @@ import {useCreation} from "ahooks"
 
 import useHoldingIPCRStream, {InfoState} from "../../hook/useHoldingIPCRStream"
 import {getReleaseEditionName} from "@/utils/envfile"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -94,7 +95,7 @@ export const DefaultPluginResultUI: React.FC<DefaultPluginResultUIProp> = (props
 
 export const startExecuteYakScript = (script: YakScript, params: YakExecutorParam[]) => {
     showDrawer({
-        title: `正在执行的 ${getReleaseEditionName()} 模块：${script.ScriptName}`,
+        title: i18next.t("正在执行的") + ` ${getReleaseEditionName()}` + i18next.t("模块") + `：${script.ScriptName}`,
         width: "85%",
         mask: false,
         content: (

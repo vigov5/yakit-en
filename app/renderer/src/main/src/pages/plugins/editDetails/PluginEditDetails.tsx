@@ -58,6 +58,7 @@ import {SolidStoreIcon} from "@/assets/icon/solid"
 import "../plugins.scss"
 import styles from "./pluginEditDetails.module.scss"
 import classNames from "classnames"
+import i18next from "../../../i18n"
 
 const {Link} = Anchor
 
@@ -65,8 +66,8 @@ const {ipcRenderer} = window.require("electron")
 
 /** @name 类型选择-插件类型选项信息 */
 const DefaultKindList: {icon: ReactNode; name: string; key: string}[] = [
-    {icon: <OutlineBugIcon />, name: "漏洞类", key: "bug"},
-    {icon: <OutlineSmviewgridaddIcon />, name: "其他", key: "other"}
+    {icon: <OutlineBugIcon />, name: i18next.t("漏洞类"), key: "bug"},
+    {icon: <OutlineSmviewgridaddIcon />, name: i18next.t("其他"), key: "other"}
 ]
 
 interface PluginEditDetailsProps {
@@ -127,7 +128,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                 }, 500)
             })
             .catch((e: any) => {
-                yakitNotify("error", "查询插件信息失败:" + e)
+                yakitNotify("error", i18next.t("查询插件信息失败:") + e)
             })
     })
 
@@ -349,14 +350,14 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
             Content: ""
         }
         if (!getTypeParams().Kind || !getTypeParams().Type) {
-            yakitNotify("error", "请选择脚本类型和插件类型")
+            yakitNotify("error", i18next.t("请选择脚本类型和插件类型"))
             return
         }
         data.Type = getTypeParams().Type
         data.Kind = getTypeParams().Kind
 
         if (!infoRef.current) {
-            yakitNotify("error", "未获取到基础信息，请重试")
+            yakitNotify("error", i18next.t("未获取到基础信息，请重试"))
             return
         }
         const info = await infoRef.current.onSubmit()
@@ -373,7 +374,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
         }
 
         if (!settingRef.current) {
-            yakitNotify("error", "未获取到配置信息，请重试")
+            yakitNotify("error", i18next.t("未获取到配置信息，请重试"))
             return
         }
         const setting = await settingRef.current.onSubmit()
@@ -429,7 +430,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
             ipcRenderer
                 .invoke("SaveNewYakScript", request)
                 .then((data: YakScript) => {
-                    yakitNotify("success", "创建 / 保存 插件成功")
+                    yakitNotify("success", i18next.t("创建 / 保存 插件成功"))
                     setTimeout(() => ipcRenderer.invoke("change-main-menu"), 100)
                     onLocalAndOnlineSend(data)
                     resolve(data)
@@ -446,7 +447,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
         const exec = (extraParams?: YakExecutorParam[]) => {
             if (yakScriptInfo.Params.length <= 0) {
                 showModal({
-                    title: "立即执行",
+                    title: i18next.t("立即执行"),
                     width: 1000,
                     content: (
                         <>
@@ -461,7 +462,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                 })
             } else {
                 let m = showModal({
-                    title: "确认想要执行的参数",
+                    title: i18next.t("确认想要执行的参数"),
                     width: "70%",
                     content: (
                         <>
@@ -471,7 +472,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                                 onParamsConfirm={(params) => {
                                     m.destroy()
                                     showModal({
-                                        title: "立即执行",
+                                        title: i18next.t("立即执行"),
                                         width: 1000,
                                         content: (
                                             <>
@@ -522,7 +523,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
         }
         // 出现未知错误，未获取到插件名
         if (!obj.ScriptName) {
-            yakitNotify("error", "未获取到插件名，请关闭页面后重试")
+            yakitNotify("error", i18next.t("未获取到插件名，请关闭页面后重试"))
             closeSaveLoading()
             return
         }
@@ -535,7 +536,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                 debugPlugin(res)
             })
             .catch((e) => {
-                yakitNotify("error", `调试操作需保存，保存失败: ${e}`)
+                yakitNotify("error", i18next.t("调试操作需保存，保存失败: ${e}", { v1: e }))
             })
             .finally(() => {
                 closeSaveLoading()
@@ -546,7 +547,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
     // 同步至云端
     const onSyncCloud = useMemoizedFn(async () => {
         if (!userInfo.isLogin) {
-            yakitNotify("error", "登录后才可同步至云端")
+            yakitNotify("error", i18next.t("登录后才可同步至云端"))
             return
         }
         if (onlineLoading || modifyLoading || saveLoading) return
@@ -568,7 +569,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
     // 复制至云端
     const onCopyCloud = useMemoizedFn(async () => {
         if (!userInfo.isLogin) {
-            yakitNotify("error", "登录后才可复制至云端")
+            yakitNotify("error", i18next.t("登录后才可复制至云端"))
             return
         }
         if (onlineLoading || modifyLoading || saveLoading) return
@@ -592,7 +593,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
     // 提交
     const onSubmit = useMemoizedFn(async () => {
         if (!userInfo.isLogin) {
-            yakitNotify("error", "登录后才可提交修改")
+            yakitNotify("error", i18next.t("登录后才可提交修改"))
             return
         }
         if (modifyLoading || onlineLoading || saveLoading) return
@@ -611,7 +612,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
         modifyInfo.current = convertLocalToRemoteInfo(isModify, {info: info, modify: obj})
 
         if (info && modifyInfo.current.script_name !== info?.ScriptName) {
-            yakitNotify("error", "提交请勿修改插件名")
+            yakitNotify("error", i18next.t("提交请勿修改插件名"))
             setTimeout(() => {
                 setModifyLoading(false)
             }, 200)
@@ -651,7 +652,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
         }
         // 出现未知错误，未获取到插件名
         if (!obj.ScriptName) {
-            yakitNotify("error", "未获取到插件名，请关闭页面后重试")
+            yakitNotify("error", i18next.t("未获取到插件名，请关闭页面后重试"))
             closeSaveLoading()
             return
         }
@@ -661,7 +662,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                 onDestroyInstance(true)
             })
             .catch((e) => {
-                yakitNotify("error", `保存插件失败: ${e}`)
+                yakitNotify("error", i18next.t("保存插件失败: ${e}", { v1: e }))
             })
             .finally(() => {
                 closeSaveLoading()
@@ -679,7 +680,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                 // 中断同步|复制至云端按钮的加载状态
                 setOnlineLoading(false)
             }, 100)
-            if (!modifyInfo.current) yakitNotify("error", "未获取到插件信息，请重试!")
+            if (!modifyInfo.current) yakitNotify("error", i18next.t("未获取到插件信息，请重试!"))
             return
         }
 
@@ -821,8 +822,8 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
         if (pluginId) {
             setSubscribeClose(YakitRoute.ModifyYakitScript, {
                 close: {
-                    title: "插件未保存",
-                    content: "是否要将修改内容保存到本地?",
+                    title: i18next.t("插件未保存"),
+                    content: i18next.t("是否要将修改内容保存到本地?"),
                     confirmLoading: saveLoading,
                     onOk: (m) => {
                         modalRef.current = m
@@ -834,8 +835,8 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                     }
                 },
                 reset: {
-                    title: "插件未保存",
-                    content: "是否要将修改内容保存到本地，并编辑另一个插件?",
+                    title: i18next.t("插件未保存"),
+                    content: i18next.t("是否要将修改内容保存到本地，并编辑另一个插件?"),
                     confirmLoading: saveLoading,
                     onOk: (m) => {
                         modalRef.current = m
@@ -846,7 +847,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                         if (otherId.current) {
                             fetchPluginInfo(otherId.current)
                         } else {
-                            yakitNotify("error", "未获取到编辑插件Id,请重新操作")
+                            yakitNotify("error", i18next.t("未获取到编辑插件Id,请重新操作"))
                         }
                     }
                 }
@@ -854,8 +855,8 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
         } else {
             setSubscribeClose(YakitRoute.AddYakitScript, {
                 close: {
-                    title: "插件未保存",
-                    content: "是否要将插件保存到本地?",
+                    title: i18next.t("插件未保存"),
+                    content: i18next.t("是否要将插件保存到本地?"),
                     confirmLoading: saveLoading,
                     onOk: (m) => {
                         modalRef.current = m
@@ -867,8 +868,8 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                     }
                 },
                 reset: {
-                    title: "插件未保存",
-                    content: "是否要将插件保存到本地，并新建插件?",
+                    title: i18next.t("插件未保存"),
+                    content: i18next.t("是否要将插件保存到本地，并新建插件?"),
                     confirmLoading: saveLoading,
                     onOk: (m) => {
                         modalRef.current = m
@@ -907,7 +908,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                     if (otherId.current) {
                         fetchPluginInfo(otherId.current)
                     } else {
-                        yakitNotify("error", "未获取到编辑插件Id,请重新操作")
+                        yakitNotify("error", i18next.t("未获取到编辑插件Id,请重新操作"))
                     }
                 }
             } else {
@@ -977,7 +978,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
         <div className={styles["plugin-edit-details-wrapper"]}>
             <div className={styles["plugin-edit-details-header"]}>
                 <div className={styles["header-title"]}>
-                    <div className={styles["title-style"]}>{pluginId ? "修改插件" : "新建插件"}</div>
+                    <div className={styles["title-style"]}>{pluginId ? i18next.t("修改插件") : i18next.t("新建插件")}</div>
                     {!!info && (
                         <div className={styles["title-extra-wrapper"]}>
                             <YakitTag color={pluginTypeToName[info.Type]?.color as any}>
@@ -1006,8 +1007,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                             href='#plugin-details-type'
                             title={
                                 <YakitButton className={path === "type" ? styles["path-btn"] : undefined} type='text2'>
-                                    <OutlineViewgridIcon />
-                                    类型选择
+                                    <OutlineViewgridIcon />{i18next.t("类型选择")}
                                 </YakitButton>
                             }
                         />
@@ -1016,8 +1016,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                             href='#plugin-details-info'
                             title={
                                 <YakitButton className={path === "info" ? styles["path-btn"] : undefined} type='text2'>
-                                    <OutlineIdentificationIcon />
-                                    基础信息
+                                    <OutlineIdentificationIcon />{i18next.t("基础信息")}
                                 </YakitButton>
                             }
                         />
@@ -1029,8 +1028,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                                     className={path === "setting" ? styles["path-btn"] : undefined}
                                     type='text2'
                                 >
-                                    <OutlineAdjustmentsIcon />
-                                    插件配置
+                                    <OutlineAdjustmentsIcon />{i18next.t("插件配置")}
                                 </YakitButton>
                             }
                         />
@@ -1043,7 +1041,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                             icon={<OutlineCodeIcon />}
                             type='outline2'
                             size='large'
-                            name={"调试"}
+                            name={i18next.t("调试")}
                             onClick={onDebug}
                         />
 
@@ -1053,7 +1051,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                                 icon={<OutlineDocumentduplicateIcon />}
                                 type='outline2'
                                 size='large'
-                                name={"复制至云端"}
+                                name={i18next.t("复制至云端")}
                                 loading={onlineLoading}
                                 onClick={onCopyCloud}
                             />
@@ -1065,7 +1063,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                                 icon={<OutlinePaperairplaneIcon />}
                                 type='outline1'
                                 size='large'
-                                name={"提交"}
+                                name={i18next.t("提交")}
                                 loading={modifyLoading}
                                 onClick={onSubmit}
                             />
@@ -1077,7 +1075,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                                 icon={<OutlineClouduploadIcon />}
                                 type='outline1'
                                 size='large'
-                                name={"同步至云端"}
+                                name={i18next.t("同步至云端")}
                                 loading={onlineLoading}
                                 onClick={onSyncCloud}
                             />
@@ -1087,7 +1085,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                             maxWidth={1100}
                             icon={<SolidStoreIcon />}
                             size='large'
-                            name={"保存"}
+                            name={i18next.t("保存")}
                             loading={saveLoading}
                             onClick={onBtnSave}
                         />
@@ -1099,10 +1097,10 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                 <div className={styles["body-wrapper"]}>
                     {/* 类型选择 */}
                     <div id='plugin-details-type' className={styles["body-type-wrapper"]}>
-                        <div className={styles["header-wrapper"]}>类型选择</div>
+                        <div className={styles["header-wrapper"]}>{i18next.t("类型选择")}</div>
                         <div className={styles["type-body"]}>
                             <div className={styles["body-container"]}>
-                                <div className={styles["type-title"]}>脚本类型</div>
+                                <div className={styles["type-title"]}>{i18next.t("脚本类型")}</div>
                                 <div className={styles["type-list"]}>
                                     <div className={styles["list-row"]}>
                                         {DefaultTypeList.slice(0, 3).map((item) => {
@@ -1132,7 +1130,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                             </div>
                             {typeParams.Type !== "codec" && (
                                 <div className={styles["body-container"]}>
-                                    <div className={styles["type-title"]}>插件类型</div>
+                                    <div className={styles["type-title"]}>{i18next.t("插件类型")}</div>
                                     <div className={styles["type-kind"]}>
                                         {DefaultKindList.map((item) => {
                                             return (
@@ -1151,7 +1149,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                     </div>
                     {/* 基础信息 */}
                     <div id='plugin-details-info' className={styles["body-info-wrapper"]}>
-                        <div className={styles["header-wrapper"]}>基础信息</div>
+                        <div className={styles["header-wrapper"]}>{i18next.t("基础信息")}</div>
                         <div className={styles["info-body"]}>
                             <PluginModifyInfo
                                 ref={infoRef}
@@ -1163,7 +1161,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                     </div>
                     {/* 插件配置 */}
                     <div id='plugin-details-setting' className={styles["body-setting-wrapper"]}>
-                        <div className={styles["header-wrapper"]}>插件配置</div>
+                        <div className={styles["header-wrapper"]}>{i18next.t("插件配置")}</div>
                         <div className={styles["setting-body"]}>
                             <PluginModifySetting
                                 ref={settingRef}
@@ -1175,9 +1173,8 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                             <div className={styles["setting-editor-wrapper"]}>
                                 <div className={styles["editor-header"]}>
                                     <div className={styles["header-title"]}>
-                                        <span className={styles["title-style"]}>源码</span>
-                                        <span className={styles["subtitle-style"]}>
-                                            可在此定义插件输入原理，并编写输出 UI
+                                        <span className={styles["title-style"]}>{i18next.t("源码")}</span>
+                                        <span className={styles["subtitle-style"]}>{i18next.t("可在此定义插件输入原理，并编写输出 UI")}
                                         </span>
                                     </div>
                                     <YakitButton
@@ -1317,11 +1314,11 @@ export const PluginEditorModal: React.FC<PluginEditorModalProps> = memo((props) 
 
     return (
         <YakitModal
-            title='源码'
+            title={i18next.t("源码")}
             subTitle={
                 <div className={styles["plugin-editor-modal-subtitle"]}>
-                    <span>可在此定义插件输入原理，并编写输出 UI</span>
-                    <span>按 Esc 即可退出全屏</span>
+                    <span>{i18next.t("可在此定义插件输入原理，并编写输出 UI")}</span>
+                    <span>{i18next.t("按 Esc 即可退出全屏")}</span>
                 </div>
             }
             type='white'
@@ -1369,11 +1366,11 @@ export const PluginDiffEditorModal: React.FC<PluginDiffEditorModalProps> = memo(
 
     return (
         <YakitModal
-            title='源码'
+            title={i18next.t("源码")}
             subTitle={
                 <div className={styles["plugin-editor-modal-subtitle"]}>
-                    <span>可在此定义插件输入原理，并编写输出 UI</span>
-                    <span>按 Esc 即可退出全屏</span>
+                    <span>{i18next.t("可在此定义插件输入原理，并编写输出 UI")}</span>
+                    <span>{i18next.t("按 Esc 即可退出全屏")}</span>
                 </div>
             }
             type='white'
@@ -1414,7 +1411,7 @@ const PluginSyncAndCopyModal: React.FC<PluginSyncAndCopyModalProps> = memo((prop
 
     const onSubmit = useMemoizedFn(() => {
         if (isCopy && !name) {
-            yakitNotify("error", "请输入复制插件的名称")
+            yakitNotify("error", i18next.t("请输入复制插件的名称"))
             return
         }
         setVisible(true, {type: isCopy ? undefined : type, name: isCopy ? name : undefined})
@@ -1422,7 +1419,7 @@ const PluginSyncAndCopyModal: React.FC<PluginSyncAndCopyModalProps> = memo((prop
 
     return (
         <YakitModal
-            title={isCopy ? "复制至云端" : "同步至云端"}
+            title={isCopy ? i18next.t("复制至云端") : i18next.t("同步至云端")}
             type='white'
             width={isCopy ? 506 : 448}
             centered={true}
@@ -1434,12 +1431,11 @@ const PluginSyncAndCopyModal: React.FC<PluginSyncAndCopyModalProps> = memo((prop
         >
             {isCopy ? (
                 <div className={styles["plugin-sync-and-copy-body"]}>
-                    <div className={styles["copy-header"]}>
-                        复制插件并同步到自己的私密插件，无需作者同意，即可保存修改内容至云端
+                    <div className={styles["copy-header"]}>{i18next.t("复制插件并同步到自己的私密插件，无需作者同意，即可保存修改内容至云端")}
                     </div>
                     <div className={styles["copy-wrapper"]}>
-                        <div className={styles["title-style"]}>插件名称 : </div>
-                        <YakitInput placeholder='请输入...' value={name} onChange={(e) => setName(e.target.value)} />
+                        <div className={styles["title-style"]}>{i18next.t("插件名称 :")} </div>
+                        <YakitInput placeholder={i18next.t("请输入...")} value={name} onChange={(e) => setName(e.target.value)} />
                     </div>
                 </div>
             ) : (
@@ -1453,7 +1449,7 @@ const PluginSyncAndCopyModal: React.FC<PluginSyncAndCopyModalProps> = memo((prop
                                 setType("private")
                             }}
                         >
-                            私密(仅自己可见)
+                            {i18next.t("私密(仅自己可见)")}
                         </Radio>
                         <Radio
                             className='plugins-radio-wrapper'
@@ -1463,7 +1459,7 @@ const PluginSyncAndCopyModal: React.FC<PluginSyncAndCopyModalProps> = memo((prop
                                 setType("public")
                             }}
                         >
-                            公开(审核通过后，将上架到插件商店)
+                            {i18next.t("公开(审核通过后，将上架到插件商店)")}
                         </Radio>
                     </div>
                 </div>
@@ -1523,7 +1519,7 @@ const ModifyPluginReason: React.FC<ModifyPluginReasonProps> = memo((props) => {
 
     const onSubmit = useMemoizedFn(() => {
         if (!content) {
-            yakitNotify("error", "请描述一下修改内容")
+            yakitNotify("error", i18next.t("请描述一下修改内容"))
             return
         }
         onCancel(true, content)
@@ -1535,7 +1531,7 @@ const ModifyPluginReason: React.FC<ModifyPluginReasonProps> = memo((props) => {
 
     return (
         <YakitModal
-            title='描述修改内容'
+            title={i18next.t("描述修改内容")}
             type='white'
             width={448}
             centered={true}
@@ -1547,7 +1543,7 @@ const ModifyPluginReason: React.FC<ModifyPluginReasonProps> = memo((props) => {
         >
             <div className={styles["modify-plugin-reason-wrapper"]}>
                 <YakitInput.TextArea
-                    placeholder='请简单描述一下修改内容，方便作者审核...'
+                    placeholder={i18next.t("请简单描述一下修改内容，方便作者审核...")}
                     autoSize={{minRows: 3, maxRows: 3}}
                     showCount
                     value={content}

@@ -6,6 +6,7 @@ import {GetYakScriptByOnlineIDRequest} from "@/pages/yakitStore/YakitStorePage"
 import {yakitNotify} from "@/utils/notification"
 import {toolDelInvalidKV} from "@/utils/tool"
 import {apiDownloadPluginMine} from "../utils"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -273,23 +274,23 @@ export const uploadOnlinePlugin = (
                         } as GetYakScriptByOnlineIDRequest)
                         .then((newSrcipt: YakScript) => {
                             if (callback) callback(newSrcipt)
-                            yakitNotify("success", "上传云端成功")
+                            yakitNotify("success", i18next.t("上传云端成功"))
                         })
                         .catch((e) => {
                             // @ts-ignore
                             if (callback) callback(true)
-                            yakitNotify("error", `查询本地插件错误:${e}`)
+                            yakitNotify("error", i18next.t("查询本地插件错误:${e}", { v1: e }))
                         })
                 })
                 .catch((err) => {
                     // @ts-ignore
                     if (callback) callback(true)
-                    yakitNotify("error", `插件下载本地失败:${err}`)
+                    yakitNotify("error", i18next.t("插件下载本地失败:${err}", { v1: err }))
                 })
         })
         .catch((err) => {
             if (callback) callback()
-            yakitNotify("error", "插件上传失败:" + err)
+            yakitNotify("error", i18next.t("插件上传失败:") + err)
         })
 }
 
@@ -320,22 +321,22 @@ export const copyOnlinePlugin = (info: API.CopyPluginsRequest, callback?: (plugi
                         } as GetYakScriptByOnlineIDRequest)
                         .then((newSrcipt: YakScript) => {
                             if (callback) callback(newSrcipt)
-                            yakitNotify("success", "复制插件成功")
+                            yakitNotify("success", i18next.t("复制插件成功"))
                         })
                         .catch((e) => {
                             // @ts-ignore
                             if (callback) callback(true)
-                            yakitNotify("error", `查询本地插件错误:${e}`)
+                            yakitNotify("error", i18next.t("查询本地插件错误:${e}", { v1: e }))
                         })
                 })
                 .catch((err) => {
                     // @ts-ignore
                     if (callback) callback(true)
-                    yakitNotify("error", `插件下载本地失败:${err}`)
+                    yakitNotify("error", i18next.t("插件下载本地失败:${err}", { v1: err }))
                 })
         })
         .catch((err) => {
             if (callback) callback()
-            yakitNotify("error", "复制插件失败:" + err)
+            yakitNotify("error", i18next.t("复制插件失败:") + err)
         })
 }

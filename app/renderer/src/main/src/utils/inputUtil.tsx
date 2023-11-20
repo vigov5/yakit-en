@@ -33,6 +33,7 @@ import {YakitSwitch} from "@/components/yakitUI/YakitSwitch/YakitSwitch";
 import {YakitInput} from "@/components/yakitUI/YakitInput/YakitInput";
 import {YakitInputNumber} from "@/components/yakitUI/YakitInputNumber/YakitInputNumber";
 import { YakitSelect } from "@/components/yakitUI/YakitSelect/YakitSelect";
+import i18next from "../i18n"
 
 type TooltipPlacement =
     'top'
@@ -251,7 +252,7 @@ export const InputStringOrJsonItem: React.FC<InputStringOrJsonItemProps> = (prop
                 value={props.value} onChange={e => props.setValue && props.setValue(e.target.value)}
             />
         </Item> : <>{items.map((item, index) => {
-            return <Form.Item label={`参数[${index}]`}>
+            return <Form.Item label={i18next.t("参数[${index}]", { v1: index })}>
                 <Input.Group>
                     <Row gutter={10}>
                         <Col span={6}>
@@ -270,7 +271,7 @@ export const InputStringOrJsonItem: React.FC<InputStringOrJsonItemProps> = (prop
                                         style={{width: "100%"}}
                                         allowClear={true}
                                         autoClearSearchValue={true}
-                                        placeholder={"参数使用 | 分割数组"}
+                                        placeholder={i18next.t("参数使用 | 分割数组")}
                                         dropdownMatchSelectWidth={200}
                                         mode={"tags"}
                                         value={items[index].value?.split("|") || []} maxTagTextLength={20}
@@ -330,7 +331,7 @@ export const InputStringOrJsonItem: React.FC<InputStringOrJsonItemProps> = (prop
                         onClick={e => {
                             setItems([...items, {key: "", value: undefined}])
                         }}
-                >添加 Key-Value Pair</Button></Item>
+                >{i18next.t("添加 Key-Value Pair")}</Button></Item>
         </>}
     </div>
 }
@@ -585,18 +586,16 @@ export const InputFileNameItem: React.FC<InputFileNameItemProps> = p => {
                     label={""}
                     setValue={Targets => p.setContent && p.setContent(Targets)}
                     value={p.content} textarea={true} textareaRow={6}
-                    placeholder="请输入绝对路径"
+                    placeholder={i18next.t("请输入绝对路径")}
                     isBubbing={true}
-                    help={p.hint ? p.hint : (<div>
-                        可将文件拖入框内或<span style={{color: 'rgb(25,143,255)'}}>点击此处</span>上传
+                    help={p.hint ? p.hint : (<div>{i18next.t("可将文件拖入框内或")} <span style={{color: 'rgb(25,143,255)'}}>{i18next.t("点击此处")}</span>
                     </div>)}
                 /> : <InputItem
                     autoComplete={p.autoComplete}
                     label={""}
                     value={p.filename} setValue={f => p.setFileName && p.setFileName(f)}
-                    placeholder="请输入绝对路径"
-                    isBubbing={true} allowClear={false} help={p.hint ? p.hint : (<div>
-                    可将文件拖入框内或<span style={{color: 'rgb(25,143,255)'}}>点击此处</span>上传
+                    placeholder={i18next.t("请输入绝对路径")}
+                    isBubbing={true} allowClear={false} help={p.hint ? p.hint : (<div>{i18next.t("可将文件拖入框内或")} <span style={{color: 'rgb(25,143,255)'}}>{i18next.t("点击此处")}</span>
                 </div>)}
                 />
                 }
@@ -711,7 +710,7 @@ export const EditableTagsGroup: React.FC<EditableTagsGroupProps> = (p) => {
                                 p.onTags && p.onTags(tags)
                             }
                         }}
-                    >删除 Tag</Button>,
+                    >{i18next.t("删除 Tag")}</Button>,
                 ]}
             ><Tag
                 color={p.randomColor ? randomColor() : "geekblue"}

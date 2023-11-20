@@ -16,6 +16,7 @@ import usePluginUploadHooks, {SaveYakScriptToOnlineRequest, SaveYakScriptToOnlin
 
 import "../plugins.scss"
 import styles from "./PluginLocalUpload.module.scss"
+import i18next from "../../../i18n"
 
 interface PluginLocalUploadProps {
     pluginNames: string[]
@@ -48,11 +49,11 @@ export const PluginLocalUpload: React.FC<PluginLocalUploadProps> = React.memo((p
     const steps = useMemo(() => {
         return [
             {
-                title: "选私密/公开",
+                title: i18next.t("选私密/公开"),
                 content: <PluginIsPrivateSelection onNext={onPrivateSelectionPrev} />
             },
             {
-                title: "自动检测",
+                title: i18next.t("自动检测"),
                 content: (
                     <PluginAutoTest
                         show={current === 1}
@@ -63,7 +64,7 @@ export const PluginLocalUpload: React.FC<PluginLocalUploadProps> = React.memo((p
                 )
             },
             {
-                title: "上传中",
+                title: i18next.t("上传中"),
                 content: (
                     <PluginUpload
                         show={current === 2 && successPluginNames.length > 0}
@@ -84,11 +85,10 @@ export const PluginLocalUpload: React.FC<PluginLocalUploadProps> = React.memo((p
                 ))}
             </YakitSteps>
             <div className={styles["header-wrapper"]}>
-                <div className={styles["title-style"]}>提示：</div>
+                <div className={styles["title-style"]}>{i18next.t("提示：")}</div>
                 <div className={styles["header-body"]}>
                     <div className={styles["opt-content"]}>
-                        <div className={styles["content-order"]}>1</div>
-                        批量上传只支持新增，更新插件请点击编辑逐个进行更新
+                        <div className={styles["content-order"]}>1</div>{i18next.t("批量上传只支持新增，更新插件请点击编辑逐个进行更新")}
                     </div>
                 </div>
             </div>
@@ -117,7 +117,7 @@ const PluginIsPrivateSelection: React.FC<PluginIsPrivateSelectionProps> = React.
                         setIsPrivate(true)
                     }}
                 >
-                    私密(仅自己可见)
+                    {i18next.t("私密(仅自己可见)")}
                 </Radio>
                 <Radio
                     className='plugins-radio-wrapper'
@@ -126,11 +126,11 @@ const PluginIsPrivateSelection: React.FC<PluginIsPrivateSelectionProps> = React.
                         setIsPrivate(false)
                     }}
                 >
-                    公开(审核通过后，将上架到插件商店)
+                    {i18next.t("公开(审核通过后，将上架到插件商店)")}
                 </Radio>
             </div>
             <div className={styles["plugin-local-upload-steps-action"]}>
-                <YakitButton onClick={onClickNext}>下一步</YakitButton>
+                <YakitButton onClick={onClickNext}>{i18next.t("下一步")}</YakitButton>
             </div>
         </>
     )
@@ -177,7 +177,7 @@ const PluginAutoTest: React.FC<PluginAutoTestProps> = React.memo((props) => {
         ipcRenderer.on(`${taskToken}-end`, () => {})
         ipcRenderer.on(`${taskToken}-error`, (_, e) => {
             setIsShowRetry(true)
-            yakitNotify("error", "自动评分异常，请重试")
+            yakitNotify("error", i18next.t("自动评分异常，请重试"))
         })
         return () => {
             ipcRenderer.invoke("cancel-SmokingEvaluatePluginBatch", taskToken)
@@ -205,12 +205,12 @@ const PluginAutoTest: React.FC<PluginAutoTestProps> = React.memo((props) => {
                 const pluginNameList: string[] = JSON.parse(data.Message || "[]") || []
                 setSuccessPluginNames(pluginNameList)
                 if (pluginNameList.length === pluginNames.length) {
-                    yakitNotify("success", "检测完毕,全部成功,自动进入下一步上传")
+                    yakitNotify("success", i18next.t("检测完毕,全部成功,自动进入下一步上传"))
                     setTimeout(() => {
                         onNext(pluginNameList)
                     }, 200)
                 } else if (pluginNameList.length === 0) {
-                    yakitNotify("error", "检测完毕,全部失败,不能进行上传操作")
+                    yakitNotify("error", i18next.t("检测完毕,全部失败,不能进行上传操作"))
                 } else {
                     setIsHaveError(true)
                 }
@@ -235,7 +235,7 @@ const PluginAutoTest: React.FC<PluginAutoTestProps> = React.memo((props) => {
             .invoke("SmokingEvaluatePluginBatch", params, taskTokenRef.current)
             .then(() => {})
             .catch((e) => {
-                failed(`开始检测失败:${e}`)
+                failed(i18next.t("开始检测失败:${e}", { v1: e }))
             })
     })
     const onClickNext = useMemoizedFn(() => {
@@ -256,7 +256,7 @@ const PluginAutoTest: React.FC<PluginAutoTestProps> = React.memo((props) => {
                     strokeColor='#F28B44'
                     trailColor='#F0F2F5'
                     percent={percent}
-                    format={(percent) => `已检测 ${percent}%`}
+                    format={(percent) => i18next.t("已检测 ${percent}%", { v1: percent })}
                 />
                 {messageList.length > 0 && (
                     <div className={styles["plugin-message-list"]}>
@@ -275,11 +275,10 @@ const PluginAutoTest: React.FC<PluginAutoTestProps> = React.memo((props) => {
                 )}
             </div>
             <div className={styles["plugin-local-upload-steps-action"]}>
-                <YakitButton type='outline2' onClick={onClickCancel}>
-                    取消
+                <YakitButton type='outline2' onClick={onClickCancel}>{i18next.t("取消")}
                 </YakitButton>
-                {isShowRetry && <YakitButton onClick={onClickRetry}>重试</YakitButton>}
-                {isHaveError && <YakitButton onClick={onClickNext}>下一步</YakitButton>}
+                {isShowRetry && <YakitButton onClick={onClickRetry}>{i18next.t("重试")}</YakitButton>}
+                {isHaveError && <YakitButton onClick={onClickNext}>{i18next.t("下一步")}</YakitButton>}
             </div>
         </>
     )
@@ -378,7 +377,7 @@ export const PluginUpload: React.FC<PluginUploadProps> = React.memo((props) => {
                     strokeColor='#F28B44'
                     trailColor='#F0F2F5'
                     percent={percent}
-                    format={(percent) => `已上传 ${percent}%`}
+                    format={(percent) => i18next.t("已上传 ${percent}%", { v1: percent })}
                 />
                 {messageList.length > 0 && (
                     <div className={styles["plugin-message-list"]}>
@@ -397,11 +396,10 @@ export const PluginUpload: React.FC<PluginUploadProps> = React.memo((props) => {
                 )}
             </div>
             <div className={classNames(styles["plugin-local-upload-steps-action"], footerClassName)}>
-                <YakitButton type='outline2' onClick={onClickCancel}>
-                    取消
+                <YakitButton type='outline2' onClick={onClickCancel}>{i18next.t("取消")}
                 </YakitButton>
-                {isShowRetry && <YakitButton onClick={onClickRetry}>重试</YakitButton>}
-                {isHaveError && <YakitButton onClick={onClickNext}>完成</YakitButton>}
+                {isShowRetry && <YakitButton onClick={onClickRetry}>{i18next.t("重试")}</YakitButton>}
+                {isHaveError && <YakitButton onClick={onClickNext}>{i18next.t("完成")}</YakitButton>}
             </div>
         </>
     )
@@ -454,7 +452,7 @@ export const PluginLocalUploadSingle: React.FC<PluginLocalUploadSingleProps> = R
     const steps = useMemo(() => {
         return [
             {
-                title: "选私密/公开",
+                title: i18next.t("选私密/公开"),
                 content: (
                     <PluginIsPrivateSelectionSingle
                         onUpload={onUpload}
@@ -464,7 +462,7 @@ export const PluginLocalUploadSingle: React.FC<PluginLocalUploadSingleProps> = R
                 )
             },
             {
-                title: "自动检测",
+                title: i18next.t("自动检测"),
                 content: <PluginAutoTestSingle plugin={plugin} onNext={onUpload} />
             }
         ]
@@ -515,15 +513,13 @@ const PluginIsPrivateSelectionSingle: React.FC<PluginIsPrivateSelectionSinglePro
     return (
         <div className={styles["plugin-private-select-single"]}>
             <div className={styles["header-wrapper"]}>
-                <div className={styles["title-style"]}>提示：</div>
+                <div className={styles["title-style"]}>{i18next.t("提示：")}</div>
                 <div className={styles["header-body"]}>
                     <div className={styles["opt-content"]}>
-                        <div className={styles["content-order"]}>1</div>
-                        私密插件不用进行自动检测
+                        <div className={styles["content-order"]}>1</div>{i18next.t("私密插件不用进行自动检测")}
                     </div>
                     <div className={styles["opt-content"]}>
-                        <div className={styles["content-order"]}>2</div>
-                        公开插件检测成功后会自动上传
+                        <div className={styles["content-order"]}>2</div>{i18next.t("公开插件检测成功后会自动上传")}
                     </div>
                 </div>
             </div>
@@ -536,7 +532,7 @@ const PluginIsPrivateSelectionSingle: React.FC<PluginIsPrivateSelectionSinglePro
                         setIsPrivate(true)
                     }}
                 >
-                    私密(仅自己可见)
+                    {i18next.t("私密(仅自己可见)")}
                 </Radio>
                 <Radio
                     className='plugins-radio-wrapper'
@@ -545,16 +541,15 @@ const PluginIsPrivateSelectionSingle: React.FC<PluginIsPrivateSelectionSinglePro
                         setIsPrivate(false)
                     }}
                 >
-                    公开(审核通过后，将上架到插件商店)
+                    {i18next.t("公开(审核通过后，将上架到插件商店)")}
                 </Radio>
             </div>
             <div className={styles["plugin-local-upload-steps-action"]}>
                 {isPrivate ? (
-                    <YakitButton onClick={onClickUpload} loading={uploadLoading}>
-                        上传
+                    <YakitButton onClick={onClickUpload} loading={uploadLoading}>{i18next.t("上传")}
                     </YakitButton>
                 ) : (
-                    <YakitButton onClick={onClickNext}>检测并上传</YakitButton>
+                    <YakitButton onClick={onClickNext}>{i18next.t("检测并上传")}</YakitButton>
                 )}
             </div>
         </div>

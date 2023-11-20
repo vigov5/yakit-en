@@ -14,6 +14,7 @@ import {YakitSwitch} from "@/components/yakitUI/YakitSwitch/YakitSwitch"
 import {YakitButton} from "@/components/yakitUI/YakitButton/YakitButton"
 import {ChevronDownIcon} from "@/assets/newIcon"
 import {YakitCheckableTagList} from "@/components/YakitCheckableTagList/YakitCheckableTagList"
+import i18next from "../../i18n"
 
 const {Panel} = Collapse
 export interface QueryCVERequest {
@@ -47,7 +48,7 @@ export const CVEViewer: React.FC<CVEViewerProp> = (props) => {
                 setAvailable(rsp.Ok)
             })
             .catch((err) => {
-                yakitFailed("IsCVEDatabaseReady失败：" + err)
+                yakitFailed(i18next.t("IsCVEDatabaseReady失败：") + err)
             })
             .finally(() => setTimeout(() => setLoading(false), 200))
     })
@@ -104,58 +105,57 @@ const CVEQuery: React.FC<CVEQueryProp> = (props) => {
     return (
         <div className={styles["cve-query"]}>
             <div className={styles["cve-query-heard"]}>
-                <span>高级查询</span>
+                <span>{i18next.t("高级查询")}</span>
                 <YakitSwitch checked={advancedQuery} onChange={setAdvancedQuery} />
             </div>
             <div className={styles["cve-query-body"]}>
                 <div className={styles["cve-query-text"]}>
-                    <span>CVE 查询条件</span>
+                    <span>{i18next.t("CVE 查询条件")}</span>
                     <span
                         className={styles["cve-query-resetting"]}
                         onClick={() => {
                             setParams(defQueryCVERequest)
                         }}
-                    >
-                        重置
+                    >{i18next.t("重置")}
                     </span>
                 </div>
                 <div className={styles["cve-query-item"]}>
-                    <div>利用路径</div>
+                    <div>{i18next.t("利用路径")}</div>
                     <YakitCheckableTagList
                         data={[
-                            {value: "NETWORK", label: "网络"},
-                            {value: "ADJACENT_NETWORK", label: "局域网"},
-                            {value: "LOCAL", label: "本地"},
-                            {value: "PHYSICAL", label: "物理"}
+                            {value: "NETWORK", label: i18next.t("网络")},
+                            {value: "ADJACENT_NETWORK", label: i18next.t("局域网")},
+                            {value: "LOCAL", label: i18next.t("本地")},
+                            {value: "PHYSICAL", label: i18next.t("物理")}
                         ]}
                         value={params.AccessVector ? params.AccessVector.split(",") : []}
                         setValue={(AccessVector) => setParams({...params, AccessVector: AccessVector.join(",")})}
                     />
                 </div>
                 <div className={styles["cve-query-item"]}>
-                    <div>利用难度</div>
+                    <div>{i18next.t("利用难度")}</div>
                     <YakitCheckableTagList
                         setValue={(AccessComplexity) =>
                             setParams({...params, AccessComplexity: AccessComplexity.join(",")})
                         }
                         value={params.AccessComplexity ? params.AccessComplexity.split(",") : []}
                         data={[
-                            {value: "HIGH", label: "困难"},
-                            {value: "MEDIUM", label: "一般"},
-                            {value: "LOW", label: "容易"}
+                            {value: "HIGH", label: i18next.t("困难")},
+                            {value: "MEDIUM", label: i18next.t("一般")},
+                            {value: "LOW", label: i18next.t("容易")}
                         ]}
                     />
                 </div>
                 <div className={styles["cve-query-item"]}>
-                    <div>漏洞级别</div>
+                    <div>{i18next.t("漏洞级别")}</div>
                     <YakitCheckableTagList
                         setValue={(Severity) => setParams({...params, Severity: Severity.join(",")})}
                         value={params.Severity ? params.Severity.split(",") : []}
                         data={[
-                            {value: "CRITICAL", label: "严重"},
-                            {value: "HIGH", label: "高危"},
-                            {value: "MEDIUM", label: "中危"},
-                            {value: "LOW", label: "低危"}
+                            {value: "CRITICAL", label: i18next.t("严重")},
+                            {value: "HIGH", label: i18next.t("高危")},
+                            {value: "MEDIUM", label: i18next.t("中危")},
+                            {value: "LOW", label: i18next.t("低危")}
                         ]}
                     />
                 </div>

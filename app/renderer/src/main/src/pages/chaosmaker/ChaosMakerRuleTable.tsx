@@ -14,6 +14,7 @@ import {ChaosMakerOperators, ExecuteChaosMakerRuleRequest} from "@/pages/chaosma
 import {failed} from "@/utils/notification";
 import {ChaosMakerRunningSteps} from "@/pages/chaosmaker/ChaosMakerRunningSteps";
 import {ChaosMakerRule} from "@/models/ChaosMaker";
+import i18next from "../../i18n"
 
 export interface ChaosMakerRuleTableProp {
     groups?: ChaosMakerRuleGroup[]
@@ -65,7 +66,7 @@ export const ChaosMakerRuleTable: React.FC<ChaosMakerRuleTableProp> = (props) =>
             setPagination(r.Pagination)
             setTotal(r.Total)
         }).catch(e => {
-            failed(`查询BAS规则失败: ${e}`)
+            failed(i18next.t("查询BAS规则失败: ${e}", { v1: e }))
         }).finally(() => setTimeout(() => setLoading(false), 300))
     })
 
@@ -75,8 +76,7 @@ export const ChaosMakerRuleTable: React.FC<ChaosMakerRuleTableProp> = (props) =>
 
     const limit = pagination.Limit;
     return <AutoCard
-        title={<div>
-            模拟攻击集
+        title={<div>{i18next.t("模拟攻击集")}
             <Space style={{marginLeft: 4}} size={0}>
                 {(props?.groups || []).filter((_, index) => {
                     return index < 3
@@ -87,7 +87,7 @@ export const ChaosMakerRuleTable: React.FC<ChaosMakerRuleTableProp> = (props) =>
             </Space>
         </div>} size={"small"} bordered={true} style={{marginLeft: 6}}
         extra={<>
-            <Tag color={"orange"}>已选{total}攻击规则</Tag>
+            <Tag color={"orange"}>{i18next.t("已选")}{total}攻击规则</Tag>
         </>}
         bodyStyle={{display: "flex", flexDirection: "column"}}
     >
@@ -109,13 +109,13 @@ export const ChaosMakerRuleTable: React.FC<ChaosMakerRuleTableProp> = (props) =>
 
             }}
         >
-            <Tabs.TabPane disabled={running} key="tables" tab={"规则列表"}>
+            <Tabs.TabPane disabled={running} key="tables" tab={i18next.t("规则列表")}>
                 <Table<ChaosMakerRule>
                     style={{flex: 1}}
                     columns={[
-                        {title: "规则名", render: (i: ChaosMakerRule) => i.NameZh || i.Name},
-                        {title: "规则类型", render: (i: ChaosMakerRule) => i.ClassType},
-                        {title: "相关", render: (i: ChaosMakerRule) => (i["CVE"] || []).join(", ")},
+                        {title: i18next.t("规则名"), render: (i: ChaosMakerRule) => i.NameZh || i.Name},
+                        {title: i18next.t("规则类型"), render: (i: ChaosMakerRule) => i.ClassType},
+                        {title: i18next.t("相关"), render: (i: ChaosMakerRule) => (i["CVE"] || []).join(", ")},
                     ]}
                     rowKey={i => i["Id"]}
                     size={"small"}
@@ -133,7 +133,7 @@ export const ChaosMakerRuleTable: React.FC<ChaosMakerRuleTableProp> = (props) =>
                                     if (`${i.Id}` === `${keys[0]}`) {
                                         if (!!i) {
                                             showDrawer({
-                                                title: "流量规则详情",
+                                                title: i18next.t("流量规则详情"),
                                                 width: "30%",
                                                 content: (
                                                     <div>
@@ -168,7 +168,7 @@ export const ChaosMakerRuleTable: React.FC<ChaosMakerRuleTableProp> = (props) =>
 
                 </Table>
             </Tabs.TabPane>
-            {running && <Tabs.TabPane key={"steps"} tab={"运行状态"}>
+            {running && <Tabs.TabPane key={"steps"} tab={i18next.t("运行状态")}>
                 <ChaosMakerRunningSteps params={executeParam}/>
             </Tabs.TabPane>}
         </Tabs>

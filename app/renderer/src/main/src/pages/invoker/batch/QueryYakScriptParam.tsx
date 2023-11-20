@@ -17,6 +17,7 @@ import {startExecYakCode} from "../../../utils/basic"
 import {ImportMenuConfig} from "./consts_importConfigYakCode"
 import {RollingLoadList} from "@/components/RollingLoadList/RollingLoadList"
 import {CheckboxChangeEvent} from "antd/lib/checkbox"
+import i18next from "../../../i18n"
 
 export interface QueryYakScriptParamProp {
     params: SimpleQueryYakScriptSchema
@@ -164,14 +165,14 @@ export const QueryYakScriptParamSelector: React.FC<QueryYakScriptParamProp> = Re
 
     const saveConfigTemplate = useMemoizedFn(() => {
         let m = showModal({
-            title: "导出批量扫描配置",
+            title: i18next.t("导出批量扫描配置"),
             width: "50%",
             content: (
                 <>
                     <SaveConfig
                         QueryConfig={params}
                         onSave={(filename) => {
-                            info(`保存到 ${filename}`)
+                            info(i18next.t("保存到 ${filename}", { v1: filename }))
                             m.destroy()
                         }}
                     />
@@ -182,7 +183,7 @@ export const QueryYakScriptParamSelector: React.FC<QueryYakScriptParamProp> = Re
     useHotkeys("alt+p", saveConfigTemplate)
     const importConfigTemplate = useMemoizedFn(() => {
         let m = showModal({
-            title: "导出批量扫描配置",
+            title: i18next.t("导出批量扫描配置"),
             width: "50%",
             content: (
                 <>
@@ -246,14 +247,14 @@ export const QueryYakScriptParamSelector: React.FC<QueryYakScriptParamProp> = Re
         <AutoCard
             size={"small"}
             bordered={true}
-            title={"选择插件"}
+            title={i18next.t("选择插件")}
             extra={
                 <Space>
-                    <Popconfirm title={"强制更新将重新构建 Tags 索引"} onConfirm={() => onAllTag()}>
-                        <a href={"#"}>强制更新 Tags</a>
+                    <Popconfirm title={i18next.t("强制更新将重新构建 Tags 索引")} onConfirm={() => onAllTag()}>
+                        <a href={"#"}>{i18next.t("强制更新 Tags")}</a>
                     </Popconfirm>
                     <Popconfirm
-                        title={"清空已选 Tag？"}
+                        title={i18next.t("清空已选 Tag？")}
                         onConfirm={() => {
                             onIsAll(false)
                             setSelectedTags([])
@@ -261,8 +262,7 @@ export const QueryYakScriptParamSelector: React.FC<QueryYakScriptParamProp> = Re
                             updateTagsSelector()
                         }}
                     >
-                        <Button size={"small"} type={"link"} danger={true}>
-                            清空
+                        <Button size={"small"} type={"link"} danger={true}>{i18next.t("清空")}
                         </Button>
                     </Popconfirm>
                 </Space>

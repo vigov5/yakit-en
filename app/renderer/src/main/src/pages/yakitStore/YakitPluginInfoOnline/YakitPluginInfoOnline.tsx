@@ -31,6 +31,7 @@ import Login from "@/pages/Login"
 import {fail} from "assert"
 import {YakitHint} from "@/components/yakitUI/YakitHint/YakitHint"
 import {YakitButton} from "@/components/yakitUI/YakitButton/YakitButton"
+import i18next from "../../../i18n"
 
 const EditOnlinePluginDetails = React.lazy(() => import("./EditOnlinePluginDetails"))
 
@@ -69,9 +70,9 @@ interface AuditParameters {
 }
 
 export const TagColor: {[key: string]: string} = {
-    failed: "color-bgColor-red|审核不通过",
-    success: "color-bgColor-green|审核通过",
-    not: "color-bgColor-blue|待审核"
+    failed: i18next.t("color-bgColor-red|审核不通过"),
+    success: i18next.t("color-bgColor-green|审核通过"),
+    not: i18next.t("color-bgColor-blue|待审核")
 }
 
 export const YakitPluginInfoOnline: React.FC<YakitPluginInfoOnlineProps> = (props) => {
@@ -113,7 +114,7 @@ export const YakitPluginInfoOnline: React.FC<YakitPluginInfoOnlineProps> = (prop
                 setPlugin(res.data)
             })
             .catch((err) => {
-                failed("插件详情获取失败:" + err)
+                failed(i18next.t("插件详情获取失败:") + err)
             })
             .finally(() => {
                 setTimeout(() => setLoading(false), 200)
@@ -121,7 +122,7 @@ export const YakitPluginInfoOnline: React.FC<YakitPluginInfoOnlineProps> = (prop
     })
     const pluginStar = useMemoizedFn(() => {
         if (!userInfo.isLogin) {
-            warn("请先登录")
+            warn(i18next.t("请先登录"))
             return
         }
         if (!plugin) return
@@ -147,7 +148,7 @@ export const YakitPluginInfoOnline: React.FC<YakitPluginInfoOnlineProps> = (prop
                 setPlugin({...plugin})
             })
             .catch((err) => {
-                failed("插件点星:" + err)
+                failed(i18next.t("插件点星:") + err)
             })
             .finally(() => {
                 setTimeout(() => setLoading(false), 200)
@@ -162,14 +163,14 @@ export const YakitPluginInfoOnline: React.FC<YakitPluginInfoOnlineProps> = (prop
                 UUID: plugin.uuid
             } as DownloadOnlinePluginProps)
             .then(() => {
-                success("添加成功")
+                success(i18next.t("添加成功"))
                 setPlugin({
                     ...plugin,
                     downloaded_total: plugin.downloaded_total + 1
                 })
             })
             .catch((e) => {
-                failed(`添加失败:${e}`)
+                failed(i18next.t("添加失败:${e}", { v1: e }))
             })
             .finally(() => {
                 setTimeout(() => setAddLoading(false), 200)
@@ -192,10 +193,10 @@ export const YakitPluginInfoOnline: React.FC<YakitPluginInfoOnlineProps> = (prop
                     const newPlugin = {...plugin, status}
                     setPlugin(newPlugin)
                 }
-                success(`插件审核${status === 1 ? "通过" : "不通过"}`)
+                success(i18next.t("插件审核") + `${status === 1 ? i18next.t("通过") : i18next.t("不通过")}`)
             })
             .catch((err) => {
-                failed("审核失败:" + err)
+                failed(i18next.t("审核失败:") + err)
             })
             .finally(() => {
                 setTimeout(() => setLoading(false), 200)
@@ -243,11 +244,11 @@ export const YakitPluginInfoOnline: React.FC<YakitPluginInfoOnlineProps> = (prop
                         if (deletePluginLocal) deletePluginLocal(newSrcipt)
                     })
                     .catch((err) => {
-                        failed("删除本地失败:" + err)
+                        failed(i18next.t("删除本地失败:") + err)
                     })
             })
             .catch((err) => {
-                failed("删除失败:" + err)
+                failed(i18next.t("删除失败:") + err)
             })
             .finally(() => {
                 setTimeout(() => setLoading(false), 200)
@@ -261,7 +262,7 @@ export const YakitPluginInfoOnline: React.FC<YakitPluginInfoOnlineProps> = (prop
         return (
             <Spin spinning={loading} style={{height: "100%"}}>
                 <div className='yakit-plugin-info-container'>
-                    <Empty description='无插件信息' />
+                    <Empty description={i18next.t("无插件信息")} />
                 </div>
             </Spin>
         )
@@ -337,22 +338,20 @@ export const YakitPluginInfoOnline: React.FC<YakitPluginInfoOnlineProps> = (prop
                     }
                 />
                 <div className={`plugin-body ${(tabKey === "1" && "plugin-code-height") || ""}`}>
-                    <Tooltip title={`插件id:${plugin?.uuid || "-"}`} placement='topLeft'>
-                        <div className='plugin-author'>
-                            作者:{plugin.authors}&emsp;{plugin.submitter && `协作者:${plugin.submitter}`}
+                    <Tooltip title={i18next.t("插件id") + `:${plugin?.uuid || "-"}`} placement='topLeft'>
+                        <div className='plugin-author'>{i18next.t("作者:")}{plugin.authors}&emsp;{plugin.submitter && i18next.t("协作者") + `:${plugin.submitter}`}
                         </div>
                     </Tooltip>
                     {plugin?.base_script_name && plugin.base_script_name.length && (
-                        <div style={{fontSize: 12, marginTop: 8}}>
-                            复制插件 {plugin.base_script_name} 为 {plugin.script_name}
+                        <div style={{fontSize: 12, marginTop: 8}}>{i18next.t("复制插件")} {plugin.base_script_name} 为 {plugin.script_name}
                         </div>
                     )}
                     <div className='flex-space-between'>
                         <div className='vertical-center'>
                             <div className='preface-time'>
-                                <span className='time-title'>最新更新时间</span>
+                                <span className='time-title'>{i18next.t("最新更新时间")}</span>
                                 <span className='time-style'>
-                                    {plugin?.updated_at && moment.unix(plugin.updated_at).format("YYYY年MM月DD日")}
+                                    {plugin?.updated_at && moment.unix(plugin.updated_at).format(i18next.t("YYYY年MM月DD日"))}
                                 </span>
                             </div>
                         </div>
@@ -365,17 +364,15 @@ export const YakitPluginInfoOnline: React.FC<YakitPluginInfoOnlineProps> = (prop
                                         onClick={() => {
                                             if (!delPluginShow) setDelPluginShow(true)
                                         }}
-                                    >
-                                        删除
+                                    >{i18next.t("删除")}
                                     </Button>
                                 )}
                                 {(isAdmin || plugin.checkPlugin) && (
                                     <>
                                         {plugin.status === 0 && !plugin.is_private && (
                                             <>
-                                                <Button onClick={() => pluginExamine(2)}>不通过</Button>
-                                                <Button type='primary' onClick={() => pluginExamine(1)}>
-                                                    通过
+                                                <Button onClick={() => pluginExamine(2)}>{i18next.t("不通过")}</Button>
+                                                <Button type='primary' onClick={() => pluginExamine(1)}>{i18next.t("通过")}
                                                 </Button>
                                             </>
                                         )}
@@ -392,13 +389,11 @@ export const YakitPluginInfoOnline: React.FC<YakitPluginInfoOnlineProps> = (prop
                                             onClick={(e) => {
                                                 if (!delPluginShow) setDelPluginShow(true)
                                             }}
-                                        >
-                                            删除
+                                        >{i18next.t("删除")}
                                         </Button>
                                         {/* base_plugin_id存在时则为复制云端插件 不允许更改 私密/公开 */}
                                         {!plugin?.base_plugin_id && (
-                                            <Button type='primary' onClick={() => setIsEdit(true)}>
-                                                修改
+                                            <Button type='primary' onClick={() => setIsEdit(true)}>{i18next.t("修改")}
                                             </Button>
                                         )}
                                     </>
@@ -407,9 +402,8 @@ export const YakitPluginInfoOnline: React.FC<YakitPluginInfoOnlineProps> = (prop
                                     <>
                                         {plugin.status === 0 && !plugin.is_private && (
                                             <>
-                                                <Button onClick={() => pluginExamine(2)}>不通过</Button>
-                                                <Button type='primary' onClick={() => pluginExamine(1)}>
-                                                    通过
+                                                <Button onClick={() => pluginExamine(2)}>{i18next.t("不通过")}</Button>
+                                                <Button type='primary' onClick={() => pluginExamine(1)}>{i18next.t("通过")}
                                                 </Button>
                                             </>
                                         )}
@@ -431,26 +425,25 @@ export const YakitPluginInfoOnline: React.FC<YakitPluginInfoOnlineProps> = (prop
                         />
                     </Suspense>
                     <Tabs className='no-theme-tabs' activeKey={tabKey} onChange={(e) => setTabKey(e)}>
-                        <TabPane tab='源码' key='1'>
+                        <TabPane tab={i18next.t("源码")} key='1'>
                             <YakEditor type={plugin.type} value={plugin.content} readOnly={true} />
                         </TabPane>
-                        <TabPane tab='评论' key='2'>
+                        <TabPane tab={i18next.t("评论")} key='2'>
                             <PluginComment isLogin={userInfo.isLogin} plugin={plugin} />
                         </TabPane>
                     </Tabs>
                 </div>
                 <YakitHint
                     visible={delPluginShow}
-                    title='删除插件'
-                    content='是否需要彻底删除插件'
-                    okButtonText='放入回收站'
-                    cancelButtonText='删除'
+                    title={i18next.t("删除插件")}
+                    content={i18next.t("是否需要彻底删除插件")}
+                    okButtonText={i18next.t("放入回收站")}
+                    cancelButtonText={i18next.t("删除")}
                     cancelButtonProps={{
                         style: plugin?.user_id === userInfo.user_id ? undefined : {display: "none"}
                     }}
                     footerExtra={
-                        <YakitButton size='max' type='outline2' onClick={() => setDelPluginShow(false)}>
-                            取消
+                        <YakitButton size='max' type='outline2' onClick={() => setDelPluginShow(false)}>{i18next.t("取消")}
                         </YakitButton>
                     }
                     onOk={() => onRemove(false)}
@@ -540,7 +533,7 @@ export const PluginComment: React.FC<PluginCommentProps> = (props) => {
                 })
             })
             .catch((err) => {
-                failed("评论查询失败:" + err)
+                failed(i18next.t("评论查询失败:") + err)
             })
             .finally(() => {
                 setTimeout(() => setLoading(false), 200)
@@ -548,11 +541,11 @@ export const PluginComment: React.FC<PluginCommentProps> = (props) => {
     })
     const isLoading = useMemoizedFn(() => {
         Modal.confirm({
-            title: "未登录",
+            title: i18next.t("未登录"),
             icon: <ExclamationCircleOutlined />,
-            content: "登录后才可评论",
-            cancelText: "取消",
-            okText: "登录",
+            content: i18next.t("登录后才可评论"),
+            cancelText: i18next.t("取消"),
+            okText: i18next.t("登录"),
             onOk() {
                 setLoginShow(true)
             },
@@ -567,7 +560,7 @@ export const PluginComment: React.FC<PluginCommentProps> = (props) => {
             return
         }
         if (!commentText && files.length === 0) {
-            failed("请输入评论内容或者上传图片")
+            failed(i18next.t("请输入评论内容或者上传图片"))
             return
         }
         const params = {
@@ -607,7 +600,7 @@ export const PluginComment: React.FC<PluginCommentProps> = (props) => {
                 if (commentShow) setCommentShow(false)
             })
             .catch((err) => {
-                failed("评论错误" + err)
+                failed(i18next.t("评论错误") + err)
             })
             .finally(() => {
                 setTimeout(() => setCommentLoading(false), 200)
@@ -615,7 +608,7 @@ export const PluginComment: React.FC<PluginCommentProps> = (props) => {
     })
     const pluginReply = useMemoizedFn((item: API.CommentListData) => {
         if (!isLogin) {
-            warn("请先登录")
+            warn(i18next.t("请先登录"))
             return
         }
         setCurrentComment(item)
@@ -629,7 +622,7 @@ export const PluginComment: React.FC<PluginCommentProps> = (props) => {
         }
         if (!currentComment?.id) return
         if (!commentInputText && commentFiles.length === 0) {
-            failed("请输入评论内容或者上传图片")
+            failed(i18next.t("请输入评论内容或者上传图片"))
             return
         }
         const params = {
@@ -644,7 +637,7 @@ export const PluginComment: React.FC<PluginCommentProps> = (props) => {
     })
     const pluginCommentStar = useMemoizedFn((item: API.CommentListData) => {
         if (!isLogin) {
-            warn("请先登录")
+            warn(i18next.t("请先登录"))
             return
         }
         const params: CommentStarsProps = {
@@ -675,7 +668,7 @@ export const PluginComment: React.FC<PluginCommentProps> = (props) => {
                 }
             })
             .catch((err) => {
-                failed("点赞失败:" + err)
+                failed(i18next.t("点赞失败:") + err)
             })
             .finally(() => {
                 setTimeout(() => setLoading(false), 200)
@@ -708,7 +701,7 @@ export const PluginComment: React.FC<PluginCommentProps> = (props) => {
             {loginshow && <Login visible={loginshow} onCancel={() => setLoginShow(false)}></Login>}
             <div className='info-comment-box'>
                 <div className='box-header'>
-                    <span className='header-title'>用户评论</span>
+                    <span className='header-title'>{i18next.t("用户评论")}</span>
                     <span className='header-subtitle'>{plugin.comment_num || 0}</span>
                 </div>
                 <PluginCommentInput
@@ -734,7 +727,7 @@ export const PluginComment: React.FC<PluginCommentProps> = (props) => {
                 }
                 endMessage={
                     (commentResponses?.pagemeta?.total || 0) > 0 && (
-                        <div className='row-cneter no-more-text'>暂无更多数据</div>
+                        <div className='row-cneter no-more-text'>{i18next.t("暂无更多数据")}</div>
                     )
                 }
                 scrollableTarget='online-plugin-info-scroll'
@@ -770,7 +763,7 @@ export const PluginComment: React.FC<PluginCommentProps> = (props) => {
             />
             <Modal
                 wrapClassName='comment-reply-dialog'
-                title={<div className='header-title'>回复@{currentComment?.user_name}</div>}
+                title={<div className='header-title'>{i18next.t("回复@")}{currentComment?.user_name}</div>}
                 visible={commentShow}
                 centered={true}
                 footer={null}
@@ -828,8 +821,7 @@ const PluginCommentInfo = memo((props: PluginCommentInfoProps) => {
                 <div className='comment-body-content'>
                     <CollapseParagraph value={`${info.message}`} rows={2} valueConfig={{className: "content-style"}}>
                         {info.by_user_name && (
-                            <span>
-                                回复<span className='content-by-name'>{info.by_user_name}</span>:
+                            <span>{i18next.t("回复")}<span className='content-by-name'>{info.by_user_name}</span>:
                             </span>
                         )}
                     </CollapseParagraph>
@@ -878,8 +870,7 @@ const PluginCommentInfo = memo((props: PluginCommentInfoProps) => {
                                 }, 1)
                             }
                         }}
-                    >
-                        查看更多回复
+                    >{i18next.t("查看更多回复")}
                     </a>
                 )}
             </div>
@@ -909,7 +900,7 @@ const PluginCommentInput = (props: PluginCommentInputProps) => {
                 setFiles(files.concat(res.data))
             })
             .catch((err) => {
-                fail("图片上传失败")
+                fail(i18next.t("图片上传失败"))
             })
             .finally(() => {
                 setTimeout(() => setFilesLoading(false), 1)
@@ -922,7 +913,7 @@ const PluginCommentInput = (props: PluginCommentInputProps) => {
                     className='input-stlye'
                     value={value}
                     autoSize={{minRows: 1, maxRows: 6}}
-                    placeholder='说点什么...'
+                    placeholder={i18next.t("说点什么...")}
                     onChange={(e) => setValue(e.target.value)}
                 ></Input.TextArea>
             </div>
@@ -935,11 +926,11 @@ const PluginCommentInput = (props: PluginCommentInputProps) => {
                         showUploadList={false}
                         beforeUpload={(file: any) => {
                             if (file.size / 1024 / 1024 > 10) {
-                                failed("图片大小不超过10M")
+                                failed(i18next.t("图片大小不超过10M"))
                                 return false
                             }
                             if (!"image/jpeg,image/png,image/jpg,image/gif".includes(file.type)) {
-                                failed("仅支持上传图片格式为：image/jpeg,image/png,image/jpg,image/gif")
+                                failed(i18next.t("仅支持上传图片格式为：image/jpeg,image/png,image/jpg,image/gif"))
                                 return false
                             }
                             if (file) {
@@ -962,8 +953,7 @@ const PluginCommentInput = (props: PluginCommentInputProps) => {
                     className={(value || files.length !== 0) && isLogin ? "" : "btn-submit"}
                     onClick={onSubmit}
                     loading={loading}
-                >
-                    评论
+                >{i18next.t("评论")}
                 </Button>
             </div>
             {files.length !== 0 && (
@@ -1076,7 +1066,7 @@ const PluginCommentChildModal = (props: PluginCommentChildModalProps) => {
                 })
             })
             .catch((err) => {
-                failed("评论查询失败:" + err)
+                failed(i18next.t("评论查询失败:") + err)
             })
             .finally(() => {
                 setTimeout(() => setLoadingChild(false), 200)
@@ -1084,7 +1074,7 @@ const PluginCommentChildModal = (props: PluginCommentChildModalProps) => {
     })
     const onCommentChildStar = useMemoizedFn((childItem: API.CommentListData) => {
         if (!isLogin) {
-            warn("请先登录")
+            warn(i18next.t("请先登录"))
             return
         }
         const params = {
@@ -1115,7 +1105,7 @@ const PluginCommentChildModal = (props: PluginCommentChildModalProps) => {
                 }
             })
             .catch((err) => {
-                failed("点赞失败:" + err)
+                failed(i18next.t("点赞失败:") + err)
             })
             .finally(() => {})
     })
@@ -1159,7 +1149,7 @@ const PluginCommentChildModal = (props: PluginCommentChildModalProps) => {
                         }
                         endMessage={
                             (commentChildResponses?.pagemeta?.total || 0) > 0 && (
-                                <div className='row-cneter no-more-text'>暂无更多数据</div>
+                                <div className='row-cneter no-more-text'>{i18next.t("暂无更多数据")}</div>
                             )
                         }
                         scrollableTarget='scroll-able-div'

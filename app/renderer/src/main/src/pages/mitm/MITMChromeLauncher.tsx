@@ -13,6 +13,7 @@ import {RemoteGV} from "@/yakitGV"
 import {YakitCheckbox} from "@/components/yakitUI/YakitCheckbox/YakitCheckbox"
 import {YakitAutoComplete} from "@/components/yakitUI/YakitAutoComplete/YakitAutoComplete"
 import { MITMConsts } from "./MITMConsts"
+import i18next from "../../i18n"
 
 /**
  * @param {boolean} isStartMITM 是否开启mitm服务，已开启mitm服务，显示switch。 未开启显示按钮
@@ -102,13 +103,13 @@ const MITMChromeLauncher: React.FC<MITMChromeLauncherProp> = (props) => {
                             props.callback(params.host, params.port)
                         })
                         .catch((e) => {
-                            failed(`Chrome 启动失败：${e}`)
+                            failed(i18next.t("Chrome 启动失败：${e}", { v1: e }))
                         })
                 })
             }}
             style={{padding: 24}}
         >
-            <Form.Item label={"配置代理"}>
+            <Form.Item label={i18next.t("配置代理")}>
                 <YakitInput.Group className={style["chrome-input-group"]}>
                     <YakitInput
                         prefix={"http://"}
@@ -132,27 +133,26 @@ const MITMChromeLauncher: React.FC<MITMChromeLauncherProp> = (props) => {
                     onChange={(e) => {
                         setSaveUserData(e.target.checked)
                     }}
-                >
-                    保存用户数据
+                >{i18next.t("保存用户数据")}
                 </YakitCheckbox>
             </Form.Item>
             {isSaveUserData && (
-                <Form.Item label={" "} colon={false} help={"如要打开新窗口，请设置新路径存储用户数据"}>
+                <Form.Item label={" "} colon={false} help={i18next.t("如要打开新窗口，请设置新路径存储用户数据")}>
                     <YakitAutoComplete
                         style={{width: "calc(100% - 20px)"}}
                         options={userDataDirArr.map((item) => ({label: item, value: item}))}
-                        placeholder='设置代理'
+                        placeholder={i18next.t("设置代理")}
                         value={userDataDir}
                         onChange={(v) => {
                             setUserDataDir(v)
                         }}
                     />
-                    <Tooltip title={"选择存储路径"}>
+                    <Tooltip title={i18next.t("选择存储路径")}>
                         <CloudUploadOutlined
                             onClick={() => {
                                 ipcRenderer
                                     .invoke("openDialog", {
-                                        title: "请选择文件夹",
+                                        title: i18next.t("请选择文件夹"),
                                         properties: ["openDirectory"]
                                     })
                                     .then((data: any) => {
@@ -177,9 +177,8 @@ const MITMChromeLauncher: React.FC<MITMChromeLauncherProp> = (props) => {
                             type={"success"}
                             message={
                                 <>
-                                    本按钮将会启动一个代理已经被正确配置的 Chrome (使用系统 Chrome 浏览器配置)
-                                    <br /> <Text mark={true}>无需用户额外启用代理</Text>
-                                    ，同时把测试浏览器和日常浏览器分离
+                                    {i18next.t("本按钮将会启动一个代理已经被正确配置的 Chrome (使用系统 Chrome 浏览器配置)")}
+                                    <br /> <Text mark={true}>{i18next.t("无需用户额外启用代理")}</Text>{i18next.t("，同时把测试浏览器和日常浏览器分离")}
                                 </>
                             }
                         />
@@ -188,11 +187,9 @@ const MITMChromeLauncher: React.FC<MITMChromeLauncherProp> = (props) => {
                             type={"error"}
                             message={
                                 <>
-                                    <Text mark={true}>注意：</Text>
-                                    <br />
-                                    免配置的浏览器启用了 <Text code={true}>{`--ignore-certificate-errors`}</Text> <br />
-                                    这个选项是 <Text mark={true}>生效的</Text>，会忽略所有证书错误，
-                                    <Text mark={true}>仅推荐安全测试时开启</Text>
+                                    <Text mark={true}>{i18next.t("注意：")}</Text>
+                                    <br />{i18next.t("免配置的浏览器启用了")} <Text code={true}>{`--ignore-certificate-errors`}</Text> <br />{i18next.t("这个选项是")} <Text mark={true}>{i18next.t("生效的")}</Text>{i18next.t("，会忽略所有证书错误，")}
+                                    <Text mark={true}>{i18next.t("仅推荐安全测试时开启")}</Text>
                                 </>
                             }
                         />
@@ -204,8 +201,7 @@ const MITMChromeLauncher: React.FC<MITMChromeLauncherProp> = (props) => {
                     htmlType='submit'
                     size='large'
                     disabled={isSaveUserData === true && userDataDir.length === 0}
-                >
-                    启动免配置 Chrome
+                >{i18next.t("启动免配置 Chrome")}
                 </YakitButton>
             </Form.Item>
         </Form>
@@ -239,21 +235,21 @@ const ChromeLauncherButton: React.FC<ChromeLauncherButtonProp> = React.memo((pro
         ipcRenderer
             .invoke("StopAllChrome")
             .then(() => {
-                info("关闭所有免配置 Chrome 成功")
+                info(i18next.t("关闭所有免配置 Chrome 成功"))
             })
             .catch((e) => {
-                failed(`关闭所有 Chrome 失败: ${e}`)
+                failed(i18next.t("关闭所有 Chrome 失败: ${e}", { v1: e }))
             })
     })
 
     const clickChromeLauncher = useMemoizedFn(() => {
         if (repRuleFlag) {
             Modal.confirm({
-                title: "温馨提示",
+                title: i18next.t("温馨提示"),
                 icon: <ExclamationCircleOutlined />,
-                content: "检测到开启了替换规则，可能会影响劫持，是否确认开启？",
-                okText: "确认",
-                cancelText: "取消",
+                content: i18next.t("检测到开启了替换规则，可能会影响劫持，是否确认开启？"),
+                okText: i18next.t("确认"),
+                cancelText: i18next.t("取消"),
                 closable: true,
                 centered: true,
                 closeIcon: (
@@ -286,11 +282,11 @@ const ChromeLauncherButton: React.FC<ChromeLauncherButtonProp> = React.memo((pro
                         {(started && <ChromeSvgIcon />) || (
                             <ChromeFrameSvgIcon style={{height: 16, color: "var(--yakit-body-text-color)"}} />
                         )}
-                        免配置启动
+                        {i18next.t("免配置启动")}
                         {started && <CheckOutlined style={{color: "var(--yakit-success-5)", marginLeft: 8}} />}
                     </YakitButton>
                     {started && (
-                        <Tooltip title={"关闭所有免配置 Chrome"}>
+                        <Tooltip title={i18next.t("关闭所有免配置 Chrome")}>
                             <YakitButton
                                 type='outline2'
                                 onClick={() => {
@@ -305,12 +301,12 @@ const ChromeLauncherButton: React.FC<ChromeLauncherButtonProp> = React.memo((pro
             )) || (
                 <YakitButton type='outline2' size='large' onClick={clickChromeLauncher}>
                     <ChromeFrameSvgIcon style={{height: 16, color: "var(--yakit-body-text-color)"}} />
-                    <span style={{marginLeft: 4}}>免配置启动</span>
+                    <span style={{marginLeft: 4}}>{i18next.t("免配置启动")}</span>
                 </YakitButton>
             )}
             {chromeVisible && (
                 <YakitModal
-                    title='确定启动免配置 Chrome 参数'
+                    title={i18next.t("确定启动免配置 Chrome 参数")}
                     visible={chromeVisible}
                     onCancel={() => setChromeVisible(false)}
                     closable={true}

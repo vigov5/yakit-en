@@ -1,5 +1,5 @@
 .http-fuzzer-click-editor {
-    width: 104px;
+    min-width: 120px;
     position: relative;
     .http-fuzzer-click-editor-simple {
         box-sizing: content-box;
@@ -205,7 +205,7 @@
 }
 .http-fuzzer-range-editor {
     position: relative;
-    width: 152px;
+    width: 100%;
     .http-fuzzer-range-editor-simple {
         flex-shrink: 0;
         background-color: #ffffff;
@@ -311,7 +311,7 @@
 }
 .http-fuzzer-read-editor {
     position: relative;
-    width: 68px;
+    width: 100%;
     .http-fuzzer-read-editor-simple {
         flex-shrink: 0;
         background-color: #ffffff;

@@ -7,6 +7,7 @@ import {UserQuery} from "@/pages/loginOperationMenu/TrustListPage"
 import {failed, success} from "@/utils/notification"
 import {OnlineUserItem} from "@/components/OnlineUserItem/OnlineUserItem"
 import {UserInfoProps} from "@/store"
+import i18next from "../../../i18n"
 
 const {Option} = Select
 
@@ -54,12 +55,12 @@ const EditOnlinePluginDetails: React.FC<EditOnlinePluginDetailsProps> = (props) 
             }
         })
             .then((res) => {
-                success("修改插件成功")
+                success(i18next.t("修改插件成功"))
                 onReset()
                 props.handleOk()
             })
             .catch((err) => {
-                failed("修改插件失败：" + err)
+                failed(i18next.t("修改插件失败：") + err)
             })
             .finally(() => {
                 setTimeout(() => setLoading(false), 200)
@@ -92,7 +93,7 @@ const EditOnlinePluginDetails: React.FC<EditOnlinePluginDetailsProps> = (props) 
                     setUserList(res)
                 })
                 .catch((err) => {
-                    failed("获取普通用户失败：" + err)
+                    failed(i18next.t("获取普通用户失败：") + err)
                 })
                 .finally(() => {
                     // setTimeout(() => setLoading(false), 200)
@@ -109,9 +110,9 @@ const EditOnlinePluginDetails: React.FC<EditOnlinePluginDetailsProps> = (props) 
     }, [pulgin, visible])
     return (
         <Modal
-            title='修改'
-            okText='确定'
-            cancelText='取消'
+            title={i18next.t("修改")}
+            okText={i18next.t("确定")}
+            cancelText={i18next.t("取消")}
             visible={visible}
             onOk={handleOk}
             onCancel={handleCancel}
@@ -120,11 +121,11 @@ const EditOnlinePluginDetails: React.FC<EditOnlinePluginDetailsProps> = (props) 
             <Form {...layout} form={form} name='control-hooks'>
                 {["admin","superAdmin"].includes(userInfo.role||"")&& (
                     <>
-                        <Form.Item name='user_id' label='作者'>
+                        <Form.Item name='user_id' label={i18next.t("作者")}>
                             <Select
                                 optionLabelProp='label'
                                 filterOption={() => true}
-                                placeholder='请输入用户名称搜索'
+                                placeholder={i18next.t("请输入用户名称搜索")}
                                 showSearch
                                 onSearch={getUserList}
                             >
@@ -135,19 +136,19 @@ const EditOnlinePluginDetails: React.FC<EditOnlinePluginDetailsProps> = (props) 
                                 ))}
                             </Select>
                         </Form.Item>
-                        <Form.Item name='is_official' label='是否官方'>
+                        <Form.Item name='is_official' label={i18next.t("是否官方")}>
                             <Radio.Group>
-                                <Radio.Button value='true'>是</Radio.Button>
-                                <Radio.Button value='false'>否</Radio.Button>
+                                <Radio.Button value='true'>{i18next.t("是")}</Radio.Button>
+                                <Radio.Button value='false'>{i18next.t("否")}</Radio.Button>
                             </Radio.Group>
                         </Form.Item>
                     </>
                 )}     
                 {pulgin.user_id === userInfo.user_id && (
-                    <Form.Item name='is_private' label='私密/公开'>
+                    <Form.Item name='is_private' label={i18next.t("私密/公开")}>
                         <Radio.Group>
-                            <Radio.Button value='true'>私密</Radio.Button>
-                            <Radio.Button value='false'>公开</Radio.Button>
+                            <Radio.Button value='true'>{i18next.t("私密")}</Radio.Button>
+                            <Radio.Button value='false'>{i18next.t("公开")}</Radio.Button>
                         </Radio.Group>
                     </Form.Item>
                 )}

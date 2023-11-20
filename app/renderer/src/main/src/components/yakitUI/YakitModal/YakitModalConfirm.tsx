@@ -8,6 +8,7 @@ import ReactDOM from "react-dom"
 import {YakitModal} from "./YakitModal"
 import {ErrorBoundary} from "react-error-boundary"
 import {ExclamationCircleOutlined} from "@ant-design/icons"
+import i18next from "../../../i18n"
 
 export interface YakitModalConfirmProps extends YakitBaseModalProp {
     title?: React.ReactNode | string
@@ -45,11 +46,11 @@ export const YakitModalConfirm = (props: YakitModalConfirmProps) => {
                         <ErrorBoundary
                             FallbackComponent={({error, resetErrorBoundary}) => {
                                 if (!error) {
-                                    return <div>未知错误</div>
+                                    return <div>{i18next.t("未知错误")}</div>
                                 }
                                 return (
                                     <div>
-                                        <p>弹框内逻辑性崩溃，请关闭重试！</p>
+                                        <p>{i18next.t("弹框内逻辑性崩溃，请关闭重试！")}</p>
                                         <pre>{error?.message}</pre>
                                     </div>
                                 )
@@ -133,7 +134,7 @@ const YakitBaseModal: React.FC<YakitBaseModalProp> = (props) => {
                         }}
                         {...props.cancelButtonProps}
                     >
-                        {props.onCancelText || "取消"}
+                        {props.onCancelText || i18next.t("取消")}
                     </YakitButton>
                     <YakitButton
                         onClick={(e) => {
@@ -147,7 +148,7 @@ const YakitBaseModal: React.FC<YakitBaseModalProp> = (props) => {
                         loading={loading}
                         {...props.okButtonProps}
                     >
-                        {props.onOkText || "确定"}
+                        {props.onOkText || i18next.t("确定")}
                     </YakitButton>
                 </div>
             }
@@ -177,7 +178,7 @@ const YakitBaseModal: React.FC<YakitBaseModalProp> = (props) => {
 
 export const debugYakitModal = (y: any) => {
     const m = showYakitModal({
-        title: "调试信息",
+        title: i18next.t("调试信息"),
         width: "50%",
         content: (
             <div style={{marginLeft: 20, marginRight: 20, marginTop: 16, marginBottom: 20}}>
@@ -192,7 +193,7 @@ export const debugYakitModal = (y: any) => {
 
 export const debugYakitModalAny = (y: any) => {
     const m = showYakitModal({
-        title: "调试信息",
+        title: i18next.t("调试信息"),
         width: "50%",
         content: (
             <div style={{marginLeft: 20, marginRight: 20, marginTop: 16, marginBottom: 20}}>
@@ -230,11 +231,11 @@ export const showYakitModal = (props: ShowModalProps) => {
                         <ErrorBoundary
                             FallbackComponent={({error, resetErrorBoundary}) => {
                                 if (!error) {
-                                    return <div>未知错误</div>
+                                    return <div>{i18next.t("未知错误")}</div>
                                 }
                                 return (
                                     <div>
-                                        <p>弹框内逻辑性崩溃，请关闭重试！</p>
+                                        <p>{i18next.t("弹框内逻辑性崩溃，请关闭重试！")}</p>
                                         <pre>{error?.message}</pre>
                                     </div>
                                 )

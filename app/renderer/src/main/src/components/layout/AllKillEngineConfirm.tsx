@@ -8,6 +8,7 @@ import {Loading3QuartersSvgIcon, YaklangInstallHintSvgIcon} from "./icons"
 
 import classNames from "classnames"
 import styles from "./AllKillEngineConfirm.module.scss"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -36,7 +37,7 @@ export const AllKillEngineConfirm: React.FC<AllKillEngineConfirmProps> = React.m
                 if (+hosts[1]) setCurrentPort(+hosts[1] || 0)
             })
             .catch((e) => {
-                failed(`获取连接引擎端口错误 ${e}`)
+                failed(i18next.t("获取连接引擎端口错误 ${e}", { v1: e }))
                 setTimeout(() => setLoading(false), 300)
             })
             .finally(() => {
@@ -78,7 +79,7 @@ export const AllKillEngineConfirm: React.FC<AllKillEngineConfirmProps> = React.m
             for (let i of otherPS) {
                 killFlag = await ipcRenderer.invoke("kill-yak-grpc", i.pid)
                 if (!!killFlag) {
-                    failed(`引擎进程(pid:${i.pid},port:${i.port})关闭失败 ${killFlag}`)
+                    failed(i18next.t("引擎进程(pid:${i.pid},port:${i.port})关闭失败 ${killFlag}", {v1: i.pid, v2: i.port, v3: killFlag}))
                     setLoading(false)
                     return
                 } else {
@@ -127,21 +128,21 @@ export const AllKillEngineConfirm: React.FC<AllKillEngineConfirmProps> = React.m
 
                 <div className={styles["confirm-body"]}>
                     <div className={classNames(styles["body-title"], {[styles["loading-body-title"]]: loading})}>
-                        {loading ? "进程关闭中，请稍等 ..." : "更新引擎，需关闭所有本地进程"}
+                        {loading ? i18next.t("进程关闭中，请稍等 ...") : i18next.t("更新引擎，需关闭所有本地进程")}
                     </div>
                     {!loading && (
                         <div className={styles["body-content"]}>
-                            关闭所有引擎，包括正在连接的本地引擎进程，同时页面将进入加载页。
+                            {i18next.t("关闭所有引擎，包括正在连接的本地引擎进程，同时页面将进入加载页。")}
                         </div>
                     )}
 
                     {!loading && (
                         <div className={styles["body-btn"]}>
                             <YakitButton loading={loading} type='outline2' size='max' onClick={onCancel}>
-                                稍后再说
+                                {i18next.t("稍后再说")}
                             </YakitButton>
                             <YakitButton loading={loading} size='max' onClick={onOK}>
-                                立即关闭
+                                {i18next.t("立即关闭")}
                             </YakitButton>
                         </div>
                     )}

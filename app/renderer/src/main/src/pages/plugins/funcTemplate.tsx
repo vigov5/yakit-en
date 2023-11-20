@@ -90,6 +90,7 @@ import {v4 as uuidv4} from "uuid"
 import classNames from "classnames"
 import "./plugins.scss"
 import styles from "./funcTemplate.module.scss"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -182,8 +183,7 @@ export const TypeSelect: React.FC<TypeSelectProps> = memo((props) => {
                                     })}
                                 </div>
                                 <div className={styles["list-btn-wrapper"]}>
-                                    <div className={styles["btn-style"]} onClick={() => setActive([])}>
-                                        重置
+                                    <div className={styles["btn-style"]} onClick={() => setActive([])}>{i18next.t("重置")}
                                     </div>
                                 </div>
                             </div>
@@ -232,8 +232,8 @@ export const FuncBtn: React.FC<FuncBtnProps> = memo((props) => {
 })
 
 export const funcSearchType: {value: string; label: string}[] = [
-    {value: "userName", label: "按作者"},
-    {value: "keyword", label: "关键字"}
+    {value: "userName", label: i18next.t("按作者")},
+    {value: "keyword", label: i18next.t("关键字")}
 ]
 /** @name 带屏幕宽度自适应的搜索内容组件 */
 export const FuncSearch: React.FC<FuncSearchProps> = memo((props) => {
@@ -425,11 +425,11 @@ export const FuncFilterPopover: React.FC<FuncFilterPopoverProps> = memo((props) 
 
 /** @name 代表作者的图标ICON */
 export const AuthorIcon: React.FC<{}> = memo((props) => {
-    return <div className={styles["author-icon-wrapper"]}>作者</div>
+    return <div className={styles["author-icon-wrapper"]}>{i18next.t("作者")}</div>
 })
 /** @name 代表申请人的图标ICON */
 export const ApplicantIcon: React.FC<{}> = memo((props) => {
-    return <div className={styles["applicant-icon-wrapper"]}>申请人</div>
+    return <div className={styles["applicant-icon-wrapper"]}>{i18next.t("申请人")}</div>
 })
 
 /** @name 插件主要部分组件 */
@@ -497,7 +497,7 @@ export const PluginsList: React.FC<PluginsListProps> = memo((props) => {
                 <div className={styles["header-body"]}>
                     {!visible && (
                         <div className={styles["header-body-filter"]}>
-                            <Tooltip title='展开筛选' placement='topLeft' overlayClassName='plugins-tooltip'>
+                            <Tooltip title={i18next.t("展开筛选")} placement='topLeft' overlayClassName='plugins-tooltip'>
                                 <YakitButton
                                     type='text2'
                                     onClick={onExpend}
@@ -513,8 +513,7 @@ export const PluginsList: React.FC<PluginsListProps> = memo((props) => {
                             indeterminate={checkIndeterminate}
                             checked={checked}
                             onChange={(e) => onCheck(e.target.checked)}
-                        />
-                        全选
+                        />{i18next.t("全选")}
                     </div>
                     <div className={styles["body-total-selected"]}>
                         <div>
@@ -565,8 +564,7 @@ export const PluginsList: React.FC<PluginsListProps> = memo((props) => {
                                             [styles["tag-total-active"]]: tagShow
                                         })}
                                     >
-                                        <span>
-                                            筛选条件 <span className={styles["total-style"]}>{tagLength}</span>
+                                        <span>{i18next.t("筛选条件")} <span className={styles["total-style"]}>{tagLength}</span>
                                         </span>
                                         <OutlineXIcon onClick={() => onDelAllTag()} />
                                     </div>
@@ -581,7 +579,7 @@ export const PluginsList: React.FC<PluginsListProps> = memo((props) => {
                     <Tooltip
                         className='plugins-tooltip'
                         placement='topRight'
-                        title={isList ? "切换至宫格视图" : "切换至列表视图"}
+                        title={isList ? i18next.t("切换至宫格视图") : i18next.t("切换至列表视图")}
                     >
                         <div className={styles["is-list-btn"]} onClick={() => setIsList(!isList)}>
                             {isList ? <OutlineViewgridIcon /> : <OutlineViewlistIcon />}
@@ -632,7 +630,7 @@ export const ListShowContainer: <T>(props: ListShowContainerProps<T>) => any = m
         <YakitEmpty
             image={SearchResultEmpty}
             imageStyle={{width: 274, height: 180, marginBottom: 24}}
-            title='搜索结果“空”'
+            title={i18next.t("搜索结果“空”")}
             style={{paddingTop: "10%"}}
             className={styles["empty-list"]}
         />
@@ -783,7 +781,7 @@ export const ListList: <T>(props: ListListProps<T>) => any = memo((props) => {
                         </div>
                     )
                 })}
-                {!loading && !hasMore && <div className={styles["no-more-wrapper"]}>暂无更多数据</div>}
+                {!loading && !hasMore && <div className={styles["no-more-wrapper"]}>{i18next.t("暂无更多数据")}</div>}
                 {data.length > 0 && loading && (
                     <div className={styles["loading-wrapper"]}>
                         <YakitSpin wrapperClassName={styles["loading-style"]} />
@@ -1005,7 +1003,7 @@ export const GridList: <T>(props: GridListProps<T>) => any = memo((props) => {
                         </div>
                     )
                 })}
-                {!loading && !hasMore && <div className={styles["no-more-wrapper"]}>暂无更多数据</div>}
+                {!loading && !hasMore && <div className={styles["no-more-wrapper"]}>{i18next.t("暂无更多数据")}</div>}
                 {data.length > 0 && loading && (
                     <div className={styles["loading-wrapper"]}>
                         <YakitSpin wrapperClassName={styles["loading-style"]} />
@@ -1289,7 +1287,7 @@ export const OnlineExtraOperate: React.FC<OnlineExtraOperateProps> = memo((props
     const onLikeClick = useMemoizedFn((e) => {
         e.stopPropagation()
         if (!isLogin) {
-            yakitNotify("error", "登录才可以进行点赞")
+            yakitNotify("error", i18next.t("登录才可以进行点赞"))
             return
         }
         const pluginStarsRequest: PluginStarsRequest = {
@@ -1317,7 +1315,7 @@ export const OnlineExtraOperate: React.FC<OnlineExtraOperateProps> = memo((props
     })
     const onCommentClick = useMemoizedFn((e) => {
         e.stopPropagation()
-        yakitNotify("success", "评论~~~")
+        yakitNotify("success", i18next.t("评论~~~"))
         // commentProps.onCommentClick()
     })
     const onDownloadClick = useMemoizedFn((e) => {
@@ -1385,7 +1383,7 @@ export const OnlineRecycleExtraOperate: React.FC<OnlineRecycleExtraOperateProps>
     const onRemove = useMemoizedFn(async (e) => {
         e.stopPropagation()
         if (!isLogin) {
-            yakitNotify("error", "登录才可以进行删除")
+            yakitNotify("error", i18next.t("登录才可以进行删除"))
             return
         }
         try {
@@ -1403,7 +1401,7 @@ export const OnlineRecycleExtraOperate: React.FC<OnlineRecycleExtraOperateProps>
     const onReduction = useMemoizedFn(async (e) => {
         e.stopPropagation()
         if (!isLogin) {
-            yakitNotify("error", "登录才可以进行还原")
+            yakitNotify("error", i18next.t("登录才可以进行还原"))
             return
         }
         try {
@@ -1421,8 +1419,7 @@ export const OnlineRecycleExtraOperate: React.FC<OnlineRecycleExtraOperateProps>
             ) : (
                 <YakitButton type='text2' icon={<OutlineTrashIcon />} onClick={onRemove} />
             )}
-            <YakitButton icon={<OutlineDatabasebackupIcon />} onClick={onReduction} loading={reductionLoading}>
-                还原
+            <YakitButton icon={<OutlineDatabasebackupIcon />} onClick={onReduction} loading={reductionLoading}>{i18next.t("还原")}
             </YakitButton>
         </div>
     )
@@ -1534,11 +1531,9 @@ export const FilterPopoverBtn: React.FC<FilterPopoverBtnProps> = memo((props) =>
                         })}
 
                         <div className={styles["form-btns"]}>
-                            <YakitButton type='text' onClick={onReset}>
-                                重置搜索
+                            <YakitButton type='text' onClick={onReset}>{i18next.t("重置搜索")}
                             </YakitButton>
-                            <YakitButton type='primary' htmlType='submit'>
-                                搜索
+                            <YakitButton type='primary' htmlType='submit'>{i18next.t("搜索")}
                             </YakitButton>
                         </div>
                     </Form>
@@ -1582,7 +1577,7 @@ export const CodeScoreModule: React.FC<CodeScoreModuleProps> = memo((props) => {
                 }
             })
             .catch((e) => {
-                yakitNotify("error", `插件基础测试失败: ${e}`)
+                yakitNotify("error", i18next.t("插件基础测试失败: ${e}", { v1: e }))
                 callback(false)
             })
             .finally(() => {
@@ -1604,19 +1599,16 @@ export const CodeScoreModule: React.FC<CodeScoreModuleProps> = memo((props) => {
     return (
         <div className={styles["code-score-modal"]}>
             <div className={styles["header-wrapper"]}>
-                <div className={styles["title-style"]}>检测项包含：</div>
+                <div className={styles["title-style"]}>{i18next.t("检测项包含：")}</div>
                 <div className={styles["header-body"]}>
                     <div className={styles["opt-content"]}>
-                        <div className={styles["content-order"]}>1</div>
-                        基础编译测试，判断语法是否符合规范，是否存在不正确语法；
+                        <div className={styles["content-order"]}>1</div>{i18next.t("基础编译测试，判断语法是否符合规范，是否存在不正确语法；")}
                     </div>
                     <div className={styles["opt-content"]}>
-                        <div className={styles["content-order"]}>2</div>
-                        把基础防误报服务器作为测试基准，防止条件过于宽松导致的误报；
+                        <div className={styles["content-order"]}>2</div>{i18next.t("把基础防误报服务器作为测试基准，防止条件过于宽松导致的误报；")}
                     </div>
                     <div className={styles["opt-content"]}>
-                        <div className={styles["content-order"]}>3</div>
-                        检查插件执行过程是否会发生崩溃。
+                        <div className={styles["content-order"]}>3</div>{i18next.t("检查插件执行过程是否会发生崩溃。")}
                     </div>
                 </div>
             </div>
@@ -1627,9 +1619,8 @@ export const CodeScoreModule: React.FC<CodeScoreModuleProps> = memo((props) => {
                             <YakitSpin spinning={true} />
                         </div>
                         <div className={styles["loading-title"]}>
-                            <div className={styles["title-style"]}>检测中，请耐心等待...</div>
-                            <div className={styles["subtitle-style"]}>
-                                一般来说，检测将会在 <span className={styles["active-style"]}>10-20s</span> 内结束
+                            <div className={styles["title-style"]}>{i18next.t("检测中，请耐心等待...")}</div>
+                            <div className={styles["subtitle-style"]}>{i18next.t("一般来说，检测将会在")} <span className={styles["active-style"]}>10-20s</span>{i18next.t("内结束")}
                             </div>
                         </div>
                     </div>
@@ -1656,21 +1647,21 @@ export const CodeScoreModule: React.FC<CodeScoreModuleProps> = memo((props) => {
                         {response && (+response?.Score || 0) < 60 && (
                             <div className={styles["opt-results"]}>
                                 <SolidExclamationIcon />
-                                <div className={styles["content-style"]}>（上传失败，请修复后再上传）</div>
+                                <div className={styles["content-style"]}>{i18next.t("（上传失败，请修复后再上传）")}</div>
                             </div>
                         )}
                         {response && (+response?.Score || 0) >= 60 && (
                             <div className={styles["opt-results"]}>
                                 <div className={styles["success-score"]}>
                                     {+response?.Score}
-                                    <span className={styles["suffix-style"]}>分</span>
+                                    <span className={styles["suffix-style"]}>{i18next.t("分")}</span>
                                 </div>
-                                <div className={styles["content-style"]}>（表现良好，开始上传插件中...）</div>
+                                <div className={styles["content-style"]}>{i18next.t("（表现良好，开始上传插件中...）")}</div>
                             </div>
                         )}
                         {!response && (
                             <div className={styles["opt-results"]}>
-                                <div className={styles["content-style"]}>检查错误，请关闭后再次尝试!</div>
+                                <div className={styles["content-style"]}>{i18next.t("检查错误，请关闭后再次尝试!")}</div>
                             </div>
                         )}
                     </div>
@@ -1701,7 +1692,7 @@ export const CodeScoreModal: React.FC<CodeScoreModalProps> = memo((props) => {
 
     return (
         <YakitModal
-            title='插件基础检测'
+            title={i18next.t("插件基础检测")}
             type='white'
             width={506}
             centered={true}

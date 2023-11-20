@@ -1,6 +1,7 @@
 import {info} from "@/utils/notification";
 import {setRemoteValue} from "@/utils/kv";
 import {RemoteGV} from "@/yakitGV";
+import i18next from "../i18n"
 
 enum PRODUCT_RELEASE_EDITION {
     Yakit = 0,
@@ -93,7 +94,7 @@ const fetchEnv = () => {
 const {ipcRenderer} = window.require("electron");
 ipcRenderer.invoke("set-release-edition-raw", fetchEnv() || "").then(() => {
     if (isEnpriTraceAgent()) {
-        info(`设置 ${getReleaseEditionName()} 发行版成功`)
+        info(i18next.t("设置 ${getReleaseEditionName()} 发行版成功", {v1: getReleaseEditionName()}))
     }
 })
 

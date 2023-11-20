@@ -13,6 +13,7 @@ import {CopyableField} from "../../utils/inputUtil";
 import {showModal} from "../../utils/showModal";
 import {YakEditor} from "../../utils/editors";
 import {ReloadOutlined} from "@ant-design/icons";
+import i18next from "../../i18n"
 
 export interface PluginHistoryTableProp {
     trigger?: any
@@ -65,7 +66,7 @@ export const PluginHistoryTable: React.FC<PluginHistoryTableProp> = (props) => {
             size={"small"}
             title={() => {
                 return <Space>
-                    <div>{props.script.ScriptName} 的执行历史记录</div>
+                    <div>{i18next.t("的执行历史记录")} {props.script.ScriptName}</div>
                     <Button type={"link"} ghost={true} onClick={() => {
                         update()
                     }}><ReloadOutlined/> </Button>
@@ -84,44 +85,44 @@ export const PluginHistoryTable: React.FC<PluginHistoryTableProp> = (props) => {
             scroll={{x: "auto"}}
             columns={[
                 {
-                    title: "执行时间",
+                    title: i18next.t("执行时间"),
                     render: (i: ExecHistoryRecord) => <Tag>{formatTimestamp(i.Timestamp)}</Tag>,
                     width: 130,
                 },
                 {
-                    title: "耗时",
+                    title: i18next.t("耗时"),
                     render: (r: ExecHistoryRecord) => <Tag color={"geekblue"}>{r.DurationMs}ms</Tag>,
                     width: 100,
                 },
                 {
-                    title: "参数", width: 300,
+                    title: i18next.t("参数"), width: 300,
                     render: (r: ExecHistoryRecord) => <CopyableField noCopy={!r.Params} text={r.Params} width={300}/>,
                 },
                 {
-                    title: "状态", width: 120,
-                    render: (r: ExecHistoryRecord) => r.Ok ? <Tag color={"green"}>执行成功</Tag> :
-                        <Tag color={"red"}>执行失败</Tag>
+                    title: i18next.t("状态"), width: 120,
+                    render: (r: ExecHistoryRecord) => r.Ok ? <Tag color={"green"}>{i18next.t("执行成功")}</Tag> :
+                        <Tag color={"red"}>{i18next.t("执行失败")}</Tag>
                 },
                 {
-                    title: "执行结果/失败原因", render: (r: ExecHistoryRecord) => r.Ok ? <Space>
-                        {r.Stdout && <Tag color={"geekblue"}>标准输出内容长度[{(r.StdoutLen)}]</Tag>}
-                        {r.Stderr && <Tag color={"orange"}>标准错误内容长度[{(r.StderrLen)}]</Tag>}
-                        {!r.Stdout && !r.Stderr ? <Tag>无输出</Tag> : undefined}
+                    title: i18next.t("执行结果/失败原因"), render: (r: ExecHistoryRecord) => r.Ok ? <Space>
+                        {r.Stdout && <Tag color={"geekblue"}>{i18next.t("标准输出内容长度")}[{(r.StdoutLen)}]</Tag>}
+                        {r.Stderr && <Tag color={"orange"}>{i18next.t("标准错误内容长度")}[{(r.StderrLen)}]</Tag>}
+                        {!r.Stdout && !r.Stderr ? <Tag>{i18next.t("无输出")}</Tag> : undefined}
                     </Space> : <Space>
                         <Tag color={"red"}>{r.Reason}</Tag>
                     </Space>
                 },
                 {
-                    title: "操作", render: (r: ExecHistoryRecord) => <Space>
+                    title: i18next.t("操作"), render: (r: ExecHistoryRecord) => <Space>
                         <Button size={"small"} onClick={() => {
                             showModal({
-                                title: "插件源码", content: <>
+                                title: i18next.t("插件源码"), content: <>
                                     <div style={{height: 500}}>
                                         <YakEditor type={ props.script.Type} readOnly={true} value={props.script.Content}/>
                                     </div>
                                 </>, width: "60%",
                             })
-                        }}>插件源码</Button>
+                        }}>{i18next.t("插件源码")}</Button>
                     </Space>
                 },
             ]}

@@ -12,6 +12,7 @@ import React, {useEffect, useRef, useState} from "react"
 import {CodeComparisonDiff} from "./YakitPluginJournalDetails"
 import ReactResizeDetector from "react-resize-detector"
 import "./YakitPluginOnlineJournal.scss"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -92,7 +93,7 @@ export const YakitPluginOnlineJournal: React.FC<YakitPluginOnlineJournalProps> =
                 }
             })
             .catch((err) => {
-                failed("获取插件日志列表失败:" + err)
+                failed(i18next.t("获取插件日志列表失败:") + err)
             })
             .finally(() => {
                 setTimeout(() => {
@@ -179,8 +180,8 @@ export const YakitPluginOnlineJournal: React.FC<YakitPluginOnlineJournalProps> =
                                                 {moment.unix(item.created_at).format("YYYY-MM-DD HH:mm")}
                                                 &emsp;
                                                 {(["admin", "superAdmin"].includes(item.role || "") &&
-                                                    `管理员${item.user_name}修改插件`) ||
-                                                    `${item.user_name}申请修改插件`}
+                                                    i18next.t("管理员${item.user_name}修改插件", { v1: item.user_name })) ||
+                                                    i18next.t("${item.user_name}申请修改插件", {v1: item.user_name})}
                                             </div>
                                             <div className='journal-item-operation'>
                                                 <Button
@@ -189,8 +190,7 @@ export const YakitPluginOnlineJournal: React.FC<YakitPluginOnlineJournalProps> =
                                                         e.stopPropagation()
                                                         onGoDetails(item)
                                                     }}
-                                                >
-                                                    详情
+                                                >{i18next.t("详情")}
                                                 </Button>
                                                 <a href='#'>code</a>
                                             </div>

@@ -69,6 +69,7 @@ import {YakitCheckbox} from "@/components/yakitUI/YakitCheckbox/YakitCheckbox"
 import {getRemoteValue, setRemoteValue} from "@/utils/kv"
 import {YakitMenuItemProps} from "@/components/yakitUI/YakitMenu/YakitMenu"
 import { YakitRadioButtons } from "@/components/yakitUI/YakitRadioButtons/YakitRadioButtons"
+import i18next from "../../i18n"
 const {ipcRenderer} = window.require("electron")
 
 interface UploadStatusInfoProps {
@@ -110,7 +111,7 @@ export const UploadStatusInfo: React.FC<UploadStatusInfoProps> = (props) => {
                             percent={Math.floor((streamData.Progress || 0) * 100)}
                             showInfo={false}
                         />
-                        <div className={styles["progress-title"]}>进度 {Math.round(streamData.Progress * 100)}%</div>
+                        <div className={styles["progress-title"]}>{i18next.t("进度")} {Math.round(streamData.Progress * 100)}%</div>
                     </div>
                     {showDownloadDetail && (
                         <div className={styles["download-info-wrapper"]}>
@@ -118,7 +119,7 @@ export const UploadStatusInfo: React.FC<UploadStatusInfoProps> = (props) => {
                             <div className={styles["divider-wrapper"]}>
                                 <div className={styles["divider-style"]}></div>
                             </div> */}
-                            <div>耗时 : {streamData.CostDurationVerbose}</div>
+                            <div>{i18next.t("耗时 :")} {streamData.CostDurationVerbose}</div>
                             {/* <div className={styles["divider-wrapper"]}>
                                 <div className={styles["divider-style"]}></div>
                             </div>
@@ -133,8 +134,7 @@ export const UploadStatusInfo: React.FC<UploadStatusInfoProps> = (props) => {
                         ))}
                     </div>
                     <div className={styles["download-btn"]}>
-                        <YakitButton loading={false} size='large' type='outline2' onClick={cancelRun}>
-                            取消
+                        <YakitButton loading={false} size='large' type='outline2' onClick={cancelRun}>{i18next.t("取消")}
                         </YakitButton>
                     </div>
                 </div>
@@ -255,7 +255,7 @@ export const CreateDictionaries: React.FC<CreateDictionariesProps> = (props) => 
         ipcRenderer.on(`${token}-error`, (e: any, error: any) => {
             if (error === `group[${group || dictionariesName}] exist`) {
                 messageWarnRef.current = true
-                warn("字典名重复")
+                warn(i18next.t("字典名重复"))
                 return
             }
             failed(`[SavePayload] error:  ${error}`)
@@ -296,7 +296,7 @@ export const CreateDictionaries: React.FC<CreateDictionariesProps> = (props) => 
         ipcRenderer.on(`${fileToken}-error`, (e: any, error: any) => {
             if (error === `group[${group || dictionariesName}] exist`) {
                 messageWarnRef.current = true
-                warn("字典名重复")
+                warn(i18next.t("字典名重复"))
                 return
             }
             failed(`[SavePayloadFile] error:  ${error}`)
@@ -343,11 +343,11 @@ export const CreateDictionaries: React.FC<CreateDictionariesProps> = (props) => 
             }[] = []
             fileList.forEach((f) => {
                 if (!FileType.includes(f.type)) {
-                    failed(`${f.name}非txt、csv文件，请上传正确格式文件！`)
+                    failed(i18next.t("${f.name}非txt、csv文件，请上传正确格式文件！", {v1: f.name}))
                     return false
                 }
                 if (uploadList.map((item) => item.path).includes(f.path)) {
-                    warn(`${f.path}已选择`)
+                    warn(i18next.t("${f.path}已选择", {v1: f.path}))
                     return
                 }
                 let name = f.name.split(".")[0]
@@ -379,20 +379,18 @@ export const CreateDictionaries: React.FC<CreateDictionariesProps> = (props) => 
                     {isDictionaries && (
                         <div className={styles["explain"]}>
                             <div className={styles["explain-bg"]}>
-                                <div className={styles["title"]}>可根据需求选择以下存储方式，存储方式不影响使用：</div>
+                                <div className={styles["title"]}>{i18next.t("可根据需求选择以下存储方式，存储方式不影响使用：")}</div>
                                 <div className={styles["content"]}>
                                     <div className={styles["item"]}>
                                         <div className={styles["dot"]}>1</div>
-                                        <div className={styles["text"]}>
-                                            文件存储：将字典以文件形式保存在本地，不支持命中次数，
-                                            <span className={styles["hight-text"]}>上传速度更快</span>
+                                        <div className={styles["text"]}>{i18next.t("文件存储：将字典以文件形式保存在本地，不支持命中次数，")}
+                                            <span className={styles["hight-text"]}>{i18next.t("上传速度更快")}</span>
                                         </div>
                                     </div>
                                     <div className={styles["item"]}>
                                         <div className={styles["dot"]}>2</div>
-                                        <div className={styles["text"]}>
-                                            数据库存储：将字典数据读取后保存在数据库中，支持命中次数，
-                                            <span className={styles["hight-text"]}>搜索更方便</span>
+                                        <div className={styles["text"]}>{i18next.t("数据库存储：将字典数据读取后保存在数据库中，支持命中次数，")}
+                                            <span className={styles["hight-text"]}>{i18next.t("搜索更方便")}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -402,13 +400,12 @@ export const CreateDictionaries: React.FC<CreateDictionariesProps> = (props) => 
                     <div className={styles["info-box"]}>
                         {isDictionaries && (
                             <div className={styles["input-box"]}>
-                                <div className={styles["name"]}>
-                                    字典名<span className={styles["must"]}>*</span>:
+                                <div className={styles["name"]}>{i18next.t("字典名")}<span className={styles["must"]}>*</span>:
                                 </div>
                                 <div>
                                     <YakitInput
                                         style={{width: "100%"}}
-                                        placeholder='请输入...'
+                                        placeholder={i18next.t("请输入...")}
                                         value={dictionariesName}
                                         onChange={(e) => {
                                             setDictionariesName(e.target.value)
@@ -434,11 +431,11 @@ export const CreateDictionaries: React.FC<CreateDictionariesProps> = (props) => 
                         options={[
                             {
                                 value: "dragger",
-                                label: "上传文件"
+                                label: i18next.t("上传文件")
                             },
                             {
                                 value: "editor",
-                                label: "手动输入"
+                                label: i18next.t("手动输入")
                             },
                         ]}
                         // size={"small"}
@@ -462,11 +459,10 @@ export const CreateDictionaries: React.FC<CreateDictionariesProps> = (props) => 
                                         <PropertyIcon />
                                     </div>
                                     <div className={styles["content"]}>
-                                        <div className={styles["title"]}>
-                                            可将文件拖入框内，或
-                                            <span className={styles["hight-light"]}>点击此处导入</span>
+                                        <div className={styles["title"]}>{i18next.t("可将文件拖入框内，或")}
+                                            <span className={styles["hight-light"]}>{i18next.t("点击此处导入")}</span>
                                         </div>
-                                        <div className={styles["sub-title"]}>支持文件夹批量上传(支持文件类型txt/csv)</div>
+                                        <div className={styles["sub-title"]}>{i18next.t("支持文件夹批量上传(支持文件类型txt/csv)")}</div>
                                     </div>
                                 </div>
                             </Dragger>
@@ -520,25 +516,21 @@ export const CreateDictionaries: React.FC<CreateDictionariesProps> = (props) => 
                                     type='outline1'
                                     icon={<SolidDatabaseIcon />}
                                     onClick={onSavePayload}
-                                >
-                                    数据库存储
+                                >{i18next.t("数据库存储")}
                                 </YakitButton>
                                 <YakitButton
                                     size='large'
                                     disabled={isDisabled}
                                     icon={<SolidDocumenttextIcon />}
                                     onClick={onSavePayloadToFile}
-                                >
-                                    文件存储
+                                >{i18next.t("文件存储")}
                                 </YakitButton>
                             </>
                         ) : (
                             <>
-                                <YakitButton size='large' disabled={isDisabled} type='outline1' onClick={onClose}>
-                                    取消
+                                <YakitButton size='large' disabled={isDisabled} type='outline1' onClick={onClose}>{i18next.t("取消")}
                                 </YakitButton>
-                                <YakitButton size='large' disabled={isDisabled} onClick={onSavePayload}>
-                                    导入
+                                <YakitButton size='large' disabled={isDisabled} onClick={onSavePayload}>{i18next.t("导入")}
                                 </YakitButton>
                             </>
                         )}
@@ -548,7 +540,7 @@ export const CreateDictionaries: React.FC<CreateDictionariesProps> = (props) => 
 
             {streamData && (
                 <UploadStatusInfo
-                    title={storeType === "database" ? "导入中..." : "自动去重检测，请耐心等待..."}
+                    title={storeType === "database" ? i18next.t("导入中...") : i18next.t("自动去重检测，请耐心等待...")}
                     streamData={streamData}
                     cancelRun={cancelRun}
                     logInfo={logInfoRef.current}
@@ -857,7 +849,7 @@ export const NewPayloadList: React.FC<NewPayloadListProps> = (props) => {
                     onQueryGroup()
                 })
                 .catch((e: any) => {
-                    failed(`数据更新失败：${e}`)
+                    failed(i18next.t("数据更新失败：${e}", { v1: e }))
                 })
         }
     })
@@ -888,7 +880,7 @@ export const NewPayloadList: React.FC<NewPayloadListProps> = (props) => {
         let newFolderName: string
         let index = 1
         do {
-            newFolderName = `未命名检测${index}`
+            newFolderName = i18next.t("未命名检测${index}", { v1: index })
             index++
         } while (existingFolderNames.includes(newFolderName))
         return newFolderName
@@ -1186,12 +1178,12 @@ export const NewPayloadList: React.FC<NewPayloadListProps> = (props) => {
         <div className={styles["new-payload-list"]}>
             <div className={styles["header"]}>
                 <div className={styles["title-box"]}>
-                    <div className={styles["title"]}>{onlyInsert ? "选择想要插入的字典" : "Payload 字典管理"}</div>
+                    <div className={styles["title"]}>{onlyInsert ? i18next.t("选择想要插入的字典") : i18next.t("Payload 字典管理")}</div>
                     <div className={styles["count"]}>{getPayloadCount}</div>
                 </div>
                 <div className={styles["extra"]}>
                     {onlyInsert ? (
-                        <Tooltip title={"前往 Payload 字典管理"}>
+                        <Tooltip title={i18next.t("前往 Payload 字典管理")}>
                             <YakitButton
                                 type='text2'
                                 icon={<OutlineCogIcon />}
@@ -1210,7 +1202,7 @@ export const NewPayloadList: React.FC<NewPayloadListProps> = (props) => {
                                         label: (
                                             <div className={styles["extra-menu"]}>
                                                 <OutlineAddPayloadIcon />
-                                                <div className={styles["menu-name"]}>新建字典</div>
+                                                <div className={styles["menu-name"]}>{i18next.t("新建字典")}</div>
                                             </div>
                                         )
                                     },
@@ -1219,7 +1211,7 @@ export const NewPayloadList: React.FC<NewPayloadListProps> = (props) => {
                                         label: (
                                             <div className={styles["extra-menu"]}>
                                                 <OutlineFolderaddIcon />
-                                                <div className={styles["menu-name"]}>新建文件夹</div>
+                                                <div className={styles["menu-name"]}>{i18next.t("新建文件夹")}</div>
                                             </div>
                                         )
                                     }
@@ -1237,7 +1229,7 @@ export const NewPayloadList: React.FC<NewPayloadListProps> = (props) => {
                                                 maskClosable: false,
                                                 content: (
                                                     <CreateDictionaries
-                                                        title='新建字典'
+                                                        title={i18next.t("新建字典")}
                                                         type='dictionaries'
                                                         onQueryGroup={onQueryGroup}
                                                         onClose={() => {
@@ -1271,7 +1263,7 @@ export const NewPayloadList: React.FC<NewPayloadListProps> = (props) => {
                                 placement: "bottomRight"
                             }}
                         >
-                            <Tooltip title={"新增"}>
+                            <Tooltip title={i18next.t("新增")}>
                                 <YakitButton type='secondary2' icon={<OutlinePlusIcon />} />
                             </Tooltip>
                         </YakitDropdownMenu>
@@ -1325,7 +1317,7 @@ export const NewPayloadList: React.FC<NewPayloadListProps> = (props) => {
                                     />
                                 )
                             })}
-                            <div className={styles["to-end"]}>已经到底啦～</div>
+                            <div className={styles["to-end"]}>{i18next.t("已经到底啦～")}</div>
                         </>
                     ) : (
                         <>
@@ -1410,7 +1402,7 @@ export const NewPayloadList: React.FC<NewPayloadListProps> = (props) => {
                                     )}
                                 </Droppable>
                             </DragDropContext>
-                            <div className={styles["to-end"]}>已经到底啦～</div>
+                            <div className={styles["to-end"]}>{i18next.t("已经到底啦～")}</div>
                         </>
                     )}
                 </div>
@@ -1546,12 +1538,12 @@ export const FolderComponent: React.FC<FolderComponentProps> = (props) => {
                         Name: inputName
                     })
                     .then(() => {
-                        success("新建文件夹成功")
+                        success(i18next.t("新建文件夹成功"))
                         setInputName(inputName)
                         setFolderNameById()
                     })
                     .catch((e: any) => {
-                        failed(`新建文件夹失败：${e}`)
+                        failed(i18next.t("新建文件夹失败：${e}", { v1: e }))
                         setData(data.filter((item) => !item.isCreate))
                     })
             }
@@ -1563,13 +1555,13 @@ export const FolderComponent: React.FC<FolderComponentProps> = (props) => {
                         NewName: inputName
                     })
                     .then(() => {
-                        success("修改成功")
+                        success(i18next.t("修改成功"))
                         setInputName(inputName)
                         setFolderNameById()
                     })
                     .catch((e: any) => {
                         setInputName(folder.name)
-                        failed(`编辑失败：${e}`)
+                        failed(i18next.t("编辑失败：${e}", { v1: e }))
                     })
             }
         } else {
@@ -1577,13 +1569,13 @@ export const FolderComponent: React.FC<FolderComponentProps> = (props) => {
             // 创建时为空则不创建
             if (folder.isCreate) {
                 setData(data.filter((item) => !item.isCreate))
-                allFolderName.includes(inputName) && inputName.length !== 0 && warn("文件夹名重复，不可创建")
+                allFolderName.includes(inputName) && inputName.length !== 0 && warn(i18next.t("文件夹名重复，不可创建"))
             }
             // 编辑时为空恢复
             else {
                 // 没有修改
                 setInputName(folder.name)
-                folder.name !== inputName && allFolderName.includes(inputName) && warn("文件夹名重复，不可编辑")
+                folder.name !== inputName && allFolderName.includes(inputName) && warn(i18next.t("文件夹名重复，不可编辑"))
             }
         }
     })
@@ -1607,12 +1599,12 @@ export const FolderComponent: React.FC<FolderComponentProps> = (props) => {
                 Name: folder.name
             })
             .then(() => {
-                success("删除成功")
+                success(i18next.t("删除成功"))
                 onDeleteFolderById(folder.id)
                 setDeleteVisible(false)
             })
             .catch((e: any) => {
-                failed(`删除失败：${e}`)
+                failed(i18next.t("删除失败：${e}", { v1: e }))
             })
     })
 
@@ -1693,7 +1685,7 @@ export const FolderComponent: React.FC<FolderComponentProps> = (props) => {
                                             label: (
                                                 <div className={styles["extra-menu"]}>
                                                     <OutlineDocumentduplicateIcon />
-                                                    <div className={styles["menu-name"]}>复制 Fuzztag</div>
+                                                    <div className={styles["menu-name"]}>{i18next.t("复制 Fuzztag")}</div>
                                                 </div>
                                             )
                                         },
@@ -1702,7 +1694,7 @@ export const FolderComponent: React.FC<FolderComponentProps> = (props) => {
                                             label: (
                                                 <div className={styles["extra-menu"]}>
                                                     <OutlineAddPayloadIcon />
-                                                    <div className={styles["menu-name"]}>新增子集字典</div>
+                                                    <div className={styles["menu-name"]}>{i18next.t("新增子集字典")}</div>
                                                 </div>
                                             )
                                         },
@@ -1711,7 +1703,7 @@ export const FolderComponent: React.FC<FolderComponentProps> = (props) => {
                                             label: (
                                                 <div className={styles["extra-menu"]}>
                                                     <OutlinePencilaltIcon />
-                                                    <div className={styles["menu-name"]}>重命名</div>
+                                                    <div className={styles["menu-name"]}>{i18next.t("重命名")}</div>
                                                 </div>
                                             )
                                         },
@@ -1723,7 +1715,7 @@ export const FolderComponent: React.FC<FolderComponentProps> = (props) => {
                                             label: (
                                                 <div className={styles["extra-menu"]}>
                                                     <OutlineTrashIcon />
-                                                    <div className={styles["menu-name"]}>删除</div>
+                                                    <div className={styles["menu-name"]}>{i18next.t("删除")}</div>
                                                 </div>
                                             ),
                                             type: "danger"
@@ -1748,7 +1740,7 @@ export const FolderComponent: React.FC<FolderComponentProps> = (props) => {
                                                     maskClosable: false,
                                                     content: (
                                                         <CreateDictionaries
-                                                            title='新建子集字典'
+                                                            title={i18next.t("新建子集字典")}
                                                             type='dictionaries'
                                                             onQueryGroup={onQueryGroup}
                                                             folder={folder.name}
@@ -1928,11 +1920,10 @@ export const DeleteConfirm: React.FC<DeleteConfirmProps> = (props) => {
             {/* 删除确认弹框 */}
             <YakitHint
                 visible={showConfirm && visible}
-                title='是否要删除'
-                content='确认删除后将会彻底删除'
+                title={i18next.t("是否要删除")}
+                content={i18next.t("确认删除后将会彻底删除")}
                 footerExtra={
-                    <YakitCheckbox value={check} onChange={(e) => onCheck(e.target.checked)}>
-                        下次不再提醒
+                    <YakitCheckbox value={check} onChange={(e) => onCheck(e.target.checked)}>{i18next.t("下次不再提醒")}
                     </YakitCheckbox>
                 }
                 onOk={() => {
@@ -2065,16 +2056,16 @@ export const FileComponent: React.FC<FileComponentProps> = (props) => {
                     NewName: inputName
                 })
                 .then(() => {
-                    success("修改成功")
+                    success(i18next.t("修改成功"))
                     setInputName(inputName)
                     setFileById(file.id, inputName)
                 })
                 .catch((e: any) => {
                     setInputName(file.name)
-                    failed(`编辑失败：${e}`)
+                    failed(i18next.t("编辑失败：${e}", { v1: e }))
                 })
         } else {
-            file.name !== inputName && allFileName.includes(inputName) && warn("名称重复，编辑失败")
+            file.name !== inputName && allFileName.includes(inputName) && warn(i18next.t("名称重复，编辑失败"))
             !pass && warn("名称不允许出现/*,")
             setInputName(file.name)
         }
@@ -2115,12 +2106,12 @@ export const FileComponent: React.FC<FileComponentProps> = (props) => {
                 Group: file.name
             })
             .then(() => {
-                success("删除成功")
+                success(i18next.t("删除成功"))
                 onDeletePayloadById(file.id)
                 setDeleteVisible(false)
             })
             .catch((e: any) => {
-                failed(`删除失败：${e}`)
+                failed(i18next.t("删除失败：${e}", { v1: e }))
             })
     })
 
@@ -2194,7 +2185,7 @@ export const FileComponent: React.FC<FileComponentProps> = (props) => {
                       label: (
                           <div className={styles["extra-menu"]}>
                               <OutlineDocumentduplicateIcon />
-                              <div className={styles["menu-name"]}>复制 Fuzztag</div>
+                              <div className={styles["menu-name"]}>{i18next.t("复制 Fuzztag")}</div>
                           </div>
                       )
                   },
@@ -2203,7 +2194,7 @@ export const FileComponent: React.FC<FileComponentProps> = (props) => {
                       label: (
                           <div className={styles["extra-menu"]}>
                               <OutlineImportIcon />
-                              <div className={styles["menu-name"]}>扩充字典</div>
+                              <div className={styles["menu-name"]}>{i18next.t("扩充字典")}</div>
                           </div>
                       )
                   },
@@ -2212,7 +2203,7 @@ export const FileComponent: React.FC<FileComponentProps> = (props) => {
                       label: (
                           <div className={styles["extra-menu"]}>
                               <OutlineExportIcon />
-                              <div className={styles["menu-name"]}>导出字典</div>
+                              <div className={styles["menu-name"]}>{i18next.t("导出字典")}</div>
                           </div>
                       )
                   },
@@ -2221,7 +2212,7 @@ export const FileComponent: React.FC<FileComponentProps> = (props) => {
                       label: (
                           <div className={styles["extra-menu"]}>
                               <OutlinePencilaltIcon />
-                              <div className={styles["menu-name"]}>重命名</div>
+                              <div className={styles["menu-name"]}>{i18next.t("重命名")}</div>
                           </div>
                       )
                   },
@@ -2233,7 +2224,7 @@ export const FileComponent: React.FC<FileComponentProps> = (props) => {
                       label: (
                           <div className={styles["extra-menu"]}>
                               <OutlineTrashIcon />
-                              <div className={styles["menu-name"]}>删除</div>
+                              <div className={styles["menu-name"]}>{i18next.t("删除")}</div>
                           </div>
                       ),
                       type: "danger"
@@ -2245,7 +2236,7 @@ export const FileComponent: React.FC<FileComponentProps> = (props) => {
                       label: (
                           <div className={styles["extra-menu"]}>
                               <OutlineDocumentduplicateIcon />
-                              <div className={styles["menu-name"]}>复制 Fuzztag</div>
+                              <div className={styles["menu-name"]}>{i18next.t("复制 Fuzztag")}</div>
                           </div>
                       )
                   },
@@ -2254,7 +2245,7 @@ export const FileComponent: React.FC<FileComponentProps> = (props) => {
                       label: (
                           <div className={styles["extra-menu"]}>
                               <OutlineExportIcon />
-                              <div className={styles["menu-name"]}>导出字典</div>
+                              <div className={styles["menu-name"]}>{i18next.t("导出字典")}</div>
                           </div>
                       )
                   },
@@ -2263,7 +2254,7 @@ export const FileComponent: React.FC<FileComponentProps> = (props) => {
                       label: (
                           <div className={styles["extra-menu"]}>
                               <OutlinePencilaltIcon />
-                              <div className={styles["menu-name"]}>重命名</div>
+                              <div className={styles["menu-name"]}>{i18next.t("重命名")}</div>
                           </div>
                       )
                   },
@@ -2272,7 +2263,7 @@ export const FileComponent: React.FC<FileComponentProps> = (props) => {
                       label: (
                           <div className={styles["extra-menu"]}>
                               <OutlineDatabasebackupIcon />
-                              <div className={styles["menu-name"]}>转为数据库存储</div>
+                              <div className={styles["menu-name"]}>{i18next.t("转为数据库存储")}</div>
                           </div>
                       )
                   },
@@ -2284,7 +2275,7 @@ export const FileComponent: React.FC<FileComponentProps> = (props) => {
                       label: (
                           <div className={styles["extra-menu"]}>
                               <OutlineTrashIcon />
-                              <div className={styles["menu-name"]}>删除</div>
+                              <div className={styles["menu-name"]}>{i18next.t("删除")}</div>
                           </div>
                       ),
                       type: "danger"
@@ -2384,7 +2375,7 @@ export const FileComponent: React.FC<FileComponentProps> = (props) => {
                                                     maskClosable: false,
                                                     content: (
                                                         <CreateDictionaries
-                                                            title='扩充到护网专用工具'
+                                                            title={i18next.t("扩充到护网专用工具")}
                                                             type='payload'
                                                             onQueryGroup={onQueryGroup}
                                                             folder={folder}
@@ -2445,7 +2436,7 @@ export const FileComponent: React.FC<FileComponentProps> = (props) => {
                 closable={false}
             >
                 <UploadStatusInfo
-                    title={"转为数据库存储中，请耐心等待..."}
+                    title={i18next.t("转为数据库存储中，请耐心等待...")}
                     streamData={streamData}
                     cancelRun={() => {
                         cancelRemoveDuplicate()
@@ -2505,7 +2496,7 @@ export const MoveOrCopyPayload: React.FC<MoveOrCopyPayloadProps> = (props) => {
                 setFileArr(arr.filter((item) => item.file !== group))
             })
             .catch((e: any) => {
-                failed(`获取数据失败：${e}`)
+                failed(i18next.t("获取数据失败：${e}", { v1: e }))
             })
             .finally()
     }, [])
@@ -2518,7 +2509,7 @@ export const MoveOrCopyPayload: React.FC<MoveOrCopyPayloadProps> = (props) => {
                     let item = fileArr.filter((item) => item.file === val)[0]
                     copyMoveValueRef.current = item
                 }}
-                placeholder='请选择...'
+                placeholder={i18next.t("请选择...")}
             >
                 {fileArr.map((item) => (
                     <YakitSelect value={item.file} key={item.file}>
@@ -2637,7 +2628,7 @@ export const PayloadContent: React.FC<PayloadContentProps> = (props) => {
                 setLoading(false)
             })
             .catch((e: any) => {
-                failed("编辑器数据获取失败")
+                failed(i18next.t("编辑器数据获取失败"))
             })
     })
 
@@ -2675,17 +2666,17 @@ export const PayloadContent: React.FC<PayloadContentProps> = (props) => {
                 }
                 onQueryPayload(page, pagination?.Limit)
                 setSelectPayloadArr([])
-                success("删除成功")
+                success(i18next.t("删除成功"))
             })
             .catch((e: any) => {
-                failed("删除失败：" + e)
+                failed(i18next.t("删除失败：") + e)
             })
     })
 
     const onCopyOrMoveFun = useMemoizedFn((id?: number, isCopy = false) => {
         return new Promise((resolve, reject) => {
             if (copyMoveValueRef.current === undefined) {
-                warn("请选择字典")
+                warn(i18next.t("请选择字典"))
                 resolve(false)
             } else {
                 const {folder, file} = copyMoveValueRef.current
@@ -2697,14 +2688,14 @@ export const PayloadContent: React.FC<PayloadContentProps> = (props) => {
                         Copy: isCopy
                     })
                     .then(() => {
-                        success("操作成功")
+                        success(i18next.t("操作成功"))
                         onQueryPayload()
                         resolve(true)
                         // 通知刷新列表
                         emiter.emit("refreshListEvent")
                     })
                     .catch((e: any) => {
-                        failed(`操作字典失败${e}`)
+                        failed(i18next.t("操作字典失败${e}", { v1: e }))
                         resolve(false)
                     })
                     .finally()
@@ -2715,7 +2706,7 @@ export const PayloadContent: React.FC<PayloadContentProps> = (props) => {
     const onCopyToOtherPayload = useMemoizedFn((id?: number) => {
         copyMoveValueRef.current = undefined
         const m = showYakitModal({
-            title: "备份到其他字典",
+            title: i18next.t("备份到其他字典"),
             width: 400,
             type: "white",
             closable: false,
@@ -2736,7 +2727,7 @@ export const PayloadContent: React.FC<PayloadContentProps> = (props) => {
     const onMoveToOtherPayload = useMemoizedFn((id?: number) => {
         copyMoveValueRef.current = undefined
         const y = showYakitModal({
-            title: "移动到其他字典",
+            title: i18next.t("移动到其他字典"),
             width: 400,
             type: "white",
             closable: false,
@@ -2764,7 +2755,7 @@ export const PayloadContent: React.FC<PayloadContentProps> = (props) => {
                 onQueryEditor(group, folder)
                 setResponse(data)
                 setEditMonaco(false)
-                success("保存成功")
+                success(i18next.t("保存成功"))
             })
             .catch((e: any) => {
                 failed(`UpdatePayloadToFile failed:${e}`)
@@ -2835,21 +2826,21 @@ export const PayloadContent: React.FC<PayloadContentProps> = (props) => {
                     <div className={styles["title"]}>{group}</div>
                     <div className={styles["sub-title"]}>
                         {showContentType === "editor" && payloadFileData?.IsBigFile ? (
-                            <YakitTag color='danger'>超大字典</YakitTag>
+                            <YakitTag color='danger'>{i18next.t("超大字典")}</YakitTag>
                         ) : selectPayloadArr.length > 0 ? (
                             <div className={styles["total-item"]}>
                                 <span className={styles["total-item-text"]}>Selected</span>
                                 <span className={styles["total-item-number"]}>{selectPayloadArr?.length}</span>
                             </div>
                         ) : (
-                            `可以通过 fuzz 模块 {{x(字典名)}} 来渲染`
+                            i18next.t("可以通过 fuzz 模块 {{x(字典名)}} 来渲染")
                         )}
                     </div>
                 </div>
                 {!onlyInsert && showContentType === "table" && (
                     <div className={styles["extra"]}>
                         <YakitInput.Search
-                            placeholder='请输入关键词搜索'
+                            placeholder={i18next.t("请输入关键词搜索")}
                             value={params.Keyword}
                             onChange={(e) => {
                                 setParams({...params, Keyword: e.target.value})
@@ -2879,22 +2870,21 @@ export const PayloadContent: React.FC<PayloadContentProps> = (props) => {
                                     setExportType("all")
                                     setExportVisible(true)
                                 }}
-                            >
-                                导出
+                            >{i18next.t("导出")}
                             </YakitButton>
                         )}
                         {!isNoSelect && size && (
                             <>
                                 {size.width < 950 ? (
                                     <>
-                                        <Tooltip title={"备份到其他字典"}>
+                                        <Tooltip title={i18next.t("备份到其他字典")}>
                                             <YakitButton
                                                 type='outline2'
                                                 icon={<OutlineDocumentduplicateIcon />}
                                                 onClick={() => onCopyToOtherPayload()}
                                             />
                                         </Tooltip>
-                                        <Tooltip title={"移动到其他字典"}>
+                                        <Tooltip title={i18next.t("移动到其他字典")}>
                                             <YakitButton
                                                 type='outline2'
                                                 icon={<OutlineClipboardcopyIcon />}
@@ -2908,15 +2898,13 @@ export const PayloadContent: React.FC<PayloadContentProps> = (props) => {
                                             type='outline2'
                                             icon={<OutlineDocumentduplicateIcon />}
                                             onClick={() => onCopyToOtherPayload()}
-                                        >
-                                            备份到其他字典
+                                        >{i18next.t("备份到其他字典")}
                                         </YakitButton>
                                         <YakitButton
                                             type='outline2'
                                             icon={<OutlineClipboardcopyIcon />}
                                             onClick={() => onMoveToOtherPayload()}
-                                        >
-                                            移动到其他字典
+                                        >{i18next.t("移动到其他字典")}
                                         </YakitButton>
                                     </>
                                 )}
@@ -2935,7 +2923,7 @@ export const PayloadContent: React.FC<PayloadContentProps> = (props) => {
                                     maskClosable: false,
                                     content: (
                                         <CreateDictionaries
-                                            title='扩充到护网专用工具'
+                                            title={i18next.t("扩充到护网专用工具")}
                                             type='payload'
                                             onQueryGroup={() => emiter.emit("refreshListEvent")}
                                             group={group}
@@ -2946,8 +2934,7 @@ export const PayloadContent: React.FC<PayloadContentProps> = (props) => {
                                     )
                                 })
                             }}
-                        >
-                            扩充
+                        >{i18next.t("扩充")}
                         </YakitButton>
                         {setExpand && Expand()}
                     </div>
@@ -2967,11 +2954,9 @@ export const PayloadContent: React.FC<PayloadContentProps> = (props) => {
                                     setEditMonaco(false)
                                     payloadFileData && setEditorValue(Uint8ArrayToString(payloadFileData.Data))
                                 }}
-                            >
-                                取消
+                            >{i18next.t("取消")}
                             </YakitButton>
-                            <YakitButton icon={<SolidStoreIcon />} onClick={onSaveFileFun}>
-                                保存
+                            <YakitButton icon={<SolidStoreIcon />} onClick={onSaveFileFun}>{i18next.t("保存")}
                             </YakitButton>
                             {setExpand && Expand()}
                         </div>
@@ -2988,8 +2973,7 @@ export const PayloadContent: React.FC<PayloadContentProps> = (props) => {
                                     setExportType("file")
                                     setExportVisible(true)
                                 }}
-                            >
-                                导出
+                            >{i18next.t("导出")}
                             </YakitButton>
                             {payloadFileData?.IsBigFile === false && (
                                 <>
@@ -2997,16 +2981,14 @@ export const PayloadContent: React.FC<PayloadContentProps> = (props) => {
                                         type='outline2'
                                         icon={<OutlineSparklesIcon />}
                                         onClick={onRemoveDuplicate}
-                                    >
-                                        自动去重
+                                    >{i18next.t("自动去重")}
                                     </YakitButton>
                                     <YakitButton
                                         onClick={() => {
                                             setEditMonaco(true)
                                         }}
                                         icon={<OutlinePencilaltIcon />}
-                                    >
-                                        编辑
+                                    >{i18next.t("编辑")}
                                     </YakitButton>
                                 </>
                             )}
@@ -3075,7 +3057,7 @@ export const PayloadContent: React.FC<PayloadContentProps> = (props) => {
                 closable={false}
             >
                 <UploadStatusInfo
-                    title={"自动去重中，请耐心等待..."}
+                    title={i18next.t("自动去重中，请耐心等待...")}
                     streamData={streamData}
                     cancelRun={() => {
                         cancelRemoveDuplicate()
@@ -3132,7 +3114,7 @@ export const ExportByGrpc: React.FC<ExportByGrpcProps> = (props) => {
     const onExportFileFun = useMemoizedFn(() => {
         ipcRenderer
             .invoke("openDialog", {
-                title: "请选择文件夹",
+                title: i18next.t("请选择..."),
                 properties: ["openDirectory"]
             })
             .then((data: any) => {
@@ -3210,7 +3192,7 @@ export const ExportByGrpc: React.FC<ExportByGrpcProps> = (props) => {
             closable={false}
         >
             <UploadStatusInfo
-                title={"导出中，请耐心等待..."}
+                title={i18next.t("导出中，请耐心等待...")}
                 streamData={exportStreamData}
                 cancelRun={() => {
                     cancelExportFile()
@@ -3330,7 +3312,7 @@ export const NewPayload: React.FC<NewPayloadProps> = (props) => {
                 }
             })
             .catch((e: any) => {
-                failed(`获取字典列表失败：${e}`)
+                failed(i18next.t("获取字典列表失败：${e}", { v1: e }))
             })
             .finally()
     }
@@ -3438,7 +3420,7 @@ export const NewPayload: React.FC<NewPayloadProps> = (props) => {
             {data.length === 0 ? (
                 <div className={styles["no-data"]}>
                     <YakitEmpty
-                        title='暂无 Payload 字典'
+                        title={i18next.t("暂无 Payload 字典")}
                         // description='可一键获取官方内置字典，或新建字典'
                         children={
                             <YakitButton
@@ -3454,7 +3436,7 @@ export const NewPayload: React.FC<NewPayloadProps> = (props) => {
                                         maskClosable: false,
                                         content: (
                                             <CreateDictionaries
-                                                title='新建字典'
+                                                title={i18next.t("新建字典")}
                                                 type='dictionaries'
                                                 onQueryGroup={onQueryGroup}
                                                 onClose={() => {
@@ -3465,8 +3447,7 @@ export const NewPayload: React.FC<NewPayloadProps> = (props) => {
                                         )
                                     })
                                 }}
-                            >
-                                新建字典
+                            >{i18next.t("新建字典")}
                             </YakitButton>
                         }
                     />
@@ -3483,34 +3464,32 @@ export const NewPayload: React.FC<NewPayloadProps> = (props) => {
                         />
                     ) : (
                         <div className={styles["no-data"]}>
-                            <YakitEmpty title='请点击左侧列表，选择想要查看的字典' />
+                            <YakitEmpty title={i18next.t("请点击左侧列表，选择想要查看的字典")} />
                         </div>
                     )}
                 </>
             )}
             <YakitHint
                 visible={isFirstEnter}
-                title='迁移数据'
-                content='由于Payload功能进行重构，为不影响使用，需要点击确定将旧数据进行迁移，迁移数据不会造成任何数据丢失。'
+                title={i18next.t("迁移数据")}
+                content={i18next.t("由于Payload功能进行重构，为不影响使用，需要点击确定将旧数据进行迁移，迁移数据不会造成任何数据丢失。")}
                 footer={
                     <div style={{marginTop: 24, textAlign: "right"}}>
-                        <YakitButton size='max' onClick={initNewPayload}>
-                            确定
+                        <YakitButton size='max' onClick={initNewPayload}>{i18next.t("确定")}
                         </YakitButton>
                     </div>
                 }
             />
             <YakitHint
                 visible={isClosePayload}
-                title='引擎版本过低'
-                content='当前引擎版本过低无法使用新版Payload，请将引擎更新到 v1.2.9-sp3及以上版本'
+                title={i18next.t("引擎版本过低")}
+                content={i18next.t("当前引擎版本过低无法使用新版Payload，请将引擎更新到 v1.2.9-sp3及以上版本")}
                 footer={
                     <div style={{marginTop: 24, textAlign: "right"}}>
                         <YakitButton size='max' onClick={()=>{
                             setClosePayload(false)
                             emiter.emit("closePage", JSON.stringify({route: YakitRoute.PayloadManager}))
-                        }}>
-                            确定
+                        }}>{i18next.t("确定")}
                         </YakitButton>
                     </div>
                 }
@@ -3526,7 +3505,7 @@ export const NewPayload: React.FC<NewPayloadProps> = (props) => {
                 closable={false}
             >
                 <UploadStatusInfo
-                    title={"迁移数据中，请耐心等待..."}
+                    title={i18next.t("迁移数据中，请耐心等待...")}
                     streamData={streamData}
                     cancelRun={() => {
                         cancelMigratePayloads()
@@ -3610,7 +3589,7 @@ export const ReadOnlyNewPayload: React.FC<ReadOnlyNewPayloadProps> = (props) => 
                 />
                 <div className={styles["payload-list-bottom"]}>
                     <div className={styles["show"]}>
-                        <div className={styles["text"]}>已选中：</div>
+                        <div className={styles["text"]}>{i18next.t("已选中：")}</div>
                         {selectInfo.length > 0 && <YakitTag color='info'>{selectInfo}</YakitTag>}
                     </div>
                     <div className={styles["option"]}>
@@ -3619,8 +3598,7 @@ export const ReadOnlyNewPayload: React.FC<ReadOnlyNewPayloadProps> = (props) => 
                             onClick={() => {
                                 onClose()
                             }}
-                        >
-                            取消
+                        >{i18next.t("取消")}
                         </YakitButton>
                         <YakitButton
                             disabled={group.length === 0 && folder.length === 0}
@@ -3631,8 +3609,7 @@ export const ReadOnlyNewPayload: React.FC<ReadOnlyNewPayloadProps> = (props) => 
                                     selectorHandle(`{{payload(${group})}}`)
                                 }
                             }}
-                        >
-                            插入
+                        >{i18next.t("插入")}
                         </YakitButton>
                     </div>
                 </div>
@@ -3662,10 +3639,10 @@ export const ReadOnlyNewPayload: React.FC<ReadOnlyNewPayloadProps> = (props) => 
                                 <PropertyNoAddIcon />
                             </div>
                             <div className={styles["title"]}>{selectInfo}</div>
-                            <div className={styles["sub-title"]}>支持插入文件进行Fuzz</div>
+                            <div className={styles["sub-title"]}>{i18next.t("支持插入文件进行Fuzz")}</div>
                         </div>
                     ) : (
-                        <YakitEmpty title='请选择要插入的字典或文件夹' />
+                        <YakitEmpty title={i18next.t("请选择要插入的字典或文件夹")} />
                     )}
                 </div>
             )}

@@ -45,6 +45,7 @@ import {ResizeBox} from "@/components/ResizeBox"
 import {YakitDropdownMenu} from "@/components/yakitUI/YakitDropdownMenu/YakitDropdownMenu"
 import {YakitButton} from "@/components/yakitUI/YakitButton/YakitButton"
 import {Uint8ArrayToString} from "@/utils/str"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -88,7 +89,7 @@ export const MITMLog: React.FC<MITMLogProps> = React.memo((props) => {
     const columns: ColumnsTypeProps[] = useMemo<ColumnsTypeProps[]>(() => {
         return [
             {
-                title: "序号",
+                title: i18next.t("序号"),
                 dataKey: "Id",
                 fixed: "left",
                 ellipsis: false,
@@ -96,12 +97,12 @@ export const MITMLog: React.FC<MITMLogProps> = React.memo((props) => {
                 enableDrag: false
             },
             {
-                title: "方法",
+                title: i18next.t("方法"),
                 dataKey: "Method",
                 width: 80
             },
             {
-                title: "状态码",
+                title: i18next.t("状态码"),
                 dataKey: "StatusCode",
                 width: 100,
                 render: (text, rowData) => (
@@ -133,7 +134,7 @@ export const MITMLog: React.FC<MITMLogProps> = React.memo((props) => {
                 }
             },
             {
-                title: "响应长度",
+                title: i18next.t("响应长度"),
                 dataKey: "BodyLength",
                 minWidth: 80,
                 render: (_, rowData) => {
@@ -155,7 +156,7 @@ export const MITMLog: React.FC<MITMLogProps> = React.memo((props) => {
                 }
             },
             {
-                title: "操作",
+                title: i18next.t("操作"),
                 dataKey: "action",
                 width: 80,
                 fixed: "right",
@@ -379,11 +380,11 @@ export const MITMLog: React.FC<MITMLogProps> = React.memo((props) => {
     const menuData = [
         {
             key: "send-web-fuzzer",
-            label: "发送到 Web Fuzzer"
+            label: i18next.t("发送到 Web Fuzzer")
         },
         {
             key: "packet-scanning",
-            label: "数据包扫描",
+            label: i18next.t("数据包扫描"),
             onClick: () => {},
             children: GetPacketScanByCursorMenuItem(selected?.Id || 0)?.subMenuItems?.map((ele) => ({
                 key: ele.title,
@@ -392,19 +393,19 @@ export const MITMLog: React.FC<MITMLogProps> = React.memo((props) => {
         },
         {
             key: "copy-url",
-            label: "复制 URL"
+            label: i18next.t("复制 URL")
         },
         {
             key: "down-response-body",
-            label: "下载 Response Body"
+            label: i18next.t("下载 Response Body")
         },
         {
             key: "open-in-browser",
-            label: "浏览器中打开"
+            label: i18next.t("浏览器中打开")
         },
         {
             key: "callout-color",
-            label: "标注颜色",
+            label: i18next.t("标注颜色"),
             children: availableColors.map((i) => {
                 return {
                     label: i.render,
@@ -414,39 +415,39 @@ export const MITMLog: React.FC<MITMLogProps> = React.memo((props) => {
         },
         {
             key: "remove-color",
-            label: "移除颜色"
+            label: i18next.t("移除颜色")
         },
         {
             key: "send-comparator",
-            label: "发送到对比器",
+            label: i18next.t("发送到对比器"),
             children: [
                 {
                     key: "send-comparator-to-left",
-                    label: "发送到对比器左侧",
+                    label: i18next.t("发送到对比器左侧"),
                     disabled: [false, true, false][compareState]
                 },
                 {
                     key: "send-comparator-to-right",
-                    label: "发送到对比器右侧",
+                    label: i18next.t("发送到对比器右侧"),
                     disabled: [false, false, true][compareState]
                 }
             ]
         },
         {
             key: "shield",
-            label: "屏蔽",
+            label: i18next.t("屏蔽"),
             children: [
                 {
                     key: "shield-record",
-                    label: "屏蔽该记录"
+                    label: i18next.t("屏蔽该记录")
                 },
                 {
                     key: "shield-url",
-                    label: "屏蔽URL"
+                    label: i18next.t("屏蔽URL")
                 },
                 {
                     key: "shield-domain",
-                    label: "屏蔽域名"
+                    label: i18next.t("屏蔽域名")
                 }
             ]
         }
@@ -486,13 +487,13 @@ export const MITMLog: React.FC<MITMLogProps> = React.memo((props) => {
             case "send-web-fuzzer":
                 onSendToTab(selected)
                 break
-            case "自定义":
-            case "网络设备与OA系统":
-            case "安全产品":
+            case i18next.t("自定义"):
+            case i18next.t("网络设备与OA系统"):
+            case i18next.t("安全产品"):
             case "FastJSON":
             case "Log4j":
             case "Weblogic":
-            case "远程代码执行（扫描）":
+            case i18next.t("远程代码执行（扫描）"):
             case "XSS":
                 execPacketScan([selected.Id], packetScanDefaultValue.find((ele) => ele.Verbose === key)?.Keyword)
                 break
@@ -685,7 +686,7 @@ export const MITMLogHeardExtra: React.FC<MITMLogHeardExtraProps> = React.memo((p
                 emiter.emit("cleanMitmLogEvent")
             })
             .catch((e: any) => {
-                yakitNotify("error", `历史记录删除失败: ${e}`)
+                yakitNotify("error", i18next.t("历史记录删除失败: ${e}", { v1: e }))
             })
             .finally(() => {
                 emiter.emit("onDeleteToUpdate",JSON.stringify({sourcePage:"MITM"}))
@@ -699,11 +700,11 @@ export const MITMLogHeardExtra: React.FC<MITMLogHeardExtraProps> = React.memo((p
                     data: [
                         {
                             key: "resetId",
-                            label: "重置请求 ID"
+                            label: i18next.t("重置请求 ID")
                         },
                         {
                             key: "noResetId",
-                            label: "不重置请求 ID"
+                            label: i18next.t("不重置请求 ID")
                         }
                     ],
                     onClick: ({key}) => {
@@ -724,8 +725,7 @@ export const MITMLogHeardExtra: React.FC<MITMLogHeardExtraProps> = React.memo((p
                     placement: "bottom"
                 }}
             >
-                <YakitButton type='outline1' colors='danger'>
-                    清空
+                <YakitButton type='outline1' colors='danger'>{i18next.t("清空")}
                 </YakitButton>
             </YakitDropdownMenu>
             <HTTPFlowShield shieldData={shieldData} cancleFilter={cancleFilter} />

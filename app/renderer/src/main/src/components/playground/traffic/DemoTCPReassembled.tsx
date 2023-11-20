@@ -4,6 +4,7 @@ import {DemoVirtualTable} from "@/demoComponents/virtualTable/VirtualTable";
 import {info} from "@/utils/notification";
 import {Paging} from "@/utils/yakQueryHTTPFlow";
 import {TrafficViewerControlIf} from "@/components/playground/traffic/base";
+import i18next from "../../../i18n"
 
 export interface DemoTCPReassembledProp extends TrafficViewerControlIf {
 
@@ -30,8 +31,8 @@ export const DemoTCPReassembled: React.FC<DemoTCPReassembledProp> = (props) => {
         columns={[
             {headerTitle: "ID", key: "Id", width: 80, colRender: i => i.Id},
             {headerTitle: "SeqId", key: "Id", width: 80, colRender: i => i.Seq},
-            {headerTitle: "时间", key: "Id", width: 80, colRender: i => i.Timestamp},
-            {headerTitle: "长度", key: "Id", width: 80, colRender: i => (i.Raw || []).length},
+            {headerTitle: i18next.t("时间"), key: "Id", width: 80, colRender: i => i.Timestamp},
+            {headerTitle: i18next.t("长度"), key: "Id", width: 80, colRender: i => (i.Raw || []).length},
         ]}
         rowClick={data => {
             setSelected(data)

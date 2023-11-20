@@ -15,6 +15,7 @@ import {showByCursorContainer} from "../utils/showByCursor"
 import {AutoCard} from "./AutoCard"
 import {useMemoizedFn} from "ahooks"
 import {failed, success} from "@/utils/notification"
+import i18next from "../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -75,10 +76,10 @@ export const YakScriptExecResultTable: React.FC<YakScriptExecResultTableProp> = 
             .invoke("DeleteYakScriptExec", {})
             .then(() => {
                 reload()
-                success("删除成功")
+                success(i18next.t("删除成功"))
             })
             .catch((err) => {
-                failed("删除失败：" + err)
+                failed(i18next.t("删除失败：") + err)
             })
             .finally(() => setTimeout(() => setRemoveLoading(false), 200))
     })
@@ -150,7 +151,7 @@ export const YakScriptExecResultTable: React.FC<YakScriptExecResultTableProp> = 
                 props.YakScriptName ? (
                     <>
                         <Space>
-                            <span>插件结果：</span>
+                            <span>{i18next.t("插件结果：")}</span>
                             <Button
                                 icon={<ReloadOutlined />}
                                 type={"link"}
@@ -170,8 +171,7 @@ export const YakScriptExecResultTable: React.FC<YakScriptExecResultTableProp> = 
                         bordered={true}
                         title={
                             <div className='justify-space-between'>
-                                <div>
-                                    选择插件
+                                <div>{i18next.t("选择插件")}
                                     <Button
                                         type={"link"}
                                         onClick={() => {
@@ -182,7 +182,7 @@ export const YakScriptExecResultTable: React.FC<YakScriptExecResultTableProp> = 
                                     />
                                 </div>
                                 <Popconfirm
-                                    title='是否删除所有插件?'
+                                    title={i18next.t("是否删除所有插件?")}
                                     onConfirm={() => onRemoveAll()}
                                     okText='Yes'
                                     cancelText='No'
@@ -232,8 +232,7 @@ export const YakScriptExecResultTable: React.FC<YakScriptExecResultTableProp> = 
                                                                                         update(1)
                                                                                     })
                                                                             }}
-                                                                        >
-                                                                            删除该插件全部输出
+                                                                        >{i18next.t("删除该插件全部输出")}
                                                                         </Button>
                                                                         {/*<Button type={"primary"}>查看插件详情</Button>*/}
                                                                     </Space>
@@ -269,7 +268,7 @@ export const YakScriptExecResultTable: React.FC<YakScriptExecResultTableProp> = 
                         pageSize: pagination?.Limit || 10,
                         simple: true,
                         total,
-                        showTotal: (i) => <Tag>共{i}条历史记录</Tag>,
+                        showTotal: (i) => <Tag>{i18next.t("共")}{i}条历史记录</Tag>,
                         onChange: (page: number, limit?: number) => {
                             update(page, limit)
                         }
@@ -303,8 +302,7 @@ export const YakScriptExecResultTable: React.FC<YakScriptExecResultTableProp> = 
                                                                         update()
                                                                     })
                                                             }}
-                                                        >
-                                                            删除该记录
+                                                        >{i18next.t("删除该记录")}
                                                         </Button>
                                                     </Space>
                                                 </>
@@ -316,7 +314,7 @@ export const YakScriptExecResultTable: React.FC<YakScriptExecResultTableProp> = 
                                 }}
                                 // extra={[
                                 //     <Space direction={"vertical"}>
-                                //         <Button type={"link"} danger={true}>删除该记录</Button>
+                                //         <Button type={"link"} danger={true}>{i18next.t("删除该记录")}</Button>
                                 //     </Space>
                                 // ]}
                             >

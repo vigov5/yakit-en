@@ -5,6 +5,7 @@ import {YakitHint} from "../yakitUI/YakitHint/YakitHint"
 import {useRunNodeStore} from "@/store/runNode"
 
 import styles from "./uiOperate.module.scss"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -78,8 +79,8 @@ export const WinUIOp: React.FC<WinUIOpProp> = React.memo((props) => {
                 {/* 关闭运行节点确认弹框 */}
                 <YakitHint
                     visible={closeRunNodeItemVerifyVisible}
-                    title='是否确认关闭节点'
-                    content='关闭Yakit会默认关掉所有启用的节点'
+                    title={i18next.t("是否确认关闭节点")}
+                    content={i18next.t("关闭Yakit会默认关掉所有启用的节点")}
                     onOk={() => {
                         operate("close")
                     }}

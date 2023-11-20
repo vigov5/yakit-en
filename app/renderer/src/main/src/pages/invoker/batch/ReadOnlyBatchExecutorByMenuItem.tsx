@@ -9,6 +9,7 @@ import {AutoCard} from "../../../components/AutoCard";
 import {Empty, Spin} from "antd";
 import {randomString} from "../../../utils/randomUtil";
 import {TargetRequest} from "./BatchExecutorPage";
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron");
 
@@ -40,13 +41,13 @@ export const ReadOnlyBatchExecutorByRecoverUid: React.FC<ReadOnlyBatchExecutorBy
     }, [props.Uid])
 
     if (!props.Uid) {
-        return <Empty description={"恢复未完成的批量执行任务需要额外 UID"}>
+        return <Empty description={i18next.t("恢复未完成的批量执行任务需要额外 UID")}>
 
         </Empty>
     }
 
     if (loading) {
-        return <Spin tip={"正在恢复未完成的任务"}/>
+        return <Spin tip={i18next.t("正在恢复未完成的任务")}/>
     }
 
     return <AutoCard size={"small"} bordered={false}
@@ -99,7 +100,7 @@ export const ReadOnlyBatchExecutorByMenuItem: React.FC<ReadOnlyBatchExecutorByMe
 
     useEffect(() => {
         if (props.MenuItemId <= 0) {
-            info("加载批量执行脚本失败")
+            info(i18next.t("加载批量执行脚本失败"))
             return
         }
         ipcRenderer.invoke("GetMenuItemById", {ID: props.MenuItemId}).then((i: MenuItem) => {
@@ -137,7 +138,7 @@ export const ReadOnlyBatchExecutor: React.FC<ReadOnlyBatchExecutorProp> = React.
             firstNode={
                 <div style={{height: "100%"}}>
                     <SimplePluginList
-                        verbose={"本项包含检测列表"}
+                        verbose={i18next.t("本项包含检测列表")}
                         key={`batch:menu-item:${props.MenuItemId || randomString(20)}`}
                         pluginTypes={query.type}
                         readOnly={true}
