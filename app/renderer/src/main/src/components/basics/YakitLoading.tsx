@@ -21,6 +21,7 @@ import { RemoteLinkInfo } from "../layout/UILayout"
 import { DynamicStatusProps } from "@/store"
 import yakitSE from "@/assets/yakitSE.png";
 import yakitEE from "@/assets/yakitEE.png";
+import { useTranslation } from "react-i18next"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -120,6 +121,7 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
     /** 引擎日志展示倒计时 */
     const [__showLog, setShowLog, getShowLog] = useGetState<number>(0)
     const logTime = useRef<any>(null)
+    const { t } = useTranslation()
 
     /** 计时器清除 */
     const engineTimeClear = (type: "log" | "ready") => {
@@ -566,7 +568,7 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
     /** 加载页随机宣传语 */
     const loadingTitle = useMemo(() => LoadingTitle[Math.floor(Math.random() * (LoadingTitle.length - 0)) + 0], [])
     /** Title */
-    const Title = useMemo(() => yakitStatus==="control-remote"?"远程控制中 ...":`欢迎使用 ${getReleaseEditionName()}`, [])
+    const Title = useMemo(() => yakitStatus==="control-remote"?"远程控制中 ...":t("欢迎使用 ", {version: getReleaseEditionName()}), [])
     
     return (
         <div className={styles["yakit-loading-wrapper"]}>
