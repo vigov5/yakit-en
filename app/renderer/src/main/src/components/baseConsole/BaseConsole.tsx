@@ -25,6 +25,7 @@ import {XTerm} from "xterm-for-react"
 import ReactResizeDetector from "react-resize-detector"
 import {useStore} from "../../store/baseConsole"
 import {YakitSystem} from "@/yakitGVDefine"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -100,7 +101,7 @@ export const EngineConsole: React.FC<EngineConsoleProp> = (props) => {
 
         ipcRenderer.invoke("AttachCombinedOutput", {}, token).then(() => {
             if (isFirst) {
-                info(`启动输出监控成功`)
+                info(i18next.t("启动输出监控成功"))
                 setIsFirst(false)
             }
         })
@@ -156,7 +157,7 @@ export const RightIconMenu: React.FC<RightIconMenuProps> = (props) => {
     return (
         <YakitPopover
             overlayClassName={classNames(styles["right-icon-menu"])}
-            title={<span>停靠方位</span>}
+            title={<span>{i18next.t("停靠方位")}</span>}
             placement={"bottom"}
             content={menu}
             trigger='hover'
@@ -182,7 +183,7 @@ export const RightIconBox: React.FC<RightIconBoxProps> = (props) => {
     return (
         <div className={styles["right-icon-box"]}>
             <Space size={10} style={{padding: "3px 0"}}>
-                <Tooltip title={"浮窗"}>
+                <Tooltip title={i18next.t("浮窗")}>
                     <span
                         onClick={() => {
                             clickType("shrink")
@@ -196,7 +197,7 @@ export const RightIconBox: React.FC<RightIconBoxProps> = (props) => {
                         />
                     </span>
                 </Tooltip>
-                <Tooltip title={"向左"}>
+                <Tooltip title={i18next.t("向左")}>
                     <span
                         onClick={() => {
                             clickType("left")
@@ -210,7 +211,7 @@ export const RightIconBox: React.FC<RightIconBoxProps> = (props) => {
                         />
                     </span>
                 </Tooltip>
-                <Tooltip title={"向下"}>
+                <Tooltip title={i18next.t("向下")}>
                     <span
                         onClick={() => {
                             clickType("bottom")
@@ -224,7 +225,7 @@ export const RightIconBox: React.FC<RightIconBoxProps> = (props) => {
                         />
                     </span>
                 </Tooltip>
-                <Tooltip title={"向右"}>
+                <Tooltip title={i18next.t("向右")}>
                     <span
                         onClick={() => {
                             clickType("right")
@@ -254,7 +255,7 @@ export const BaseConsoleTitle: React.FC<BaseConsoleTitleProps> = (props) => {
     const {setConsoleInfo, setIsFirst} = useStore()
     return (
         <div className={styles["base-console-title"]}>
-            <div className={styles["title"]}>引擎 Console</div>
+            <div className={styles["title"]}>{i18next.t("引擎 Console")}</div>
             <div className={styles["operation"]}>
                 <RightIconBox activeSource={direction} callBackSource={callBackSource} />
                 <CloseOutlined
@@ -433,7 +434,7 @@ export const BaseMiniConsole: React.FC<BaseConsoleMiniProps> = (props) => {
                             >
                                 {system === "Windows_NT" ? (
                                     <div className={styles["header-box"]}>
-                                        <div className={styles["header-center"]}>引擎 Console</div>
+                                        <div className={styles["header-center"]}>{i18next.t("引擎 Console")}</div>
                                         <div className={styles["header-right"]}>
                                             {size && size.width > 400 && (
                                                 <RightIconBox activeSource={"shrink"} callBackSource={callBackSource} />
@@ -471,7 +472,7 @@ export const BaseMiniConsole: React.FC<BaseConsoleMiniProps> = (props) => {
                                                 }}
                                             ></div>
                                         </div>
-                                        <div className={styles["header-center"]}>引擎 Console</div>
+                                        <div className={styles["header-center"]}>{i18next.t("引擎 Console")}</div>
                                         <div className={styles["header-right"]}>
                                             {size && size.width > 400 && (
                                                 <RightIconBox activeSource={"shrink"} callBackSource={callBackSource} />
