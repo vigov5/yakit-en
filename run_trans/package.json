@@ -1,0 +1,23 @@
+{
+    "name": "run_tran",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "dependencies": {
+        "@babel/core": "^7.23.6",
+        "@babel/generator": "^7.22.9",
+        "@babel/parser": "^7.22.7",
+        "@babel/plugin-syntax-jsx": "^7.23.3",
+        "@babel/preset-env": "^7.23.6",
+        "@babel/preset-react": "^7.23.3",
+        "@babel/traverse": "^7.22.8",
+        "@iamtraction/google-translate": "^2.0.1",
+        "glob": "^10.3.3",
+        "path": "^0.12.7"
+    },
+    "devDependencies": {
+        "@babel/plugin-syntax-typescript": "^7.22.5",
+        "@babel/preset-typescript": "^7.23.3",
+        "typescript": "^5.3.3"
+    }
+}
