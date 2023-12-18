@@ -17,6 +17,7 @@ import {RemoteGV} from "@/yakitGV"
 import {YakitRoute} from "@/routes/newRoute"
 import emiter from "@/utils/eventBus/eventBus"
 const {ipcRenderer} = window.require("electron")
+import i18next from "../../i18n"
 
 interface OnlineProfileProps {
     BaseUrl: string
@@ -33,9 +34,9 @@ const layout = {
 interface ConfigPrivateDomainProps {
     onClose?: () => void
     onSuccee?: () => void
-    // 是否为企业登录
+    // 是否为i18next.t("企业i18next.t("登录"))
     enterpriseLogin?: boolean | undefined
-    // 是否展示跳过
+    // 是否展示i18next.t("跳过")
     skipShow?: boolean
 }
 
@@ -56,7 +57,7 @@ export const ConfigPrivateDomain: React.FC<ConfigPrivateDomainProps> = React.mem
         getHttpSetting()
         getProxyList()
     }, [])
-    // 全局监听登录状态
+    // 全局监听i18next.t("登录")状态
     const {userInfo, setStoreUserInfo} = useStore()
 
     const syncLoginOut = async () => {
@@ -64,7 +65,7 @@ export const ConfigPrivateDomain: React.FC<ConfigPrivateDomainProps> = React.mem
             await loginOut(userInfo)
         } catch (error) {}
     }
-    // 企业登录
+    // i18next.t("企业i18next.t("登录"))
     const loginUser = useMemoizedFn(() => {
         const {user_name, pwd} = getFormValue()
         NetWorkApi<API.UrmLoginRequest, API.UserData>({
@@ -96,12 +97,12 @@ export const ConfigPrivateDomain: React.FC<ConfigPrivateDomainProps> = React.mem
                     setStoreUserInfo(user)
                     if (data?.next) {
                         aboutLoginUpload(res.token)
-                        success("企业登录成功")
+                        success(i18next.t("企业登录成功"))
                         onCloseTab()
                         onClose && onClose()
                         onSuccee && onSuccee()
                     }
-                    // 首次登录强制修改密码
+                    // 首次i18next.t("登录")强制修改i18next.t("密码")
                     if (!res.loginTime) {
                         ipcRenderer.invoke("reset-password", {...res})
                     }
@@ -109,7 +110,7 @@ export const ConfigPrivateDomain: React.FC<ConfigPrivateDomainProps> = React.mem
             })
             .catch((err) => {
                 setTimeout(() => setLoading(false), 300)
-                failed("企业登录失败：" + err)
+                failed(i18next.t("企业登录失败：") + err)
             })
             .finally(() => {})
     })
@@ -141,7 +142,7 @@ export const ConfigPrivateDomain: React.FC<ConfigPrivateDomainProps> = React.mem
                 setFormValue(values)
                 if (!enterpriseLogin) {
                     ipcRenderer.invoke("ipc-sign-out")
-                    success("私有域设置成功")
+                    success(i18next.t("私有域设置成功"))
                     syncLoginOut()
                     onCloseTab()
                     onClose && onClose()
@@ -160,7 +161,7 @@ export const ConfigPrivateDomain: React.FC<ConfigPrivateDomainProps> = React.mem
             })
             .catch((e: any) => {
                 // !enterpriseLogin && setTimeout(() => setLoading(false), 300)
-                failed("设置私有域失败:" + e)
+                failed(i18next.t("设置私有域失败:") + e)
             })
             .finally(() => {
                 setTimeout(() => setLoading(false), 300)
@@ -227,7 +228,7 @@ export const ConfigPrivateDomain: React.FC<ConfigPrivateDomainProps> = React.mem
                     setHttpProxyList(list)
                 }
             } catch (error) {
-                yakitFailed("代理获取失败:" + error)
+                yakitFailed(i18next.t("代理获取失败:") + error)
             }
         })
     })
@@ -247,7 +248,7 @@ export const ConfigPrivateDomain: React.FC<ConfigPrivateDomainProps> = React.mem
                 if (re.test(value)) {
                     return Promise.resolve()
                 } else {
-                    return Promise.reject("密码为8-20位，且必须包含大小写字母、数字及特殊字符")
+                    return Promise.reject(i18next.t("密码为8-20位，且必须包含大小写字母、数字及特殊字符"))
                 }
             }
         }
@@ -260,7 +261,7 @@ export const ConfigPrivateDomain: React.FC<ConfigPrivateDomainProps> = React.mem
                 if (re.test(value)) {
                     return Promise.resolve()
                 } else {
-                    return Promise.reject("请输入符合要求的私有域地址")
+                    return Promise.reject(i18next.t("请输入符合要求的私有域地址"))
                 }
             }
         }
@@ -272,18 +273,18 @@ export const ConfigPrivateDomain: React.FC<ConfigPrivateDomainProps> = React.mem
                     <div className='icon-box'>
                         <img src={yakitImg} className='type-icon-img' />
                     </div>
-                    <div className='title-box'>企业登录</div>
+                    <div className='title-box'>{i18next.t("企业登录")}</div>
                 </div>
             )}
             <Form {...layout} form={form} name='control-hooks' onFinish={(v) => onFinish(v)} size='small'>
                 <Form.Item
                     name='BaseUrl'
-                    label='私有域地址'
-                    rules={[{required: true, message: "该项为必填"}, ...judgeUrl()]}
+                    label={i18next.t("私有域地址")}
+                    rules={[{required: true, message: i18next.t("该项为必填")}, ...judgeUrl()]}
                 >
                     <YakitAutoComplete
                         options={httpHistoryList.map((item) => ({value: item, label: item}))}
-                        placeholder='请输入你的私有域地址'
+                        placeholder={i18next.t('请输入你的i18next.t("私有域地址")')}
                         defaultOpen={!enterpriseLogin}
                     />
                 </Form.Item>
@@ -292,9 +293,9 @@ export const ConfigPrivateDomain: React.FC<ConfigPrivateDomainProps> = React.mem
                         name='Proxy'
                         label={
                             <span className='form-label'>
-                                设置代理
+                                {i18next.t("设置代理")}
                                 <Tooltip
-                                    title='特殊情况无法访问插件商店时，可设置代理进行访问'
+                                    title={i18next.t('特殊情况无法访问插件商店时，可i18next.t("设置代理")进行访问')}
                                     overlayStyle={{width: 150}}
                                 >
                                     <InformationCircleIcon className='info-icon' />
@@ -304,22 +305,22 @@ export const ConfigPrivateDomain: React.FC<ConfigPrivateDomainProps> = React.mem
                     >
                         <YakitAutoComplete
                             options={httpProxyList.map((item) => ({value: item, label: item}))}
-                            placeholder='设置代理'
+                            placeholder={i18next.t("设置代理")}
                         />
                     </Form.Item>
                 )}
                 {enterpriseLogin && (
-                    <Form.Item name='user_name' label='用户名' rules={[{required: true, message: "该项为必填"}]}>
-                        <YakitInput placeholder='请输入你的用户名' allowClear />
+                    <Form.Item name='user_name' label={i18next.t('用户名')} rules={[{required: true, message: i18next.t("该项为必填")}]}>
+                        <YakitInput placeholder={i18next.t('请输入你的用户名')} allowClear />
                     </Form.Item>
                 )}
                 {enterpriseLogin && (
                     <Form.Item
                         name='pwd'
-                        label='密码'
-                        rules={[{required: true, message: "该项为必填"}, ...judgePass()]}
+                        label={i18next.t("密码")}
+                        rules={[{required: true, message: i18next.t("该项为必填")}, ...judgePass()]}
                     >
-                        <YakitInput.Password placeholder='请输入你的密码' allowClear />
+                        <YakitInput.Password placeholder={i18next.t('请输入你的密码')} allowClear />
                     </Form.Item>
                 )}
                 {enterpriseLogin ? (
@@ -332,7 +333,7 @@ export const ConfigPrivateDomain: React.FC<ConfigPrivateDomainProps> = React.mem
                                 }}
                                 size='large'
                             >
-                                跳过
+                                {i18next.t("跳过")}
                             </YakitButton>
                         )}
                         <YakitButton
@@ -342,16 +343,16 @@ export const ConfigPrivateDomain: React.FC<ConfigPrivateDomainProps> = React.mem
                             style={{width: 165, marginLeft: skipShow ? 0 : 43}}
                             loading={loading}
                         >
-                            登录
+                            {i18next.t("登录")}
                         </YakitButton>
                     </Form.Item>
                 ) : (
                     <div className='form-btns'>
                         <YakitButton type='outline2' onClick={(e) => onClose && onClose()}>
-                            取消
+                            {i18next.t("取消")}
                         </YakitButton>
                         <YakitButton type='primary' htmlType='submit' loading={loading}>
-                            确定
+                            {i18next.t("确定")}
                         </YakitButton>
                     </div>
                 )}

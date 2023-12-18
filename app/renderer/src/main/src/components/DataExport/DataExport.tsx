@@ -11,6 +11,7 @@ import {CheckboxValueType} from "antd/lib/checkbox/Group"
 import styles from "./DataExport.module.scss"
 import classNames from "classnames"
 import { getRemoteValue, setRemoteValue } from "@/utils/kv"
+import i18next from "../../i18n"
 interface ExportExcelProps {
     btnProps?: ButtonProps
     newBtnProps?: YakitButtonProp
@@ -44,7 +45,7 @@ export const ExportExcel: React.FC<ExportExcelProps> = (props) => {
         btnProps,
         newBtnProps,
         getData,
-        fileName = "端口资产",
+        fileName = i18next.t("端口资产"),
         pageSize = 100000,
         showButton = true,
         text,
@@ -96,7 +97,7 @@ export const ExportExcel: React.FC<ExportExcelProps> = (props) => {
                 }
             })
             .catch((e: any) => {
-                failed("数据导出失败: " + `${e}`)
+                failed(i18next.t("数据导出失败: ") + `${e}`)
             })
             .finally(() => setTimeout(() => setLoading(false), 300))
     })
@@ -135,34 +136,34 @@ export const ExportExcel: React.FC<ExportExcelProps> = (props) => {
                 <>
                     {newUI ? (
                         <YakitButton loading={loading} type={newUIType} onClick={() => toExcel()} {...newBtnProps}>
-                            {text || "导出Excel"}
+                            {text || i18next.t("导出Excel")}
                         </YakitButton>
                     ) : (
                         <Button onClick={() => toExcel()} loading={loading} {...btnProps}>
-                            {text || "导出Excel"}
+                            {text || i18next.t("导出Excel")}
                         </Button>
                     )}
                 </>
             ) : newUI ? (
                 <YakitButton loading={loading} type={newUIType} onClick={() => toExcel()} {...newBtnProps}>
-                    {text || "导出Excel"}
+                    {text || i18next.t("导出Excel")}
                 </YakitButton>
             ) : (
                 <>
                     <span onClick={() => toExcel()}>
-                        {text || "导出Excel"}
+                        {text || i18next.t("导出Excel")}
                     </span>
                     {textUILoadingFlag && loading && <LoadingOutlined spin={loading} style={{ marginLeft: 5 }} />}
                 </>
             )}
-            <Modal title='数据导出' visible={visible} onCancel={() => setVisible(false)} footer={null}>
+            <Modal title={i18next.t('数据导出')} visible={visible} onCancel={() => setVisible(false)} footer={null}>
                 {/* <p>
                     共&nbsp;&nbsp;<Tag>{exportDataBatch.current?.length || 0}</Tag>条记录
                 </p> */}
                 <Space wrap>
                     {Array.from({length: frequency}).map((_, index) => (
                         <Button onClick={() => inBatchExport(index)}>
-                            第{pagination.Pagination.Page}页{exportNumber.current && exportNumber.current * index + 1}-
+                            {i18next.t("第")}{pagination.Pagination.Page}i18next.t("页"){exportNumber.current && exportNumber.current * index + 1}-
                             {(index === frequency - 1 && exportDataBatch.current?.length) ||
                                 (exportNumber.current && exportNumber.current * (index + 1))}
                         </Button>
@@ -174,7 +175,7 @@ export const ExportExcel: React.FC<ExportExcelProps> = (props) => {
                         total={pagination.Total}
                         current={Number(pagination.Pagination.Page)}
                         pageSize={pageSize}
-                        showTotal={(total) => `共 ${total} 条`}
+                        showTotal={(total) => i18next.t("共 ${total} 条", {v1: total})}
                         hideOnSinglePage={true}
                         onChange={onChange}
                     />
@@ -241,7 +242,7 @@ export const ExportSelect: React.FC<ExportSelectProps> = (props) => {
                     newUIType='primary'
                     getData={getData}
                     fileName={fileName}
-                    text="导出"
+                    text={i18next.t("导出")}
                 />
             </div>
         </div>

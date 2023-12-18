@@ -8,6 +8,7 @@ import {
 } from "../baseTemplate/FormItemUtil"
 
 import "./ContentUploadTextArea.css"
+import i18next from "../../i18n"
 
 export interface ContentUploadInputProps extends ItemDraggerTextAreaProps, ItemDraggerInputProps {
     type?: "input" | "textarea"
@@ -26,7 +27,7 @@ export const ContentUploadInput: React.FC<ContentUploadInputProps> = (props) => 
                 item={{
                     help: (
                         <div className='content-upload-input-help'>
-                            {uploadHelpText||"可将TXT文件拖入框内或"}
+                            {uploadHelpText||i18next.t("可将TXT文件拖入框内或")}
                             <Upload
                                 // accept={"text/plain"}
                                 multiple={false}
@@ -38,9 +39,9 @@ export const ContentUploadInput: React.FC<ContentUploadInputProps> = (props) => 
                                 }}
                                 {...dragger}
                             >
-                                <span className='help-hint-title'>点击此处</span>
+                                <span className='help-hint-title'>{i18next.t("点击此处")}</span>
                             </Upload>
-                            上传
+                            {i18next.t("上传")}
                             {otherHelpNode}
                         </div>
                     ),
@@ -58,7 +59,7 @@ export const ContentUploadInput: React.FC<ContentUploadInputProps> = (props) => 
                 item={{
                     help: (
                         <div className='content-upload-input-help'>
-                            {uploadHelpText||"可将TXT、Excel文件拖入框内或"}
+                            {uploadHelpText||i18next.t("可将TXT、Excel文件拖入框内或")}
                             <Upload
                                 // accept={"text/plain"}
                                 multiple={false}
@@ -70,9 +71,9 @@ export const ContentUploadInput: React.FC<ContentUploadInputProps> = (props) => 
                                 }}
                                 {...dragger}
                             >
-                                <span className='help-hint-title'>点击此处</span>
+                                <span className='help-hint-title'>{i18next.t("点击此处")}</span>
                             </Upload>
-                            上传
+                            {i18next.t("上传")}
                             {otherHelpNode}
                         </div>
                     ),
