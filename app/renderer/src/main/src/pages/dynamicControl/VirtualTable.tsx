@@ -7,6 +7,7 @@ import {LoadingOutlined} from "@ant-design/icons"
 import {Spin, Popover} from "antd"
 import {FilterIcon} from "@/assets/newIcon"
 import { YakitPopover } from "@/components/yakitUI/YakitPopover/YakitPopover"
+import i18next from "../../i18n"
 
 interface VirtualTableTitleProps {
     columns: VirtualColumns[]
@@ -151,7 +152,7 @@ const VirtualTableContent: React.FC<VirtualTableContentProps> = (props) => {
                         </div>
                     )}
                     {!loading && !hasMore && (page || 0) > 0 && (
-                        <div className='grid-block text-center no-more-text'>暂无更多数据</div>
+                        <div className='grid-block text-center no-more-text'>{i18next.t("暂无更多数据")}</div>
                     )}
                 </div>
             </div>

@@ -14,6 +14,7 @@ import yakitEEProject from "@/assets/yakitFontEE.png";
 import yakitSEProject from "@/assets/yakitFontSE.png";
 import yakitEEMiniProject from "@/assets/yakitEE.png";
 import yakitSEMiniProject from "@/assets/yakitSE.png";
+import i18next from "../../i18n"
 
 const ProjectManage = React.lazy(() => import("./ProjectManage"))
 
@@ -28,10 +29,10 @@ interface SettingsMenuProp {
 }
 const ProjectLogo = (showMini:boolean) => {
     if(isEnpriTrace()){
-        return <img style={{height:"100%"}} src={showMini?yakitEEMiniProject:yakitEEProject} alt="暂无图片" />
+        return <img style={{height:"100%"}} src={showMini?yakitEEMiniProject:yakitEEProject} alt={i18next.t("暂无图片")} />
     }
     else if(isEnpriTraceAgent()){
-        return <img style={{height:"100%"}} src={showMini?yakitSEMiniProject:yakitSEProject} alt="暂无图片" />
+        return <img style={{height:"100%"}} src={showMini?yakitSEMiniProject:yakitSEProject} alt={i18next.t("暂无图片")} />
     }
     else{
         return <YakitLogoSvgIcon />
@@ -40,7 +41,7 @@ const ProjectLogo = (showMini:boolean) => {
 const SettingsMenu: SettingsMenuProp[] = [
     {
         key: "project",
-        name: "项目管理",
+        name: i18next.t("项目管理"),
         icon: <DesktopComputerSvgIcon />
     }
 ]
@@ -158,7 +159,7 @@ export const SoftwareSettings: React.FC<SoftwareSettingsProp> = memo((props) => 
                         type='outline2'
                         onClick={() => onEngineModeChange("remote")}
                     >
-                        {showMini ? <SoftwareRemoteSvgIcon /> : "远程模式"}
+                        {showMini ? <SoftwareRemoteSvgIcon /> : i18next.t("远程模式")}
                     </YakitButton>
                 </div>
 

@@ -8,6 +8,7 @@ import {YakitEmpty} from "@/components/yakitUI/YakitEmpty/YakitEmpty"
 import styles from "./CVETable.module.scss"
 import {ArrowsExpandIcon, ArrowsRetractIcon} from "@/assets/newIcon"
 import {useCreation, useMemoizedFn} from "ahooks"
+import i18next from "../../i18n"
 
 export interface CVEInspectProp {
     selected?: string
@@ -60,7 +61,7 @@ export const CVEInspect: React.FC<CVEInspectProp> = (props) => {
                 firstNode={
                     <div className={styles["cve-description"]} style={{display: secondFull ? "none" : ""}}>
                         <div className={styles["cve-description-heard"]}>
-                            <div className={styles["cve-description-heard-title"]}>CVE 详情</div>
+                            <div className={styles["cve-description-heard-title"]}>{i18next.t("CVE 详情")}</div>
                             <div className={styles["cve-description-icon"]} onClick={() => setFirstFull(!firstFull)}>
                                 {firstFull ? <ArrowsRetractIcon/> : <ArrowsExpandIcon/>}
                             </div>
@@ -80,7 +81,7 @@ export const CVEInspect: React.FC<CVEInspectProp> = (props) => {
                             <>
                                 <div className={styles["cve-description-heard"]}>
                                     <div className={styles["cve-description-heard-title"]}>
-                                        {cwes.length > 0 ? cwes[0].CWE : "CWE 编号"}
+                                        {cwes.length > 0 ? cwes[0].CWE : i18next.t("CWE 编号")}
                                     </div>
                                     <div
                                         className={styles["cve-description-icon"]}
@@ -96,11 +97,11 @@ export const CVEInspect: React.FC<CVEInspectProp> = (props) => {
                                             onSelectCve(s)
                                         }}
                                     />
-                                    <div className={styles["no-more"]}>暂无更多</div>
+                                    <div className={styles["no-more"]}>{i18next.t("暂无更多")}</div>
                                 </div>
                             </>
                         ) : cwes.length === 0 ? (
-                            <YakitEmpty style={{paddingTop: 48}} title='暂无CWE数据'/>
+                            <YakitEmpty style={{paddingTop: 48}} title={i18next.t("暂无CWE数据")}/>
                         ) : (
                             <CWEDescription
                                 data={cwes}
@@ -124,6 +125,6 @@ export const CVEInspect: React.FC<CVEInspectProp> = (props) => {
             />
         </div>
     ) : (
-        <YakitEmpty style={{paddingTop: 48}} title='未选中 CVE 数据'/>
+        <YakitEmpty style={{paddingTop: 48}} title={i18next.t("未选中 CVE 数据")}/>
     )
 }

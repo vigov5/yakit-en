@@ -6,6 +6,7 @@ import {useDebounce, useMemoizedFn} from "ahooks";
 import {formatTimestamp} from "../../utils/timeUtil";
 import {success} from "../../utils/notification";
 import {ReloadOutlined} from "@ant-design/icons";
+import i18next from "../../i18n"
 
 export interface ICMPSizeLoggerPageProp {
 
@@ -70,8 +71,7 @@ export const ICMPSizeLoggerPage: React.FC<ICMPSizeLoggerPageProp> = (props) => {
 
     return <AutoCard title={<Space>
         ICMP Size Logger
-        <div style={{color: "#999", fontSize: 12}}>
-            使用 ping 携带特定长度数据包判定 ICMP 反连
+        <div style={{color: "#999", fontSize: 12}}>{i18next.t("使用 ping 携带特定长度数据包判定 ICMP 反连")}
         </div>
         <Divider type={"vertical"}/>
         <Form onSubmitCapture={e => {
@@ -88,34 +88,34 @@ export const ICMPSizeLoggerPage: React.FC<ICMPSizeLoggerPageProp> = (props) => {
         }} layout={"inline"} size={"small"}>
             <InputInteger
                 disable={true}
-                label={"设置 Ping 包大小"}
+                label={i18next.t("设置 Ping 包大小")}
                 setValue={setSize}
                 value={size}
             />
             <Form.Item colon={false} label={" "}>
                 <Space>
-                    <Button disabled={loading} type="primary" htmlType="submit"> 随机生成可用长度 </Button>
+                    <Button disabled={loading} type="primary" htmlType="submit">{i18next.t("随机生成可用长度")} </Button>
                     <Button disabled={loading} type="link" onClick={() => {
                         update()
-                    }} icon={<ReloadOutlined/>}> 刷新 </Button>
+                    }} icon={<ReloadOutlined/>}>{i18next.t("刷新")} </Button>
                 </Space>
             </Form.Item>
         </Form>
     </Space>} bordered={false}>
         <Space style={{width: "100%"}} direction={"vertical"}>
             <Alert type={"success"} message={<Space direction={"vertical"} style={{width: "100%"}}>
-                <h4>ICMP Size Logger 是一个通过 Ping 包大小来判断 ICMP 反连的 ICMP 记录器</h4>
+                <h4>{i18next.t("ICMP Size Logger 是一个通过 Ping 包大小来判断 ICMP 反连的 ICMP 记录器")}</h4>
                 <Space>
-                    <div>在 Windows 系统中，使用</div>
+                    <div>{i18next.t("在 Windows 系统中，使用")}</div>
                     {host === "" || sizeNow <= 0 ? <Spin/> :
                         <CopyableField mark={true} text={`ping -l ${sizeNow} ${host}`}/>}
-                    <div>命令</div>
+                    <div>{i18next.t("命令")}</div>
                 </Space>
                 <Space>
                     <div>在 MacOS/Linux/*nix 系统中，使用</div>
                     {host === "" || sizeNow <= 0 ? <Spin/> :
                         <CopyableField mark={true} text={`ping -c 4 -s ${sizeNow} ${host}`}/>}
-                    <div>命令</div>
+                    <div>{i18next.t("命令")}</div>
                 </Space>
             </Space>}/>
             <Table<ICMPSizeLoggerInfo>
@@ -124,10 +124,10 @@ export const ICMPSizeLoggerPage: React.FC<ICMPSizeLoggerPageProp> = (props) => {
                 rowKey={i => `${i.CurrentRemoteAddr}`}
                 pagination={false}
                 columns={[
-                    {title: "ICMP/Ping 长度", render: (i: ICMPSizeLoggerInfo) => <Tag color={"geekblue"}>{sizeNow}</Tag>},
-                    {title: "远端IP", dataIndex: "CurrentRemoteAddr"},
+                    {title: i18next.t("ICMP/Ping 长度"), render: (i: ICMPSizeLoggerInfo) => <Tag color={"geekblue"}>{sizeNow}</Tag>},
+                    {title: i18next.t("远端IP"), dataIndex: "CurrentRemoteAddr"},
                     {
-                        title: "触发时间",
+                        title: i18next.t("触发时间"),
                         render: (i: ICMPSizeLoggerInfo) => <Tag
                             color={"geekblue"}>{formatTimestamp(i.TriggerTimestamp)}</Tag>
                     },

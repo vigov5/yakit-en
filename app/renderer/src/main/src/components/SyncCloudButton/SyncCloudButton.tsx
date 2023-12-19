@@ -14,6 +14,7 @@ import React, {ReactNode, useRef, useState} from "react"
 import { isEnterpriseEdition } from "@/utils/envfile"
 import styles from "./SyncCloudButton.module.scss"
 import { YakitRoute } from "@/routes/newRoute"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -89,20 +90,20 @@ export const SyncCopyCloudButton: React.FC<SyncCopyCloudButtonProps> = (props) =
                             } as GetYakScriptByOnlineIDRequest)
                             .then((newSrcipt: YakScript) => {
                                 setParams(newSrcipt)
-                                success("同步成功")
+                                success(i18next.t("同步成功"))
                                 formParams && modalRef.current.destroy()
                             })
                             .catch((e) => {
-                                failed(`查询本地插件错误:${e}`)
+                                failed(i18next.t("查询本地插件错误:${e}", { v1: e }))
                             })
                             .finally(() => {})
                     })
                     .catch((err) => {
-                        failed("插件下载本地失败:" + err)
+                        failed(i18next.t("插件下载本地失败:") + err)
                     })
             })
             .catch((err) => {
-                failed("插件上传失败:" + err)
+                failed(i18next.t("插件上传失败:") + err)
             })
             .finally(() => {})
     })
@@ -110,11 +111,11 @@ export const SyncCopyCloudButton: React.FC<SyncCopyCloudButtonProps> = (props) =
     const onSyncCloud = useMemoizedFn(() => {
         if (!userInfo.isLogin) {
             Modal.confirm({
-                title: "未登录",
+                title: i18next.t("未登录"),
                 icon: <ExclamationCircleOutlined />,
-                content: "登录后才可同步至云端",
-                cancelText: "取消",
-                okText: "登录",
+                content: i18next.t("登录后才可同步至云端"),
+                cancelText: i18next.t("取消"),
+                okText: i18next.t("登录"),
                 onOk() {
                     setLoginShow(true)
                 },
@@ -128,7 +129,7 @@ export const SyncCopyCloudButton: React.FC<SyncCopyCloudButtonProps> = (props) =
         }
 
         modalRef.current = showModal({
-            title: "复制至云端",
+            title: i18next.t("复制至云端"),
             width: 520,
             content: (
                 <CopyCloudForm
@@ -202,14 +203,14 @@ export const SyncCloudButton: React.FC<SyncCloudButtonProps> = (props) => {
                             } as GetYakScriptByOnlineIDRequest)
                             .then((newSrcipt: YakScript) => {
                                 setParams(newSrcipt)
-                                success("同步成功")
+                                success(i18next.t("同步成功"))
                                 setVisibleSyncSelect(false)
                                 if (isCreate) {
                                     ipcRenderer
                                         .invoke("delete-yak-script", params.Id)
                                         .then(() => {})
                                         .catch((err) => {
-                                            failed("删除本地失败:" + err)
+                                            failed(i18next.t("删除本地失败:") + err)
                                         })
                                         .finally(() => {
                                             ipcRenderer
@@ -221,7 +222,7 @@ export const SyncCloudButton: React.FC<SyncCloudButtonProps> = (props) => {
                                 }
                             })
                             .catch((e) => {
-                                failed(`查询本地插件错误:${e}`)
+                                failed(i18next.t("查询本地插件错误:${e}", { v1: e }))
                             })
                             .finally(() => {
                                 setTimeout(() => {
@@ -231,7 +232,7 @@ export const SyncCloudButton: React.FC<SyncCloudButtonProps> = (props) => {
                             })
                     })
                     .catch((err) => {
-                        failed("插件下载本地失败:" + err)
+                        failed(i18next.t("插件下载本地失败:") + err)
                         setTimeout(() => {
                             setLoading(false)
                             if (uploadLoading) uploadLoading(false)
@@ -239,7 +240,7 @@ export const SyncCloudButton: React.FC<SyncCloudButtonProps> = (props) => {
                     })
             })
             .catch((err) => {
-                failed("插件上传失败:" + err)
+                failed(i18next.t("插件上传失败:") + err)
             })
             .finally(() => {
                 setTimeout(() => {
@@ -251,11 +252,11 @@ export const SyncCloudButton: React.FC<SyncCloudButtonProps> = (props) => {
     const onSyncCloud = useMemoizedFn(() => {
         if (!userInfo.isLogin) {
             Modal.confirm({
-                title: "未登录",
+                title: i18next.t("未登录"),
                 icon: <ExclamationCircleOutlined />,
-                content: "登录后才可同步至云端",
-                cancelText: "取消",
-                okText: "登录",
+                content: i18next.t("登录后才可同步至云端"),
+                cancelText: i18next.t("取消"),
+                okText: i18next.t("登录"),
                 onOk() {
                     setLoginShow(true)
                 },
@@ -319,12 +320,12 @@ export const ModalSyncSelect: React.FC<ModalSyncSelect> = (props) => {
     })
     return (
         <Modal
-            title='同步至云端'
+            title={i18next.t("同步至云端")}
             visible={visible}
             onOk={() => handleOk(type)}
             onCancel={handleCancel}
-            okText='确定'
-            cancelText='取消'
+            okText={i18next.t("确定")}
+            cancelText={i18next.t("取消")}
             confirmLoading={loading}
         >
             <Radio.Group onChange={onChange} value={type}>
@@ -360,16 +361,14 @@ export const CopyCloudForm: React.FC<CopyCloudFormProps> = (props) => {
     return (
         <div>
             <Form {...layout} form={form} onFinish={onFinish}>
-                <div style={{padding: "0 30px", marginBottom: 18}}>
-                    复制插件并同步到自己的私密插件，无需作者同意，即可保存修改内容至云端
+                <div style={{padding: "0 30px", marginBottom: 18}}>{i18next.t("复制插件并同步到自己的私密插件，无需作者同意，即可保存修改内容至云端")}
                 </div>
-                <Form.Item name='name' label='插件名称' rules={[{required: true, message: "该项为必填"}]}>
-                    <Input placeholder='请输入插件名称' allowClear />
+                <Form.Item name='name' label={i18next.t("插件名称")} rules={[{required: true, message: i18next.t("该项为必填")}]}>
+                    <Input placeholder={i18next.t("请输入插件名称")} allowClear />
                 </Form.Item>
                 <div style={{display: "flex", justifyContent: "space-evenly"}}>
-                    <Button onClick={() => onClose()}>取消</Button>
-                    <Button type='primary' htmlType='submit' loading={loading}>
-                        确认
+                    <Button onClick={() => onClose()}>{i18next.t("取消")}</Button>
+                    <Button type='primary' htmlType='submit' loading={loading}>{i18next.t("确认")}
                     </Button>
                 </div>
             </Form>
@@ -391,14 +390,13 @@ export const SyncCloudProgress: React.FC<SyncCloudProgressProps> = (props) => {
             destroyOnClose={true}
             footer={null}
             onCancel={() => onCancle()}
-            title="上传进度"
+            title={i18next.t("上传进度")}
         >
             <div className={styles['sync-cloud-progress']}>
                 <Progress size='small' percent={progress} />
                 <div className='yakit-single-line-ellipsis'>{nowPligin}</div>
                 <div className={styles['btn-box']}>
-                    <Button type='primary' onClick={() => onCancle()}>
-                        取消上传
+                    <Button type='primary' onClick={() => onCancle()}>{i18next.t("取消上传")}
                     </Button>
                 </div>
             </div>

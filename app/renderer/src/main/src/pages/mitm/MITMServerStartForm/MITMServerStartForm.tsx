@@ -23,6 +23,7 @@ import {inputHTTPFuzzerHostConfigItem} from "../../fuzzer//HTTPFuzzerHosts"
 import {RemoveIcon} from "@/assets/newIcon"
 import {YakitModal} from "@/components/yakitUI/YakitModal/YakitModal"
 import {YakitInput} from "@/components/yakitUI/YakitInput/YakitInput"
+import i18next from "../../../i18n"
 const MITMFormAdvancedConfiguration = React.lazy(() => import("./MITMFormAdvancedConfiguration"))
 const ChromeLauncherButton = React.lazy(() => import("../MITMChromeLauncher"))
 
@@ -125,7 +126,7 @@ export const MITMServerStartForm: React.FC<MITMServerStartFormProp> = React.memo
                 setOpenRepRuleFlag(findOpenRepRule !== undefined)
                 setRules(newRules)
             })
-            .catch((e) => yakitFailed("获取规则列表失败:" + e))
+            .catch((e) => yakitFailed(i18next.t("获取规则列表失败:") + e))
     })
     const onSwitchPlugin = useMemoizedFn((checked) => {
         props.setEnableInitialPlugin(checked)
@@ -134,11 +135,11 @@ export const MITMServerStartForm: React.FC<MITMServerStartFormProp> = React.memo
         // 开启替换规则
         if (openRepRuleFlag) {
             Modal.confirm({
-                title: "温馨提示",
+                title: i18next.t("温馨提示"),
                 icon: <ExclamationCircleOutlined />,
-                content: "检测到开启了替换规则，可能会影响劫持，是否确认开启？",
-                okText: "确认",
-                cancelText: "取消",
+                content: i18next.t("检测到开启了替换规则，可能会影响劫持，是否确认开启？"),
+                okText: i18next.t("确认"),
+                cancelText: i18next.t("取消"),
                 closable: true,
                 centered: true,
                 closeIcon: (
@@ -230,34 +231,32 @@ export const MITMServerStartForm: React.FC<MITMServerStartFormProp> = React.memo
                 wrapperCol={{span: width > 610 ? 13 : 11}}
             >
                 <Item
-                    label={"劫持代理监听主机"}
-                    help={"远程模式可以修改为 0.0.0.0 以监听主机所有网卡"}
-                    rules={[{required: true, message: "该项为必填"}]}
+                    label={i18next.t("劫持代理监听主机")}
+                    help={i18next.t("远程模式可以修改为 0.0.0.0 以监听主机所有网卡")}
+                    rules={[{required: true, message: i18next.t("该项为必填")}]}
                     name='host'
                 >
                     <YakitAutoComplete
                         options={hostHistoryList.map((item) => ({value: item, label: item}))}
-                        placeholder='请输入'
+                        placeholder={i18next.t("请输入")}
                     />
                 </Item>
-                <Item label={"劫持代理监听端口"} name='port' rules={[{required: true, message: "该项为必填"}]}>
+                <Item label={i18next.t("劫持代理监听端口")} name='port' rules={[{required: true, message: i18next.t("该项为必填")}]}>
                     <YakitInputNumber
                         wrapperClassName={styles["form-input-number"]}
                         style={{width: "100%", maxWidth: "none"}}
                     />
                 </Item>
                 <Item
-                    label='下游代理'
+                    label={i18next.t("下游代理")}
                     name='downstreamProxy'
                     help={
-                        <span className={styles["form-rule-help"]}>
-                            为经过该 MITM
-                            代理的请求再设置一个代理，通常用于访问中国大陆无法访问的网站或访问特殊网络/内网，也可用于接入被动扫描，代理如有密码格式为：http://user:pass@ip:port
+                        <span className={styles["form-rule-help"]}>{i18next.t(`为经过该 MITM
+                            代理的请求再设置一个代理，通常用于访问中国大陆无法访问的网站或访问特殊网络/内网，也可用于接入被动扫描，代理如有密码格式为：http://user:pass@ip:port`)}
                             <span
                                 className={styles["form-rule-help-setting"]}
                                 onClick={() => setAgentConfigModalVisible(true)}
-                            >
-                                配置用户名密码&nbsp;
+                            >{i18next.t("配置用户名密码")}&nbsp;
                             </span>
                         </span>
                     }
@@ -265,21 +264,21 @@ export const MITMServerStartForm: React.FC<MITMServerStartFormProp> = React.memo
                     <YakitAutoComplete
                         ref={downstreamProxyRef}
                         cacheHistoryDataKey={MITMConsts.MITMDefaultDownstreamProxyHistory}
-                        placeholder='例如 http://127.0.0.1:7890 或者 socks5://127.0.0.1:7890'
+                        placeholder={i18next.t("例如 http://127.0.0.1:7890 或者 socks5://127.0.0.1:7890")}
                     />
                 </Item>
                 <Item
-                    label={"HTTP/2.0 支持"}
+                    label={i18next.t("HTTP/2.0 支持")}
                     name='enableHttp2'
                     help={
-                        "开启该选项将支持 HTTP/2.0 劫持，关闭后自动降级为 HTTP/1.1，开启后 HTTP2 协商失败也会自动降级"
+                        i18next.t("开启该选项将支持 HTTP/2.0 劫持，关闭后自动降级为 HTTP/1.1，开启后 HTTP2 协商失败也会自动降级")
                     }
                     valuePropName='checked'
                 >
                     <YakitSwitch size='large' />
                 </Item>
                 <Item
-                    label={"国密劫持"}
+                    label={i18next.t("国密劫持")}
                     name='enableGMTLS'
                     initialValue={true}
                     help={"适配国密算法的 TLS (GM-tls) 劫持，对目标网站发起国密 TLS 的连接"}
@@ -288,18 +287,16 @@ export const MITMServerStartForm: React.FC<MITMServerStartFormProp> = React.memo
                     <YakitSwitch size='large' />
                 </Item>
                 <Item
-                    label={"内容规则"}
+                    label={i18next.t("内容规则")}
                     help={
-                        <span className={styles["form-rule-help"]}>
-                            使用规则进行匹配、替换、标记、染色，同时配置生效位置
+                        <span className={styles["form-rule-help"]}>{i18next.t("使用规则进行匹配、替换、标记、染色，同时配置生效位置")}
                             <span
                                 className={styles["form-rule-help-setting"]}
                                 onClick={() => {
                                     setIsUseDefRules(true)
                                     ruleButtonRef.current.onSetImportVisible(true)
                                 }}
-                            >
-                                默认配置&nbsp;
+                            >{i18next.t("默认配置")}&nbsp;
                                 <RefreshIcon />
                             </span>
                         </span>
@@ -307,7 +304,7 @@ export const MITMServerStartForm: React.FC<MITMServerStartFormProp> = React.memo
                 >
                     <div className={styles["form-rule-body"]}>
                         <div className={styles["form-rule"]} onClick={() => props.setVisible(true)}>
-                            <div className={styles["form-rule-text"]}>现有规则 {rules.length} 条</div>
+                            <div className={styles["form-rule-text"]}>{i18next.t("现有规则")} {rules.length} 条</div>
                             <div className={styles["form-rule-icon"]}>
                                 <CogIcon />
                             </div>
@@ -322,13 +319,12 @@ export const MITMServerStartForm: React.FC<MITMServerStartFormProp> = React.memo
                         />
                     </div>
                 </Item>
-                <Item label='启用插件' name='enableInitialPlugin' valuePropName='checked'>
+                <Item label={i18next.t("启用插件")} name='enableInitialPlugin' valuePropName='checked'>
                     <YakitSwitch size='large' onChange={(checked) => onSwitchPlugin(checked)} />
                 </Item>
                 <Item label={" "} colon={false}>
                     <Space>
-                        <YakitButton type='primary' size='large' htmlType='submit'>
-                            劫持启动
+                        <YakitButton type='primary' size='large' htmlType='submit'>{i18next.t("劫持启动")}
                         </YakitButton>
                         <ChromeLauncherButton
                             host={useWatch("host", form)}
@@ -343,8 +339,7 @@ export const MITMServerStartForm: React.FC<MITMServerStartFormProp> = React.memo
                             }}
                             repRuleFlag={openRepRuleFlag}
                         />
-                        <YakitButton type='text' size='large' onClick={() => setAdvancedFormVisible(true)}>
-                            高级配置
+                        <YakitButton type='text' size='large' onClick={() => setAdvancedFormVisible(true)}>{i18next.t("高级配置")}
                         </YakitButton>
                     </Space>
                 </Item>
@@ -444,12 +439,12 @@ const AgentConfigModal: React.FC<AgentConfigModalProp> = React.memo((props) => {
     return (
         <YakitModal
             visible={agentConfigModalVisible}
-            title='代理劫持'
+            title={i18next.t("代理劫持")}
             width={506}
             maskClosable={false}
             closable
             centered
-            okText='确认'
+            okText={i18next.t("确认")}
             onCancel={onClose}
             onOk={onOKFun}
         >
@@ -464,7 +459,7 @@ const AgentConfigModal: React.FC<AgentConfigModalProp> = React.memo((props) => {
                     style={{height: "100%"}}
                     onValuesChange={onValuesChange}
                 >
-                    <Form.Item label='协议' name='Scheme' style={{marginBottom: 4}}>
+                    <Form.Item label={i18next.t("协议")} name='Scheme' style={{marginBottom: 4}}>
                         <YakitSelect
                             options={["http", "socks5"].map((item) => ({
                                 value: item,
@@ -474,35 +469,35 @@ const AgentConfigModal: React.FC<AgentConfigModalProp> = React.memo((props) => {
                         />
                     </Form.Item>
                     <Form.Item
-                        label='地址'
+                        label={i18next.t("地址")}
                         name='Address'
                         style={{marginBottom: 4}}
                         rules={[
-                            {required: true, message: "请输入地址"},
+                            {required: true, message: i18next.t("请输入地址")},
                             {
                                 pattern:
                                     /^((([a-z\d]([a-z\d-]*[a-z\d])*)\.)*[a-z]([a-z\d-]*[a-z\d])?|(?:\d{1,3}\.){3}\d{1,3}):\d+$/,
-                                message: "输入地址格式不正确"
+                                message: i18next.t("输入地址格式不正确")
                             }
                         ]}
                     >
-                        <YakitInput placeholder='例如：127.0.0.1:7890' />
+                        <YakitInput placeholder={i18next.t("例如：127.0.0.1:7890")} />
                     </Form.Item>
                     <Form.Item
-                        label='用户名'
+                        label={i18next.t("用户名")}
                         name='Username'
                         style={{marginBottom: 4}}
-                        rules={[{required: true, message: "请输入用户名"}]}
+                        rules={[{required: true, message: i18next.t("请输入用户名")}]}
                     >
-                        <YakitInput placeholder='请输入用户名' />
+                        <YakitInput placeholder={i18next.t("请输入用户名")} />
                     </Form.Item>
                     <Form.Item
-                        label='密码'
+                        label={i18next.t("密码")}
                         name="Password"
                         style={{marginBottom: 4}}
-                        rules={[{required: true, message: "请输入密码"}]}
+                        rules={[{required: true, message: i18next.t("请输入密码")}]}
                     >
-                        <YakitInput placeholder='请输入密码' />
+                        <YakitInput placeholder={i18next.t("请输入密码")} />
                     </Form.Item>
                 </Form>
             </div>

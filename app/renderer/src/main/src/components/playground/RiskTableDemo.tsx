@@ -7,7 +7,7 @@ import {Risk} from "@/pages/risks/schema";
 import {info} from "@/utils/notification";
 import {YakitResizeBox} from "@/components/yakitUI/YakitResizeBox/YakitResizeBox";
 import {YakEditor} from "@/utils/editors";
-
+import i18next from "../../i18n"
 export interface RiskTableDemoProp {
 
 }
@@ -23,7 +23,7 @@ export const RiskTableDemo: React.FC<RiskTableDemoProp> = (props) => {
             <DemoVirtualTable<Risk>
                 columns={[
                     {headerTitle: "ID", key: "Id", width: 80, colRender: i => i.Id},
-                    {headerTitle: "漏洞名称", key: "Title", width: 300, colRender: i => i.TitleVerbose || i.Title},
+                    {headerTitle: i18next.t("漏洞名称"), key: "Title", width: 300, colRender: i => i.TitleVerbose || i.Title},
                 ]}
                 rowClick={data => {
                     setSelected(data)

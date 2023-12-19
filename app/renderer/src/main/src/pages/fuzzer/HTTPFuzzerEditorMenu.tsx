@@ -24,6 +24,7 @@ import {QueryFuzzerLabelResponseProps} from "./StringFuzzer"
 import {setRemoteValue} from "@/utils/kv"
 import {useMemoizedFn, useThrottleFn} from "ahooks"
 import { SolidTerminalIcon } from "@/assets/icon/solid"
+import i18next from "../../i18n"
 const {ipcRenderer} = window.require("electron")
 
 export interface CountDirectionProps {
@@ -80,51 +81,51 @@ export interface LabelDataProps {
 // 注：此处顺序为倒序（新增DefaultDescription记得带-fixed，此处为标识固定项）
 export const defaultLabel: LabelDataProps[] = [
     {
-        DefaultDescription: "反向正则（单个）-fixed",
-        Description: "反向正则（单个）",
+        DefaultDescription: i18next.t("反向正则（单个）-fixed"),
+        Description: i18next.t("反向正则（单个）"),
         Label: "{{regen:one([0-9a-f]{3})}}"
     },
     {
-        DefaultDescription: "反向正则（全部）-fixed",
-        Description: "反向正则（全部）",
+        DefaultDescription: i18next.t("反向正则（全部）-fixed"),
+        Description: i18next.t("反向正则（全部）"),
         Label: "{{regen([0-9a-f]{3})}}"
     },
     {
-        DefaultDescription: "时间戳（秒）-fixed",
-        Description: "时间戳（秒）",
+        DefaultDescription: i18next.t("时间戳（秒）-fixed"),
+        Description: i18next.t("时间戳（秒）"),
         Label: "{{timestamp(seconds)}}"
     },
     {
-        DefaultDescription: "验证码-fixed",
-        Description: "验证码",
+        DefaultDescription: i18next.t("验证码-fixed"),
+        Description: i18next.t("验证码"),
         Label: "{{int(0000-9999)}}"
     },
     {
-        DefaultDescription: "随机数-fixed",
-        Description: "随机数",
+        DefaultDescription: i18next.t("随机数-fixed"),
+        Description: i18next.t("随机数"),
         Label: "{{randint(0,10)}}"
     },
     {
-        DefaultDescription: "随机字符串-fixed",
-        Description: "随机字符串",
+        DefaultDescription: i18next.t("随机字符串-fixed"),
+        Description: i18next.t("随机字符串"),
         Label: "{{randstr}}"
     },
     {
-        DefaultDescription: "整数范围-fixed",
-        Description: "整数范围",
+        DefaultDescription: i18next.t("整数范围-fixed"),
+        Description: i18next.t("整数范围"),
         Label: "{{int(1-10)}}"
     },
     {
-        DefaultDescription: "插入Payload-fixed",
-        Description: "插入Payload"
+        DefaultDescription: i18next.t("插入Payload-fixed"),
+        Description: i18next.t("插入Payload")
     },
     {
-        DefaultDescription: "插入临时字典-fixed",
-        Description: "插入临时字典"
+        DefaultDescription: i18next.t("插入临时字典-fixed"),
+        Description: i18next.t("插入临时字典")
     },
     {
-        DefaultDescription: "插入文件-fixed",
-        Description: "插入文件"
+        DefaultDescription: i18next.t("插入文件-fixed"),
+        Description: i18next.t("插入文件")
     },
 ]
 
@@ -287,7 +288,7 @@ export const HTTPFuzzerClickEditorMenu: React.FC<HTTPFuzzerClickEditorMenuProps>
                     }}
                 >
                     <IconSolidTagIcon className={styles["tag"]} />
-                    <div className={styles["content"]}>插入标签</div>
+                    <div className={styles["content"]}>{i18next.t("插入标签")}</div>
                     {isEnterSimple ? (
                         <ChevronUpIcon className={styles["up"]} />
                     ) : (
@@ -322,8 +323,7 @@ export const HTTPFuzzerClickEditorMenu: React.FC<HTTPFuzzerClickEditorMenuProps>
                     }}
                 >
                     <div className={styles["menu-header"]}>
-                        <div className={styles["menu-header-left"]}>
-                            常用标签
+                        <div className={styles["menu-header-left"]}>{i18next.t("常用标签")}
                             {!(menuWidth && menuWidth < 220) && (
                                 <span className={styles["menu-header-left-count"]}>{labelData.length || ""}</span>
                             )}
@@ -333,12 +333,10 @@ export const HTTPFuzzerClickEditorMenu: React.FC<HTTPFuzzerClickEditorMenuProps>
                                 style={{paddingLeft: 2, paddingRight: 2}}
                                 type='text'
                                 onClick={() => addLabel()}
-                            >
-                                添加 <PlusOutlined />
+                            >{i18next.t("添加")} <PlusOutlined />
                             </YakitButton>
                             <div className={styles["line"]}></div>
-                            <YakitButton type='text2' style={{color: "#85899E"}} onClick={() => reset()}>
-                                复原
+                            <YakitButton type='text2' style={{color: "#85899E"}} onClick={() => reset()}>{i18next.t("复原")}
                             </YakitButton>
                         </div>
                     </div>
@@ -444,8 +442,7 @@ export const HTTPFuzzerClickEditorMenu: React.FC<HTTPFuzzerClickEditorMenuProps>
                                                                                         })
                                                                                 }
                                                                             }}
-                                                                        >
-                                                                            确认
+                                                                        >{i18next.t("确认")}
                                                                         </YakitButton>
                                                                     ) : (
                                                                         <>
@@ -510,49 +507,49 @@ export const EncodeComponent: React.FC<EncodeComponentProps> = (props) => {
         {
             color: "rgba(136, 99, 247, 0.6)",
             avatar: "m",
-            title: "Md5 编码",
+            title: i18next.t("Md5 编码"),
             sub_title: "md5",
             encode: (v: string) => `{{md5(${v})}}`
         },
         {
             color: "rgba(74, 148, 248, 0.6)",
             avatar: "b",
-            title: "Base64 编码",
+            title: i18next.t("Base64 编码"),
             sub_title: "base64enc",
             encode: (v: string) => `{{base64enc(${v})}}`
         },
         {
             color: "rgba(74, 148, 248, 0.6)",
             avatar: "b",
-            title: "先 Base64 后 URL 编码",
+            title: i18next.t("先 Base64 后 URL 编码"),
             sub_title: "{{urlenc(base64enc(xxx))}}",
             encode: (v: string) => `{{urlenc(base64enc(${v}))}}`
         },
         {
             color: "rgba(86, 201, 145, 0.6)",
             avatar: "h",
-            title: "HEX 编码（十六进制编码）",
+            title: i18next.t("HEX 编码（十六进制编码）"),
             sub_title: "hexenc",
             encode: (v: string) => `{{hexenc(${v})}}`
         },
         {
             color: "rgba(244, 115, 107, 0.6)",
             avatar: "h",
-            title: "HTML 编码",
+            title: i18next.t("HTML 编码"),
             sub_title: "htmlenc",
             encode: (v: string) => `{{htmlenc(${v})}}`
         },
         {
             color: "rgba(255, 182, 96, 0.6)",
             avatar: "u",
-            title: "URL 编码",
+            title: i18next.t("URL 编码"),
             sub_title: "urlenc",
             encode: (v: string) => `{{urlenc(${v})}}`
         },
         {
             color: "rgba(218, 95, 221, 0.6)",
             avatar: "u",
-            title: "URL 编码（只编码特殊字符）",
+            title: i18next.t("URL 编码（只编码特殊字符）"),
             sub_title: "urlescape",
             encode: (v: string) => `{{urlescape(${v})}}`
         }
@@ -613,8 +610,7 @@ export const DecodeCopyReplace: React.FC<DecodeCopyReplaceProps> = (props) => {
                             onClick={() => {
                                 replace && replace(itemStr)
                             }}
-                        >
-                            替换
+                        >{i18next.t("替换")}
                         </YakitButton>
                     )}
                 </div>
@@ -674,7 +670,7 @@ export const DecodeComponent: React.FC<DecodeComponentProps> = (props) => {
 
     return (
         <div className={styles["decode-box"]}>
-            {isReadOnly && <div className={styles["title"]}>智能解码</div>}
+            {isReadOnly && <div className={styles["title"]}>{i18next.t("智能解码")}</div>}
             {status === "only" && (
                 <div className={styles["only-one"]}>
                     <DecodeCopyReplace isReadOnly={isReadOnly} item={result[0]} isShowBorder={true} replace={replace} />
@@ -702,7 +698,7 @@ export const DecodeComponent: React.FC<DecodeComponentProps> = (props) => {
                     </Timeline>
                 </div>
             )}
-            {status === "none" && <div className={styles["none-decode"]}>无解码信息</div>}
+            {status === "none" && <div className={styles["none-decode"]}>{i18next.t("无解码信息")}</div>}
         </div>
     )
 }
@@ -798,7 +794,7 @@ export const HTTPFuzzerRangeEditorMenu: React.FC<HTTPFuzzerRangeEditorMenuProps>
                             }}
                         >
                             <IconSolidCodeIcon className={styles["tag"]} />
-                            <div className={styles["content"]}>编码</div>
+                            <div className={styles["content"]}>{i18next.t("编码")}</div>
                             {segmentedType === "encode" ? (
                                 <ChevronUpIcon className={styles["up"]} />
                             ) : (
@@ -813,7 +809,7 @@ export const HTTPFuzzerRangeEditorMenu: React.FC<HTTPFuzzerRangeEditorMenuProps>
                             }}
                         >
                             <IconSolidSparklesIcon className={styles[""]} />
-                            <div className={styles["content"]}>解码</div>
+                            <div className={styles["content"]}>{i18next.t("解码")}</div>
                         </div>
                     </div>
                 </div>
@@ -910,7 +906,7 @@ export const HTTPFuzzerRangeReadOnlyEditorMenu: React.FC<HTTPFuzzerRangeReadOnly
                 <div className={styles["show-box"]}>
                     <div className={styles["decode-box"]} onClick={() => setSegmentedType("decode")}>
                         <IconSolidSparklesIcon className={styles[""]} />
-                        <div className={styles["content"]}>解码</div>
+                        <div className={styles["content"]}>{i18next.t("解码")}</div>
                     </div>
                 </div>
             </div>

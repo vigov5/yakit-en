@@ -9,6 +9,7 @@ import {CopyableField} from "../utils/inputUtil";
 import {showDrawer} from "../utils/showModal";
 import ReactResizeDetector from "react-resize-detector";
 import {useDebounceFn, useInViewport, useThrottleFn} from "ahooks";
+import i18next from "../i18n"
 
 const {ipcRenderer} = window.require("electron");
 
@@ -51,7 +52,7 @@ export const HTTPFlowMiniTable: React.FC<HTTPFlowMiniTableProp> = React.memo((pr
                 width: 60, lock: true,
             },
             {
-                code: "Hash", name: "状态", render: (i: any) => {
+                code: "Hash", name: i18next.t("状态"), render: (i: any) => {
                     const flow: HTTPFlow | undefined = findHTTPFlowById(i)
 
                     return <div style={{overflow: "hidden"}}>
@@ -82,7 +83,7 @@ export const HTTPFlowMiniTable: React.FC<HTTPFlowMiniTableProp> = React.memo((pr
                 width: 700,
             },
             {
-                code: "Hash", name: "Body大小", render: (i: any) => {
+                code: "Hash", name: i18next.t("Body大小"), render: (i: any) => {
                     const flow: HTTPFlow | undefined = findHTTPFlowById(i)
 
                     return <div style={{overflow: "hidden"}}>
@@ -92,7 +93,7 @@ export const HTTPFlowMiniTable: React.FC<HTTPFlowMiniTableProp> = React.memo((pr
                 width: 100, lock: true,
             },
             {
-                code: "Hash", name: "操作", render: (i: any) => {
+                code: "Hash", name: i18next.t("操作"), render: (i: any) => {
                     return <>
                         <Space>
                             <Button
@@ -126,13 +127,13 @@ export const HTTPFlowMiniTable: React.FC<HTTPFlowMiniTableProp> = React.memo((pr
             },
             {
                 code: "GetParamsTotal",
-                name: "Get 参数",
+                name: i18next.t("Get 参数"),
                 render: (i: any) => i > 0 ? <Tag color={"orange"}>{i}个</Tag> : "-",
                 width: 60
             },
             {
                 code: "PostParamsTotal",
-                name: "Post 参数",
+                name: i18next.t("Post 参数"),
                 render: (i: any) => i > 0 ? <Tag color={"orange"}>{i}个</Tag> : "-",
                 width: 60, lock: true,
             },
@@ -143,7 +144,7 @@ export const HTTPFlowMiniTable: React.FC<HTTPFlowMiniTableProp> = React.memo((pr
                 width: 450, features: {sortable: true}
             },
             {
-                code: "Hash", name: "操作", render: (i: any) => {
+                code: "Hash", name: i18next.t("操作"), render: (i: any) => {
                     return <>
                         <Space>
                             {props.onSendToWebFuzzer && <Button

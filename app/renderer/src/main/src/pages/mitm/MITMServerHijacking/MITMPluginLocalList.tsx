@@ -41,6 +41,7 @@ import {getReleaseEditionName} from "@/utils/envfile"
 import {DownloadOnlinePluginsRequest} from "@/pages/plugins/utils"
 import emiter from "@/utils/eventBus/eventBus"
 import {PluginGV} from "@/pages/plugins/builtInData"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -160,24 +161,22 @@ export const MITMPluginLocalList: React.FC<MITMPluginLocalListProps> = React.mem
         if (Number(total) === 0 && (tags.length > 0 || searchKeyword || includedScriptNames.length > 0)) {
             return (
                 <div className={style["mitm-plugin-empty"]}>
-                    <YakitEmpty title={null} description='搜索结果“空”' />
+                    <YakitEmpty title={null} description={i18next.t("搜索结果“空”")} />
                 </div>
             )
         }
         if (Number(initialTotal) === 0) {
             return (
                 <div className={style["mitm-plugin-empty"]}>
-                    <YakitEmpty description='可一键获取官方云端插件，或导入外部插件源' />
+                    <YakitEmpty description={i18next.t("可一键获取官方云端插件，或导入外部插件源")} />
                     <div className={style["mitm-plugin-buttons"]}>
                         <YakitButton
                             type='outline1'
                             icon={<CloudDownloadIcon />}
                             onClick={() => setVisibleOnline(true)}
-                        >
-                            获取云端插件
+                        >{i18next.t("获取云端插件")}
                         </YakitButton>
-                        <YakitButton type='outline1' icon={<ImportIcon />} onClick={() => setVisibleImport(true)}>
-                            导入插件源
+                        <YakitButton type='outline1' icon={<ImportIcon />} onClick={() => setVisibleImport(true)}>{i18next.t("导入插件源")}
                         </YakitButton>
                     </div>
                 </div>
@@ -302,7 +301,7 @@ export const YakitGetOnlinePlugin: React.FC<YakitGetOnlinePluginProps> = React.m
         })
         ipcRenderer.on(`${taskToken}-error`, (_, e) => {
             onRefLocalPluginList()
-            yakitNotify("error", "下载失败:" + e)
+            yakitNotify("error", i18next.t("下载失败:") + e)
         })
         return () => {
             ipcRenderer.removeAllListeners(`${taskToken}-data`)
@@ -317,13 +316,13 @@ export const YakitGetOnlinePlugin: React.FC<YakitGetOnlinePluginProps> = React.m
                 .invoke("DownloadOnlinePlugins", addParams, taskToken)
                 .then(() => {})
                 .catch((e) => {
-                    failed(`下载失败:${e}`)
+                    failed(i18next.t("下载失败:${e}", { v1: e }))
                 })
         }
     }, [visible])
     const StopAllPlugin = () => {
         ipcRenderer.invoke("cancel-DownloadOnlinePluginAll", taskToken).catch((e) => {
-            failed(`停止下载:${e}`)
+            failed(i18next.t("停止下载:${e}", { v1: e }))
             onRefLocalPluginList()
         })
     }
@@ -334,7 +333,7 @@ export const YakitGetOnlinePlugin: React.FC<YakitGetOnlinePluginProps> = React.m
     return (
         <YakitHint
             visible={visible}
-            title={`${getReleaseEditionName()} 云端插件下载中...`}
+            title={i18next.t("${getReleaseEditionName()} 云端插件下载中...", {v1: getReleaseEditionName()})}
             heardIcon={<SolidCloudDownloadIcon style={{color: "var(--yakit-warning-5)"}} />}
             onCancel={() => {
                 StopAllPlugin()
@@ -349,7 +348,7 @@ export const YakitGetOnlinePlugin: React.FC<YakitGetOnlinePluginProps> = React.m
                     strokeColor='#F28B44'
                     trailColor='#F0F2F5'
                     percent={percent}
-                    format={(percent) => `已下载 ${percent}%`}
+                    format={(percent) => i18next.t("已下载 ${percent}%", { v1: percent })}
                 />
             </div>
         </YakitHint>
@@ -378,7 +377,7 @@ export const YakModuleListHeard: React.FC<YakModuleListHeardProps> = React.memo(
                     onChange={(e) => onSelectAll(e.target.checked)}
                     disabled={loading}
                 />
-                <span className={style["mitm-plugin-list-check-text"]}>全选</span>
+                <span className={style["mitm-plugin-list-check-text"]}>{i18next.t("全选")}</span>
             </div>
             <div className={style["mitm-plugin-list-tip"]}>
                 <div>
@@ -491,7 +490,7 @@ export const PluginGroup: React.FC<PluginGroupProps> = React.memo((props) => {
                     setPlugGroup(cacheData)
                 }
             } catch (error) {
-                failed("获取插件组失败:" + error)
+                failed(i18next.t("获取插件组失败:") + error)
             }
         })
     }, [])
@@ -525,7 +524,7 @@ export const PluginGroup: React.FC<PluginGroupProps> = React.memo((props) => {
                     })}
                 >
                     <FolderOpenIcon />
-                    <span>插件组</span>
+                    <span>{i18next.t("插件组")}</span>
                     <div className={style["mitm-plugin-group-number"]}>{pugGroup.length}</div>
                     {(visible && <ChevronUpIcon className={style["chevron-down"]} />) || (
                         <ChevronDownIcon className={style["chevron-down"]} />
@@ -537,14 +536,13 @@ export const PluginGroup: React.FC<PluginGroupProps> = React.memo((props) => {
                     type='text'
                     onClick={() => {
                         if (checkList.length === 0) {
-                            info("选中数据未获取")
+                            info(i18next.t("选中数据未获取"))
                             return
                         }
                         setAddGroupVisible(true)
                     }}
                     disabled={isSelectAll}
-                >
-                    添加至组
+                >{i18next.t("添加至组")}
                     <PlusCircleIcon className={style["plus-circle"]} />
                 </YakitButton>
             )}
@@ -588,7 +586,7 @@ export const PluginSearch: React.FC<PluginSearchProps> = React.memo((props) => {
                 .then((res) => {
                     setAllTag(res.Tag.map((item) => ({Name: item.Value, Total: item.Total})))
                 })
-                .catch((e) => failed("获取插件组失败:" + e))
+                .catch((e) => failed(i18next.t("获取插件组失败:") + e))
                 .finally(() => {})
         }
     }, [searchType])
@@ -609,7 +607,7 @@ export const PluginSearch: React.FC<PluginSearchProps> = React.memo((props) => {
             }}
             addonBeforeOption={[
                 {
-                    label: "关键字",
+                    label: i18next.t("关键字"),
                     value: "Keyword"
                 },
                 {
@@ -691,7 +689,7 @@ const PluginGroupList: React.FC<PluginGroupListProps> = React.memo((props) => {
 
     return (
         <div className={style["plugin-group-list"]}>
-            {pugGroup.length === 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='暂无数据' />}
+            {pugGroup.length === 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={i18next.t("暂无数据")} />}
             {pugGroup.map((item) => (
                 <div
                     className={classNames(style["plugin-group-item"], {
@@ -722,18 +720,16 @@ const PluginGroupList: React.FC<PluginGroupListProps> = React.memo((props) => {
             ))}
             <YakitHint
                 visible={visibleRemove}
-                title='删除插件组'
+                title={i18next.t("删除插件组")}
                 content={
-                    <span>
-                        确认要删除“<span style={{color: "var(--yakit-warning-5)"}}>{deletePlugin?.name}</span>
-                        ”插件组吗？不会删除组内插件。
+                    <span>{i18next.t("确认要删除“")}<span style={{color: "var(--yakit-warning-5)"}}>{deletePlugin?.name}</span>{i18next.t("”插件组吗？不会删除组内插件。")}
                     </span>
                 }
                 heardIcon={<SolidTrashIcon style={{color: "var(--yakit-warning-5)"}} />}
                 onCancel={() => {
                     setVisibleRemove(false)
                 }}
-                okButtonText='确认删除'
+                okButtonText={i18next.t("确认删除")}
                 okButtonProps={{colors: "danger"}}
                 onOk={() => {
                     if (deletePlugin) {

@@ -8,6 +8,7 @@ import {ExecResult} from "../invoker/schema"
 import {CreatReportScript} from "../simpleDetect/CreatReportScript"
 import {InfoState} from "@/hook/useHoldingIPCRStream"
 import { YakitRoute } from "@/routes/newRoute"
+import i18next from "../../i18n"
 const {ipcRenderer} = window.require("electron")
 export interface CreateReportProps {
     loading: boolean
@@ -23,7 +24,7 @@ export const CreateReport: React.FC<CreateReportProps> = memo((props) => {
 
     // 下载报告Modal
     const [reportModalVisible, setReportModalVisible] = useState<boolean>(false)
-    const [reportName, setReportName] = useState<string>("默认报告名称")
+    const [reportName, setReportName] = useState<string>(i18next.t("默认报告名称"))
     const [reportLoading, setReportLoading] = useState<boolean>(false)
     const [_, setReportId, getReportId] = useGetState<number>()
     // 是否允许更改TaskName
@@ -105,9 +106,9 @@ export const CreateReport: React.FC<CreateReportProps> = memo((props) => {
             {Key: "runtime_id", Value: getCardForId("RuntimeIDFromRisks")},
             {Key: "report_name", Value: reportName},
             {Key: "plugins", Value: runPluginCount},
-            {Key: "host_total", Value: getCardForId("扫描主机数")},
-            {Key: "ping_alive_host_total", Value: getCardForId("Ping存活主机数")},
-            {Key: "port_total", Value: getCardForId("扫描端口数")}
+            {Key: "host_total", Value: getCardForId(i18next.t("扫描主机数"))},
+            {Key: "ping_alive_host_total", Value: getCardForId(i18next.t("Ping存活主机数"))},
+            {Key: "port_total", Value: getCardForId(i18next.t("扫描端口数"))}
         ]
         const reqParams = {
             Script: scriptData,
@@ -118,20 +119,19 @@ export const CreateReport: React.FC<CreateReportProps> = memo((props) => {
     return (
         <div>
             {!loading && allowDownloadReport ? (
-                <div className={styles["hole-text"]} onClick={creatReport}>
-                    生成报告
+                <div className={styles["hole-text"]} onClick={creatReport}>{i18next.t("生成报告")}
                 </div>
             ) : (
-                <div className={styles["disable-hole-text"]}>生成报告</div>
+                <div className={styles["disable-hole-text"]}>{i18next.t("生成报告")}</div>
             )}
             <Modal
-                title='下载报告'
+                title={i18next.t("下载报告")}
                 visible={reportModalVisible}
                 footer={null}
                 onCancel={() => {
                     setReportModalVisible(false)
                     if (reportPercent < 1 && reportPercent > 0) {
-                        warn("取消生成报告")
+                        warn(i18next.t("取消生成报告"))
                     }
                 }}
             >
@@ -139,7 +139,7 @@ export const CreateReport: React.FC<CreateReportProps> = memo((props) => {
                     <div style={{textAlign: "center"}}>
                         <Input
                             style={{width: 400}}
-                            placeholder='请输入任务名称'
+                            placeholder={i18next.t("请输入任务名称")}
                             allowClear
                             value={reportName}
                             onChange={(e) => {
@@ -162,11 +162,10 @@ export const CreateReport: React.FC<CreateReportProps> = memo((props) => {
                             onClick={() => {
                                 setReportModalVisible(false)
                                 if (reportPercent < 1 && reportPercent > 0) {
-                                    warn("取消生成报告")
+                                    warn(i18next.t("取消生成报告"))
                                 }
                             }}
-                        >
-                            取消
+                        >{i18next.t("取消")}
                         </Button>
                         <Button
                             loading={reportLoading}
@@ -176,8 +175,7 @@ export const CreateReport: React.FC<CreateReportProps> = memo((props) => {
                                 downloadReport()
                                 setShowReportPercent(true)
                             }}
-                        >
-                            确定
+                        >{i18next.t("确定")}
                         </Button>
                     </div>
                 </div>

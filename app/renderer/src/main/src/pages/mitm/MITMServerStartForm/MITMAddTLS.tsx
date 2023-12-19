@@ -7,6 +7,7 @@ import {Form} from "antd"
 import React, {useEffect, useImperativeHandle, useRef, useState} from "react"
 import {ClientCertificate} from "./MITMServerStartForm"
 import styles from "./MITMServerStartForm.module.scss"
+import i18next from "../../../i18n"
 
 interface AddTLSProps {
     visible: boolean
@@ -19,7 +20,7 @@ const MITMAddTLS: React.FC<AddTLSProps> = React.memo((props) => {
     const cerFormRef = useRef<any>()
     return (
         <YakitModal
-            title='添加客户端 TLS'
+            title={i18next.t("添加客户端 TLS")}
             visible={visible}
             onCancel={() => setVisible(false)}
             closable={true}
@@ -35,7 +36,7 @@ const MITMAddTLS: React.FC<AddTLSProps> = React.memo((props) => {
                         KeyPem: StringToUint8Array(values.CrtPem)
                     }
                     if (certs.findIndex((ele) => ele.CerName === params.CerName) !== -1) {
-                        yakitFailed("该名称已存在")
+                        yakitFailed(i18next.t("该名称已存在"))
                         return
                     }
                     setCerts([...certs, params])
@@ -72,10 +73,10 @@ export const InputCertificateForm: React.FC<InputCertificateFormProp> = React.fo
     )
     return (
         <Form className={styles["input-certificate-form"]} form={form} {...formProps}>
-            {isShowCerName&&<Form.Item name='CerName' rules={[{required: true, message: "该项必填"}]}>
-                <YakitInput placeholder='请为你的证书对取一个名字（必填）' />
+            {isShowCerName&&<Form.Item name='CerName' rules={[{required: true, message: i18next.t("该项必填")}]}>
+                <YakitInput placeholder={i18next.t("请为你的证书对取一个名字（必填）")} />
             </Form.Item>}
-            <Form.Item label={"客户端证书(PEM)"} name='CrtPem' rules={[{required: true, message: "该项必填"}]}>
+            <Form.Item label={"客户端证书(PEM)"} name='CrtPem' rules={[{required: true, message: i18next.t("该项必填")}]}>
                 <YakEditor
                     type={"html"}
                     noMiniMap={true}
@@ -87,7 +88,7 @@ export const InputCertificateForm: React.FC<InputCertificateFormProp> = React.fo
                     // value={Uint8ArrayToString(params.CrtPem)}
                 />
             </Form.Item>
-            <Form.Item label={"客户端私钥(PEM)"} name='KeyPem' rules={[{required: true, message: "该项必填"}]}>
+            <Form.Item label={"客户端私钥(PEM)"} name='KeyPem' rules={[{required: true, message: i18next.t("该项必填")}]}>
                 <YakEditor
                     type={"html"}
                     setValue={(KeyPem) => {
@@ -99,7 +100,7 @@ export const InputCertificateForm: React.FC<InputCertificateFormProp> = React.fo
                     noWordWrap={true}
                 />
             </Form.Item>
-            <Form.Item label={"CA 根证书"} name='CaCertificates' required={false}>
+            <Form.Item label={i18next.t("CA 根证书")} name='CaCertificates' required={false}>
                 <YakEditor
                     type={"html"}
                     setValue={(CaCertBytes) => {

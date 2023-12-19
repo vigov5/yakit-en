@@ -5,7 +5,7 @@ import {RemoveIcon} from "@/assets/newIcon"
 
 import styles from "./yakitModal.module.scss"
 import classNames from "classnames"
-
+import i18next from "../../../i18n"
 export interface YakitModalProp extends Omit<ModalProps, "cancelButtonProps" | "okButtonProps" | "okType"> {
     cancelButtonProps?: YakitButtonProp
     okButtonProps?: YakitButtonProp
@@ -29,9 +29,9 @@ export const YakitModal: React.FC<YakitModalProp> = (props) => {
         closable,
         closeIcon,
         footer,
-        cancelText = "取消",
+        cancelText = i18next.t("取消"),
         cancelButtonProps,
-        okText = "确认",
+        okText = i18next.t("确认"),
         confirmLoading,
         okType,
         okButtonProps,

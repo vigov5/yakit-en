@@ -5,6 +5,7 @@ import {InputItem} from "@/utils/inputUtil"
 import CopyToClipboard from "react-copy-to-clipboard"
 import "./LicensePage.scss"
 import {getRemoteValue, setRemoteValue} from "@/utils/kv"
+import i18next from "../i18n"
 const {ipcRenderer} = window.require("electron")
 const {Item} = Form
 
@@ -30,7 +31,7 @@ const LicensePage: React.FC<LicensePageProps> = (props) => {
                 setLicenseRequest(e.License)
             })
             .catch((e) => {
-                failed(`获取License失败: ${e}`)
+                failed(i18next.t("获取License失败: ${e}", { v1: e }))
             })
             .finally(() => {
                 setLicensePageLoading(false)
@@ -38,7 +39,7 @@ const LicensePage: React.FC<LicensePageProps> = (props) => {
     }, [])
 
     if (!licenseRequest) {
-        return <Spin className='license-spin-box' tip={"加载 license"} />
+        return <Spin className='license-spin-box' tip={i18next.t("加载 license")} />
     }
 
     const UploadLicense = () => {
@@ -60,7 +61,7 @@ const LicensePage: React.FC<LicensePageProps> = (props) => {
                                 e.preventDefault()
 
                                 if (!paramsObj.licenseActivation) {
-                                    Modal.error({title: "空 License..."})
+                                    Modal.error({title: i18next.t("空 License...")})
                                     return
                                 }
 
@@ -68,10 +69,10 @@ const LicensePage: React.FC<LicensePageProps> = (props) => {
                             }}
                         >
                             <Item label={" "} colon={false}>
-                                <h1>使用 License 注册您的产品</h1>
+                                <h1>{i18next.t("使用 License 注册您的产品")}</h1>
                             </Item>
                             <InputItem
-                                label={"License 申请码"}
+                                label={i18next.t("License 申请码")}
                                 textarea={true}
                                 textareaRow={10}
                                 disable={true}
@@ -86,32 +87,30 @@ const LicensePage: React.FC<LicensePageProps> = (props) => {
                                 label={" "}
                                 colon={false}
                                 style={{textAlign: "left"}}
-                                help={"在申请 license 时，请把这一串申请码给销售人员以便生成您专属的 License"}
+                                help={i18next.t("在申请 license 时，请把这一串申请码给销售人员以便生成您专属的 License")}
                             >
                                 <CopyToClipboard
                                     text={licenseRequest}
                                     onCopy={(t, ok) => {
                                         if (ok) {
-                                            notification["success"]({message: "复制成功"})
+                                            notification["success"]({message: i18next.t("复制成功")})
                                         }
                                     }}
                                 >
-                                    <Button type={"link"} size={"small"}>
-                                        点此复制该 License 请求码
+                                    <Button type={"link"} size={"small"}>{i18next.t("点此复制该 License 请求码")}
                                     </Button>
                                 </CopyToClipboard>
                             </Item>
                             <Divider />
                             <InputItem
-                                label={"您的许可证"}
+                                label={i18next.t("您的许可证")}
                                 textarea={true}
                                 textareaRow={13}
                                 setValue={(licenseActivation) => setParamsObj({...paramsObj, licenseActivation})}
                                 value={paramsObj.licenseActivation}
                             />
                             <Item label={" "} colon={false}>
-                                <Button type={"primary"} htmlType={"submit"} style={{width: "100%", height: 60}}>
-                                    点此使用 License 激活您的产品
+                                <Button type={"primary"} htmlType={"submit"} style={{width: "100%", height: 60}}>{i18next.t("点此使用 License 激活您的产品")}
                                 </Button>
                             </Item>
                         </Form>

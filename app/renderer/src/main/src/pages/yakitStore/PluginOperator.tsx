@@ -52,6 +52,7 @@ import {isCommunityEdition} from "@/utils/envfile"
 import {CodeGV} from "@/yakitGV"
 import {DatabaseFirstMenuProps, YakitRoute} from "@/routes/newRoute"
 import emiter from "@/utils/eventBus/eventBus"
+import i18next from "../../i18n"
 
 export interface YakScriptOperatorProp {
     yakScriptId: number
@@ -296,7 +297,7 @@ export const PluginOperator: React.FC<YakScriptOperatorProp> = (props) => {
                 activeKey={activeKey}
                 onTabClick={setActiveKey}
             >
-                <Tabs.TabPane tab={"执行"} key={"runner"} disabled={isDisabledLocal}>
+                <Tabs.TabPane tab={i18next.t("执行")} key={"runner"} disabled={isDisabledLocal}>
                     {!enablePluginSelector && executor()}
                     {enablePluginSelector && (
                         <ResizeBox
@@ -330,7 +331,7 @@ export const PluginOperator: React.FC<YakScriptOperatorProp> = (props) => {
                                         </Tooltip>
                                     )}
                                     <Space size={8}>
-                                        <p style={{color: "#999999", marginBottom: 0}}>作者:{script?.Author}</p>
+                                        <p style={{color: "#999999", marginBottom: 0}}>{i18next.t("作者:")}{script?.Author}</p>
                                         {script?.Tags
                                             ? (script?.Tags || "")
                                                   .split(",")
@@ -360,7 +361,7 @@ export const PluginOperator: React.FC<YakScriptOperatorProp> = (props) => {
                                                 onClick={() => setSettingShow(!settingShow)}
                                             ></Button>
                                         </Tooltip>
-                                        <Tooltip placement='top' title={"编辑插件"}>
+                                        <Tooltip placement='top' title={i18next.t("编辑插件")}>
                                             <Button
                                                 type={"link"}
                                                 icon={<EditOutlined />}
@@ -406,13 +407,13 @@ export const PluginOperator: React.FC<YakScriptOperatorProp> = (props) => {
                         />
                     )} */}
                 </Tabs.TabPane>
-                <Tabs.TabPane tab={"文档"} key={"docs"} disabled={isDisabledLocal}>
+                <Tabs.TabPane tab={i18next.t("文档")} key={"docs"} disabled={isDisabledLocal}>
                     {script && (
                         <div style={{textAlign: "right", marginBottom: 10}}>
                             <Button
                                 onClick={(e) => {
                                     let m = showDrawer({
-                                        title: "编辑文档",
+                                        title: i18next.t("编辑文档"),
                                         keyboard: false,
                                         width: "94%",
                                         onClose: () => {
@@ -432,8 +433,7 @@ export const PluginOperator: React.FC<YakScriptOperatorProp> = (props) => {
                                         )
                                     })
                                 }}
-                            >
-                                编辑文档
+                            >{i18next.t("编辑文档")}
                             </Button>
                         </div>
                     )}
@@ -442,10 +442,10 @@ export const PluginOperator: React.FC<YakScriptOperatorProp> = (props) => {
                             <MDEditor.Markdown source={markdown} />
                         </div>
                     ) : (
-                        <Empty style={{marginTop: 80}} description={"插件作者未添加文档"} />
+                        <Empty style={{marginTop: 80}} description={i18next.t("插件作者未添加文档")} />
                     )}
                 </Tabs.TabPane>
-                <Tabs.TabPane tab={"源码"} key={"code"} disabled={isDisabledLocal}>
+                <Tabs.TabPane tab={i18next.t("源码")} key={"code"} disabled={isDisabledLocal}>
                     <div style={{height: "100%"}}>
                         <YakEditor
                             type={script?.Type}
@@ -454,14 +454,14 @@ export const PluginOperator: React.FC<YakScriptOperatorProp> = (props) => {
                         />
                     </div>
                 </Tabs.TabPane>
-                <Tabs.TabPane tab={"历史"} key={"history"} disabled={isDisabledLocal}>
+                <Tabs.TabPane tab={i18next.t("历史")} key={"history"} disabled={isDisabledLocal}>
                     {script && <PluginHistoryTable script={script} trigger={trigger} />}
                     {/*<ExecHistoryTable mini={false} trigger={null as any}/>*/}
                 </Tabs.TabPane>
-                <Tabs.TabPane tab={"结果"} key={"results"} disabled={isDisabledLocal}>
+                <Tabs.TabPane tab={i18next.t("结果")} key={"results"} disabled={isDisabledLocal}>
                     {script && <YakScriptExecResultTable YakScriptName={script.ScriptName} trigger={trigger} />}
                 </Tabs.TabPane>
-                <Tabs.TabPane tab={"线上"} key={"online"} disabled={!isShowPrivateDom || isDisabledOnline}>
+                <Tabs.TabPane tab={i18next.t("线上")} key={"online"} disabled={!isShowPrivateDom || isDisabledOnline}>
                     {pluginIdOnlineId && pluginIdOnlineId > 0 && activeKey === "online" && (
                         <YakitPluginInfoOnline
                             pluginId={pluginIdOnlineId}
@@ -482,10 +482,10 @@ export const PluginOperator: React.FC<YakScriptOperatorProp> = (props) => {
                     tab={
                         isShowJournalDot ? (
                             <Badge dot offset={[5, -5]}>
-                                <span className={`${(activeKey === "journal" && "journal-active") || ""}`}>日志</span>
+                                <span className={`${(activeKey === "journal" && "journal-active") || ""}`}>{i18next.t("日志")}</span>
                             </Badge>
                         ) : (
-                            "日志"
+                            i18next.t("日志")
                         )
                     }
                     key={"journal"}
@@ -578,7 +578,7 @@ export const AddToMenuActionForm: React.FC<AddToMenuActionFormProp> = (props) =>
                 })
             })
             .catch((err) => {
-                failed("获取菜单失败：" + err)
+                failed(i18next.t("获取菜单失败：") + err)
             })
     })
     return (
@@ -596,7 +596,7 @@ export const AddToMenuActionForm: React.FC<AddToMenuActionFormProp> = (props) =>
 
                     if (index === -1) {
                         if (menuData.length >= 50) {
-                            yakitNotify("error", "最多添加50个一级菜单")
+                            yakitNotify("error", i18next.t("最多添加50个一级菜单"))
                             return
                         }
                         params = {
@@ -612,7 +612,7 @@ export const AddToMenuActionForm: React.FC<AddToMenuActionFormProp> = (props) =>
                         }
                     } else {
                         if (menuData[index].Items.length >= 50) {
-                            yakitNotify("error", "同一个一级菜单最多添加50个二级菜单")
+                            yakitNotify("error", i18next.t("同一个一级菜单最多添加50个二级菜单"))
                             return
                         }
                         const groupInfo = menuData[index]
@@ -641,7 +641,7 @@ export const AddToMenuActionForm: React.FC<AddToMenuActionFormProp> = (props) =>
                             else ipcRenderer.invoke("change-main-menu")
                             updateGroups()
                             setVisible(false)
-                            success("添加成功")
+                            success(i18next.t("添加成功"))
                         })
                         .catch((e: any) => {
                             failed(`${e}`)
@@ -651,11 +651,11 @@ export const AddToMenuActionForm: React.FC<AddToMenuActionFormProp> = (props) =>
                 <Form.Item
                     label={"菜单选项名(展示名称)"}
                     name='Verbose'
-                    rules={[{required: true, message: "该项为必填"}]}
+                    rules={[{required: true, message: i18next.t("该项为必填")}]}
                 >
                     <YakitInput />
                 </Form.Item>
-                <Form.Item label={"菜单分组"} name='Group' rules={[{required: true, message: "该项为必填"}]}>
+                <Form.Item label={i18next.t("菜单分组")} name='Group' rules={[{required: true, message: i18next.t("该项为必填")}]}>
                     <YakitAutoComplete options={option} />
                 </Form.Item>
                 <div className='add-to-menu-action-form-footer'>
@@ -665,13 +665,11 @@ export const AddToMenuActionForm: React.FC<AddToMenuActionFormProp> = (props) =>
                             onClick={() => {
                                 setVisible(false)
                             }}
-                        >
-                            取消
+                        >{i18next.t("取消")}
                         </YakitButton>
                     </Form.Item>
                     <Form.Item colon={false} noStyle>
-                        <YakitButton type='primary' htmlType='submit'>
-                            添加
+                        <YakitButton type='primary' htmlType='submit'>{i18next.t("添加")}
                         </YakitButton>
                     </Form.Item>
                 </div>
@@ -701,7 +699,7 @@ export const PluginManagement: React.FC<PluginManagementProps> = React.memo<Plug
     return (
         <Space style={{...style}} direction={props.vertical ? "vertical" : "horizontal"}>
             <Popover
-                title={`添加到菜单栏中[${script?.Id}]`}
+                title={i18next.t("添加到菜单栏中") + `[${script?.Id}]`}
                 content={
                     <>
                         {script && (
@@ -720,8 +718,7 @@ export const PluginManagement: React.FC<PluginManagementProps> = React.memo<Plug
                     setVisibleAdd(visible)
                 }}
             >
-                <Button size={"small"} type={"primary"} ghost>
-                    添加到菜单栏
+                <Button size={"small"} type={"primary"} ghost>{i18next.t("添加到菜单栏")}
                 </Button>
             </Popover>
             <Button
@@ -731,43 +728,41 @@ export const PluginManagement: React.FC<PluginManagementProps> = React.memo<Plug
                     updateGroups()
                     setVisibleRemove(true)
                 }}
-            >
-                移除菜单栏
+            >{i18next.t("移除菜单栏")}
             </Button>
             {script?.IsIgnore ? (
                 <>
                     <Popconfirm
-                        title={"取消隐藏该模块？"}
+                        title={i18next.t("取消隐藏该模块？")}
                         onConfirm={() => {
                             ipcRenderer
                                 .invoke("UnIgnoreYakScript", {
                                     Id: script?.Id
                                 })
                                 .then((e) => {
-                                    success("显示该模块")
+                                    success(i18next.t("显示该模块"))
                                 })
                                 .catch((e: any) => {})
                                 .finally(() => {})
                         }}
                     >
-                        <Button size={"small"}>取消隐藏 / 取消忽略</Button>
+                        <Button size={"small"}>{i18next.t("取消隐藏 / 取消忽略")}</Button>
                     </Popconfirm>
                 </>
             ) : (
                 <Popconfirm
-                    title={"忽略该模块将会导致模块在插件仓库不可见，需要在插件仓库中查看"}
+                    title={i18next.t("忽略该模块将会导致模块在插件仓库不可见，需要在插件仓库中查看")}
                     onConfirm={() => {
                         ipcRenderer
                             .invoke("IgnoreYakScript", {Id: script?.Id})
                             .then((e) => {
-                                success("忽略该模块")
+                                success(i18next.t("忽略该模块"))
                             })
                             .catch((e: any) => {})
                             .finally(() => {})
                     }}
                 >
-                    <Button size={"small"} danger={true}>
-                        不再关注 / 隐藏
+                    <Button size={"small"} danger={true}>{i18next.t("不再关注 / 隐藏")}
                     </Button>
                 </Popconfirm>
             )}
@@ -775,7 +770,7 @@ export const PluginManagement: React.FC<PluginManagementProps> = React.memo<Plug
                 size={"small"}
                 onClick={() => {
                     showModal({
-                        title: "导出插件配置",
+                        title: i18next.t("导出插件配置"),
                         width: "40%",
                         content: (
                             <>
@@ -784,8 +779,7 @@ export const PluginManagement: React.FC<PluginManagementProps> = React.memo<Plug
                         )
                     })
                 }}
-            >
-                导出插件
+            >{i18next.t("导出插件")}
             </Button>
             <Button
                 size={"small"}
@@ -795,8 +789,7 @@ export const PluginManagement: React.FC<PluginManagementProps> = React.memo<Plug
                         data: {name: script.ScriptName, code: script.Content}
                     })
                 }}
-            >
-                本地调试
+            >{i18next.t("本地调试")}
             </Button>
             <Popconfirm
                 title={"确定要删除该插件?如果添加左侧菜单栏也会同步删除，且不可恢复"}
@@ -809,12 +802,11 @@ export const PluginManagement: React.FC<PluginManagementProps> = React.memo<Plug
                     })
                 }}
             >
-                <Button size={"small"} danger={true}>
-                    删除插件
+                <Button size={"small"} danger={true}>{i18next.t("删除插件")}
                 </Button>
             </Popconfirm>
             <YakitModal
-                title='移除菜单栏'
+                title={i18next.t("移除菜单栏")}
                 visible={visibleRemove}
                 onCancel={() => setVisibleRemove(false)}
                 footer={null}
@@ -841,15 +833,14 @@ export const PluginManagement: React.FC<PluginManagementProps> = React.memo<Plug
                                                 setVisibleRemove(false)
                                             })
                                             .catch((e: any) => {
-                                                failed("移除菜单失败：" + e)
+                                                failed(i18next.t("移除菜单失败：") + e)
                                             })
                                     }}
-                                >
-                                    从 {element} 中移除
+                                >{i18next.t("从")} {element} 中移除
                                 </Button>
                             )
                         })) ||
-                        "暂无数据"}
+                        i18next.t("暂无数据")}
                 </Space>
             </YakitModal>
         </Space>
@@ -911,7 +902,7 @@ export const OutputPluginForm: React.FC<OutputPluginFormProp> = React.memo((prop
                             const savePath = newCachePath.slice(-5)
                             setLocalValue("YAKIT_CACHE_LOAD_LOCAL_PATH", JSON.stringify(savePath))
                             showModal({
-                                title: "导出成功!",
+                                title: i18next.t("导出成功!"),
                                 width: 520,
                                 content: (
                                     <>
@@ -922,8 +913,7 @@ export const OutputPluginForm: React.FC<OutputPluginFormProp> = React.memo((prop
                                                 onClick={() => {
                                                     openABSFile(data.OutputDir)
                                                 }}
-                                            >
-                                                在文件夹中打开
+                                            >{i18next.t("在文件夹中打开")}
                                             </Button>
                                         </Space>
                                     </>
@@ -931,26 +921,26 @@ export const OutputPluginForm: React.FC<OutputPluginFormProp> = React.memo((prop
                             })
                         })
                         .catch((e: any) => {
-                            failed(`导出失败: ${e}`)
+                            failed(i18next.t("导出失败: ${e}", { v1: e }))
                         })
                 }}
             >
                 <div style={{position: "relative"}}>
                     <InputItem
                         style={{width: "calc(100% - 20px)"}}
-                        label={"本地仓库路径"}
-                        help={"可在【导出】或仓库配置中配置"}
+                        label={i18next.t("本地仓库路径")}
+                        help={i18next.t("可在【导出】或仓库配置中配置")}
                         value={getLocalPath()}
                         setValue={setLocalPath}
                         required={true}
                         autoComplete={getCachePath()}
                     />
-                    <Tooltip title={"选择导出路径"}>
+                    <Tooltip title={i18next.t("选择导出路径")}>
                         <CloudUploadOutlined
                             onClick={() => {
                                 ipcRenderer
                                     .invoke("openDialog", {
-                                        title: "请选择文件夹",
+                                        title: i18next.t("请选择文件夹"),
                                         properties: ["openDirectory"]
                                     })
                                     .then((data: any) => {
@@ -967,8 +957,8 @@ export const OutputPluginForm: React.FC<OutputPluginFormProp> = React.memo((prop
 
                 {YakScriptId && (
                     <InputItem
-                        label={"插件文件夹名"}
-                        help={"插件文件夹名，尽量精简，无特殊字符"}
+                        label={i18next.t("插件文件夹名")}
+                        help={i18next.t("插件文件夹名，尽量精简，无特殊字符")}
                         value={getPluginDirName()}
                         setValue={setPluginDirName}
                         required={true}
@@ -1027,7 +1017,7 @@ export const LocalPluginExecutor: React.FC<LocalPluginExecutorProps> = React.mem
             {(isEdit && (
                 <div className='edit-plugin-body'>
                     <div className='edit-plugin-title'>
-                        <div className='title content-ellipsis'>修改插件:{script.ScriptName}</div>
+                        <div className='title content-ellipsis'>{i18next.t("修改插件:")}{script.ScriptName}</div>
                         <div>
                             <CloseOutlined
                                 onClick={() => {
@@ -1069,8 +1059,8 @@ export const LocalPluginExecutor: React.FC<LocalPluginExecutorProps> = React.mem
                                 {/*{script?.ScriptName && (*/}
                                 {/*    <Tag>{formatTimestamp(script?.CreatedAt)}</Tag>*/}
                                 {/*)}*/}
-                                <Tooltip title={`插件id:${script.UUID || "-"}`}>
-                                    <p className='script-author'>作者:{script?.Author}</p>
+                                <Tooltip title={i18next.t("插件id")+`:${script.UUID || "-"}`}>
+                                    <p className='script-author'>{i18next.t("作者:")}{script?.Author}</p>
                                 </Tooltip>
                                 {script?.Tags && script?.Tags !== "null"
                                     ? (script?.Tags || "")
@@ -1101,7 +1091,7 @@ export const LocalPluginExecutor: React.FC<LocalPluginExecutorProps> = React.mem
                                         onClick={() => setSettingShow(!settingShow)}
                                     />
                                 </Tooltip> */}
-                                <Tooltip placement='top' title={"编辑插件"}>
+                                <Tooltip placement='top' title={i18next.t("编辑插件")}>
                                     <Button
                                         type={"link"}
                                         icon={<EditOutlined />}
@@ -1111,11 +1101,11 @@ export const LocalPluginExecutor: React.FC<LocalPluginExecutorProps> = React.mem
                                             // setIsEdit(true)
                                             if (!script) return
                                             if (script.IsCorePlugin) {
-                                                yakitNotify("error", "内置插件无法编辑，建议复制源码新建插件进行编辑。")
+                                                yakitNotify("error", i18next.t("内置插件无法编辑，建议复制源码新建插件进行编辑。"))
                                                 return
                                             }
                                             if (script.Type === "packet-hack") {
-                                                yakitNotify("error", "该类型已下架，不可编辑")
+                                                yakitNotify("error", i18next.t("该类型已下架，不可编辑"))
                                                 return
                                             }
                                             if (script.Id && +script.Id) {

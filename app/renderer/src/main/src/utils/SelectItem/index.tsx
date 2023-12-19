@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Form, FormItemProps, Select } from "antd"
 import { failed } from "../../utils/notification"
+import i18next from "../../i18n"
 
 const { ipcRenderer } = window.require("electron")
 
@@ -33,7 +34,7 @@ export const SelectItem: React.FC<SelectItemProps> = (props) => {
                 setLists(data.Groups || [])
             })
             .catch((e: any) => {
-                failed(e?.details || "获取字典列表失败！")
+                failed(e?.details || i18next.t("获取字典列表失败！"))
             })
             .finally()
     }
@@ -65,7 +66,7 @@ export const SelectItem: React.FC<SelectItemProps> = (props) => {
                                     if (props.onChange) props.onChange(value, res?.Result || "")
                                 })
                                 .catch((err) => {
-                                    failed(`获取字典内容失败：${err.details}`)
+                                    failed(i18next.t("获取字典内容失败：${err.details}", {v1: err.details}))
                                 })
                                 .finally(() => {
                                     setTimeout(() => {

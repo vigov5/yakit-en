@@ -22,6 +22,7 @@ import {SolidPrivatepluginIcon} from "@/assets/icon/colors"
 
 import "../plugins.scss"
 import styles from "./PluginUserDetail.module.scss"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -166,7 +167,7 @@ export const PluginUserDetail: React.FC<PluginUserDetailProps> = React.memo(
                 if (value) setSelectList([...selectList, data.uuid])
                 else setSelectList(selectList.filter((item) => item !== data.uuid))
             } catch (error) {
-                yakitNotify("error", "勾选失败:" + error)
+                yakitNotify("error", i18next.t("勾选失败:") + error)
             }
         })
         /**全选 */
@@ -227,7 +228,7 @@ export const PluginUserDetail: React.FC<PluginUserDetailProps> = React.memo(
         return (
             <>
                 <PluginDetails<YakitPluginOnlineDetail>
-                    title='我的云端插件'
+                    title={i18next.t("我的云端插件")}
                     filterExtra={
                         <div className={"details-filter-extra-wrapper"}>
                             <FilterPopoverBtn defaultFilter={filters} onFilter={onFilter} type='user' />
@@ -235,7 +236,7 @@ export const PluginUserDetail: React.FC<PluginUserDetailProps> = React.memo(
                             {downloadLoading ? (
                                 <LoadingOutlined className='loading-icon' />
                             ) : (
-                                <Tooltip title='下载插件' overlayClassName='plugins-tooltip'>
+                                <Tooltip title={i18next.t("下载插件")} overlayClassName='plugins-tooltip'>
                                     <YakitButton
                                         type='text2'
                                         icon={<OutlineClouddownloadIcon />}
@@ -248,8 +249,7 @@ export const PluginUserDetail: React.FC<PluginUserDetailProps> = React.memo(
                             <YakitButton type='text2' icon={<OutlineTrashIcon />} onClick={onBatchRemove} />
                         </Tooltip> */}
                             <div style={{height: 12}} className='divider-style'></div>
-                            <YakitButton type='text' onClick={onNewAddPlugin}>
-                                新建插件
+                            <YakitButton type='text' onClick={onNewAddPlugin}>{i18next.t("新建插件")}
                             </YakitButton>
                         </div>
                     }
@@ -300,7 +300,7 @@ export const PluginUserDetail: React.FC<PluginUserDetailProps> = React.memo(
                 >
                     <div className={styles["details-content-wrapper"]}>
                         <Tabs tabPosition='right' className='plugins-tabs'>
-                            <TabPane tab='源 码' key='code'>
+                            <TabPane tab={i18next.t("源 码")} key='code'>
                                 <div className={styles["plugin-info-wrapper"]}>
                                     <PluginDetailHeader
                                         pluginName={plugin.script_name}
@@ -317,7 +317,7 @@ export const PluginUserDetail: React.FC<PluginUserDetailProps> = React.memo(
                                                 <FuncBtn
                                                     maxWidth={1100}
                                                     icon={<OutlineCursorclickIcon />}
-                                                    name={"去使用"}
+                                                    name={i18next.t("去使用")}
                                                     onClick={onUse}
                                                 />
                                             </div>
@@ -337,7 +337,7 @@ export const PluginUserDetail: React.FC<PluginUserDetailProps> = React.memo(
                                     </div>
                                 </div>
                             </TabPane>
-                            <TabPane tab='日志' key='log'>
+                            <TabPane tab={i18next.t("日志")} key='log'>
                                 <div className={styles["plugin-log-wrapper"]}>
                                     <YakitPluginOnlineJournal pluginId={plugin.id} />
                                 </div>

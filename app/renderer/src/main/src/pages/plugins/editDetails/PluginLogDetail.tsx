@@ -40,6 +40,7 @@ import "../plugins.scss"
 import styles from "./pluginEditDetails.module.scss"
 import classNames from "classnames"
 import {SolidBadgecheckIcon, SolidBanIcon} from "@/assets/icon/solid"
+import i18next from "../../../i18n"
 
 const {Link} = Anchor
 
@@ -47,8 +48,8 @@ const {ipcRenderer} = window.require("electron")
 
 /** @name 类型选择-插件类型选项信息 */
 const DefaultKindList: {icon: ReactNode; name: string; key: string}[] = [
-    {icon: <OutlineBugIcon />, name: "漏洞类", key: "bug"},
-    {icon: <OutlineSmviewgridaddIcon />, name: "其他", key: "other"}
+    {icon: <OutlineBugIcon />, name: i18next.t("漏洞类"), key: "bug"},
+    {icon: <OutlineSmviewgridaddIcon />, name: i18next.t("其他"), key: "other"}
 ]
 
 interface PluginLogDetailProps {
@@ -280,14 +281,14 @@ export const PluginLogDetail: React.FC<PluginLogDetailProps> = (props) => {
             Content: ""
         }
         if (!getTypeParams().Kind || !getTypeParams().Type) {
-            yakitNotify("error", "请选择脚本类型和插件类型")
+            yakitNotify("error", i18next.t("请选择脚本类型和插件类型"))
             return
         }
         data.Type = getTypeParams().Type
         data.Kind = getTypeParams().Kind
 
         if (!infoRef.current) {
-            yakitNotify("error", "未获取到基础信息，请重试")
+            yakitNotify("error", i18next.t("未获取到基础信息，请重试"))
             return
         }
         const info = await infoRef.current.onSubmit()
@@ -304,7 +305,7 @@ export const PluginLogDetail: React.FC<PluginLogDetailProps> = (props) => {
         }
 
         if (!settingRef.current) {
-            yakitNotify("error", "未获取到配置信息，请重试")
+            yakitNotify("error", i18next.t("未获取到配置信息，请重试"))
             return
         }
         const setting = await settingRef.current.onSubmit()
@@ -366,7 +367,7 @@ export const PluginLogDetail: React.FC<PluginLogDetailProps> = (props) => {
     const baseVerify = useMemoizedFn(async () => {
         // 判断是否获取到日志信息
         if (!plugin) {
-            yakitNotify("error", "未获取到日志详情，请退出后重试")
+            yakitNotify("error", i18next.t("未获取到日志详情，请退出后重试"))
             return false
         }
         // 获取基础信息
@@ -405,7 +406,7 @@ export const PluginLogDetail: React.FC<PluginLogDetailProps> = (props) => {
         <div className={styles["plugin-edit-details-wrapper"]}>
             <div className={styles["plugin-edit-details-header"]}>
                 <div className={styles["header-title"]}>
-                    <div className={styles["title-style"]}>插件修改详情</div>
+                    <div className={styles["title-style"]}>{i18next.t("插件修改详情")}</div>
                     {plugin && (
                         <div className={styles["title-extra-wrapper"]}>
                             <YakitTag color={pluginTypeToName[plugin.type]?.color as any}>
@@ -434,8 +435,7 @@ export const PluginLogDetail: React.FC<PluginLogDetailProps> = (props) => {
                             href='#plugin-details-type'
                             title={
                                 <YakitButton className={path === "type" ? styles["path-btn"] : undefined} type='text2'>
-                                    <OutlineViewgridIcon />
-                                    类型选择
+                                    <OutlineViewgridIcon />{i18next.t("类型选择")}
                                 </YakitButton>
                             }
                         />
@@ -444,8 +444,7 @@ export const PluginLogDetail: React.FC<PluginLogDetailProps> = (props) => {
                             href='#plugin-details-info'
                             title={
                                 <YakitButton className={path === "info" ? styles["path-btn"] : undefined} type='text2'>
-                                    <OutlineIdentificationIcon />
-                                    基础信息
+                                    <OutlineIdentificationIcon />{i18next.t("基础信息")}
                                 </YakitButton>
                             }
                         />
@@ -457,8 +456,7 @@ export const PluginLogDetail: React.FC<PluginLogDetailProps> = (props) => {
                                     className={path === "setting" ? styles["path-btn"] : undefined}
                                     type='text2'
                                 >
-                                    <OutlineAdjustmentsIcon />
-                                    插件配置
+                                    <OutlineAdjustmentsIcon />{i18next.t("插件配置")}
                                 </YakitButton>
                             }
                         />
@@ -471,7 +469,7 @@ export const PluginLogDetail: React.FC<PluginLogDetailProps> = (props) => {
                             type='outline1'
                             colors='danger'
                             size='large'
-                            name={"不通过"}
+                            name={i18next.t("不通过")}
                             loading={logLoading}
                             onClick={onShowNoPassReason}
                         />
@@ -480,7 +478,7 @@ export const PluginLogDetail: React.FC<PluginLogDetailProps> = (props) => {
                             icon={<SolidBadgecheckIcon />}
                             colors='success'
                             size='large'
-                            name={"通过"}
+                            name={i18next.t("通过")}
                             loading={logLoading}
                             onClick={onPass}
                         />
@@ -492,10 +490,10 @@ export const PluginLogDetail: React.FC<PluginLogDetailProps> = (props) => {
                 <div className={styles["body-wrapper"]}>
                     {/* 类型选择 */}
                     <div id='plugin-details-type' className={styles["body-type-wrapper"]}>
-                        <div className={styles["header-wrapper"]}>类型选择</div>
+                        <div className={styles["header-wrapper"]}>{i18next.t("类型选择")}</div>
                         <div className={styles["type-body"]}>
                             <div className={styles["body-container"]}>
-                                <div className={styles["type-title"]}>脚本类型</div>
+                                <div className={styles["type-title"]}>{i18next.t("脚本类型")}</div>
                                 <div className={styles["type-list"]}>
                                     <div className={styles["list-row"]}>
                                         {DefaultTypeList.slice(0, 3).map((item) => {
@@ -525,7 +523,7 @@ export const PluginLogDetail: React.FC<PluginLogDetailProps> = (props) => {
                             </div>
                             {typeParams.Type !== "codec" && (
                                 <div className={styles["body-container"]}>
-                                    <div className={styles["type-title"]}>插件类型</div>
+                                    <div className={styles["type-title"]}>{i18next.t("插件类型")}</div>
                                     <div className={styles["type-kind"]}>
                                         {DefaultKindList.map((item) => {
                                             return (
@@ -544,7 +542,7 @@ export const PluginLogDetail: React.FC<PluginLogDetailProps> = (props) => {
                     </div>
                     {/* 基础信息 */}
                     <div id='plugin-details-info' className={styles["body-info-wrapper"]}>
-                        <div className={styles["header-wrapper"]}>基础信息</div>
+                        <div className={styles["header-wrapper"]}>{i18next.t("基础信息")}</div>
                         <div className={styles["info-body"]}>
                             <PluginModifyInfo
                                 ref={infoRef}
@@ -557,7 +555,7 @@ export const PluginLogDetail: React.FC<PluginLogDetailProps> = (props) => {
                     </div>
                     {/* 插件配置 */}
                     <div id='plugin-details-setting' className={styles["body-setting-wrapper"]}>
-                        <div className={styles["header-wrapper"]}>插件配置</div>
+                        <div className={styles["header-wrapper"]}>{i18next.t("插件配置")}</div>
                         {apply && (
                             <div className={styles["modify-advice"]}>
                                 <div className={styles["advice-icon"]}>
@@ -565,7 +563,7 @@ export const PluginLogDetail: React.FC<PluginLogDetailProps> = (props) => {
                                 </div>
                                 <div className={styles["advice-body"]}>
                                     <div className={styles["advice-content"]}>
-                                        <div className={styles["content-title"]}>修改内容描述</div>
+                                        <div className={styles["content-title"]}>{i18next.t("修改内容描述")}</div>
                                         <div className={styles["content-style"]}>{apply?.description || ""}</div>
                                     </div>
                                     <div className={styles["advice-user"]}>
@@ -587,9 +585,8 @@ export const PluginLogDetail: React.FC<PluginLogDetailProps> = (props) => {
                             <div className={styles["setting-editor-wrapper"]}>
                                 <div className={styles["editor-header"]}>
                                     <div className={styles["header-title"]}>
-                                        <span className={styles["title-style"]}>代码对比</span>
-                                        <span className={styles["subtitle-style"]}>
-                                            可在此定义插件输入原理，并编写输出 UI
+                                        <span className={styles["title-style"]}>{i18next.t("代码对比")}</span>
+                                        <span className={styles["subtitle-style"]}>{i18next.t("可在此定义插件输入原理，并编写输出 UI")}
                                         </span>
                                     </div>
                                     <YakitButton
@@ -711,7 +708,7 @@ const ModifyPluginReason: React.FC<ModifyPluginReasonProps> = memo((props) => {
 
     const onSubmit = useMemoizedFn(() => {
         if (!content) {
-            yakitNotify("error", "请描述一下修改内容")
+            yakitNotify("error", i18next.t("请描述一下修改内容"))
             return
         }
         onCancel(true, content)
@@ -723,7 +720,7 @@ const ModifyPluginReason: React.FC<ModifyPluginReasonProps> = memo((props) => {
 
     return (
         <YakitModal
-            title='不通过原因描述'
+            title={i18next.t("不通过原因描述")}
             type='white'
             width={448}
             centered={true}
@@ -735,7 +732,7 @@ const ModifyPluginReason: React.FC<ModifyPluginReasonProps> = memo((props) => {
         >
             <div className={styles["modify-plugin-reason-wrapper"]}>
                 <YakitInput.TextArea
-                    placeholder='请简单描述一下不通过原因，方便告知修改者...'
+                    placeholder={i18next.t("请简单描述一下不通过原因，方便告知修改者...")}
                     autoSize={{minRows: 3, maxRows: 3}}
                     showCount
                     value={content}

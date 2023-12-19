@@ -4,6 +4,7 @@ import {WebsocketClientOperator} from "@/pages/websocket/WebsocketClientOperator
 import {randomString} from "@/utils/randomUtil";
 import {WebsocketFlowViewer} from "@/pages/websocket/WebsocketFlowViewer";
 import {info} from "@/utils/notification";
+import i18next from "../../i18n"
 
 export interface WebsocketFuzzerProp {
     tls?: boolean
@@ -36,6 +37,6 @@ export const newWebsocketFuzzerTab = (isHttps: boolean, request: Uint8Array) => 
             data: {tls: isHttps, request: request}
         })
         .then(() => {
-            info("新开 Websocket Fuzzer Tab")
+            info(i18next.t("新开 Websocket Fuzzer Tab"))
         })
 }

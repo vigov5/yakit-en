@@ -2,6 +2,7 @@ import {YakitInputNumber} from "@/components/yakitUI/YakitInputNumber/YakitInput
 import {Form} from "antd"
 import React, {useEffect, useState} from "react"
 import {InputInteger} from "../../../utils/inputUtil"
+import i18next from "../../../i18n"
 
 export interface RandStrWithLenProp {
     origin: string
@@ -20,7 +21,7 @@ export const RandStrWithLen: React.FC<RandStrWithLenProp> = (props) => {
 
     return (
         <>
-            <Form.Item label={"随机字符串长度"}>
+            <Form.Item label={i18next.t("随机字符串长度")}>
                 <YakitInputNumber value={len} onChange={(v) => setLen(v as number)} />
             </Form.Item>
         </>
@@ -40,10 +41,10 @@ export const RandStrWithMax: React.FC<RandStrWithMaxProp> = (props) => {
 
     return (
         <>
-            <Form.Item label={"最小长度"}>
+            <Form.Item label={i18next.t("最小长度")}>
                 <YakitInputNumber value={min} min={1} max={max} onChange={(v) => setMin(v as number)} />
             </Form.Item>
-            <Form.Item label={"最大长度"}>
+            <Form.Item label={i18next.t("最大长度")}>
                 <YakitInputNumber value={max} min={min} onChange={(v) => setMax(v as number)} />
             </Form.Item>
         </>
@@ -64,13 +65,13 @@ export const RandStrWIthRepeat: React.FC<RandStrWIthRepeatProp> = (props) => {
 
     return (
         <>
-            <Form.Item label={"最小长度"}>
+            <Form.Item label={i18next.t("最小长度")}>
                 <YakitInputNumber value={min} min={1} max={max} onChange={(v) => setMin(v as number)} />
             </Form.Item>
-            <Form.Item label={"最大长度"}>
+            <Form.Item label={i18next.t("最大长度")}>
                 <YakitInputNumber value={max} min={min} onChange={(v) => setMax(v as number)} />
             </Form.Item>
-            <Form.Item label={"重复次数"}>
+            <Form.Item label={i18next.t("重复次数")}>
                 <YakitInputNumber value={count} min={1} onChange={(v) => setCount(v as number)} />
             </Form.Item>
         </>
@@ -95,13 +96,13 @@ export const RandInt: React.FC<RandIntProp> = (props) => {
 
     return (
         <>
-            <Form.Item label={"最小值"}>
+            <Form.Item label={i18next.t("最小值")}>
                 <YakitInputNumber value={min} min={1} max={max} onChange={(v) => setMin(v as number)} />
             </Form.Item>
-            <Form.Item label={"最大值"}>
+            <Form.Item label={i18next.t("最大值")}>
                 <YakitInputNumber value={max} min={min} onChange={(v) => setMax(v as number)} />
             </Form.Item>
-            <Form.Item label={"重复次数"}>
+            <Form.Item label={i18next.t("重复次数")}>
                 <YakitInputNumber value={count} min={1} onChange={(v) => setCount(v as number)} />
             </Form.Item>
         </>

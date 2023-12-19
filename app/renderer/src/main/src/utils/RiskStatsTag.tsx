@@ -6,6 +6,7 @@ import {RiskTable} from "../pages/risks/RiskTable";
 import {PaginationSchema, QueryGeneralResponse} from "../pages/invoker/schema";
 import {Risk} from "../pages/risks/schema";
 import {useGetState, useMemoizedFn} from "ahooks";
+import i18next from "../i18n"
 
 export interface RiskStatsTagProp {
     professionalMode?: boolean
@@ -78,7 +79,7 @@ export const RiskStatsTag: React.FC<RiskStatsTagProp> = React.memo((props) => {
                                </>
                            })
                        }}
-        >所有漏洞与风险</Button>
+        >{i18next.t("所有漏洞与风险")}</Button>
     });
 
     const calcCriticalDelta = useMemoizedFn(() => {
@@ -111,7 +112,7 @@ export const RiskStatsTag: React.FC<RiskStatsTagProp> = React.memo((props) => {
 
     return <Space size={0}>
         <Popover
-            title={"漏洞与风险计数"}
+            title={i18next.t("漏洞与风险计数")}
             content={<Space>
                 <Button onClick={() => {
                     setOriginTotal(0)
@@ -122,11 +123,11 @@ export const RiskStatsTag: React.FC<RiskStatsTagProp> = React.memo((props) => {
         >
             <Tag
                 color={criticalDelta > 0 ? "red" : undefined}
-            >高危/严重{criticalDelta > 0 ? `(+${criticalDelta})` : `(无新增)`}
+            >{i18next.t("高危/严重")}{criticalDelta > 0 ? `(+${criticalDelta})` : i18next.t("(无新增)")}
             </Tag>
         </Popover>
         {ordinaryDelta > 0 && props.professionalMode && <Popover
-            title={"漏洞与风险计数"}
+            title={i18next.t("漏洞与风险计数")}
             content={<Space>
                 <Button onClick={() => {
                     setOriginTotal(0)
@@ -137,7 +138,7 @@ export const RiskStatsTag: React.FC<RiskStatsTagProp> = React.memo((props) => {
         >
             <Tag
                 color={ordinaryDelta > 0 ? "orange" : undefined}
-            >中低危/指纹{ordinaryDelta > 0 ? `(+${ordinaryDelta})` : `(无新增)`}
+            >{i18next.t("中低危/指纹")}{ordinaryDelta > 0 ? `(+${ordinaryDelta})` : i18next.t("(无新增)")}
             </Tag>
         </Popover>}
     </Space>

@@ -52,6 +52,7 @@ import {DataCompareModal} from "@/pages/compare/DataCompare"
 import emiter from "./eventBus/eventBus"
 import {v4 as uuidv4} from "uuid"
 import {GetPluginLanguage} from "@/pages/plugins/builtInData"
+import i18next from "../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -213,7 +214,7 @@ export const YakEditor: React.FC<EditorProps> = (props) => {
             editor.addAction({
                 contextMenuGroupId: "yaklang",
                 id: YAK_FORMATTER_COMMAND_ID,
-                label: "Yak 代码格式化",
+                label: i18next.t("Yak 代码格式化"),
                 run: () => {
                     yakCompileAndFormat.run(editor, model)
                     return undefined
@@ -512,7 +513,7 @@ export const YakInteractiveEditor: React.FC<YakInteractiveEditorProp> = React.me
                         <YakEditor {...{...props.yakEditorProp, noMiniMap: true}} />
                     </Col>
                     <Col span={8}>
-                        <div style={{flex: 1}}>变量预览</div>
+                        <div style={{flex: 1}}>{i18next.t("变量预览")}</div>
                     </Col>
                 </Row>
             </>
@@ -693,7 +694,7 @@ export const HTTPPacketEditor: React.FC<HTTPPacketEditorProp> = React.memo((prop
             monacoEditor.revealRangeNearTop(range)
             monacoEditor.trigger("", "actions.find", undefined)
         } catch (e) {
-            console.info("加载默认搜索字符串失败", props.defaultSearchKeyword)
+            console.info(i18next.t("加载默认搜索字符串失败"), props.defaultSearchKeyword)
         }
     }, [props.defaultSearchKeyword, monacoEditor])
     return (
@@ -717,12 +718,12 @@ export const HTTPPacketEditor: React.FC<HTTPPacketEditorProp> = React.memo((prop
                                         value={mode}
                                         setValue={(e) => {
                                             if (mode === "text" && e === "hex") {
-                                                console.info("切换到 HEX 模式")
+                                                console.info(i18next.t("切换到 HEX 模式"))
                                                 setHexValue(StringToUint8Array(strValue, getEncoding()))
                                             }
 
                                             if (mode === "hex" && e === "text") {
-                                                console.info("切换到 TEXT 模式")
+                                                console.info(i18next.t("切换到 TEXT 模式"))
                                                 setStrValue(Uint8ArrayToString(hexValue, getEncoding()))
                                             }
                                             setMode(e)
@@ -784,7 +785,7 @@ export const HTTPPacketEditor: React.FC<HTTPPacketEditorProp> = React.memo((prop
                                     FUZZ
                                 </YakitButton>
                             )}
-                            <Tooltip title={"不自动换行"}>
+                            <Tooltip title={i18next.t("不自动换行")}>
                                 <YakitButton
                                     size={"small"}
                                     type={noWordwrap ? "text" : "primary"}
@@ -796,7 +797,7 @@ export const HTTPPacketEditor: React.FC<HTTPPacketEditorProp> = React.memo((prop
                             </Tooltip>
                             {!props.simpleMode && (
                                 <Popover
-                                    title={"配置编辑器"}
+                                    title={i18next.t("配置编辑器")}
                                     content={
                                         <>
                                             <Form
@@ -811,11 +812,11 @@ export const HTTPPacketEditor: React.FC<HTTPPacketEditorProp> = React.memo((prop
                                                 {(fontSize || 0) > 0 && (
                                                     <SelectOne
                                                         formItemStyle={{marginBottom: 4}}
-                                                        label={"字号"}
+                                                        label={i18next.t("字号")}
                                                         data={[
-                                                            {text: "小", value: 12},
-                                                            {text: "中", value: 16},
-                                                            {text: "大", value: 20}
+                                                            {text: i18next.t("小"), value: 12},
+                                                            {text: i18next.t("中"), value: 16},
+                                                            {text: i18next.t("大"), value: 20}
                                                         ]}
                                                         oldTheme={false}
                                                         value={fontSize}
@@ -825,14 +826,14 @@ export const HTTPPacketEditor: React.FC<HTTPPacketEditorProp> = React.memo((prop
                                                         }}
                                                     />
                                                 )}
-                                                <Form.Item label={"全屏"} style={{marginBottom: 4}}>
+                                                <Form.Item label={i18next.t("全屏")} style={{marginBottom: 4}}>
                                                     <YakitButton
                                                         size={"small"}
                                                         type={"text"}
                                                         icon={<FullscreenOutlined />}
                                                         onClick={() => {
                                                             showDrawer({
-                                                                title: "全屏",
+                                                                title: i18next.t("全屏"),
                                                                 width: "100%",
                                                                 content: (
                                                                     <div style={{height: "100%", width: "100%"}}>
@@ -850,7 +851,7 @@ export const HTTPPacketEditor: React.FC<HTTPPacketEditorProp> = React.memo((prop
                                                 </Form.Item>
                                                 {(props.language === "http" || !isResponse) && (
                                                     <Form.Item
-                                                        label='是否显示换行符'
+                                                        label={i18next.t("是否显示换行符")}
                                                         style={{marginBottom: 4, lineHeight: "16px"}}
                                                     >
                                                         <YakitSwitch
@@ -906,7 +907,7 @@ export const HTTPPacketEditor: React.FC<HTTPPacketEditorProp> = React.memo((prop
                                 ...(props.actions || []),
                                 ...[
                                     {
-                                        label: "发送到 WebFuzzer",
+                                        label: i18next.t("发送到 WebFuzzer"),
                                         contextMenuGroupId: "auto-suggestion",
                                         keybindings: [
                                             (system === "Darwin" ? monaco.KeyMod.WinCtrl : monaco.KeyMod.CtrlCmd) |
@@ -918,7 +919,7 @@ export const HTTPPacketEditor: React.FC<HTTPPacketEditorProp> = React.memo((prop
                                                 // @ts-ignore
                                                 const text = e.getModel()?.getValue() || ""
                                                 if (!text) {
-                                                    info("数据包为空")
+                                                    info(i18next.t("数据包为空"))
                                                     return
                                                 }
                                                 newWebFuzzerTab(props.defaultHttps || false, text).finally(() => {
@@ -936,7 +937,7 @@ export const HTTPPacketEditor: React.FC<HTTPPacketEditorProp> = React.memo((prop
                                         }
                                     },
                                     {
-                                        label: "智能自动解码（Inspector）",
+                                        label: i18next.t("智能自动解码（Inspector）"),
                                         contextMenuGroupId: "auto-suggestion",
                                         id: "auto-decode",
                                         run: (e) => {
@@ -946,8 +947,8 @@ export const HTTPPacketEditor: React.FC<HTTPPacketEditorProp> = React.memo((prop
                                                     e.getModel()?.getValueInRange(e.getSelection() as any) || ""
                                                 if (!text) {
                                                     Modal.info({
-                                                        title: "自动解码失败",
-                                                        content: <>{"文本为空，请选择文本再自动解码"}</>
+                                                        title: i18next.t("自动解码失败"),
+                                                        content: <>{i18next.t("文本为空，请选择文本再自动解码")}</>
                                                     })
                                                     return
                                                 }
@@ -958,7 +959,7 @@ export const HTTPPacketEditor: React.FC<HTTPPacketEditorProp> = React.memo((prop
                                         }
                                     },
                                     {
-                                        label: "下载 Body",
+                                        label: i18next.t("下载 Body"),
                                         contextMenuGroupId: "auto-suggestion",
                                         id: "download-body",
                                         run: (e) => {
@@ -970,7 +971,7 @@ export const HTTPPacketEditor: React.FC<HTTPPacketEditorProp> = React.memo((prop
                                                             saveABSFileToOpen("packet-body.txt", bytes.Raw)
                                                         })
                                                         .catch((e) => {
-                                                            info(`保存失败：${e}`)
+                                                            info(i18next.t("保存失败：${e}", { v1: e }))
                                                         })
                                                     return
                                                 }
@@ -978,8 +979,8 @@ export const HTTPPacketEditor: React.FC<HTTPPacketEditorProp> = React.memo((prop
                                                 const text = e.getModel()?.getValue()
                                                 if (!text) {
                                                     Modal.info({
-                                                        title: "下载 Body 失败",
-                                                        content: <>{"无数据包-无法下载 Body"}</>
+                                                        title: i18next.t("下载 Body 失败"),
+                                                        content: <>{i18next.t("无数据包-无法下载 Body")}</>
                                                     })
                                                     return
                                                 }
@@ -994,7 +995,7 @@ export const HTTPPacketEditor: React.FC<HTTPPacketEditorProp> = React.memo((prop
                                         }
                                     },
                                     {
-                                        label: "浏览器中打开",
+                                        label: i18next.t("浏览器中打开"),
                                         contextMenuGroupId: "auto-suggestion",
                                         id: "open-in-browser",
                                         run: (e) => {
@@ -1006,7 +1007,7 @@ export const HTTPPacketEditor: React.FC<HTTPPacketEditorProp> = React.memo((prop
                                                 // @ts-ignore
                                                 const text = e.getModel()?.getValue()
                                                 if (!text) {
-                                                    failed("无法获取数据包内容")
+                                                    failed(i18next.t("无法获取数据包内容"))
                                                     return
                                                 }
                                                 showResponseViaResponseRaw(props.originValue)
@@ -1016,7 +1017,7 @@ export const HTTPPacketEditor: React.FC<HTTPPacketEditorProp> = React.memo((prop
                                         }
                                     },
                                     {
-                                        label: "复制为 CSRF PoC",
+                                        label: i18next.t("复制为 CSRF PoC"),
                                         contextMenuGroupId: "auto-suggestion",
                                         id: "csrfpoc",
                                         run: (e) => {
@@ -1024,14 +1025,14 @@ export const HTTPPacketEditor: React.FC<HTTPPacketEditorProp> = React.memo((prop
                                                 // @ts-ignore
                                                 const text = e.getModel()?.getValue() || ""
                                                 if (!text) {
-                                                    info("数据包为空")
+                                                    info(i18next.t("数据包为空"))
                                                     return
                                                 }
                                                 generateCSRFPocByRequest(StringToUint8Array(text, "utf8"), (code) => {
                                                     callCopyToClipboard(code)
                                                 })
                                             } catch (e) {
-                                                failed("自动生成 CSRF 失败")
+                                                failed(i18next.t("自动生成 CSRF 失败"))
                                             }
                                         }
                                     },
@@ -1374,7 +1375,7 @@ export const NewHTTPPacketEditor: React.FC<NewHTTPPacketEditorProp> = React.memo
             monacoEditor.revealRangeNearTop(range)
             monacoEditor.trigger("", "actions.find", undefined)
         } catch (e) {
-            console.info("加载默认搜索字符串失败", props.defaultSearchKeyword)
+            console.info(i18next.t("加载默认搜索字符串失败"), props.defaultSearchKeyword)
         }
     }, [props.defaultSearchKeyword, monacoEditor])
 
@@ -1395,7 +1396,7 @@ export const NewHTTPPacketEditor: React.FC<NewHTTPPacketEditorProp> = React.memo
                             setTypeOptions([
                                 {
                                     value: "render",
-                                    label: "渲染"
+                                    label: i18next.t("渲染")
                                 }
                             ])
                             return
@@ -1403,11 +1404,11 @@ export const NewHTTPPacketEditor: React.FC<NewHTTPPacketEditorProp> = React.memo
                         setTypeOptions([
                             {
                                 value: "beautify",
-                                label: "美化"
+                                label: i18next.t("美化")
                             },
                             {
                                 value: "render",
-                                label: "渲染"
+                                label: i18next.t("渲染")
                             }
                         ])
                     } else {
@@ -1415,7 +1416,7 @@ export const NewHTTPPacketEditor: React.FC<NewHTTPPacketEditorProp> = React.memo
                         setTypeOptions([
                             {
                                 value: "beautify",
-                                label: "美化"
+                                label: i18next.t("美化")
                             }
                         ])
                     }
@@ -1425,7 +1426,7 @@ export const NewHTTPPacketEditor: React.FC<NewHTTPPacketEditorProp> = React.memo
                 setTypeOptions([
                     {
                         value: "beautify",
-                        label: "美化"
+                        label: i18next.t("美化")
                     }
                 ])
             }
@@ -1499,12 +1500,12 @@ export const NewHTTPPacketEditor: React.FC<NewHTTPPacketEditorProp> = React.memo
                                         value={mode}
                                         setValue={(e) => {
                                             if (mode === "text" && e === "hex") {
-                                                console.info("切换到 HEX 模式")
+                                                console.info(i18next.t("切换到 HEX 模式"))
                                                 setHexValue(StringToUint8Array(strValue, getEncoding()))
                                             }
 
                                             if (mode === "hex" && e === "text") {
-                                                console.info("切换到 TEXT 模式")
+                                                console.info(i18next.t("切换到 TEXT 模式"))
                                                 setStrValue(Uint8ArrayToString(hexValue, getEncoding()))
                                             }
                                             setMode(e)
@@ -1580,8 +1581,7 @@ export const NewHTTPPacketEditor: React.FC<NewHTTPPacketEditorProp> = React.memo
                                         // })
                                         openCompareModal(dataCompare)
                                     }}
-                                >
-                                    对比
+                                >{i18next.t("对比")}
                                 </YakitButton>
                             )}
                             {props.sendToWebFuzzer && props.readOnly && (
@@ -1607,7 +1607,7 @@ export const NewHTTPPacketEditor: React.FC<NewHTTPPacketEditorProp> = React.memo
                             )}
                             {showDefaultExtra && (
                                 <>
-                                    <Tooltip title={"不自动换行"}>
+                                    <Tooltip title={i18next.t("不自动换行")}>
                                         <YakitButton
                                             size={"small"}
                                             type={noWordwrap ? "text" : "primary"}
@@ -1619,7 +1619,7 @@ export const NewHTTPPacketEditor: React.FC<NewHTTPPacketEditorProp> = React.memo
                                     </Tooltip>
                                     {!props.simpleMode && (
                                         <Popover
-                                            title={"配置编辑器"}
+                                            title={i18next.t("配置编辑器")}
                                             content={
                                                 <>
                                                     <Form
@@ -1634,11 +1634,11 @@ export const NewHTTPPacketEditor: React.FC<NewHTTPPacketEditorProp> = React.memo
                                                         {(fontSize || 0) > 0 && (
                                                             <SelectOne
                                                                 formItemStyle={{marginBottom: 4}}
-                                                                label={"字号"}
+                                                                label={i18next.t("字号")}
                                                                 data={[
-                                                                    {text: "小", value: 12},
-                                                                    {text: "中", value: 16},
-                                                                    {text: "大", value: 20}
+                                                                    {text: i18next.t("小"), value: 12},
+                                                                    {text: i18next.t("中"), value: 16},
+                                                                    {text: i18next.t("大"), value: 20}
                                                                 ]}
                                                                 oldTheme={false}
                                                                 value={fontSize}
@@ -1647,14 +1647,14 @@ export const NewHTTPPacketEditor: React.FC<NewHTTPPacketEditorProp> = React.memo
                                                                 }}
                                                             />
                                                         )}
-                                                        <Form.Item label={"全屏"} style={{marginBottom: 4}}>
+                                                        <Form.Item label={i18next.t("全屏")} style={{marginBottom: 4}}>
                                                             <YakitButton
                                                                 size={"small"}
                                                                 type={"text"}
                                                                 icon={<FullscreenOutlined />}
                                                                 onClick={() => {
                                                                     showDrawer({
-                                                                        title: "全屏",
+                                                                        title: i18next.t("全屏"),
                                                                         width: "100%",
                                                                         content: (
                                                                             <div
@@ -1674,7 +1674,7 @@ export const NewHTTPPacketEditor: React.FC<NewHTTPPacketEditorProp> = React.memo
                                                         </Form.Item>
                                                         {(props.language === "http" || !isResponse) && (
                                                             <Form.Item
-                                                                label='是否显示换行符'
+                                                                label={i18next.t("是否显示换行符")}
                                                                 style={{marginBottom: 4, lineHeight: "16px"}}
                                                             >
                                                                 <YakitSwitch

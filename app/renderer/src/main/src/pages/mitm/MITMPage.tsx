@@ -42,6 +42,7 @@ import {showYakitModal} from "@/components/yakitUI/YakitModal/YakitModalConfirm"
 import { YakitResizeBox } from "@/components/yakitUI/YakitResizeBox/YakitResizeBox"
 import { ExclamationCircleOutlined } from "@ant-design/icons"
 import {PluginGV} from "../plugins/builtInData"
+import i18next from "../../i18n"
 
 const {Text} = Typography
 const {Item} = Form
@@ -163,11 +164,11 @@ export const MITMPage: React.FC<MITMPageProp> = (props) => {
 
         ipcRenderer.on("client-mitm-error", (e, msg) => {
             if (!msg) {
-                info("MITM 劫持服务器已关闭")
+                info(i18next.t("MITM 劫持服务器已关闭"))
             } else {
-                failed("MITM 劫持服务器异常或被关闭")
+                failed(i18next.t("MITM 劫持服务器异常或被关闭"))
                 const m = showYakitModal({
-                    title: "启动 MITM 服务器 ERROR!",
+                    title: i18next.t("启动 MITM 服务器 ERROR!"),
                     type: "white",
                     cancelButtonProps: {style: {display: "none"}},
                     content: <div style={{padding: "12px 24px"}}>{msg}</div>,
@@ -236,7 +237,7 @@ export const MITMPage: React.FC<MITMPageProp> = (props) => {
             return ipcRenderer
                 .invoke("mitm-start-call", targetHost, targetPort, downstreamProxy, enableHttp2, certs, extra)
                 .catch((e: any) => {
-                    notification["error"]({message: `启动中间人劫持失败：${e}`})
+                    notification["error"]({message: i18next.t("启动中间人劫持失败 ${e}", {v1: e})})
                 })
         }
     )
@@ -253,7 +254,7 @@ export const MITMPage: React.FC<MITMPageProp> = (props) => {
             certs: ClientCertificate[],
             extra?: ExtraMITMServerProps
         ) => {
-            setAddr(`http://${host}:${port} 或 socks5://${host}:${port}`)
+            setAddr(`http://${host}:${port} or socks5://${host}:${port}`)
             setHost(host)
             setPort(port)
             setDefaultPlugins(plugins)
@@ -261,14 +262,14 @@ export const MITMPage: React.FC<MITMPageProp> = (props) => {
             startMITMServer(host, port, downstreamProxy, enableHttp2, certs, extra)
             let tip = ""
             if (downstreamProxy) {
-                tip += `下游代理:${downstreamProxy}`
+                tip += i18next.t("下游代理")+`:${downstreamProxy}`
             }
             if (extra) {
                 if (extra.onlyEnableGMTLS) {
-                    tip += "|仅国密 TLS"
+                    tip += i18next.t("|仅国密 TLS")
                 }
                 if (extra.enableProxyAuth) {
-                    tip += "|开启代理认证"
+                    tip += i18next.t("|开启代理认证")
                 }
             }
             setTip(tip)
@@ -326,14 +327,14 @@ export const MITMPage: React.FC<MITMPageProp> = (props) => {
                 const newRules = rsp.Rules.map((ele) => ({...ele, Id: ele.Index}))
                 const findOpenRepRule = newRules.find(item => (!item.Disabled && (!item.NoReplace || item.Drop || item.ExtraRepeat)))
                 if (findOpenRepRule !== undefined) {
-                    if (tip.indexOf('启用替换规则') === -1) {
-                        setTip(tip + '|启用替换规则')
+                    if (tip.indexOf(i18next.t("启用替换规则")) === -1) {
+                        setTip(tip + i18next.t("|启用替换规则"))
                     }
                 } else {
-                    setTip(tip.replace('|启用替换规则', ''))
+                    setTip(tip.replace(i18next.t("|启用替换规则"), ''))
                 }
             })
-            .catch((e) => yakitFailed("获取规则列表失败:" + e))
+            .catch((e) => yakitFailed(i18next.t("获取规则列表失败 ") + e))
     })
 
     return (
@@ -405,7 +406,7 @@ export const MITMServer: React.FC<MITMServerProps> = React.memo((props) => {
     const [listNames, setListNames] = useState<string[]>([]) // 存储的全部本地插件
 
     const onSubmitYakScriptId = useMemoizedFn((id: number, params: YakExecutorParam[]) => {
-        info(`加载 MITM 插件[${id}]`)
+        info(i18next.t("加载 MITM 插件")+`[${id}]`)
         ipcRenderer.invoke("mitm-exec-script-by-id", id, params)
     })
     const onStartMITMServer = useMemoizedFn(
@@ -474,7 +475,7 @@ export const MITMServer: React.FC<MITMServerProps> = React.memo((props) => {
                     setIsSelectAll(checked)
                 })
                 .catch((err) => {
-                    yakitFailed("清空失败:" + err)
+                    yakitFailed(i18next.t("清空失败") + err)
                 })
         } else {
             ipcRenderer
@@ -486,7 +487,7 @@ export const MITMServer: React.FC<MITMServerProps> = React.memo((props) => {
                     setIsSelectAll(checked)
                 })
                 .catch((err) => {
-                    yakitFailed("清空失败:" + err)
+                    yakitFailed(i18next.t("清空失败") + err)
                 })
         }
     })
@@ -495,10 +496,10 @@ export const MITMServer: React.FC<MITMServerProps> = React.memo((props) => {
         enableMITMPluginMode(listNames)
             .then(() => {
                 setIsSelectAll(checked)
-                info("启动 MITM 插件成功")
+                info(i18next.t("启动 MITM 插件成功"))
             })
             .catch((err) => {
-                yakitFailed("启动 MITM 插件失败:" + err)
+                yakitFailed(i18next.t("启动 MITM 插件失败") + err)
             })
     })
 
@@ -738,13 +739,13 @@ export const ImportLocalPlugin: React.FC<ImportLocalPluginProps> = React.memo((p
                         <Form.Item
                             name='nucleiGitUrl'
                             label='Yaml PoC URL'
-                            rules={[{required: true, message: "该项为必填项"}]}
-                            help='无代理设置推荐使用 ghproxy.com / gitee 镜像源'
+                            rules={[{required: true, message: i18next.t("该项为必填项")}]}
+                            help={i18next.t("无代理设置推荐使用 ghproxy.com / gitee 镜像源")}
                             initialValue='https://github.com/projectdiscovery/nuclei-templates'
                         >
                             <YakitInput />
                         </Form.Item>
-                        <Form.Item name='proxy' label='代理' help='通过代理访问中国大陆无法访问的代码仓库'>
+                        <Form.Item name='proxy' label={i18next.t("代理")} help={i18next.t("通过代理访问中国大陆无法访问的代码仓库")}>
                             <YakitInput />
                         </Form.Item>
                     </>
@@ -756,10 +757,10 @@ export const ImportLocalPlugin: React.FC<ImportLocalPluginProps> = React.memo((p
                             key='localPath'
                             formItemProps={{
                                 name: "localPath",
-                                label: "本地仓库地址"
+                                label: i18next.t("本地仓库地址")
                             }}
                             InputProps={{
-                                placeholder: "本地仓库地址需设置在yak-projects项目文件下"
+                                placeholder: i18next.t("本地仓库地址需设置在yak-projects项目文件下")
                             }}
                             selectType='folder'
                             showUploadList={false}
@@ -778,7 +779,7 @@ export const ImportLocalPlugin: React.FC<ImportLocalPluginProps> = React.memo((p
                             key='localNucleiPath'
                             formItemProps={{
                                 name: "localNucleiPath",
-                                label: "Nuclei PoC 本地路径"
+                                label: i18next.t("Nuclei PoC 本地路径")
                             }}
                             selectType='folder'
                             showUploadList={false}
@@ -793,7 +794,7 @@ export const ImportLocalPlugin: React.FC<ImportLocalPluginProps> = React.memo((p
             case "uploadId":
                 return (
                     <>
-                        <Form.Item name='localId' label='插件ID'>
+                        <Form.Item name='localId' label={i18next.t("插件ID")}>
                             <YakitInput />
                         </Form.Item>
                     </>
@@ -823,17 +824,17 @@ export const ImportLocalPlugin: React.FC<ImportLocalPluginProps> = React.memo((p
             if (formValue.proxy?.trim() !== "") {
                 params.push({Value: formValue.proxy?.trim(), Key: "proxy"})
             }
-            startExecYakCode("导入 Yak 插件", {
+            startExecYakCode(i18next.t("导入 Yak 插件"), {
                 Script: loadYakitPluginCode,
                 Params: params
             })
         }
         if (loadMode === "local") {
             if (!formValue.localPath) {
-                failed(`请输入本地路径`)
+                failed(i18next.t("请输入本地路径"))
                 return
             }
-            startExecYakCode("导入 Yak 插件（本地）", {
+            startExecYakCode(i18next.t("导入 Yak 插件（本地）"), {
                 Script: loadLocalYakitPluginCode,
                 Params: [{Key: "local-path", Value: formValue.localPath}]
             })
@@ -841,10 +842,10 @@ export const ImportLocalPlugin: React.FC<ImportLocalPluginProps> = React.memo((p
 
         if (loadMode === "local-nuclei") {
             if (!formValue.localNucleiPath) {
-                failed(`请输入Nuclei PoC 本地路径`)
+                failed(i18next.t("请输入Nuclei PoC 本地路径"))
                 return
             }
-            startExecYakCode("从 Nuclei Template Git 本地仓库更新", {
+            startExecYakCode(i18next.t("从 Nuclei Template Git 本地仓库更新"), {
                 Script: loadNucleiPoCFromLocal,
                 Params: [{Key: "local-path", Value: formValue.localNucleiPath}]
             })
@@ -857,10 +858,10 @@ export const ImportLocalPlugin: React.FC<ImportLocalPluginProps> = React.memo((p
                 } as DownloadOnlinePluginProps)
                 .then(() => {
                     setVisible(false)
-                    success("插件导入成功")
+                    success(i18next.t("插件导入成功"))
                 })
                 .catch((e: any) => {
-                    failed(`插件导入失败: ${e}`)
+                    failed(i18next.t("插件导入失败: ${e}", { v1: e }))
                 })
         }
     })
@@ -871,7 +872,7 @@ export const ImportLocalPlugin: React.FC<ImportLocalPluginProps> = React.memo((p
             onOk={() => onOk()}
             width={680}
             closable={true}
-            title='导入插件方式'
+            title={i18next.t("导入插件方式")}
             className={style["import-local-plugin-modal"]}
             subTitle={
                 <YakitRadioButtons
@@ -883,19 +884,19 @@ export const ImportLocalPlugin: React.FC<ImportLocalPluginProps> = React.memo((p
                     }}
                     options={[
                         {
-                            label: "第三方仓库源",
+                            label: i18next.t("第三方仓库源"),
                             value: "giturl"
                         },
                         {
-                            label: "本地仓库",
+                            label: i18next.t("本地仓库"),
                             value: "local"
                         },
                         {
-                            label: "本地 Yaml PoC",
+                            label: i18next.t("本地 Yaml PoC"),
                             value: "local-nuclei"
                         },
                         {
-                            label: "使用ID",
+                            label: i18next.t("使用ID"),
                             value: "uploadId"
                         }
                     ]}
@@ -937,7 +938,7 @@ export const AddLocalPluginGroup: React.FC<AddPluginGroupProps> = React.memo((pr
                     setCacheData(cacheData)
                 }
             } catch (error) {
-                failed("获取插件组失败:" + error)
+                failed(i18next.t("获取插件组失败 ") + error)
             }
         })
     })
@@ -967,9 +968,9 @@ export const AddLocalPluginGroup: React.FC<AddPluginGroupProps> = React.memo((pr
                 setRemoteValue(PluginGV.Fetch_Local_Plugin_Group, JSON.stringify([obj]))
             }
             setVisible(false)
-            info("添加插件组成功")
+            info(i18next.t("添加插件组成功"))
         } catch (error) {
-            failed("添加插件组失败:" + error)
+            failed(i18next.t("插件导入失败: ${e}", { v1: error }))
         }
     })
     const pugGroup = useMemo(() => {
@@ -979,14 +980,14 @@ export const AddLocalPluginGroup: React.FC<AddPluginGroupProps> = React.memo((pr
         <YakitModal visible={visible} onCancel={() => setVisible(false)} footer={null} closable={false}>
             <div className={style["plugin-group-modal"]}>
                 <div className={style["plugin-group-heard"]}>
-                    <div className={style["plugin-group-title"]}>添加至插件组</div>
+                    <div className={style["plugin-group-title"]}>{i18next.t("添加至插件组")}</div>
                     <div className={style["close-icon"]} onClick={() => setVisible(false)}>
                         <RemoveIcon />
                     </div>
                 </div>
                 <div className={style["plugin-group-input"]}>
                     <YakitAutoComplete
-                        placeholder='请输入插件组名'
+                        placeholder={i18next.t("请输入插件组名")}
                         defaultActiveFirstOption={false}
                         value={name}
                         onChange={(value) => setName(value)}
@@ -1002,7 +1003,7 @@ export const AddLocalPluginGroup: React.FC<AddPluginGroupProps> = React.memo((pr
                 </div>
 
                 <div className={style["plugin-group-tip"]}>
-                    共选择了<span>{checkList.length}</span>个插件
+                    {i18next.t("共选择了")}<span>{checkList.length}</span>{i18next.t("个插件")}
                 </div>
                 <div className={style["plugin-buttons"]}>
                     <YakitButton
@@ -1011,10 +1012,10 @@ export const AddLocalPluginGroup: React.FC<AddPluginGroupProps> = React.memo((pr
                         className={style["plugin-btn"]}
                         onClick={() => setVisible(false)}
                     >
-                        取消
+                        {i18next.t("取消")}
                     </YakitButton>
                     <YakitButton type='primary' size='large' onClick={onSave}>
-                        确定
+                        {i18next.t("确定")}
                     </YakitButton>
                 </div>
             </div>

@@ -7,6 +7,7 @@ import {Paging} from "@/utils/yakQueryHTTPFlow";
 import {YakEditor} from "@/utils/editors";
 import {ChaosMakerRule} from "@/models/ChaosMaker";
 import {StringToUint8Array} from "@/utils/str";
+import i18next from "../../i18n"
 
 export interface ChaosMakerRulesDemoProp {
 
@@ -45,10 +46,10 @@ export const ChaosMakerRulesDemo: React.FC<ChaosMakerRulesDemoProp> = (props) =>
             <DemoVirtualTable<ChaosMakerRule>
                 columns={[
                     {headerTitle: "ID", key: "Id", width: 80, colRender: i => i.Id},
-                    {headerTitle: "规则", key: "Name", width: 300, colRender: i => i.NameZh || i.Name},
-                    {headerTitle: "类型", key: "RuleType", width: 100, colRender: i => i.RuleType},
+                    {headerTitle: i18next.t("规则"), key: "Name", width: 300, colRender: i => i.NameZh || i.Name},
+                    {headerTitle: i18next.t("类型"), key: "RuleType", width: 100, colRender: i => i.RuleType},
                     {headerTitle: "CVE", key: "CVE", width: 110, colRender: i => i.CVE},
-                    {headerTitle: "协议", key: "Protocol", width: 50, colRender: i => i.Protocol},
+                    {headerTitle: i18next.t("协议"), key: "Protocol", width: 50, colRender: i => i.Protocol},
                 ]}
                 rowClick={data => {
                     setSelected(data)

@@ -17,6 +17,7 @@ import {saveABSFileToOpen} from "@/utils/openWebsite"
 import {Modal} from "antd"
 import {execAutoDecode} from "@/utils/encodec"
 import {YakitSystem} from "@/yakitGVDefine"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -66,21 +67,21 @@ export const HTTPPacketYakitEditor: React.FC<HTTPPacketYakitEditor> = React.memo
                     {type: "divider"},
                     {
                         key: "csrfpoc",
-                        label: "复制为 CSRF PoC"
+                        label: i18next.t("复制为 CSRF PoC")
                     }
                 ],
                 onRun: (editor: YakitIMonacoEditor, key: string) => {
                     try {
                         const text = editor.getModel()?.getValue() || ""
                         if (!text) {
-                            info("数据包为空")
+                            info(i18next.t("数据包为空"))
                             return
                         }
                         generateCSRFPocByRequest(StringToUint8Array(text, "utf8"), (code) => {
                             callCopyToClipboard(code)
                         })
                     } catch (e) {
-                        failed("自动生成 CSRF 失败")
+                        failed(i18next.t("自动生成 CSRF 失败"))
                     }
                 }
             },
@@ -88,7 +89,7 @@ export const HTTPPacketYakitEditor: React.FC<HTTPPacketYakitEditor> = React.memo
                 menu: [
                     {
                         key: "open-in-browser",
-                        label: "浏览器中打开"
+                        label: i18next.t("浏览器中打开")
                     }
                 ],
                 onRun: (editor: YakitIMonacoEditor, key: string) => {
@@ -99,7 +100,7 @@ export const HTTPPacketYakitEditor: React.FC<HTTPPacketYakitEditor> = React.memo
                         }
                         const text = editor.getModel()?.getValue()
                         if (!text) {
-                            failed("无法获取数据包内容")
+                            failed(i18next.t("无法获取数据包内容"))
                             return
                         }
                         showResponseViaResponseRaw(originValue)
@@ -112,7 +113,7 @@ export const HTTPPacketYakitEditor: React.FC<HTTPPacketYakitEditor> = React.memo
                 menu: [
                     {
                         key: "download-body",
-                        label: "下载 Body"
+                        label: i18next.t("下载 Body")
                     }
                 ],
                 onRun: (editor: YakitIMonacoEditor, key: string) => {
@@ -124,15 +125,15 @@ export const HTTPPacketYakitEditor: React.FC<HTTPPacketYakitEditor> = React.memo
                                     saveABSFileToOpen("packet-body.txt", bytes.Raw)
                                 })
                                 .catch((e) => {
-                                    info(`保存失败：${e}`)
+                                    info(i18next.t("保存失败：${e}", { v1: e }))
                                 })
                             return
                         }
                         const text = editor.getModel()?.getValue()
                         if (!text) {
                             Modal.info({
-                                title: "下载 Body 失败",
-                                content: <>{"无数据包-无法下载 Body"}</>
+                                title: i18next.t("下载 Body 失败"),
+                                content: <>{i18next.t("无数据包-无法下载 Body")}</>
                             })
                             return
                         }
@@ -148,7 +149,7 @@ export const HTTPPacketYakitEditor: React.FC<HTTPPacketYakitEditor> = React.memo
                 menu: [
                     {
                         key: "auto-decode",
-                        label: "智能自动解码（Inspector）"
+                        label: i18next.t("智能自动解码（Inspector）")
                     }
                 ],
                 onRun: (editor: YakitIMonacoEditor, key: string) => {
@@ -156,8 +157,8 @@ export const HTTPPacketYakitEditor: React.FC<HTTPPacketYakitEditor> = React.memo
                         const text = editor.getModel()?.getValueInRange(editor.getSelection() as any) || ""
                         if (!text) {
                             Modal.info({
-                                title: "自动解码失败",
-                                content: <>{"文本为空，请选择文本再自动解码"}</>
+                                title: i18next.t("自动解码失败"),
+                                content: <>{i18next.t("文本为空，请选择文本再自动解码")}</>
                             })
                             return
                         }
@@ -171,7 +172,7 @@ export const HTTPPacketYakitEditor: React.FC<HTTPPacketYakitEditor> = React.memo
                 menu: [
                     {
                         key: "new-web-fuzzer-tab",
-                        label: "发送到 WebFuzzer",
+                        label: i18next.t("发送到 WebFuzzer"),
                         keybindings: [YakitEditorKeyCode.Control, YakitEditorKeyCode.KEY_R]
                     }
                 ],
@@ -179,7 +180,7 @@ export const HTTPPacketYakitEditor: React.FC<HTTPPacketYakitEditor> = React.memo
                     try {
                         const text = webFuzzerValue || editor.getModel()?.getValue() || ""
                         if (!text) {
-                            info("数据包为空")
+                            info(i18next.t("数据包为空"))
                             return
                         }
                         newWebFuzzerTab(defaultHttps || false, text).finally(() => {

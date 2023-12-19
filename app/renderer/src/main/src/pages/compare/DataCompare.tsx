@@ -6,6 +6,7 @@ import { LineConversionIcon } from "../../assets/icons"
 import styles from "./DataCompare.module.scss";
 import { YakitButton } from "@/components/yakitUI/YakitButton/YakitButton"
 import { RemoveIcon } from "@/assets/newIcon"
+import i18next from "../../i18n"
 const { ipcRenderer } = window.require("electron")
 
 interface textModelProps {
@@ -27,7 +28,7 @@ export const DataCompare: React.FC<DataCompareProps> = (props) => {
     const codeComparisonRef = useRef<any>(null)
     return (
         <AutoCard
-            title={"数据对比"}
+            title={i18next.t("数据对比")}
             bodyStyle={{ padding: 0 }}
             bordered={false}
             extra={
@@ -66,7 +67,7 @@ export const DataCompareModal : React.FC<DataCompareModalProps> = (props) => {
     return (
         <div className={styles['data-compare-modal']}>
             <div className={styles['header']}>
-                <div className={styles['title']}>代码对比</div>
+                <div className={styles['title']}>{i18next.t("代码对比")}</div>
                 <div className={styles['close']}>
                    <RemoveIcon onClick={()=>onClose()}/> 
                 </div>

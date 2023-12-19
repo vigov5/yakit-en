@@ -14,6 +14,7 @@ import {getRemoteValue, setRemoteValue} from "@/utils/kv";
 import {HybridScanDemo} from "@/components/playground/hybrid/HybridScanDemo";
 import {HybridScanTaskTable} from "@/components/playground/hybrid/HybridScanTaskTable";
 import {SpaceEngineOperator} from "@/components/playground/spaceengine/SpaceEngineOperator";
+import i18next from "../../i18n"
 
 export interface DebugMonacoEditorPageProp {
 
@@ -58,15 +59,15 @@ a=1&b=2 Content-Length: a
 
     return <div style={{height: "100%"}}>
         <AutoCard
-            title={<DemoItemSelectOne label={"调试组件"} data={[
-                {value: "space-engine-operator", label: "空间引擎操作台"},
-                {value: "hybrid-scan-demo", label: "HybridScan 批量"},
-                {value: "hybrid-scan-task", label: "HybridScan 任务列表"},
-                {value: "chaos-maker-rule", label: "流量生成器规则"},
-                {value: "risk-table", label: "漏洞查询规则"},
-                {value: "pcapx", label: "抓包工具"},
-                {value: "http-monaco-editor", label: "HTTP 数据包编辑器"},
-                {value: "fs-tree", label: "文件系统树"},
+            title={<DemoItemSelectOne label={i18next.t("调试组件")} data={[
+                {value: "space-engine-operator", label: i18next.t("空间引擎操作台")},
+                {value: "hybrid-scan-demo", label: i18next.t("HybridScan 批量")},
+                {value: "hybrid-scan-task", label: i18next.t("HybridScan 任务列表")},
+                {value: "chaos-maker-rule", label: i18next.t("流量生成器规则")},
+                {value: "risk-table", label: i18next.t("漏洞查询规则")},
+                {value: "pcapx", label: i18next.t("抓包工具")},
+                {value: "http-monaco-editor", label: i18next.t("HTTP 数据包编辑器")},
+                {value: "fs-tree", label: i18next.t("文件系统树")},
             ]} formItemStyle={{margin: 0}} value={mode} setValue={setMode}/>}
             size={"small"} bodyStyle={{padding: 0, overflow: "hidden"}}
         >

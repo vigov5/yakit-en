@@ -5,13 +5,14 @@ import styles from "./YakitEmpty.module.scss"
 import Icon from "@ant-design/icons"
 import { CustomIconComponentProps } from "@ant-design/icons/lib/components/Icon"
 import EmptyPng from "./empty.png";
+import i18next from "../../../i18n"
 
 /**
  * @description:YakitEmpty
  * @augments YakitEmptyProps 继承antd的 Empty 默认属性
  */
 export const YakitEmpty: React.FC<YakitEmptyProps> = (props) => {
-    const { title = "暂无数据",...restProps } = props
+    const { title = i18next.t("暂无数据"),...restProps } = props
     return (
         <Empty
             image={<img src={EmptyPng} alt="" />}

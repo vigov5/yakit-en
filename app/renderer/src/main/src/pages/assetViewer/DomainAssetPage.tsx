@@ -11,6 +11,7 @@ import {ExportExcel} from "../../components/DataExport/DataExport"
 import {onRemoveToolFC} from "../../utils/deleteTool"
 
 import styles from "./DomainAssetPage.module.scss"
+import i18next from "../../i18n"
 
 export interface Domain {
     ID?: number
@@ -129,7 +130,7 @@ export const DomainAssetPage: React.FC<DomainAssetPageProps> = (props: DomainAss
     }, [])
     const columns = [
         {
-            title: "域名",
+            title: i18next.t("域名"),
             dataIndex: "DomainName",
             filteredValue: (getParams()["DomainKeyword"] && ["DomainName"]) || null,
             width: 400,
@@ -146,7 +147,7 @@ export const DomainAssetPage: React.FC<DomainAssetPageProps> = (props: DomainAss
                     params &&
                     setParams && (
                         <TableFilterDropdownString
-                            label={"搜索关键字"}
+                            label={i18next.t("搜索关键字")}
                             params={params}
                             setParams={setParams}
                             filterName={"DomainKeyword"}
@@ -176,7 +177,7 @@ export const DomainAssetPage: React.FC<DomainAssetPageProps> = (props: DomainAss
                     params &&
                     setParams && (
                         <TableFilterDropdownString
-                            label={"搜索IP"}
+                            label={i18next.t("搜索IP")}
                             params={params}
                             setParams={setParams}
                             filterName={"Network"}
@@ -206,7 +207,7 @@ export const DomainAssetPage: React.FC<DomainAssetPageProps> = (props: DomainAss
                     params &&
                     setParams && (
                         <TableFilterDropdownString
-                            label={"搜索关键字"}
+                            label={i18next.t("搜索关键字")}
                             params={params}
                             setParams={setParams}
                             filterName={"Title"}
@@ -219,7 +220,7 @@ export const DomainAssetPage: React.FC<DomainAssetPageProps> = (props: DomainAss
             }
         },
         {
-            title: "操作",
+            title: i18next.t("操作"),
             dataIndex: "Action",
             render: (_, i: Domain) => (
                 <Space>
@@ -233,8 +234,7 @@ export const DomainAssetPage: React.FC<DomainAssetPageProps> = (props: DomainAss
                             setCheckedURL([])
                             setCheckedAll(false)
                         }}
-                    >
-                        删除
+                    >{i18next.t("删除")}
                     </Button>
                 </Space>
             )
@@ -312,7 +312,7 @@ export const DomainAssetPage: React.FC<DomainAssetPageProps> = (props: DomainAss
                 pageSize: Pagination?.Limit || 10,
                 showSizeChanger: true,
                 total: Total,
-                showTotal: (i) => <Tag>共{i}条历史记录</Tag>,
+                showTotal: (i) => <Tag>{i18next.t("共")}{i}条历史记录</Tag>,
                 onChange: (page: number, limit?: number) => {
                     update(page, limit)
                 }
@@ -322,8 +322,8 @@ export const DomainAssetPage: React.FC<DomainAssetPageProps> = (props: DomainAss
                     <>
                         <div style={{display: "flex", justifyContent: "space-between"}}>
                             <Space>
-                                <div>域名资产</div>
-                                <Tooltip title='刷新会重置所有查询条件'>
+                                <div>{i18next.t("域名资产")}</div>
+                                <Tooltip title={i18next.t("刷新会重置所有查询条件")}>
                                     <Button
                                         type={"link"}
                                         onClick={() => {
@@ -348,43 +348,40 @@ export const DomainAssetPage: React.FC<DomainAssetPageProps> = (props: DomainAss
                                         setCheckedAll(e.target.checked)
                                     }}
                                     disabled={allResponse.Data.length === 0}
-                                >
-                                    全选
+                                >{i18next.t("全选")}
                                 </Checkbox>
                                 {selectedRowKeys.length > 0 && (
-                                    <Tag color='blue'>
-                                        已选{checkedAll ? allResponse.Total : selectedRowKeys?.length}条
+                                    <Tag color='blue'>{i18next.t("已选")}{checkedAll ? allResponse.Total : selectedRowKeys?.length}条
                                     </Tag>
                                 )}
                             </Col>
                             <Col span={12} style={{textAlign: "right"}}>
                                 <Space>
-                                    <ExportExcel getData={getData} btnProps={{size: "small"}} fileName='域名资产' />
+                                    <ExportExcel getData={getData} btnProps={{size: "small"}} fileName={i18next.t("域名资产")} />
                                     <Popconfirm
                                         title={
                                             checkedAll
                                                 ? "确定删除所有域名资产吗? 不可恢复"
-                                                : "确定删除选择的域名资产吗？不可恢复"
+                                                : i18next.t("确定删除选择的域名资产吗？不可恢复")
                                         }
                                         onConfirm={onRemove}
                                         disabled={selectedRowKeys.length === 0}
                                     >
-                                        <Button size='small' danger={true} disabled={selectedRowKeys.length === 0}>
-                                            删除资产
+                                        <Button size='small' danger={true} disabled={selectedRowKeys.length === 0}>{i18next.t("删除资产")}
                                         </Button>
                                     </Popconfirm>
                                     <DropdownMenu
                                         menu={{
                                             data: [
-                                                {key: "bug-test", title: "发送到漏洞检测"},
-                                                {key: "scan-port", title: "发送到端口扫描"},
-                                                {key: "brute", title: "发送到爆破"}
+                                                {key: "bug-test", title: i18next.t("发送到漏洞检测")},
+                                                {key: "scan-port", title: i18next.t("发送到端口扫描")},
+                                                {key: "brute", title: i18next.t("发送到爆破")}
                                             ]
                                         }}
                                         dropdown={{placement: "bottomRight"}}
                                         onClick={(key) => {
                                             if (checkedURL.length === 0) {
-                                                failed("请最少选择一个选项再进行操作")
+                                                failed(i18next.t("请最少选择一个选项再进行操作"))
                                                 return
                                             }
 

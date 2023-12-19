@@ -12,6 +12,7 @@ import React, {useEffect, useRef, useState} from "react"
 import {CodeComparisonDiff} from "./YakitPluginJournalDetails"
 import ReactResizeDetector from "react-resize-detector"
 import "./YakitPluginOnlineJournal.scss"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -92,7 +93,7 @@ export const YakitPluginOnlineJournal: React.FC<YakitPluginOnlineJournalProps> =
                 }
             })
             .catch((err) => {
-                failed("获取插件日志列表失败:" + err)
+                failed(i18next.t("获取插件日志列表失败:") + err)
             })
             .finally(() => {
                 setTimeout(() => {
@@ -189,8 +190,7 @@ export const YakitPluginOnlineJournal: React.FC<YakitPluginOnlineJournalProps> =
                                                         e.stopPropagation()
                                                         onGoDetails(item)
                                                     }}
-                                                >
-                                                    详情
+                                                >{i18next.t("详情")}
                                                 </Button>
                                                 <a href='#'>code</a>
                                             </div>

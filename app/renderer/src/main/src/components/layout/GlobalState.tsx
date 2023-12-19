@@ -31,6 +31,7 @@ import styles from "./globalState.module.scss"
 import {useRunNodeStore} from "@/store/runNode"
 import {YakitTag} from "../yakitUI/YakitTag/YakitTag"
 import {YakitCheckbox} from "../yakitUI/YakitCheckbox/YakitCheckbox"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -74,7 +75,7 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                             ConnectParams: {Addr: addr, Secret: secret},
                             LocalAddr: ""
                         })
-                        .then((a: any) => console.info("自启-全局反连配置成功"))
+                        .then((a: any) => console.info(i18next.t("自启-全局反连配置成功")))
                         .catch((e) => console.info(e))
 
                     getRemoteValue(RemoteGV.GlobalDNSLogBridgeInherit).then((data) => {
@@ -85,8 +86,8 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                                         DNSLogAddr: addr,
                                         DNSLogSecret: `${secret}`
                                     })
-                                    .then(() => info("配置全局 DNSLog 生效"))
-                                    .catch((e) => failed(`配置全局 DNSLog 失败：${e}`))
+                                    .then(() => info(i18next.t("配置全局 DNSLog 生效")))
+                                    .catch((e) => failed(i18next.t("配置全局 DNSLog 失败：${e}", { v1: e })))
                                 break
                             case "false":
                                 getRemoteValue(RemoteGV.GlobalDNSLogAddr).then((dnslogAddr: string) => {
@@ -97,8 +98,8 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                                                     DNSLogAddr: dnslogAddr,
                                                     DNSLogSecret: `${secret}`
                                                 })
-                                                .then(() => info("配置全局 DNSLog 生效"))
-                                                .catch((e) => failed(`配置全局 DNSLog 失败：${e}`))
+                                                .then(() => info(i18next.t("配置全局 DNSLog 生效")))
+                                                .catch((e) => failed(i18next.t("配置全局 DNSLog 失败：${e}", { v1: e })))
                                         })
                                     }
                                 })
@@ -114,7 +115,7 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
         IsPrivileged: boolean
         Advice: string
         AdviceVerbose: string
-    }>({Advice: "unknown", AdviceVerbose: "无法获取 PCAP 支持信息", IsPrivileged: false})
+    }>({Advice: "unknown", AdviceVerbose: i18next.t("无法获取 PCAP 支持信息"), IsPrivileged: false})
     /** 获取网卡操作权限 */
     const updatePcap = useMemoizedFn(() => {
         return new Promise((resolve, reject) => {
@@ -290,7 +291,7 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
             }, 20000)
         } else {
             // init
-            setPcap({Advice: "unknown", AdviceVerbose: "无法获取 PCAP 支持信息", IsPrivileged: false})
+            setPcap({Advice: "unknown", AdviceVerbose: i18next.t("无法获取 PCAP 支持信息"), IsPrivileged: false})
             setPluginTotal(0)
             setReverseState(false)
             setReverseDetails({
@@ -344,7 +345,7 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                 setPcapResult(true)
             })
             .catch((e) => {
-                failed(`提升 Pcap 用户权限失败：${e}`)
+                failed(i18next.t("提升 Pcap 用户权限失败：${e}", { v1: e }))
             })
             .finally(() => setPcapHintLoading(false))
     })
@@ -406,7 +407,7 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
         try {
             await Promise.all(promises.map((promiseFunc) => promiseFunc()))
             clearRunNodeList()
-            yakitNotify("success", "成功关闭全部运行节点")
+            yakitNotify("success", i18next.t("成功关闭全部运行节点"))
         } catch (error) {
             yakitFailed(error + "")
         }
@@ -428,7 +429,7 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
             await ipcRenderer.invoke("kill-run-node", {pid})
             delRunNode(key)
             setDelRunNodeItem(undefined)
-            yakitNotify("success", "成功关闭运行节点")
+            yakitNotify("success", i18next.t("成功关闭运行节点"))
         } catch (error) {
             yakitFailed(error + "")
         }
@@ -438,10 +439,10 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
         return (
             <div className={styles["global-state-content-wrapper"]}>
                 <div className={styles["body-header"]}>
-                    <div className={styles["header-title"]}>系统检测</div>
+                    <div className={styles["header-title"]}>{i18next.t("系统检测")}</div>
                     <div className={styles["header-hint"]}>
                         <span className={styles["hint-title"]}>
-                            {stateNum === 0 ? `暂无异常` : `检测到${stateNum}项异常`}
+                            {stateNum === 0 ? i18next.t("暂无异常") : i18next.t("检测到${stateNum}项异常", { v1: stateNum })}
                         </span>
                         {ShowIcon[state]}
                     </div>
@@ -455,9 +456,8 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                                     <div className={styles["info-left"]}>
                                         <ErrorIcon />
                                         <div className={styles["left-body"]}>
-                                            <div className={styles["title-style"]}>网卡权限未修复</div>
-                                            <div className={styles["subtitle-style"]}>
-                                                可能会影响部分功能的使用，建议尽快修复
+                                            <div className={styles["title-style"]}>{i18next.t("网卡权限未修复")}</div>
+                                            <div className={styles["subtitle-style"]}>{i18next.t("可能会影响部分功能的使用，建议尽快修复")}
                                             </div>
                                         </div>
                                     </div>
@@ -470,8 +470,7 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                                                 setShow(false)
                                                 setPcapHintShow(true)
                                             }}
-                                        >
-                                            去修复
+                                        >{i18next.t("去修复")}
                                         </YakitButton>
                                     </div>
                                 </>
@@ -479,8 +478,8 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                                 <div className={styles["info-left"]}>
                                     <WarningIcon />
                                     <div className={styles["left-body"]}>
-                                        <div className={styles["title-style"]}>建议使用管理员身份运行软件</div>
-                                        <div className={styles["subtitle-style"]}>普通权限可能会影响部分功能的使用</div>
+                                        <div className={styles["title-style"]}>{i18next.t("建议使用管理员身份运行软件")}</div>
+                                        <div className={styles["subtitle-style"]}>{i18next.t("普通权限可能会影响部分功能的使用")}</div>
                                     </div>
                                 </div>
                             )}
@@ -492,13 +491,12 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                             <div className={styles["info-left"]}>
                                 <ErrorIcon />
                                 <div className={styles["left-body"]}>
-                                    <div className={styles["title-style"]}>暂无本地插件</div>
-                                    <div className={styles["subtitle-style"]}>可一键获取官方云端插件源</div>
+                                    <div className={styles["title-style"]}>{i18next.t("暂无本地插件")}</div>
+                                    <div className={styles["subtitle-style"]}>{i18next.t("可一键获取官方云端插件源")}</div>
                                 </div>
                             </div>
                             <div className={styles["info-right"]}>
-                                <YakitButton type='text' className={styles["btn-style"]} onClick={downloadAllPlugin}>
-                                    一键下载
+                                <YakitButton type='text' className={styles["btn-style"]} onClick={downloadAllPlugin}>{i18next.t("一键下载")}
                                 </YakitButton>
                             </div>
                         </div>
@@ -511,8 +509,8 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                                     <div className={styles["info-left"]}>
                                         <WarningIcon />
                                         <div className={styles["left-body"]}>
-                                            <div className={styles["title-style"]}>全局反连未配置</div>
-                                            <div className={styles["subtitle-style"]}>可能会影响部分功能的使用</div>
+                                            <div className={styles["title-style"]}>{i18next.t("全局反连未配置")}</div>
+                                            <div className={styles["subtitle-style"]}>{i18next.t("可能会影响部分功能的使用")}</div>
                                         </div>
                                     </div>
                                     <div className={styles["info-right"]}>
@@ -522,7 +520,7 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                                             onClick={() => {
                                                 setShow(false)
                                                 showModal({
-                                                    title: "配置全局反连",
+                                                    title: i18next.t("配置全局反连"),
                                                     width: 800,
                                                     content: (
                                                         <div style={{width: 800}}>
@@ -531,8 +529,7 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                                                     )
                                                 })
                                             }}
-                                        >
-                                            去配置
+                                        >{i18next.t("去配置")}
                                         </YakitButton>
                                     </div>
                                 </div>
@@ -543,9 +540,8 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                                     <div className={styles["info-left"]}>
                                         {isAlreadyChromePath ? <SuccessIcon /> : <WarningIcon />}
                                         <div className={styles["left-body"]}>
-                                            <div className={styles["title-style"]}>Chrome启动路径</div>
-                                            <div className={styles["subtitle-style"]}>
-                                                如无法启动Chrome，请配置Chrome启动路径
+                                            <div className={styles["title-style"]}>{i18next.t("Chrome启动路径")}</div>
+                                            <div className={styles["subtitle-style"]}>{i18next.t("如无法启动Chrome，请配置Chrome启动路径")}
                                             </div>
                                         </div>
                                     </div>
@@ -558,7 +554,7 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                                                 showConfigChromePathForm(setAlreadyChromePathStatus)
                                             }}
                                         >
-                                            {isAlreadyChromePath ? "已配置" : "去配置"}
+                                            {isAlreadyChromePath ? i18next.t("已配置") : i18next.t("去配置")}
                                         </YakitButton>
                                     </div>
                                 </div>
@@ -568,10 +564,9 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                                 <div className={styles["info-left"]}>
                                     {systemProxy.Enable ? <SuccessIcon /> : <HelpIcon />}
                                     <div className={styles["left-body"]}>
-                                        <div className={styles["system-proxy-title"]}>
-                                            系统代理
+                                        <div className={styles["system-proxy-title"]}>{i18next.t("系统代理")}
                                             <YakitTag color={systemProxy.Enable ? "success" : "danger"}>
-                                                {systemProxy.Enable ? "已启用" : "未启用"}
+                                                {systemProxy.Enable ? i18next.t("已启用") : i18next.t("未启用")}
                                             </YakitTag>
                                         </div>
                                     </div>
@@ -601,8 +596,7 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                                                 setShow(false)
                                                 showConfigSystemProxyForm()
                                             }}
-                                        >
-                                            去配置
+                                        >{i18next.t("去配置")}
                                         </YakitButton>
                                     )}
                                 </div>
@@ -614,7 +608,7 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                             <div className={styles["info-left"]}>
                                 <SuccessIcon />
                                 <div className={styles["left-body"]}>
-                                    <div className={styles["system-proxy-title"]}>所有配置均正常</div>
+                                    <div className={styles["system-proxy-title"]}>{i18next.t("所有配置均正常")}</div>
                                 </div>
                             </div>
                             <div></div>
@@ -627,10 +621,8 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                                 <div className={styles["info-left"]}>
                                     <SuccessIcon />
                                     <div className={styles["left-body"]}>
-                                        <div className={styles["title-style"]}>
-                                            启用节点
-                                            <YakitTag color='success' style={{marginLeft: 8}}>
-                                                已启用
+                                        <div className={styles["title-style"]}>{i18next.t("启用节点")}
+                                            <YakitTag color='success' style={{marginLeft: 8}}>{i18next.t("已启用")}
                                             </YakitTag>
                                         </div>
                                     </div>
@@ -641,8 +633,7 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                                         colors='danger'
                                         className={styles["btn-style"]}
                                         onClick={onCloseAllRunNode}
-                                    >
-                                        全部关闭
+                                    >{i18next.t("全部关闭")}
                                     </YakitButton>
                                 </div>
                             </div>
@@ -660,8 +651,7 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                                                     colors='danger'
                                                     className={styles["btn-style"]}
                                                     onClick={() => onCloseRunNodeItem(key, value)}
-                                                >
-                                                    关闭
+                                                >{i18next.t("关闭")}
                                                 </YakitButton>
                                             </Col>
                                         </Row>
@@ -671,8 +661,7 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                         </>
                     )}
                 </div>
-                <div className={styles["body-setting"]}>
-                    状态刷新间隔时间
+                <div className={styles["body-setting"]}>{i18next.t("状态刷新间隔时间")}
                     <YakitInputNumber
                         size='small'
                         type='horizontal'
@@ -718,14 +707,14 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
             <YakitHint
                 visible={pcapHintShow}
                 heardIcon={pcapResult ? <AllShieldCheckIcon /> : undefined}
-                title={pcapResult ? "已有网卡操作权限" : "当前引擎不具有网卡操作权限"}
+                title={pcapResult ? i18next.t("已有网卡操作权限") : i18next.t("当前引擎不具有网卡操作权限")}
                 content={
                     pcapResult
-                        ? "网卡修复需要时间，请耐心等待"
-                        : "Linux 与 MacOS 可通过设置权限与组为用户态赋予网卡完全权限"
+                        ? i18next.t("网卡修复需要时间，请耐心等待")
+                        : i18next.t("Linux 与 MacOS 可通过设置权限与组为用户态赋予网卡完全权限")
                 }
-                okButtonText='开启 PCAP 权限'
-                cancelButtonText={pcapResult ? "知道了～" : "稍后再说"}
+                okButtonText={i18next.t("开启 PCAP 权限")}
+                cancelButtonText={pcapResult ? i18next.t("知道了～") : i18next.t("稍后再说")}
                 okButtonProps={{loading: pcapHintLoading, style: pcapResult ? {display: "none"} : undefined}}
                 cancelButtonProps={{loading: !pcapResult && pcapHintLoading}}
                 onOk={openPcapPower}
@@ -736,8 +725,7 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                 footerExtra={
                     pcapResult ? undefined : (
                         <Tooltip title={`${pcap.AdviceVerbose}: ${pcap.Advice}`}>
-                            <YakitButton className={styles["btn-style"]} type='text' size='max'>
-                                手动修复
+                            <YakitButton className={styles["btn-style"]} type='text' size='max'>{i18next.t("手动修复")}
                             </YakitButton>
                         </Tooltip>
                     )
@@ -752,11 +740,10 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
             {/* 关闭运行节点确认弹框 */}
             <YakitHint
                 visible={closeRunNodeItemVerifyVisible}
-                title='是否确认关闭节点'
-                content='确认后节点将会关闭，运行在节点上的任务也会停止'
+                title={i18next.t("是否确认关闭节点")}
+                content={i18next.t("确认后节点将会关闭，运行在节点上的任务也会停止")}
                 footerExtra={
-                    <YakitCheckbox value={noPrompt} onChange={(e) => setNoPrompt(e.target.checked)}>
-                        下次不再提醒
+                    <YakitCheckbox value={noPrompt} onChange={(e) => setNoPrompt(e.target.checked)}>{i18next.t("下次不再提醒")}
                     </YakitCheckbox>
                 }
                 onOk={() => {

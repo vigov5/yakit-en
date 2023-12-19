@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Col, DatePicker, Row} from "antd";
 import moment from "moment";
 import {TimeUnit} from "./timeInterval";
-
+import i18next from "../i18n"
 interface TimeRangeProps {
     start?: number
     end?: number
@@ -31,7 +31,7 @@ export const TimePoint: React.FC<TimePointProps> = ({value, placeholder, setValu
             showTime
             format="YYYY-MM-DD HH:mm:ss"
             value={m}
-            placeholder={placeholder || "设置时间点"}
+            placeholder={placeholder || i18next.t("设置时间点")}
             onChange={e => setValue && e && setValue(e.unix())}
         />
     </div>
@@ -58,7 +58,7 @@ const TimeRange: React.FC<TimeRangeProps> = (props: TimeRangeProps) => {
                         showTime
                         format="YYYY-MM-DD HH:mm:ss"
                         value={(start && start > 0) ? moment.unix(start) : undefined}
-                        placeholder="点击这里设置开始时间"
+                        placeholder={i18next.t("点击这里设置开始时间")}
                         onChange={e => {
                             e != null ? setStart(e.unix()) : setStart(undefined)
                         }}
@@ -72,7 +72,7 @@ const TimeRange: React.FC<TimeRangeProps> = (props: TimeRangeProps) => {
                         showTime
                         format="YYYY-MM-DD HH:mm:ss"
                         value={(end && end > 0) ? moment.unix(end) : undefined}
-                        placeholder="点击这里设置结束时间"
+                        placeholder={i18next.t("点击这里设置结束时间")}
                         onChange={e => e != null ? setEnd(e.unix()) : setEnd(undefined)}
                     />
                 </div>

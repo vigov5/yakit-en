@@ -3,6 +3,7 @@ import ReactDOM from "react-dom"
 import {ModalProps} from "antd/lib/modal"
 import {Drawer, DrawerProps, Modal} from "antd"
 import {ErrorBoundary} from "react-error-boundary"
+import i18next from "../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -65,11 +66,11 @@ export const showModal = (props: ShowModalProps) => {
                         <ErrorBoundary
                             FallbackComponent={({error, resetErrorBoundary}) => {
                                 if (!error) {
-                                    return <div>未知错误</div>
+                                    return <div>{i18next.t("未知错误")}</div>
                                 }
                                 return (
                                     <div>
-                                        <p>弹框内逻辑性崩溃，请关闭重试！</p>
+                                        <p>{i18next.t("弹框内逻辑性崩溃，请关闭重试！")}</p>
                                         <pre>{error?.message}</pre>
                                     </div>
                                 )

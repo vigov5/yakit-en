@@ -3,6 +3,8 @@ import {Button, PageHeader} from "antd";
 import {YakScript} from "../invoker/schema";
 import MDEditor from '@uiw/react-md-editor';
 import {success} from "../../utils/notification";
+import i18next from "../../i18n"
+
 
 const {ipcRenderer} = window.require("electron");
 
@@ -17,7 +19,7 @@ export const DocumentEditor: React.FC<DocumentEditorProp> = (props) => {
 
     return <div>
         <PageHeader
-            title={"编辑/添加模块文档"} subTitle={props.yakScript.ScriptName + `[${props.yakScript.Id}]`}
+            title={i18next.t("编辑/添加模块文档")} subTitle={props.yakScript.ScriptName + `[${props.yakScript.Id}]`}
             extra={[
                 <Button
                     type={"primary"}
@@ -27,12 +29,12 @@ export const DocumentEditor: React.FC<DocumentEditorProp> = (props) => {
                             YakScriptName: props.yakScript.ScriptName,
                             Markdown: markdown,
                         }).then(() => {
-                            success("保存文档成功")
+                            success(i18next.t("保存文档成功"))
                         }).catch((e: any) => {
                             console.info(e)
                         }).finally()
                     }}
-                >保存 / 创建文档</Button>
+                >{i18next.t("保存 / 创建文档")}</Button>
             ]}
         />
         <MDEditor

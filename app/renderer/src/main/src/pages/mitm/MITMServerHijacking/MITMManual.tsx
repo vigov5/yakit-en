@@ -12,6 +12,7 @@ import {useResponsive} from "ahooks"
 import {YakitSegmented} from "@/components/yakitUI/YakitSegmented/YakitSegmented"
 import { OtherMenuListProps, YakitEditorKeyCode } from "@/components/yakitUI/YakitEditor/YakitEditorType"
 import { YakitSwitch } from "@/components/yakitUI/YakitSwitch/YakitSwitch"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -57,7 +58,7 @@ export const MITMManualHeardExtra: React.FC<MITMManualHeardExtraProps> = React.m
                 })}
             >
                 <div className={styles["manual-select"]}>
-                    <span className={styles["manual-select-label"]}>劫持响应:</span>
+                    <span className={styles["manual-select-label"]}>{i18next.t("劫持响应:")}</span>
                     {/* <YakitSegmented
                         value={hijackResponseType}
                         onChange={(v) => {
@@ -90,11 +91,9 @@ export const MITMManualHeardExtra: React.FC<MITMManualHeardExtraProps> = React.m
                     colors="danger"
                     disabled={status === "hijacking"}
                     onClick={() => onDiscardRequest()}
-                >
-                    丢弃请求
+                >{i18next.t("丢弃请求")}
                 </YakitButton>
-                <YakitButton disabled={status === "hijacking"} onClick={() => onSubmitData()}>
-                    提交数据
+                <YakitButton disabled={status === "hijacking"} onClick={() => onSubmitData()}>{i18next.t("提交数据")}
                 </YakitButton>
             </div>
         </div>
@@ -114,7 +113,7 @@ export const ManualUrlInfo: React.FC<ManualUrlInfoProps> = React.memo((props) =>
     return (
         <div className={classNames(styles["autoForward-manual-urlInfo"], className)}>
             <div className={classNames(styles["manual-url-info"], "content-ellipsis")}>
-                {status === "hijacking" ? "目标：监听中..." : `目标：${urlInfo}`}
+                {status === "hijacking" ? i18next.t("目标：监听中...") : i18next.t("目标：${urlInfo}", { v1: urlInfo })}
             </div>
             {ipInfo && status !== "hijacking" && (
                 <>
@@ -136,7 +135,7 @@ export const ManualUrlInfo: React.FC<ManualUrlInfoProps> = React.memo((props) =>
                     }}
                     size='small'
                 >
-                    Websocket {currentIsForResponse ? "响应" : "请求"}
+                    Websocket {currentIsForResponse ? i18next.t("响应") : i18next.t("请求")}
                 </YakitTag>
             ) : currentIsForResponse && status !== "hijacking" ? (
                 <YakitTag
@@ -148,8 +147,7 @@ export const ManualUrlInfo: React.FC<ManualUrlInfoProps> = React.memo((props) =>
                         cursor: "pointer"
                     }}
                     size='small'
-                >
-                    HTTP 响应
+                >{i18next.t("HTTP 响应")}
                 </YakitTag>
             ) : (
                 <YakitTag
@@ -161,8 +159,7 @@ export const ManualUrlInfo: React.FC<ManualUrlInfoProps> = React.memo((props) =>
                         cursor: "pointer"
                     }}
                     size='small'
-                >
-                    HTTP 请求
+                >{i18next.t("HTTP 请求")}
                 </YakitTag>
             )}
         </div>
@@ -215,18 +212,18 @@ export const MITMManualEditor: React.FC<MITMManualEditorProps> = React.memo((pro
                         {type: "divider"},
                         {
                             key:"trigger-auto-hijacked",
-                            label: "切换为自动劫持模式",
+                            label: i18next.t("切换为自动劫持模式"),
                             keybindings: [
                                 YakitEditorKeyCode.Shift,system === "Darwin"?YakitEditorKeyCode.Meta:YakitEditorKeyCode.Control,YakitEditorKeyCode.KEY_T
                             ],
                         },
                         {
                             key:"forward-response",
-                            label: "放行该 HTTP Response",
+                            label: i18next.t("放行该 HTTP Response"),
                         },
                         {
                             key:"drop-response",
-                            label: "丢弃该 HTTP Response",
+                            label: i18next.t("丢弃该 HTTP Response"),
                         },
                     ],
                     onRun: (editor, key) => {
@@ -260,32 +257,32 @@ export const MITMManualEditor: React.FC<MITMManualEditorProps> = React.memo((pro
                         {type: "divider"},
                         {
                             key:"trigger-auto-hijacked",
-                            label: "切换为自动劫持模式",
+                            label: i18next.t("切换为自动劫持模式"),
                             keybindings: [
                                 YakitEditorKeyCode.Shift,system === "Darwin"?YakitEditorKeyCode.Meta:YakitEditorKeyCode.Control,YakitEditorKeyCode.KEY_T
                             ],
                         },
                         {
                             key:"send-to-fuzzer",
-                            label: "发送到 Web Fuzzer",
+                            label: i18next.t("发送到 Web Fuzzer"),
                             keybindings: [
                                 YakitEditorKeyCode.Shift,system === "Darwin"?YakitEditorKeyCode.Meta:YakitEditorKeyCode.Control,YakitEditorKeyCode.KEY_R
                             ],
                         },
                         {
                             key:"forward-response",
-                            label: "放行该 HTTP Response",
+                            label: i18next.t("放行该 HTTP Response"),
                             keybindings: [
                                 YakitEditorKeyCode.Shift,system === "Darwin"?YakitEditorKeyCode.Meta:YakitEditorKeyCode.Control,YakitEditorKeyCode.KEY_F
                             ],
                         },
                         {
                             key:"drop-response",
-                            label: "丢弃该 HTTP Response",
+                            label: i18next.t("丢弃该 HTTP Response"),
                         },
                         {
                             key:"hijack-current-response",
-                            label: "劫持该 Request 对应的响应",
+                            label: i18next.t("劫持该 Request 对应的响应"),
                         },
                     ],
                     onRun: (editor:any, key) => {

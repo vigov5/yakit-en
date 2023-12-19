@@ -9,6 +9,7 @@ import {divider} from "@uiw/react-md-editor";
 import {CopyableField} from "../../utils/inputUtil";
 import ReactResizeDetector from "react-resize-detector";
 import {useMemoizedFn} from "ahooks";
+import i18next from "../../i18n"
 
 export interface FuzzerResponseTableProp {
     content: FuzzerResponse[]
@@ -81,7 +82,7 @@ const {Text} = Typography;
 //                     render: (i: FuzzerResponse) => <Tag>{formatTimestamp(i.Timestamp)}</Tag>
 //                 },
 //                 {
-//                     title: "操作", fixed: "right", width: 80,
+//                     title: i18next.t("操作"), fixed: "right", width: 80,
 //                     render: (i: FuzzerResponse) => <Button
 //                         size={"small"} type={"primary"}
 //                         onClick={() => {
@@ -109,14 +110,14 @@ export const FuzzerResponseTableEx: React.FC<FuzzerResponseTableProp> = React.me
                 if ((res || []).length > 0) {
                     analyzeFuzzerResponse(res[0], index, content)
                 }
-            }}>详情</a>
+            }}>{i18next.t("详情")}</a>
         </>
     })
 
     const getArtColumns = useMemoizedFn((): ArtColumn[] => {
         return props.success ? [
             {
-                name: "请求", code: "Count", features: {
+                name: i18next.t("请求"), code: "Count", features: {
                     sortable: sortAsNumber,
                 },
                 width: 70,
@@ -133,7 +134,7 @@ export const FuzzerResponseTableEx: React.FC<FuzzerResponseTableProp> = React.me
                 render: v => <div style={{color: StatusCodeToColor(v)}}>{`${v}`}</div>, width: 100,
             },
             {
-                name: "响应大小",
+                name: i18next.t("响应大小"),
                 code: "BodyLength",
                 render: v => v,
                 features: {
@@ -142,7 +143,7 @@ export const FuzzerResponseTableEx: React.FC<FuzzerResponseTableProp> = React.me
                 width: 100,
             },
             {
-                name: "响应相似度",
+                name: i18next.t("响应相似度"),
                 code: "BodySimilarity",
                 render: v => {
                     const text = parseFloat(`${v}`).toFixed(3);
@@ -155,7 +156,7 @@ export const FuzzerResponseTableEx: React.FC<FuzzerResponseTableProp> = React.me
                 width: 100,
             },
             {
-                name: "HTTP头相似度",
+                name: i18next.t("HTTP头相似度"),
                 code: "HeaderSimilarity",
                 render: v => parseFloat(`${v}`).toFixed(3),
                 features: {
@@ -195,7 +196,7 @@ export const FuzzerResponseTableEx: React.FC<FuzzerResponseTableProp> = React.me
                 render: v => `${formatTimestamp(v)}`, width: 165,
             },
             {
-                name: "操作", code: "UUID", render: successResponseOperationHandler,
+                name: i18next.t("操作"), code: "UUID", render: successResponseOperationHandler,
                 width: 80, lock: true,
             }
         ] : [
@@ -205,11 +206,10 @@ export const FuzzerResponseTableEx: React.FC<FuzzerResponseTableProp> = React.me
                 }
             },
             {
-                name: "失败原因", code: "Reason", render: (v) => {
+                name: i18next.t("失败原因"), code: "Reason", render: (v) => {
                     return v ? <CopyableField style={{color: "red"}} noCopy={true} text={v}/> : "-"
                 }, features: {
-                    tips: <>
-                        如果请求失败才会有内容~
+                    tips: <>{i18next.t("如果请求失败才会有内容~")}
                     </>
                 }
             },

@@ -47,6 +47,7 @@ import {writeExecResultXTerm} from "../../../utils/xtermUtils"
 import {PluginResultUI, StatusCardInfoProps, StatusCardProps} from "../../yakitStore/viewers/base"
 import {NewTaskHistoryProps} from "./BatchExecuteByFilter"
 import {showUnfinishedBatchTaskList, UnfinishedBatchTask} from "./UnfinishedBatchTaskList"
+import i18next from "../../../i18n"
 
 export interface BatchExecutorPageProp {}
 
@@ -236,7 +237,7 @@ export const BatchExecutorPage: React.FC<BatchExecutorPageProp> = (props) => {
                 setExecuting(true)
             })
             .catch((e) => {
-                failed(`启动批量执行插件失败：${e}`)
+                failed(i18next.t("启动批量执行插件失败：${e}", { v1: e }))
             })
     })
     const cancel = useMemoizedFn(() => {
@@ -255,7 +256,7 @@ export const BatchExecutorPage: React.FC<BatchExecutorPageProp> = (props) => {
             }
         })
         ipcRenderer.on(`${token}-error`, async (e, data) => {
-            failed(`批量执行插件遇到问题: ${data}`)
+            failed(i18next.t("批量执行插件遇到问题: ${data}", { v1: data }))
         })
         ipcRenderer.on(`${token}-end`, async (e) => {
             setTimeout(() => setExecuting(false), 300)
@@ -293,11 +294,11 @@ export const BatchExecutorPage: React.FC<BatchExecutorPageProp> = (props) => {
                     title={
                         <Space>
                             <SelectOne
-                                label={"插件"}
+                                label={i18next.t("插件")}
                                 formItemStyle={{marginBottom: 0}}
                                 size={"small"}
                                 data={[
-                                    {text: "YAK 插件", value: "yak"},
+                                    {text: i18next.t("YAK 插件"), value: "yak"},
                                     {text: "YAML POC", value: "nuclei"}
                                 ]}
                                 value={pluginType}
@@ -315,7 +316,7 @@ export const BatchExecutorPage: React.FC<BatchExecutorPageProp> = (props) => {
                     extra={
                         <Space>
                             <Popover
-                                title={"额外设置"}
+                                title={i18next.t("额外设置")}
                                 trigger={["click"]}
                                 content={
                                     <div>
@@ -328,14 +329,13 @@ export const BatchExecutorPage: React.FC<BatchExecutorPageProp> = (props) => {
                                             }}
                                         >
                                             <InputInteger
-                                                label={"插件展示数量"}
+                                                label={i18next.t("插件展示数量")}
                                                 value={limit}
                                                 setValue={setLimit}
                                                 formItemStyle={{marginBottom: 4}}
                                             />
                                             <Form.Item colon={false} label={""} style={{marginBottom: 10}}>
-                                                <Button type='primary' htmlType='submit'>
-                                                    刷新
+                                                <Button type='primary' htmlType='submit'>{i18next.t("刷新")}
                                                 </Button>
                                             </Form.Item>
                                         </Form>
@@ -345,7 +345,7 @@ export const BatchExecutorPage: React.FC<BatchExecutorPageProp> = (props) => {
                                 <Button size={"small"} icon={<SettingOutlined />} type={"link"} />
                             </Popover>
                             <Popover
-                                title={"搜索插件关键字"}
+                                title={i18next.t("搜索插件关键字")}
                                 trigger={["click"]}
                                 content={
                                     <div>
@@ -364,8 +364,7 @@ export const BatchExecutorPage: React.FC<BatchExecutorPageProp> = (props) => {
                                                 setValue={setKeyword}
                                             />
                                             <Form.Item colon={false} label={""} style={{marginBottom: 10}}>
-                                                <Button type='primary' htmlType='submit'>
-                                                    搜索
+                                                <Button type='primary' htmlType='submit'>{i18next.t("搜索")}
                                                 </Button>
                                             </Form.Item>
                                         </Form>
@@ -389,8 +388,7 @@ export const BatchExecutorPage: React.FC<BatchExecutorPageProp> = (props) => {
                                     }
                                 }}
                                 checked={checked}
-                            >
-                                全选
+                            >{i18next.t("全选")}
                             </Checkbox>
                         </Space>
                     }
@@ -419,7 +417,7 @@ export const BatchExecutorPage: React.FC<BatchExecutorPageProp> = (props) => {
                 <AutoCard
                     title={
                         <Space>
-                            {"已选插件 / 当页插件 / 插件总量"}
+                            {i18next.t("已选插件 / 当页插件 / 插件总量")}
                             <Tag>{`${selected.length} / ${scripts.length} / ${total}`}</Tag>
                         </Space>
                     }
@@ -567,7 +565,7 @@ export const ExecSelectedPlugins: React.FC<ExecSelectedPluginsProp> = React.memo
                 onSubmitCapture={(e) => {
                     e.preventDefault()
                     if (!target.target && !target.targetFile) {
-                        failed("请输入目标或上传目标文件夹绝对路径!")
+                        failed(i18next.t("请输入目标或上传目标文件夹绝对路径!"))
                         return
                     }
                     props.onSubmit(target)
@@ -579,7 +577,7 @@ export const ExecSelectedPlugins: React.FC<ExecSelectedPluginsProp> = React.memo
                     textareaRow={2}
                     textarea={true}
                     value={target.target}
-                    label={"输入目标"}
+                    label={i18next.t("输入目标")}
                     setValue={(targetRaw) => setTarget({...target, target: targetRaw})}
                     suffixNode={
                         <div style={{display: "inline-block", marginLeft: 5, marginBottom: 4}}>
@@ -589,8 +587,7 @@ export const ExecSelectedPlugins: React.FC<ExecSelectedPluginsProp> = React.memo
                                     danger={true}
                                     disabled={executing ? false : disableStartButton}
                                     onClick={props.onCancel}
-                                >
-                                    停止执行
+                                >{i18next.t("停止执行")}
                                 </Button>
                             ) : (
                                 <Button
@@ -598,8 +595,7 @@ export const ExecSelectedPlugins: React.FC<ExecSelectedPluginsProp> = React.memo
                                     htmlType='submit'
                                     disabled={executing ? false : disableStartButton}
                                     loading={loading}
-                                >
-                                    执行任务
+                                >{i18next.t("执行任务")}
                                 </Button>
                             )}
                         </div>
@@ -608,19 +604,18 @@ export const ExecSelectedPlugins: React.FC<ExecSelectedPluginsProp> = React.memo
 
                 <div style={{paddingLeft: 70}}>
                     <Space>
-                        {target.proxy && <Tag>代理: {target.proxy}</Tag>}
+                        {target.proxy && <Tag>{i18next.t("代理:")} {target.proxy}</Tag>}
                         {/*<Tag>进程: {target.concurrent}</Tag>*/}
-                        <Tag>总超时: {target.totalTimeout}s</Tag>
+                        <Tag>{i18next.t("总超时:")} {target.totalTimeout}s</Tag>
                         {target.targetFile && (
                             <Tag color={"geekblue"}>
-                                <Space>
-                                    目标文件：
+                                <Space>{i18next.t("目标文件：")}
                                     <CopyableField text={target.targetFile} maxWidth={100} tooltip={true} />
                                 </Space>
                             </Tag>
                         )}
                         <Popover
-                            title={"额外配置"}
+                            title={i18next.t("额外配置")}
                             content={
                                 <div style={{width: 500}}>
                                     <Form
@@ -631,7 +626,7 @@ export const ExecSelectedPlugins: React.FC<ExecSelectedPluginsProp> = React.memo
                                         wrapperCol={{span: 14}}
                                     >
                                         <InputItem
-                                            label={"代理"}
+                                            label={i18next.t("代理")}
                                             value={target.proxy}
                                             setValue={(t) => {
                                                 setTarget({...target, proxy: t})
@@ -645,31 +640,31 @@ export const ExecSelectedPlugins: React.FC<ExecSelectedPluginsProp> = React.memo
                                             style={{marginBottom: 4}}
                                         />
                                         <InputInteger
-                                            label={"并发进程"}
+                                            label={i18next.t("并发进程")}
                                             value={target.concurrent}
                                             setValue={(c) => setTarget({...target, concurrent: c})}
                                             formItemStyle={{marginBottom: 4}}
                                         />
                                         <InputInteger
-                                            label={"每个进程任务数"}
+                                            label={i18next.t("每个进程任务数")}
                                             value={target.progressTaskCount}
                                             setValue={(e) => setTarget({...target, progressTaskCount: e})}
                                             formItemStyle={{marginBottom: 4}}
                                         />
                                         <InputInteger
-                                            label={"总超时时间"}
+                                            label={i18next.t("总超时时间")}
                                             value={target.totalTimeout}
                                             setValue={(t) => setTarget({...target, totalTimeout: t})}
                                             formItemStyle={{marginBottom: 4}}
                                         />
                                         <SwitchItem
-                                            label={"允许 Fuzz 语法"}
+                                            label={i18next.t("允许 Fuzz 语法")}
                                             value={target.allowFuzz}
                                             setValue={(e) => setTarget({...target, allowFuzz: e})}
                                             formItemStyle={{marginBottom: 4}}
                                         />
                                         <InputFileNameItem
-                                            label={"上传目标文件"}
+                                            label={i18next.t("上传目标文件")}
                                             filename={target.targetFile}
                                             accept={["text/plain"]}
                                             setFileName={(e) => setTarget({...target, targetFile: e})}
@@ -694,8 +689,7 @@ export const ExecSelectedPlugins: React.FC<ExecSelectedPluginsProp> = React.memo
                                     })
                                 })
                             }}
-                        >
-                            未完成的任务
+                        >{i18next.t("未完成的任务")}
                         </Button>
                         {/*{history.length !== 0 && (*/}
                         {/*    <Popover*/}
@@ -906,13 +900,13 @@ export const BatchExecutorResultUI: React.FC<BatchExecutorResultUIProp> = (props
                 tabBarExtraContent={{
                     right: activeKey !== "executing" && (
                         <div style={{width: 140}}>
-                            <span style={{display: "inline-block", height: 22, marginRight: 5}}>只展示命中项</span>
+                            <span style={{display: "inline-block", height: 22, marginRight: 5}}>{i18next.t("只展示命中项")}</span>
                             <Switch checked={checked} onChange={(checked) => setChecked(checked)}></Switch>
                         </div>
                     )
                 }}
             >
-                <Tabs.TabPane tab={"执行中的任务"} key={"executing"}>
+                <Tabs.TabPane tab={i18next.t("执行中的任务")} key={"executing"}>
                     <List<BatchTask>
                         style={{height: "100%", overflow: "auto"}}
                         pagination={false}
@@ -951,7 +945,7 @@ export const BatchExecutorResultUI: React.FC<BatchExecutorResultUIProp> = (props
                         }}
                     />
                 </Tabs.TabPane>
-                <Tabs.TabPane tab={`历史任务列表[${allTasks.length}]`} key={"results"} forceRender={true}>
+                <Tabs.TabPane tab={i18next.t("历史任务列表[${allTasks.length}]", {v1: allTasks.length})} key={"results"} forceRender={true}>
                     <BatchTaskViewer tasks={allTasks} checked={checked} />
                 </Tabs.TabPane>
             </Tabs>
@@ -990,13 +984,11 @@ export const Timer: React.FC<TimerProp> = React.memo((props) => {
 
     if (!props.executing)
         return (
-            <Tag style={{maxWidth: 103}} color={"red"}>
-                已中断
+            <Tag style={{maxWidth: 103}} color={"red"}>{i18next.t("已中断")}
             </Tag>
         )
     return (
-        <Tag style={{maxWidth: 103}} color={props.color || "green"}>
-            已运行{duration}秒
+        <Tag style={{maxWidth: 103}} color={props.color || "green"}>{i18next.t("已运行")}{duration}秒
         </Tag>
     )
 })
@@ -1226,7 +1218,7 @@ const BatchTaskViewer: React.FC<BatchTaskViewerProp> = React.memo((props) => {
                                     type='link'
                                     onClick={(e) => {
                                         let m = showDrawer({
-                                            title: "poc详情",
+                                            title: i18next.t("poc详情"),
                                             keyboard: false,
                                             width: "60%",
                                             onClose: () => {
@@ -1242,8 +1234,7 @@ const BatchTaskViewer: React.FC<BatchTaskViewerProp> = React.memo((props) => {
                                             for (let item of execResults) writeExecResultXTerm(getXtermRef(), item)
                                         }, 500)
                                     }}
-                                >
-                                    详情
+                                >{i18next.t("详情")}
                                 </Button>
                             </div>
                         )

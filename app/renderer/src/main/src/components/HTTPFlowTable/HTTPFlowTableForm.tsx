@@ -11,6 +11,7 @@ import {YakitRadioButtons} from "../yakitUI/YakitRadioButtons/YakitRadioButtons"
 import {FiltersItemProps} from "../TableVirtualResize/TableVirtualResizeType"
 import {getRemoteValue, setRemoteValue} from "@/utils/kv"
 import {RemoveIcon} from "@/assets/newIcon"
+import i18next from "../../i18n"
 export interface HTTPFlowTableFormConfigurationProps {
     visible: boolean
     setVisible: (b: boolean) => void
@@ -102,11 +103,11 @@ export const HTTPFlowTableFormConfiguration: React.FC<HTTPFlowTableFormConfigura
         }
         if (JSON.stringify(oldValue) !== JSON.stringify(newValue)) {
             Modal.confirm({
-                title: "温馨提示",
+                title: i18next.t("温馨提示"),
                 icon: <ExclamationCircleOutlined />,
-                content: "请问是否要保存高级配置并关闭弹框？",
-                okText: "保存",
-                cancelText: "不保存",
+                content: i18next.t("请问是否要保存高级配置并关闭弹框？"),
+                okText: i18next.t("保存"),
+                cancelText: i18next.t("不保存"),
                 closable: true,
                 closeIcon: (
                     <div
@@ -144,7 +145,7 @@ export const HTTPFlowTableFormConfiguration: React.FC<HTTPFlowTableFormConfigura
             onClose={() => onClose()}
             title={
                 <div className={styles["advanced-configuration-drawer-title"]}>
-                    <div className={styles["advanced-configuration-drawer-title-text"]}>高级筛选</div>
+                    <div className={styles["advanced-configuration-drawer-title-text"]}>{i18next.t("高级筛选")}</div>
                     <div className={styles["advanced-configuration-drawer-title-btns"]}>
                         <YakitButton
                             type='outline2'
@@ -163,17 +164,17 @@ export const HTTPFlowTableFormConfiguration: React.FC<HTTPFlowTableFormConfigura
             maskClosable={false}
         >
             <Form form={form} labelCol={{span: 6}} wrapperCol={{span: 16}} className={styles["mitm-filters-form"]}>
-                <Form.Item label='筛选模式' name='filterMode' initialValue={"shield"}>
+                <Form.Item label={i18next.t("筛选模式")} name='filterMode' initialValue={"shield"}>
                     <YakitRadioButtons
                         buttonStyle='solid'
                         options={[
                             {
                                 value: "shield",
-                                label: "屏蔽内容"
+                                label: i18next.t("屏蔽内容")
                             },
                             {
                                 value: "show",
-                                label: "只展示"
+                                label: i18next.t("只展示")
                             }
                         ]}
                     />
@@ -182,16 +183,16 @@ export const HTTPFlowTableFormConfiguration: React.FC<HTTPFlowTableFormConfigura
                     <YakitSelect mode='tags'></YakitSelect>
                 </Form.Item>
                 <Form.Item
-                    label='URL路径'
+                    label={i18next.t("URL路径")}
                     name='urlPath'
                     help={"可理解为 URI 匹配，例如 /main/index.php?a=123 或者 /*/index 或 /admin* "}
                 >
                     <YakitSelect mode='tags'></YakitSelect>
                 </Form.Item>
-                <Form.Item label={"文件后缀"} name='fileSuffix'>
+                <Form.Item label={i18next.t("文件后缀")} name='fileSuffix'>
                     <YakitSelect mode='tags'></YakitSelect>
                 </Form.Item>
-                <Form.Item label={"响应类型"} name='searchContentType'>
+                <Form.Item label={i18next.t("响应类型")} name='searchContentType'>
                     <YakitSelect mode='tags' options={responseType}></YakitSelect>
                 </Form.Item>
                 <Form.Item label={" "} colon={false}>

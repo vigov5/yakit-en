@@ -3,7 +3,7 @@ import {DraggerProps} from "antd/lib/upload"
 import type {YakitSizeType} from "../YakitInputNumber/YakitInputNumberType"
 import {InternalTextAreaProps} from "../YakitInput/YakitInputType"
 
-export interface YakitFormDraggerProps extends Omit<DraggerProps,'beforeUpload'> {
+export interface YakitFormDraggerProps extends DraggerProps {
     size?: YakitSizeType
     formItemClassName?: string
     formItemProps?: FormItemProps

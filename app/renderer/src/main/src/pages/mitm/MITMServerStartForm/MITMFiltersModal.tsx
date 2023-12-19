@@ -22,6 +22,7 @@ import {YakitPopover} from "@/components/yakitUI/YakitPopover/YakitPopover"
 import {YakitMenu} from "@/components/yakitUI/YakitMenu/YakitMenu"
 import {YakitPopconfirm} from "@/components/yakitUI/YakitPopconfirm/YakitPopconfirm"
 import {YakitEmpty} from "@/components/yakitUI/YakitEmpty/YakitEmpty"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -45,13 +46,13 @@ const MITMFiltersModal: React.FC<MITMFiltersModalProps> = React.memo((props) => 
     const [popoverVisible, setPopoverVisible] = useState<boolean>(false)
     const onResetFilters = useMemoizedFn(() => {
         ipcRenderer.invoke("mitm-reset-filter").then(() => {
-            info("MITM 过滤器重置命令已发送")
+            info(i18next.t("MITM 过滤器重置命令已发送"))
             setVisible(false)
         })
     })
     useEffect(() => {
         ipcRenderer.on("client-mitm-filter", (e, msg) => {
-            info("更新 MITM 过滤器状态")
+            info(i18next.t("更新 MITM 过滤器状态"))
             setMITMFilter({
                 includeSuffix: msg.includeSuffix,
                 excludeMethod: msg.excludeMethod,
@@ -77,10 +78,10 @@ const MITMFiltersModal: React.FC<MITMFiltersModalProps> = React.memo((props) => 
             .then(() => {
                 setMITMFilter(filter)
                 setVisible(false)
-                info("更新 MITM 过滤器状态")
+                info(i18next.t("更新 MITM 过滤器状态"))
             })
             .catch((err) => {
-                yakitFailed("更新 MITM 过滤器失败:" + err)
+                yakitFailed(i18next.t("更新 MITM 过滤器失败:") + err)
             })
     })
     const getMITMFilter = useMemoizedFn(() => {
@@ -90,7 +91,7 @@ const MITMFiltersModal: React.FC<MITMFiltersModalProps> = React.memo((props) => 
                 setMITMFilter(val)
             })
             .catch((err) => {
-                yakitFailed("获取 MITM 过滤器失败:" + err)
+                yakitFailed(i18next.t("获取 MITM 过滤器失败:") + err)
             })
     })
     const onClearFilters = () => {
@@ -120,11 +121,11 @@ const MITMFiltersModal: React.FC<MITMFiltersModalProps> = React.memo((props) => 
     // 保存过滤器
     const onSaveFilter = useMemoizedFn(() => {
         const m = showYakitModal({
-            title: "保存过滤器配置",
+            title: i18next.t("保存过滤器配置"),
             content: (
                 <div className={styles["mitm-save-filter"]}>
                     <YakitInput.TextArea
-                        placeholder='请为过滤器配置取个名字...'
+                        placeholder={i18next.t("请为过滤器配置取个名字...")}
                         showCount
                         maxLength={50}
                         onChange={(e) => {
@@ -138,14 +139,13 @@ const MITMFiltersModal: React.FC<MITMFiltersModalProps> = React.memo((props) => 
                                 setFilterName("")
                                 m.destroy()
                             }}
-                        >
-                            取消
+                        >{i18next.t("取消")}
                         </YakitButton>
                         <YakitButton
                             type='primary'
                             onClick={() => {
                                 if (getFilterName().length === 0) {
-                                    warn("请输入名字")
+                                    warn(i18next.t("请输入名字"))
                                     return
                                 }
                                 const filter = filtersRef.current.getFormValue()
@@ -156,7 +156,7 @@ const MITMFiltersModal: React.FC<MITMFiltersModalProps> = React.memo((props) => 
                                 getRemoteValue(MitmSaveFilter).then((data) => {
                                     if (!data) {
                                         setRemoteValue(MitmSaveFilter, JSON.stringify([saveObj]))
-                                        info("存储成功")
+                                        info(i18next.t("存储成功"))
                                         m.destroy()
                                         return
                                     }
@@ -165,17 +165,16 @@ const MITMFiltersModal: React.FC<MITMFiltersModalProps> = React.memo((props) => 
                                         if (
                                             filterData.filter((item) => item.filterName === getFilterName()).length > 0
                                         ) {
-                                            warn("此名字重复")
+                                            warn(i18next.t("此名字重复"))
                                         } else {
                                             setRemoteValue(MitmSaveFilter, JSON.stringify([saveObj, ...filterData]))
-                                            info("存储成功")
+                                            info(i18next.t("存储成功"))
                                             m.destroy()
                                         }
                                     } catch (error) {}
                                 })
                             }}
-                        >
-                            保存
+                        >{i18next.t("保存")}
                         </YakitButton>
                     </div>
                 </div>
@@ -200,7 +199,7 @@ const MITMFiltersModal: React.FC<MITMFiltersModalProps> = React.memo((props) => 
                 setVisible(false)
             }}
             closable={false}
-            title='过滤器配置'
+            title={i18next.t("过滤器配置")}
             width={720}
             maskClosable={false}
             subTitle={
@@ -228,11 +227,9 @@ const MITMFiltersModal: React.FC<MITMFiltersModalProps> = React.memo((props) => 
                         <YakitButton style={{padding: "3px 8px"}} icon={<OutlineClockIcon />} type='text' />
                     </YakitPopover>
 
-                    <YakitButton type='text' onClick={() => onClearFilters()}>
-                        清除
+                    <YakitButton type='text' onClick={() => onClearFilters()}>{i18next.t("清除")}
                     </YakitButton>
-                    {isStartMITM &&<YakitButton type='text' onClick={() => onResetFilters()}>
-                        重置过滤器
+                    {isStartMITM &&<YakitButton type='text' onClick={() => onResetFilters()}>{i18next.t("重置过滤器")}
                     </YakitButton>}
                 </div>
             }
@@ -241,11 +238,11 @@ const MITMFiltersModal: React.FC<MITMFiltersModalProps> = React.memo((props) => 
                 const filter = filtersRef.current.getFormValue()
                 if (areObjectPropertiesEmpty(filter)) {
                     Modal.confirm({
-                        title: "温馨提示",
+                        title: i18next.t("温馨提示"),
                         icon: <ExclamationCircleOutlined />,
-                        content: "过滤器为空时将重置为默认配置，确认重置吗？",
-                        okText: "确认",
-                        cancelText: "取消",
+                        content: i18next.t("过滤器为空时将重置为默认配置，确认重置吗？"),
+                        okText: i18next.t("确认"),
+                        cancelText: i18next.t("取消"),
                         closable: true,
                         closeIcon: (
                             <div
@@ -317,7 +314,7 @@ const MitmFilterHistoryStore: React.FC<MitmFilterHistoryStoreProps> = React.memo
     return (
         <div className={styles["mitm-filter-history-store"]}>
             <div className={styles["header"]}>
-                <div className={styles["title"]}>历史存储</div>
+                <div className={styles["title"]}>{i18next.t("历史存储")}</div>
                 {mitmSaveData.length !== 0 && (
                     <YakitButton
                         type='text'
@@ -325,8 +322,7 @@ const MitmFilterHistoryStore: React.FC<MitmFilterHistoryStoreProps> = React.memo
                         onClick={() => {
                             setMitmSaveData([])
                         }}
-                    >
-                        清空
+                    >{i18next.t("清空")}
                     </YakitButton>
                 )}
             </div>
@@ -357,7 +353,7 @@ const MitmFilterHistoryStore: React.FC<MitmFilterHistoryStoreProps> = React.memo
                     ))}
                 </div>
             ) : (
-                <div className={classNames(styles["no-data"])}>暂无数据</div>
+                <div className={classNames(styles["no-data"])}>{i18next.t("暂无数据")}</div>
             )}
         </div>
     )

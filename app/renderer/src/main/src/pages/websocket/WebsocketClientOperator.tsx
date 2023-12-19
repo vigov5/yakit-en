@@ -12,6 +12,7 @@ import {InputInteger, InputItem, SelectOne} from "@/utils/inputUtil";
 import {getRemoteValue, setRemoteValue} from "@/utils/kv";
 import {SettingFilled} from "@ant-design/icons";
 import {AutoSpin} from "@/components/AutoSpin";
+import i18next from "../../i18n"
 
 export interface WebsocketClientOperatorProp {
     tls?: boolean
@@ -121,16 +122,16 @@ export const WebsocketClientOperator: React.FC<WebsocketClientOperatorProp> = (p
             return <AutoCard
                 size={"small"} bordered={true} title={<Space size={4}>
                 <SelectOne size={"small"} data={[
-                    {value: "request", text: "请求"},
-                    {value: "response", text: "响应"},
+                    {value: "request", text: i18next.t("请求")},
+                    {value: "response", text: i18next.t("响应")},
                 ]} value={mode} setValue={setMode} formItemStyle={{marginBottom: 0}}/>
-                {websocketBuildFinished ? <Tag color={"green"}>已建立连接</Tag> : <Tag color={"orange"}>连接未建立</Tag>}
+                {websocketBuildFinished ? <Tag color={"green"}>{i18next.t("已建立连接")}</Tag> : <Tag color={"orange"}>{i18next.t("连接未建立")}</Tag>}
             </Space>}
                 bodyStyle={{padding: 0}}
                 extra={(
                     <Space>
                         <Popover
-                            title={"设置额外参数"}
+                            title={i18next.t("设置额外参数")}
                             trigger={["click"]}
                             content={() => {
                                 return <Form
@@ -141,7 +142,7 @@ export const WebsocketClientOperator: React.FC<WebsocketClientOperatorProp> = (p
                                 >
                                     <InputItem
                                         value={proxy} setValue={setProxy}
-                                        label={"设置代理"}
+                                        label={i18next.t("设置代理")}
                                         autoComplete={[
                                             "http://127.0.0.1:7890",
                                             "socks5://127.0.0.1:7890",
@@ -173,13 +174,12 @@ export const WebsocketClientOperator: React.FC<WebsocketClientOperatorProp> = (p
                             }}>TLS</Checkbox>
                         </Form.Item>
                         {getExecuting() ? (
-                            <Popconfirm title={"确定要关闭 Websocket 连接吗？"} onConfirm={cancel}>
+                            <Popconfirm title={i18next.t("确定要关闭 Websocket 连接吗？")} onConfirm={cancel}>
                                 <Button
                                     size={"small"}
                                     type={"primary"}
                                     danger={true}
-                                >
-                                    断开
+                                >{i18next.t("断开")}
                                 </Button>
                             </Popconfirm>
                         ) : <Button
@@ -188,8 +188,7 @@ export const WebsocketClientOperator: React.FC<WebsocketClientOperatorProp> = (p
                             onClick={() => {
                                 submit()
                             }}
-                        >
-                            连接
+                        >{i18next.t("连接")}
                         </Button>}
                     </Space>
                 )}
@@ -206,7 +205,7 @@ export const WebsocketClientOperator: React.FC<WebsocketClientOperatorProp> = (p
                 />}
                 {mode === "response" && <AutoSpin
                     spinning={!getUpgradeResponse()}
-                    tip={"正在构建 Websocket 连接"}
+                    tip={i18next.t("正在构建 Websocket 连接")}
                 >
                     <YakEditor
                         readOnly={true}
@@ -231,10 +230,10 @@ export const WebsocketClientOperator: React.FC<WebsocketClientOperatorProp> = (p
                         onClick={() => {
                             sendToServer()
                         }}
-                    >发送到服务器</Button>
+                    >{i18next.t("发送到服务器")}</Button>
                 </Space>}
                 bodyStyle={{padding: 0}}
-                title={"发送数据"}
+                title={i18next.t("发送数据")}
             >
                 <YakEditor
                     // readOnly={!getExecuting()}

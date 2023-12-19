@@ -5,6 +5,7 @@ import {failed, info} from "../../utils/notification"
 import {InputFileNameItem, InputFileNameItemProps, InputItem, SelectOne} from "../../utils/inputUtil"
 import {StringToUint8Array} from "@/utils/str"
 import {getRemoteValue, setRemoteValue} from "@/utils/kv"
+import i18next from "../../i18n"
 
 interface InsertFileFuzzTagProp {
     onFinished: (i: string) => any
@@ -37,7 +38,7 @@ const InsertFileFuzzTag: React.FC<InsertFileFuzzTagProp> = (props) => {
                 e.preventDefault()
 
                 if (!filename) {
-                    info("选中的文件名为空")
+                    info(i18next.t("选中的文件名为空"))
                     return
                 }
                 getRemoteValue(INSERT_FILE_FUZZ_TAG).then((data) => {
@@ -77,15 +78,15 @@ const InsertFileFuzzTag: React.FC<InsertFileFuzzTagProp> = (props) => {
                 label={" "}
                 colon={false}
                 data={[
-                    {value: "file", text: "文件内容"},
-                    {value: "file:line", text: "按行读取文件"},
-                    {value: "file:dir", text: "文件夹内所有"}
+                    {value: "file", text: i18next.t("文件内容")},
+                    {value: "file:line", text: i18next.t("按行读取文件")},
+                    {value: "file:dir", text: i18next.t("文件夹内所有")}
                 ]}
                 value={mode}
                 setValue={setMode}
             />
             <InputFileNameItem
-                label={"选择路径"}
+                label={i18next.t("选择路径")}
                 autoComplete={autoComplete}
                 filename={filename}
                 setFileName={setFilename}
@@ -116,7 +117,7 @@ const InsertTextToFuzzTag: React.FC<InsertFileFuzzTagProp> = (props) => {
                 ipcRenderer
                     .invoke("SaveTextToTemporalFile", {Text: StringToUint8Array(content)})
                     .then((rsp: {FileName: string}) => {
-                        info("生成临时字典文件:" + rsp.FileName)
+                        info(i18next.t("生成临时字典文件:") + rsp.FileName)
                         const filename = rsp.FileName
                         switch (mode) {
                             case "file":
@@ -128,17 +129,17 @@ const InsertTextToFuzzTag: React.FC<InsertFileFuzzTagProp> = (props) => {
                         }
                     })
                     .catch((e) => {
-                        failed(`生成临时字典失败:${e}`)
+                        failed(i18next.t("生成临时字典失败:${e}", { v1: e }))
                     })
             }}
         >
-            <InputItem label={"文本"} textarea={true} textareaRow={8} value={content} setValue={setContent} />
+            <InputItem label={i18next.t("文本")} textarea={true} textareaRow={8} value={content} setValue={setContent} />
             <SelectOne
                 label={" "}
                 colon={false}
                 data={[
-                    {value: "file", text: "文件内容"},
-                    {value: "file:line", text: "按行读取文件"}
+                    {value: "file", text: i18next.t("文件内容")},
+                    {value: "file:line", text: i18next.t("按行读取文件")}
                 ]}
                 value={mode}
                 setValue={setMode}
@@ -156,7 +157,7 @@ const InsertTextToFuzzTag: React.FC<InsertFileFuzzTagProp> = (props) => {
 
 export const insertFileFuzzTag = (onInsert: (i: string) => any, defaultMode?: ModeProps) => {
     let m = showModal({
-        title: "选择文件并插入",
+        title: i18next.t("选择文件并插入"),
         width: "800px",
         content: (
             <>
@@ -174,7 +175,7 @@ export const insertFileFuzzTag = (onInsert: (i: string) => any, defaultMode?: Mo
 
 export const insertTemporaryFileFuzzTag = (onInsert: (i: string) => any) => {
     let m = showModal({
-        title: "复制你想要作为字典的文本",
+        title: i18next.t("复制你想要作为字典的文本"),
         width: "800px",
         content: (
             <>

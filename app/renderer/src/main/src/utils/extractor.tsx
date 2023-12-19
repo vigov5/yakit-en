@@ -21,6 +21,7 @@ import { RegexpInput } from "@/pages/mitm/MITMRule/MITMRuleFromModal"
 import styles from "./extractor.module.scss"
 import { YakitPopconfirm } from "@/components/yakitUI/YakitPopconfirm/YakitPopconfirm"
 import { YakitSpin } from "@/components/yakitUI/YakitSpin/YakitSpin"
+import i18next from "../i18n"
 
 const { Text } = Typography
 
@@ -74,7 +75,7 @@ export const WebFuzzerResponseExtractor: React.FC<WebFuzzerResponseExtractorProp
                 // 这里能获取到选择到的内容
                 setSelected(model.getValueInRange(selection))
             } catch (e) {
-                console.info("提取选择数据错误")
+                console.info(i18next.t("提取选择数据错误"))
                 console.info(e)
             }
         }
@@ -104,7 +105,7 @@ export const WebFuzzerResponseExtractor: React.FC<WebFuzzerResponseExtractorProp
                     setMatchedRegexp(e.SelectedRegexp)
                 })
                 .catch((e) => {
-                    failed(`无法生成数据提取规则: ${e}`)
+                    failed(i18next.t("无法生成数据提取规则: ${e}", { v1: e }))
                 })
         },
         [selected],
@@ -170,18 +171,18 @@ export const WebFuzzerResponseExtractor: React.FC<WebFuzzerResponseExtractorProp
                     size={"small"}
                     title={
                         <Space>
-                            <div>自动生成提取规则</div>
+                            <div>{i18next.t("自动生成提取规则")}</div>
                             <YakitRadioButtons
                                 value={mode}
                                 onChange={(e) => setMode(e.target.value)}
                                 size='small'
                                 options={[
                                     {
-                                        label: "前后缀正则提取",
+                                        label: i18next.t("前后缀正则提取"),
                                         value: "regexp-between"
                                     },
                                     {
-                                        label: "单正则提取",
+                                        label: i18next.t("单正则提取"),
                                         value: "regexp"
                                     }
                                 ]}
@@ -191,7 +192,7 @@ export const WebFuzzerResponseExtractor: React.FC<WebFuzzerResponseExtractorProp
                     }
                     extra={
                         <Space>
-                            <YakitTag>共{responses.length}个响应</YakitTag>
+                            <YakitTag>{i18next.t("共")}{responses.length}个响应</YakitTag>
                             <YakitButton
                                 type={"primary"}
                                 size={"small"}
@@ -218,8 +219,7 @@ export const WebFuzzerResponseExtractor: React.FC<WebFuzzerResponseExtractorProp
                                             })
                                     })
                                 }}
-                            >
-                                提取数据
+                            >{i18next.t("提取数据")}
                             </YakitButton>
                         </Space>
                     }
@@ -256,7 +256,7 @@ export const WebFuzzerResponseExtractor: React.FC<WebFuzzerResponseExtractorProp
                                         iconColor='var(--yakit-primary-5)'
                                     />
                                 ) : (
-                                    <YakitTag>未选中提取规则</YakitTag>
+                                    <YakitTag>{i18next.t("未选中提取规则")}</YakitTag>
                                 )}
                             </Space>
                         </Space>
@@ -264,7 +264,7 @@ export const WebFuzzerResponseExtractor: React.FC<WebFuzzerResponseExtractorProp
                     {mode === "regexp" && (
                         <Space direction={"vertical"} style={{ width: "100%" }}>
                             <div className={styles["space-item"]}>
-                                <span>自动提取正则：</span>
+                                <span>{i18next.t("自动提取正则：")}</span>
                                 <div style={{ flex: 1, maxWidth: "90%" }}>
                                     <RegexpInput
                                         initialTagShow={true}
@@ -298,8 +298,7 @@ export const WebFuzzerResponseExtractor: React.FC<WebFuzzerResponseExtractorProp
                                 bordered={false}
                                 title={
                                     <Space>
-                                        <YakitTag>
-                                            已提/总量：
+                                        <YakitTag>{i18next.t("已提/总量：")}
                                             {extracted.length}/{responses.length}
                                         </YakitTag>
                                     </Space>
@@ -307,14 +306,13 @@ export const WebFuzzerResponseExtractor: React.FC<WebFuzzerResponseExtractorProp
                                 extra={
                                     <>
                                         <YakitPopconfirm
-                                            title={"确定要清除已提取数据？"}
+                                            title={i18next.t("确定要清除已提取数据？")}
                                             onConfirm={() => {
                                                 setToken(randomString(46))
                                                 setExtracted([])
                                             }}
                                         >
-                                            <YakitButton size={"small"} type='outline1' colors="danger">
-                                                清空
+                                            <YakitButton size={"small"} type='outline1' colors="danger">{i18next.t("清空")}
                                             </YakitButton>
                                         </YakitPopconfirm>
                                         <YakitButton
@@ -324,8 +322,7 @@ export const WebFuzzerResponseExtractor: React.FC<WebFuzzerResponseExtractorProp
                                                 saveABSFileToOpen("webfuzzer-extract-data.txt", extracted.join("\n"))
                                             }}
                                             style={{ marginLeft: 6 }}
-                                        >
-                                            下载文件
+                                        >{i18next.t("下载文件")}
                                         </YakitButton>
                                         {extractedMap.size > 0 && (
                                             <YakitButton
@@ -335,14 +332,13 @@ export const WebFuzzerResponseExtractor: React.FC<WebFuzzerResponseExtractorProp
                                                     ipcRenderer
                                                         .invoke("send-extracted-to-table", { type: sendPayloadsType, extractedMap })
                                                         .then(() => {
-                                                            info("数据发送成功")
+                                                            info(i18next.t("数据发送成功"))
                                                         })
                                                         .catch((err) => {
-                                                            yakitFailed("数据发送失败" + err)
+                                                            yakitFailed(i18next.t("数据发送失败") + err)
                                                         })
                                                 }}
-                                            >
-                                                在表中展示
+                                            >{i18next.t("在表中展示")}
                                             </YakitButton>
                                         )}
                                     </>

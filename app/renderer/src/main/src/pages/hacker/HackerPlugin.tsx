@@ -22,6 +22,7 @@ import ReactResizeDetector from "react-resize-detector"
 import "./HackerPlugin.scss"
 import {showModal} from "../../utils/showModal"
 import {xtermClear} from "../../utils/xtermUtils"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 const {Text} = Typography
@@ -110,7 +111,7 @@ export const HackerPlugin: React.FC<HackerPluginProps> = React.memo((props) => {
 
     const startScript = useMemoizedFn(() => {
         if (selected.length === 0) {
-            failed("请选一个插件后在点击执行")
+            failed(i18next.t("请选一个插件后在点击执行"))
             return
         }
         setExecting(true)
@@ -203,7 +204,7 @@ export const HackerPlugin: React.FC<HackerPluginProps> = React.memo((props) => {
                                 全选
                             </Checkbox> */}
                             <Popover
-                                title={"额外设置"}
+                                title={i18next.t("额外设置")}
                                 trigger={["click"]}
                                 content={
                                     <div>
@@ -215,14 +216,13 @@ export const HackerPlugin: React.FC<HackerPluginProps> = React.memo((props) => {
                                             }}
                                         >
                                             <InputInteger
-                                                label={"插件展示数量"}
+                                                label={i18next.t("插件展示数量")}
                                                 value={limit}
                                                 setValue={setLimit}
                                                 formItemStyle={{marginBottom: 4}}
                                             />
                                             <Form.Item colon={false} label={""} style={{marginBottom: 10}}>
-                                                <Button type='primary' htmlType='submit'>
-                                                    刷新
+                                                <Button type='primary' htmlType='submit'>{i18next.t("刷新")}
                                                 </Button>
                                             </Form.Item>
                                         </Form>
@@ -232,7 +232,7 @@ export const HackerPlugin: React.FC<HackerPluginProps> = React.memo((props) => {
                                 <Button size={"small"} icon={<SettingOutlined />} type={"link"} />
                             </Popover>
                             <Popover
-                                title={"搜索插件关键字"}
+                                title={i18next.t("搜索插件关键字")}
                                 trigger={["click"]}
                                 content={
                                     <div>
@@ -250,8 +250,7 @@ export const HackerPlugin: React.FC<HackerPluginProps> = React.memo((props) => {
                                                 setValue={setKeyword}
                                             />
                                             <Form.Item colon={false} label={""} style={{marginBottom: 10}}>
-                                                <Button type='primary' htmlType='submit'>
-                                                    搜索
+                                                <Button type='primary' htmlType='submit'>{i18next.t("搜索")}
                                                 </Button>
                                             </Form.Item>
                                         </Form>
@@ -313,7 +312,7 @@ export const HackerPlugin: React.FC<HackerPluginProps> = React.memo((props) => {
                     bordered={false}
                     title={
                         <Space>
-                            {"已选插件 / 当页插件 / 插件总量"}
+                            {i18next.t("已选插件 / 当页插件 / 插件总量")}
                             <Tag>{`${selected.length} / ${lists.length} / ${total}`}</Tag>
                         </Space>
                     }

@@ -37,6 +37,7 @@ import {YakitResizeBox} from "@/components/yakitUI/YakitResizeBox/YakitResizeBox
 import {HTTPFlowDetailRequestAndResponse} from "@/components/HTTPFlowDetail"
 import {Uint8ArrayToString} from "@/utils/str"
 import {v4 as uuidv4} from "uuid"
+import i18next from "../../../i18n"
 const {ipcRenderer} = window.require("electron")
 
 export interface StatusCardProps {
@@ -87,13 +88,13 @@ export interface TooltipTitleProps {
 const idToColor = (id: string) => {
     switch (true) {
         case id.includes("success"):
-        case id.includes("成功"):
+        case id.includes(i18next.t("成功")):
         case id.includes("succeeded"):
         case id.includes("finished"):
             return "#b7eb8f"
         case id.includes("error"):
-        case id.includes("失败"):
-        case id.includes("错误"):
+        case id.includes(i18next.t("失败")):
+        case id.includes(i18next.t("错误")):
         case id.includes("fatal"):
         case id.includes("missed"):
         case id.includes("miss"):
@@ -228,7 +229,7 @@ export const PluginResultUI: React.FC<PluginResultUIProp> = React.memo((props) =
     const newStatusCards = useMemo(() => {
         if (isEnpriTrace()) {
             let newStatusCards = statusCards.filter((item) =>
-                ["加载插件", "漏洞/风险", "开放端口数/已扫主机数", "存活主机数/扫描主机数", "SYN 扫描"].includes(
+                [i18next.t("加载插件"), i18next.t("漏洞/风险"), i18next.t("开放端口数/已扫主机数"), i18next.t("存活主机数/扫描主机数"), i18next.t("SYN 扫描")].includes(
                     item.tag
                 )
             )
@@ -320,12 +321,12 @@ export const PluginResultUI: React.FC<PluginResultUIProp> = React.memo((props) =
                     )
                 })}
                 {!!props.runtimeId && (
-                    <YakitTabs.YakitTabPane tab={"本次执行 HTTP 流量"} key={"current-http-flow"}>
+                    <YakitTabs.YakitTabPane tab={i18next.t("本次执行 HTTP 流量")} key={"current-http-flow"}>
                         <CurrentHttpFlow runtimeId={props.runtimeId}></CurrentHttpFlow>
                     </YakitTabs.YakitTabPane>
                 )}
                 <YakitTabs.YakitTabPane
-                    tab={"基础插件信息 / 日志"}
+                    tab={i18next.t("基础插件信息 / 日志")}
                     key={finalFeatures.length > 0 ? "log" : "feature-0"}
                 >
                     {
@@ -337,7 +338,7 @@ export const PluginResultUI: React.FC<PluginResultUIProp> = React.memo((props) =
                                 bordered={true}
                                 title={
                                     <Space>
-                                        <div>任务额外日志与结果</div>
+                                        <div>{i18next.t("任务额外日志与结果")}</div>
                                         {(timelineItemProps || []).length > 0
                                             ? formatDate(timelineItemProps[0].timestamp)
                                             : ""}
@@ -371,7 +372,7 @@ export const PluginResultUI: React.FC<PluginResultUIProp> = React.memo((props) =
                     <YakitTabs.YakitTabPane
                         tab={
                             <div>
-                                {`漏洞与风险`}
+                                {i18next.t("漏洞与风险")}
                                 <Tag style={{marginLeft: 4}} color={"red"}>
                                     {props.risks.length}
                                 </Tag>
@@ -563,9 +564,9 @@ export interface YakitFeatureRenderProp {
 export const YakitFeatureTabName = (feature: string, params: any) => {
     switch (feature) {
         case "website-trees":
-            return "网站树结构 / Website Map"
+            return i18next.t("网站树结构 / Website Map")
         case "fixed-table":
-            return params["table_name"] || "输出表"
+            return params["table_name"] || i18next.t("输出表")
     }
     return feature.toUpperCase
 }
@@ -699,7 +700,7 @@ export const YakitFeatureRender: React.FC<YakitFeatureRenderProp> = React.memo(
                     }
                 })
                     .catch((e) => {
-                        yakitFailed("搜索失败:" + e)
+                        yakitFailed(i18next.t("搜索失败:") + e)
                     })
                     .finally(() => {
                         setTimeout(() => {
@@ -748,7 +749,7 @@ export const YakitFeatureRender: React.FC<YakitFeatureRenderProp> = React.memo(
                 const newDataTable = sorterTable?.order === "none" ? list : sorterFunction(list, sorterTable, "") || []
                 setTableData(newDataTable)
             } catch (error) {
-                yakitFailed("搜索失败:" + error)
+                yakitFailed(i18next.t("搜索失败:") + error)
             }
         })
 
@@ -787,7 +788,7 @@ export const YakitFeatureRender: React.FC<YakitFeatureRenderProp> = React.memo(
                                     <ExportExcel
                                         getData={getData}
                                         btnProps={{size: "small"}}
-                                        fileName={props.excelName || "输出表"}
+                                        fileName={props.excelName || i18next.t("输出表")}
                                     />
                                 </div>
                             }

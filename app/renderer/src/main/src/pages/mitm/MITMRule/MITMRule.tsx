@@ -45,47 +45,48 @@ import {CheckableTagProps} from "antd/lib/tag"
 import {YakitProtoSwitch} from "@/components/TableVirtualResize/YakitProtoSwitch/YakitProtoSwitch"
 import {YakitCheckableTag} from "@/components/yakitUI/YakitTag/YakitCheckableTag"
 import {menuBodyHeight} from "@/pages/globalVariable"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
 const HitColor = {
     red: {
-        title: "红色",
+        title: i18next.t("红色"),
         value: "red",
         className: "color-bg-red"
     },
     green: {
-        title: "绿色",
+        title: i18next.t("绿色"),
         value: "green",
         className: "color-bg-green"
     },
     blue: {
-        title: "蓝色",
+        title: i18next.t("蓝色"),
         value: "blue",
         className: "color-bg-blue"
     },
     yellow: {
-        title: "黄色",
+        title: i18next.t("黄色"),
         value: "yellow",
         className: "color-bg-yellow"
     },
     orange: {
-        title: "橙色",
+        title: i18next.t("橙色"),
         value: "orange",
         className: "color-bg-orange"
     },
     purple: {
-        title: "紫色",
+        title: i18next.t("紫色"),
         value: "purple",
         className: "color-bg-purple"
     },
     cyan: {
-        title: "天蓝色",
+        title: i18next.t("天蓝色"),
         value: "cyan",
         className: "color-bg-cyan"
     },
     grey: {
-        title: "灰色",
+        title: i18next.t("灰色"),
         value: "grey",
         className: "color-bg-grey"
     }
@@ -94,19 +95,19 @@ const HitColor = {
 const batchMenuData: YakitMenuItemProps[] = [
     {
         key: "ban",
-        label: "禁用"
+        label: i18next.t("禁用")
     },
     {
         key: "no-replace",
-        label: "不替换"
+        label: i18next.t("不替换")
     },
     {
         key: "replace",
-        label: "替换"
+        label: i18next.t("替换")
     },
     {
         key: "remove",
-        label: "删除"
+        label: i18next.t("删除")
     }
 ]
 
@@ -244,11 +245,11 @@ export const MITMRule: React.FC<MITMRuleProp> = (props) => {
                 value: "EnableForURI"
             },
             {
-                label: "请求",
+                label: i18next.t("请求"),
                 value: "EnableForRequest"
             },
             {
-                label: "响应",
+                label: i18next.t("响应"),
                 value: "EnableForResponse"
             },
             {
@@ -265,28 +266,28 @@ export const MITMRule: React.FC<MITMRuleProp> = (props) => {
     const columns: ColumnsTypeProps[] = useMemo<ColumnsTypeProps[]>(() => {
         return [
             {
-                title: "执行顺序",
+                title: i18next.t("执行顺序"),
                 dataKey: "Index",
                 fixed: "left",
                 width: 130
             },
             {
-                title: "规则名称",
+                title: i18next.t("规则名称"),
                 dataKey: "VerboseName",
                 fixed: "left",
                 width: 150
             },
             {
-                title: "规则内容",
+                title: i18next.t("规则内容"),
                 dataKey: "Rule",
                 width: 240
             },
             {
-                title: "替换结果",
+                title: i18next.t("替换结果"),
                 dataKey: "NoReplace",
                 width: 350,
-                tip: "HTTP Header 与 HTTP Cookie 优先级较高，会覆盖文本内容",
-                beforeIconExtra: <div className={styles["table-result-extra"]}>开/关</div>,
+                tip: i18next.t("HTTP Header 与 HTTP Cookie 优先级较高，会覆盖文本内容"),
+                beforeIconExtra: <div className={styles["table-result-extra"]}>{i18next.t("开/关")}</div>,
                 render: (_, i: MITMContentReplacerRule) => (
                     <YakitSwitchMemo
                         ExtraCookies={i.ExtraCookies}
@@ -301,10 +302,10 @@ export const MITMRule: React.FC<MITMRuleProp> = (props) => {
                 )
             },
             {
-                title: "丢弃结果",
+                title: i18next.t("丢弃结果"),
                 dataKey: "Drop",
                 width: 110,
-                tip: "设置开启替代之后，可丢弃当前请求/响应",
+                tip: i18next.t("设置开启替代之后，可丢弃当前请求/响应"),
                 render: (_, i: MITMContentReplacerRule) => (
                     <YakitProtoSwitch
                         checked={i.Drop}
@@ -320,10 +321,10 @@ export const MITMRule: React.FC<MITMRuleProp> = (props) => {
                 )
             },
             {
-                title: "自动重发",
+                title: i18next.t("自动重发"),
                 dataKey: "ExtraRepeat",
                 width: 110,
-                tip: "设置改选项后，将不会替换（请求）数据包，会把替换后的结果进行额外发包",
+                tip: i18next.t("设置改选项后，将不会替换（请求）数据包，会把替换后的结果进行额外发包"),
                 render: (_, i: MITMContentReplacerRule) => (
                     <YakitProtoSwitch
                         disabled={i.Disabled}
@@ -339,9 +340,9 @@ export const MITMRule: React.FC<MITMRuleProp> = (props) => {
                 )
             },
             {
-                title: "规则作用范围",
+                title: i18next.t("规则作用范围"),
                 dataKey: "EnableForRequest",
-                tip: "选择请求或响应后，Header和Body至少选择一个",
+                tip: i18next.t("选择请求或响应后，Header和Body至少选择一个"),
                 width: 280,
                 render: (_, record: MITMContentReplacerRule) => {
                     return (
@@ -363,7 +364,7 @@ export const MITMRule: React.FC<MITMRuleProp> = (props) => {
                 }
             },
             {
-                title: "命中颜色",
+                title: i18next.t("命中颜色"),
                 dataKey: "Color",
                 ellipsis: false,
                 width: 85,
@@ -375,12 +376,12 @@ export const MITMRule: React.FC<MITMRuleProp> = (props) => {
                 )
             },
             {
-                title: "追加 Tag",
+                title: i18next.t("追加 Tag"),
                 dataKey: "ExtraTag",
                 minWidth: 120
             },
             {
-                title: "操作",
+                title: i18next.t("操作"),
                 dataKey: "action",
                 fixed: "right",
                 width: 128,
@@ -536,21 +537,21 @@ export const MITMRule: React.FC<MITMRuleProp> = (props) => {
                 .invoke("SetCurrentRules", {Rules: newRules})
                 .then((e) => {
                     setVisible(false)
-                    success("保存成功")
+                    success(i18next.t("保存成功"))
                 })
                 .catch((e) => {
-                    failed(`保存失败: ${e}`)
+                    failed(i18next.t("保存失败: ${e}", { v1: e }))
                 })
         } else {
             // 开启劫持
             const findOpenRepRule = newRules.find(item => (!item.Disabled && (!item.NoReplace || item.Drop || item.ExtraRepeat)))
             if (findOpenRepRule !== undefined) {
                 Modal.confirm({
-                    title: "温馨提示",
+                    title: i18next.t("温馨提示"),
                     icon: <ExclamationCircleOutlined />,
-                    content: "检测到开启了替换规则，可能会影响劫持，是否确认开启？",
-                    okText: "确认",
-                    cancelText: "取消",
+                    content: i18next.t("检测到开启了替换规则，可能会影响劫持，是否确认开启？"),
+                    okText: i18next.t("确认"),
+                    cancelText: i18next.t("取消"),
                     closable: true,
                     centered: true,
                     closeIcon: (
@@ -573,10 +574,10 @@ export const MITMRule: React.FC<MITMRuleProp> = (props) => {
                             })
                             .then((val) => {
                                 setVisible(false)
-                                success("保存成功")
+                                success(i18next.t("保存成功"))
                             })
                             .catch((e) => {
-                                failed(`保存失败: ${e}`)
+                                failed(i18next.t("保存失败: ${e}", { v1: e }))
                             })
                     },
                 })
@@ -587,10 +588,10 @@ export const MITMRule: React.FC<MITMRuleProp> = (props) => {
                     })
                     .then((val) => {
                         setVisible(false)
-                        success("保存成功")
+                        success(i18next.t("保存成功"))
                     })
                     .catch((e) => {
-                        failed(`保存失败: ${e}`)
+                        failed(i18next.t("保存失败: ${e}", { v1: e }))
                     })
             }
         }
@@ -680,11 +681,11 @@ export const MITMRule: React.FC<MITMRuleProp> = (props) => {
     const onClose = useMemoizedFn(() => {
         if (JSON.stringify(originalRules) !== JSON.stringify(rules)) {
             Modal.confirm({
-                title: "温馨提示",
+                title: i18next.t("温馨提示"),
                 icon: <ExclamationCircleOutlined />,
-                content: "请问是否要保存规则内容并关闭弹框？",
-                okText: "保存",
-                cancelText: "不保存",
+                content: i18next.t("请问是否要保存规则内容并关闭弹框？"),
+                okText: i18next.t("保存"),
+                cancelText: i18next.t("不保存"),
                 closable: true,
                 closeIcon: (
                     <div
@@ -722,7 +723,7 @@ export const MITMRule: React.FC<MITMRuleProp> = (props) => {
                 style={{height: visible ? heightDrawer : 0}}
                 className={classNames(styles["mitm-rule-drawer"])}
                 contentWrapperStyle={{boxShadow: "0px -2px 4px rgba(133, 137, 158, 0.2)"}}
-                title={<div className={styles["heard-title"]}>内容规则配置</div>}
+                title={<div className={styles["heard-title"]}>{i18next.t("内容规则配置")}</div>}
                 extra={
                     <div className={styles["heard-right-operation"]}>
                         <RuleExportAndImportButton onOkImport={onOkImport} />
@@ -730,10 +731,9 @@ export const MITMRule: React.FC<MITMRuleProp> = (props) => {
                             type='primary'
                             className={styles["button-save"]}
                             onClick={() => onSaveToDataBase()}
-                        >
-                            保存
+                        >{i18next.t("保存")}
                         </YakitButton>
-                        <Tooltip title='官方网站' placement='top' overlayClassName={styles["question-tooltip"]}>
+                        <Tooltip title={i18next.t("官方网站")} placement='top' overlayClassName={styles["question-tooltip"]}>
                             <YakitButton
                                 type='outline2'
                                 className={styles["button-question"]}
@@ -754,21 +754,20 @@ export const MITMRule: React.FC<MITMRuleProp> = (props) => {
                         titleHeight={42}
                         title={
                             <div className={styles["table-title-body"]}>
-                                <div className={styles["table-title"]}>现有 MITM 内容规则</div>
-                                <div className={styles["table-total"]}>
-                                    共 <span>{rules.length}</span> 条规则
+                                <div className={styles["table-title"]}>{i18next.t("现有 MITM 内容规则")}</div>
+                                <div className={styles["table-total"]}>{i18next.t("共")} <span>{rules.length}</span>{i18next.t("条规则")}
                                 </div>
                             </div>
                         }
                         extra={
                             <div className={styles["table-title-body"]}>
                                 <div className={styles["table-switch"]}>
-                                    <span className={styles["switch-text"]}>全部禁用</span>
+                                    <span className={styles["switch-text"]}>{i18next.t("全部禁用")}</span>
                                     <YakitSwitch checked={isAllBan} onChange={(c) => onAllBan(c)} />
                                 </div>
                                 <Divider type='vertical' style={{margin: "0 16px"}} />
                                 <div className={styles["table-switch"]}>
-                                    <span className={styles["switch-text"]}>全部不替换</span>
+                                    <span className={styles["switch-text"]}>{i18next.t("全部不替换")}</span>
                                     <YakitSwitch checked={isNoReplace} onChange={(c) => onAllNoReplace(c)} />
                                 </div>
                                 {/* <YakitButton type='outline2' className={styles["button-filter"]}>
@@ -792,16 +791,14 @@ export const MITMRule: React.FC<MITMRuleProp> = (props) => {
                                         type='outline2'
                                         disabled={selectedRowKeys.length === 0}
                                         className={classNames(styles["button-batch-remove"])}
-                                    >
-                                        批量操作
+                                    >{i18next.t("批量操作")}
                                         <ChevronDownIcon />
                                     </YakitButton>
                                 </YakitPopover>
 
                                 <YakitButton type='primary' onClick={() => onOpenOrCloseModal(true)}>
                                     <div className={styles["button-add-rule"]}>
-                                        <PlusIcon />
-                                        新增规则
+                                        <PlusIcon />{i18next.t("新增规则")}
                                     </div>
                                 </YakitButton>
                             </div>
@@ -875,8 +872,7 @@ export const RuleExportAndImportButton: React.FC<RuleExportAndImportButtonProps>
     return (
         <>
             {onBeforeNode}
-            <YakitButton type='text' icon={<SaveIcon />} onClick={() => setImportVisible(true)}>
-                导入配置
+            <YakitButton type='text' icon={<SaveIcon />} onClick={() => setImportVisible(true)}>{i18next.t("导入配置")}
             </YakitButton>
             <Divider type='vertical' style={{margin: "0 4px"}} />
             <YakitButton
@@ -886,8 +882,7 @@ export const RuleExportAndImportButton: React.FC<RuleExportAndImportButtonProps>
                 onClick={() => {
                     setExportVisible(true)
                 }}
-            >
-                导出配置
+            >{i18next.t("导出配置")}
             </YakitButton>
             {exportVisible && <MITMRuleExport visible={exportVisible} setVisible={setExportVisible} />}
             {importVisible && (

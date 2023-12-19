@@ -5,6 +5,7 @@ import type {DraggableEvent, DraggableData} from "react-draggable"
 import {YakitHintModalProps} from "./YakitHintType"
 import {ShieldExclamationSvgIcon} from "@/assets/newIcon"
 import {YakitButton} from "../YakitButton/YakitButton"
+import i18next from "../../../i18n"
 
 import classNames from "classnames"
 import styles from "./YakitHint.module.scss"
@@ -21,13 +22,13 @@ export const YakitHintModal: React.FC<YakitHintModalProps> = memo((props) => {
         heardIcon,
         extraIcon,
         title,
-        content = "请写入合适的提示内容",
+        content = i18next.t("请写入合适的提示内容"),
         footer,
         footerExtra,
-        okButtonText = "确定",
+        okButtonText = i18next.t("确定"),
         okButtonProps,
         onOk,
-        cancelButtonText = "取消",
+        cancelButtonText = i18next.t("取消"),
         cancelButtonProps,
         onCancel,
         children

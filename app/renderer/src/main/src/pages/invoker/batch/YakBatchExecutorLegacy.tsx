@@ -22,6 +22,7 @@ import {info} from "../../../utils/notification";
 import {ExecResultsViewer} from "./ExecMessageViewer";
 import {showModal} from "../../../utils/showModal";
 import {YakEditor} from "../../../utils/editors";
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron");
 
@@ -160,7 +161,7 @@ export const YakBatchExecutorLegacy: React.FC<YakBatchExecutorProp> = (props) =>
             setError(error)
         })
         ipcRenderer.on(endChannel, (e: any, data: any) => {
-            info("模块加载完成 / 执行完毕")
+            info(i18next.t("模块加载完成 / 执行完毕"))
             setExecuting(false)
             updateTasks()
         })
@@ -177,13 +178,13 @@ export const YakBatchExecutorLegacy: React.FC<YakBatchExecutorProp> = (props) =>
 
     if (totalLoading) {
         return <div style={{textAlign: "center", width: "100%", marginTop: 100}}>
-            <Spin>正在加载专用漏洞库</Spin>
+            <Spin>{i18next.t("正在加载专用漏洞库")}</Spin>
         </div>
     }
 
     return <div>
         <PageHeader
-            title={`漏洞与风险监测专题：${props.verbose ? props.verbose : props.keyword}`}
+            title={i18next.t("漏洞与风险监测专题") + `：${props.verbose ? props.verbose : props.keyword}`}
             style={{width: "100%"}}
         >
             <div style={{textAlign: "center", width: "100%"}}>
@@ -193,17 +194,17 @@ export const YakBatchExecutorLegacy: React.FC<YakBatchExecutorProp> = (props) =>
                     e.preventDefault()
 
                     if (!params.Target) {
-                        Modal.error({title: "检测目标不能为空"})
+                        Modal.error({title: i18next.t("检测目标不能为空")})
                         return
                     }
 
                     if (!params.Keyword) {
-                        Modal.error({title: "无 PoC 关键字选择"})
+                        Modal.error({title: i18next.t("无 PoC 关键字选择")})
                         return
                     }
 
                     if (!token) {
-                        Modal.error({title: "BUG：无 Token 生成，请重新打开该页"})
+                        Modal.error({title: i18next.t("BUG：无 Token 生成，请重新打开该页")})
                     }
 
                     ipcRenderer.invoke("exec-batch-yak-script", params, token)
@@ -211,7 +212,7 @@ export const YakBatchExecutorLegacy: React.FC<YakBatchExecutorProp> = (props) =>
                 }}>
                     <Space direction={"vertical"}>
                         <Space>
-                            <span>输入想要检测的目标：</span>
+                            <span>{i18next.t("输入想要检测的目标：")}</span>
                             <Form.Item
                                 style={{marginBottom: 0}}
                             >
@@ -224,20 +225,20 @@ export const YakBatchExecutorLegacy: React.FC<YakBatchExecutorProp> = (props) =>
                                     suffix={<Space>
                                         {!executing ? <Button style={{width: 120}} type="primary"
                                                               htmlType="submit"
-                                        > 开始检测 </Button> : <Popconfirm
-                                            title={"确定要停止该漏洞检测？"}
+                                        >{i18next.t("开始检测")} </Button> : <Popconfirm
+                                            title={i18next.t("确定要停止该漏洞检测？")}
                                             onConfirm={e => {
                                                 ipcRenderer.invoke("cancel-exec-batch-yak-script", token)
                                             }}
                                         >
-                                            <Button style={{width: 120}} danger={true}> 强制停止 </Button>
+                                            <Button style={{width: 120}} danger={true}>{i18next.t("强制停止")} </Button>
                                         </Popconfirm>}
                                     </Space>}
                                 />
                             </Form.Item>
                             <Button type={"link"} style={{margin: 0, paddingLeft: 0}} onClick={e => {
                                 showModal({
-                                    title: "设置批量检测额外参数",
+                                    title: i18next.t("设置批量检测额外参数"),
                                     content: <>
                                         <Form
                                             onSubmitCapture={e => e.preventDefault()}
@@ -248,12 +249,12 @@ export const YakBatchExecutorLegacy: React.FC<YakBatchExecutorProp> = (props) =>
                                                 defaultValue={params.Concurrent}
                                             />
                                             <InputInteger
-                                                label={"限制模块数量"}
+                                                label={i18next.t("限制模块数量")}
                                                 setValue={Limit => setParams({...params, Limit})}
                                                 defaultValue={params.Limit}
                                             />
                                             <InputInteger
-                                                label={"总超时时间/s"}
+                                                label={i18next.t("总超时时间/s")}
                                                 setValue={TotalTimeoutSeconds => setParams({
                                                     ...params,
                                                     TotalTimeoutSeconds
@@ -263,16 +264,15 @@ export const YakBatchExecutorLegacy: React.FC<YakBatchExecutorProp> = (props) =>
                                         </Form>
                                     </>
                                 })
-                            }}>额外参数</Button>
+                            }}>{i18next.t("额外参数")}</Button>
                         </Space>
                         <div style={{width: "100%", textAlign: "right"}}>
                             <Space direction={"vertical"}>
                                 <Space>
-                                    <Tag>并发/线程: {params.Concurrent}</Tag>
-                                    <Tag>总超时: {params.TotalTimeoutSeconds} sec</Tag>
-                                    <Tag>限制模块最大数: {params.Limit}</Tag>
-                                    <p style={{color: "#999", marginBottom: 0}}>
-                                        可接受输入为：URL / IP / 域名 / 主机:端口
+                                    <Tag>{i18next.t("并发/线程:")} {params.Concurrent}</Tag>
+                                    <Tag>{i18next.t("总超时:")} {params.TotalTimeoutSeconds} sec</Tag>
+                                    <Tag>{i18next.t("限制模块最大数:")} {params.Limit}</Tag>
+                                    <p style={{color: "#999", marginBottom: 0}}>{i18next.t("可接受输入为：URL / IP / 域名 / 主机:端口")}
                                     </p>
                                     <div style={{width: 80}}/>
                                 </Space>
@@ -300,7 +300,7 @@ export const YakBatchExecutorLegacy: React.FC<YakBatchExecutorProp> = (props) =>
                     }}
                     columns={[
                         {
-                            title: "模块名称",
+                            title: i18next.t("模块名称"),
                             width: 400,
                             render: (i: ExecBatchYakScriptTask) => <div style={{overflow: "auto", width: 400}}>
                                 <Text
@@ -309,43 +309,43 @@ export const YakBatchExecutorLegacy: React.FC<YakBatchExecutorProp> = (props) =>
                             </div>
                         },
                         {
-                            title: "模块状态", width: 150,
+                            title: i18next.t("模块状态"), width: 150,
                             render: (i: ExecBatchYakScriptTask) => StatusToVerboseTag(i.Status)
                         },
                         {
-                            title: "执行过程预览", render: (i: ExecBatchYakScriptTask) => {
+                            title: i18next.t("执行过程预览"), render: (i: ExecBatchYakScriptTask) => {
                                 return <ExecResultsViewer results={i.Results} oneLine={true}/>
                             }
                         },
                         {
-                            title: "操作",
+                            title: i18next.t("操作"),
                             render: (i: ExecBatchYakScriptTask) => <div>
                                 <Space>
                                     <Button
                                         type={"primary"} size={"small"}
                                         onClick={e => {
                                             if (!i.PoC) {
-                                                Modal.error({title: "没有模块信息"})
+                                                Modal.error({title: i18next.t("没有模块信息")})
                                                 return
                                             }
                                             showModal({
-                                                title: `单体模块测试: ${i.PoC.ScriptName}`,
+                                                title: i18next.t("单体模块测试")+`: ${i.PoC.ScriptName}`,
                                                 width: "75%",
                                                 content: <>
                                                     <YakScriptOperator script={i.PoC}/>
                                                 </>
                                             })
                                         }}
-                                    >单独检测</Button>
+                                    >{i18next.t("单独检测")}</Button>
                                     <Button
                                         size={"small"}
                                         onClick={e => {
                                             if (!i.PoC) {
-                                                Modal.error({title: "没有模块信息"})
+                                                Modal.error({title: i18next.t("没有模块信息")})
                                                 return
                                             }
                                             showModal({
-                                                title: `源码: ${i.PoC.ScriptName}`,
+                                                title: i18next.t("源码")+`: ${i.PoC.ScriptName}`,
                                                 width: "75%",
                                                 content: <>
                                                     <div style={{height: 400}}>
@@ -356,8 +356,8 @@ export const YakBatchExecutorLegacy: React.FC<YakBatchExecutorProp> = (props) =>
                                                 </>
                                             })
                                         }}
-                                    >源码</Button>
-                                    <Button type={"primary"} size={"small"} disabled={true}>待开发...</Button>
+                                    >{i18next.t("源码")}</Button>
+                                    <Button type={"primary"} size={"small"} disabled={true}>{i18next.t("待开发...")}</Button>
                                 </Space>
                             </div>
                         },
@@ -373,13 +373,13 @@ export const YakBatchExecutorLegacy: React.FC<YakBatchExecutorProp> = (props) =>
 export const StatusToVerboseTag = (status: string) => {
     switch (status.toLowerCase()) {
         case "waiting":
-            return <Tag color={"geekblue"}>等待执行</Tag>
+            return <Tag color={"geekblue"}>{i18next.t("等待执行")}</Tag>
         case "data":
         case "executing":
         case "running":
-            return <Tag color={"orange"}>正在执行</Tag>
+            return <Tag color={"orange"}>{i18next.t("正在执行")}</Tag>
         case "end":
-            return <Tag color={"green"}>执行结束</Tag>
+            return <Tag color={"green"}>{i18next.t("执行结束")}</Tag>
         default:
             return <Tag color={"blue"}>{status}</Tag>
     }

@@ -6,6 +6,7 @@ import classNames from "classnames"
 import {useMemoizedFn} from "ahooks"
 import {getRemoteValue, setRemoteValue} from "@/utils/kv"
 import {yakitNotify} from "@/utils/notification"
+import i18next from "../../../i18n"
 
 /**
  * 更新说明
@@ -72,7 +73,7 @@ export const YakitAutoComplete: React.FC<YakitAutoCompleteProps> = React.forward
                 onGetRemoteValues()
             })
             .catch((e) => {
-                yakitNotify("error", "YakitAutoComplete:保存数据出错" + e)
+                yakitNotify("error", i18next.t("YakitAutoComplete:保存数据出错") + e)
             })
     })
     /**@description 获取 cacheHistoryDataKey 对应的数据 */
@@ -102,11 +103,11 @@ export const YakitAutoComplete: React.FC<YakitAutoCompleteProps> = React.forward
                     if (props.onChange) props.onChange(cacheData.defaultValue||'', cacheData.options||[])
                     setCacheHistoryData({...cacheData})
                 } catch (error) {
-                    yakitNotify("error", "YakitAutoComplete:转换数据出错" + error)
+                    yakitNotify("error", i18next.t("YakitAutoComplete:转换数据出错") + error)
                 }
             })
             .catch((e) => {
-                yakitNotify("error", "YakitAutoComplete:获取数据出错" + e)
+                yakitNotify("error", i18next.t("YakitAutoComplete:获取数据出错") + e)
             })
             .finally(() => setLoading(false))
     })

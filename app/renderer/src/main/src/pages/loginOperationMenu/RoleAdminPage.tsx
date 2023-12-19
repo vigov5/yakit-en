@@ -11,6 +11,7 @@ import {PaginationSchema} from "../invoker/schema"
 import type {ColumnsType} from "antd/es/table"
 import type {TreeSelectProps} from "antd"
 import type {DefaultOptionType} from "antd/es/select"
+import i18next from "../../i18n"
 
 export interface CreateUserFormProps {
     editInfo: API.RoleList | undefined
@@ -44,11 +45,11 @@ const RoleOperationForm: React.FC<CreateUserFormProps> = (props) => {
     const [loading, setLoading] = useState<boolean>(false)
     const [treeLoadedKeys,setTreeLoadedKeys] = useState<any>([])
     const PluginType = {
-        yak: "YAK 插件",
-        mitm: "MITM 插件",
-        "packet-hack": "数据包扫描",
-        "port-scan": "端口扫描插件",
-        codec: "CODEC插件",
+        yak: i18next.t("YAK 插件"),
+        mitm: i18next.t("MITM 插件"),
+        "packet-hack": i18next.t("数据包扫描"),
+        "port-scan": i18next.t("端口扫描插件"),
+        codec: i18next.t("CODEC插件"),
         nuclei: "YAML POC"
     }
     const PluginTypeKeyArr: string[] = Object.keys(PluginType)
@@ -112,7 +113,7 @@ const RoleOperationForm: React.FC<CreateUserFormProps> = (props) => {
                     })
                 })
                 .catch((err) => {
-                    failed("失败：" + err)
+                    failed(i18next.t("失败：") + err)
                 })
                 .finally(() => {
                     setTimeout(() => {
@@ -154,7 +155,7 @@ const RoleOperationForm: React.FC<CreateUserFormProps> = (props) => {
                 }
             })
             .catch((err) => {
-                failed("失败：" + err)
+                failed(i18next.t("失败：") + err)
             })
             .finally(() => {
                 setTimeout(() => {
@@ -187,7 +188,7 @@ const RoleOperationForm: React.FC<CreateUserFormProps> = (props) => {
                     }
                 })
                 .catch((err) => {
-                    failed("失败：" + err)
+                    failed(i18next.t("失败：") + err)
                 })
                 .finally(() => {
                     resolve(undefined)
@@ -245,8 +246,7 @@ const RoleOperationForm: React.FC<CreateUserFormProps> = (props) => {
                             })
                         }
                     }}
-                >
-                    全部
+                >{i18next.t("全部")}
                 </Checkbox>
                 {originNode}
             </>
@@ -256,12 +256,12 @@ const RoleOperationForm: React.FC<CreateUserFormProps> = (props) => {
     return (
         <div style={{marginTop: 24}}>
             <Form {...layout} form={form} onFinish={onFinish}>
-                <Form.Item name='name' label='角色名' rules={[{required: true, message: "该项为必填"}]}>
-                    <Input placeholder='请输入角色名' allowClear />
+                <Form.Item name='name' label={i18next.t("角色名")} rules={[{required: true, message: i18next.t("该项为必填")}]}>
+                    <Input placeholder={i18next.t("请输入角色名")} allowClear />
                 </Form.Item>
                 <Row>
                     <Col span={5}>
-                        <div style={{textAlign: "right", paddingTop: 4}}>操作权限：</div>
+                        <div style={{textAlign: "right", paddingTop: 4}}>{i18next.t("操作权限：")}</div>
                     </Col>
                     <Col span={16}>
                         <div style={{display: "flex"}}>
@@ -270,10 +270,10 @@ const RoleOperationForm: React.FC<CreateUserFormProps> = (props) => {
                                     {...itemLayout}
                                     name='checkPlugin'
                                     valuePropName='checked'
-                                    label='审核插件'
+                                    label={i18next.t("审核插件")}
                                     initialValue={false}
                                 >
-                                    <Switch onChange={setTreeSelect} checkedChildren='开' unCheckedChildren='关' />
+                                    <Switch onChange={setTreeSelect} checkedChildren={i18next.t("开")} unCheckedChildren={i18next.t("关")} />
                                 </Form.Item>
                             </div>
 
@@ -285,7 +285,7 @@ const RoleOperationForm: React.FC<CreateUserFormProps> = (props) => {
                                     label='插件删除'
                                     initialValue={false}
                                 >
-                                    <Switch checkedChildren='开' unCheckedChildren='关' />
+                                    <Switch checkedChildren={i18next.t("开")} unCheckedChildren={i18next.t("关")} />
                                 </Form.Item>
                             </div> */}
                         </div>
@@ -293,8 +293,8 @@ const RoleOperationForm: React.FC<CreateUserFormProps> = (props) => {
                 </Row>
                 <Form.Item
                     name='treeSelect'
-                    label='插件权限'
-                    rules={[{required: true, message: "该项为必填"}]}
+                    label={i18next.t("插件权限")}
+                    rules={[{required: true, message: i18next.t("该项为必填")}]}
                     // initialValue={
                     //     ["port-scan"]
                     // }
@@ -304,7 +304,7 @@ const RoleOperationForm: React.FC<CreateUserFormProps> = (props) => {
                         treeDataSimpleMode
                         style={{width: "100%"}}
                         dropdownStyle={{maxHeight: 400, overflow: "auto"}}
-                        placeholder='请选择插件权限'
+                        placeholder={i18next.t("请选择插件权限")}
                         treeCheckable={true}
                         onChange={onChange}
                         loadData={onLoadData}
@@ -312,7 +312,7 @@ const RoleOperationForm: React.FC<CreateUserFormProps> = (props) => {
                         allowClear
                         showCheckedStrategy='SHOW_PARENT'
                         maxTagCount={selectedAll ? 0 : 10}
-                        maxTagPlaceholder={(omittedValues)=>selectedAll ? "全部" : <>+ {omittedValues.length} ...</>}
+                        maxTagPlaceholder={(omittedValues)=>selectedAll ? i18next.t("全部") : <>+ {omittedValues.length} ...</>}
                         dropdownRender={(originNode: React.ReactNode) => selectDropdown(originNode)}
                         open={open}
                         onDropdownVisibleChange={(visible) => setOpen(visible)}
@@ -326,8 +326,7 @@ const RoleOperationForm: React.FC<CreateUserFormProps> = (props) => {
                 </Form.Item>
                 
                 <div style={{textAlign: "center"}}>
-                    <Button style={{width: 200}} type='primary' htmlType='submit' loading={loading}>
-                        确认
+                    <Button style={{width: 200}} type='primary' htmlType='submit' loading={loading}>{i18next.t("确认")}
                     </Button>
                 </div>
             </Form>
@@ -382,7 +381,7 @@ const RoleAdminPage: React.FC<RoleAdminPageProps> = (props) => {
                 }
             })
             .catch((err) => {
-                failed("获取角色列表失败：" + err)
+                failed(i18next.t("获取角色列表失败：") + err)
             })
             .finally(() => {
                 setTimeout(() => {
@@ -410,18 +409,18 @@ const RoleAdminPage: React.FC<RoleAdminPageProps> = (props) => {
             }
         })
             .then((res) => {
-                success("删除角色成功")
+                success(i18next.t("删除角色成功"))
                 update()
             })
             .catch((err) => {
-                failed("删除角色失败：" + err)
+                failed(i18next.t("删除角色失败：") + err)
             })
             .finally(() => {})
     }
 
     const columns: ColumnsType<API.RoleList> = [
         {
-            title: "角色名",
+            title: i18next.t("角色名"),
             dataIndex: "name",
             render: (text: string, record) => (
                 <div>
@@ -430,21 +429,21 @@ const RoleAdminPage: React.FC<RoleAdminPageProps> = (props) => {
             )
         },
         {
-            title: "操作权限",
+            title: i18next.t("操作权限"),
             render: (text: string, record) => (
                 <div>
                     {!record.checkPlugin && "-"}
-                    {record.checkPlugin && <span style={{marginRight: 10}}>审核插件</span>}
+                    {record.checkPlugin && <span style={{marginRight: 10}}>{i18next.t("审核插件")}</span>}
                 </div>
             )
         },
         {
-            title: "创建时间",
+            title: i18next.t("创建时间"),
             dataIndex: "createdAt",
             render: (text) => <span>{moment.unix(text).format("YYYY-MM-DD HH:mm")}</span>
         },
         {
-            title: "操作",
+            title: i18next.t("操作"),
             render: (i) => (
                 <Space>
                     <Button
@@ -454,18 +453,16 @@ const RoleAdminPage: React.FC<RoleAdminPageProps> = (props) => {
                             setEditInfo(i)
                             setRoleFormShow(true)
                         }}
-                    >
-                        编辑
+                    >{i18next.t("编辑")}
                     </Button>
                     <Popconfirm
-                        title={"确定删除该角色吗？"}
+                        title={i18next.t("确定删除该角色吗？")}
                         onConfirm={() => {
                             onRemove([i.id])
                         }}
                         placement="right"
                     >
-                        <Button size={"small"} danger={true} type="link">
-                            删除
+                        <Button size={"small"} danger={true} type="link">{i18next.t("删除")}
                         </Button>
                     </Popconfirm>
                 </Space>
@@ -491,23 +488,21 @@ const RoleAdminPage: React.FC<RoleAdminPageProps> = (props) => {
                 title={(e) => {
                     return (
                         <div className='table-title'>
-                            <div className='tab-title'>角色管理</div>
+                            <div className='tab-title'>{i18next.t("角色管理")}</div>
                             <div className='operation'>
                                 <Space>
                                     {!!selectedRowKeys.length ? (
                                         <Popconfirm
-                                            title={"确定删除选择的角色吗？不可恢复"}
+                                            title={i18next.t("确定删除选择的角色吗？不可恢复")}
                                             onConfirm={() => {
                                                 onRemove(selectedRowKeys)
                                             }}
                                         >
-                                            <Button type='primary' htmlType='submit' size='small'>
-                                                批量删除
+                                            <Button type='primary' htmlType='submit' size='small'>{i18next.t("批量删除")}
                                             </Button>
                                         </Popconfirm>
                                     ) : (
-                                        <Button type='primary' size='small' disabled={true}>
-                                            批量删除
+                                        <Button type='primary' size='small' disabled={true}>{i18next.t("批量删除")}
                                         </Button>
                                     )}
                                     <Button
@@ -518,8 +513,7 @@ const RoleAdminPage: React.FC<RoleAdminPageProps> = (props) => {
                                             setEditInfo(undefined)
                                             setRoleFormShow(true)
                                         }}
-                                    >
-                                        创建角色
+                                    >{i18next.t("创建角色")}
                                     </Button>
                                 </Space>
                             </div>
@@ -537,7 +531,7 @@ const RoleAdminPage: React.FC<RoleAdminPageProps> = (props) => {
             />
             <Modal
                 visible={roleFormShow}
-                title={editInfo ? "编辑角色" : "创建角色"}
+                title={editInfo ? i18next.t("编辑角色") : i18next.t("创建角色")}
                 destroyOnClose={true}
                 maskClosable={false}
                 bodyStyle={{padding: "10px 24px 24px 24px"}}

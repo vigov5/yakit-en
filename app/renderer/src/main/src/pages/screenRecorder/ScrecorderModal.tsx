@@ -10,6 +10,7 @@ import classNames from "classnames"
 import React, {CSSProperties, ReactNode, useEffect, useState} from "react"
 import styles from "./ScrecorderModal.module.scss"
 import {Screen_Recorder_Framerate,Screen_Recorder_CoefficientPTS} from "./ScreenRecorderList"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -67,15 +68,15 @@ export const FramerateData = [
 export const CoefficientPTSData = [
     {
         value: 1,
-        label: "X1：1倍速"
+        label: i18next.t("X1：1倍速")
     },
     {
         value: 0.33,
-        label: "X3：3倍速"
+        label: i18next.t("X3：3倍速")
     },
     {
         value: 0.2,
-        label: "X5：5倍速"
+        label: i18next.t("X5：5倍速")
     },
 ]
 
@@ -115,8 +116,7 @@ export const ScrecorderModal: React.FC<ScrecorderModalProp> = React.memo((props)
     })
     return (
         <div className={styles["screcorder-modal-content"]}>
-            <div className={classNames(styles["tip"])}>
-                本录屏在 Windows 下，会同时录制所有屏幕，合并在一个文件中；在 MacOS 下多屏会生成多个文件
+            <div className={classNames(styles["tip"])}>{i18next.t("本录屏在 Windows 下，会同时录制所有屏幕，合并在一个文件中；在 MacOS 下多屏会生成多个文件")}
             </div>
             <Form
                 layout='vertical'
@@ -128,10 +128,10 @@ export const ScrecorderModal: React.FC<ScrecorderModalProp> = React.memo((props)
                 form={form}
             >
                 <Form.Item
-                    label='帧率'
-                    help='渗透测试过程记录推荐使用低帧率（5fps 以下）以免 CPU 占用过高'
+                    label={i18next.t("帧率")}
+                    help={i18next.t("渗透测试过程记录推荐使用低帧率（5fps 以下）以免 CPU 占用过高")}
                     tooltip={{
-                        title: "帧率即每秒截屏次数",
+                        title: i18next.t("帧率即每秒截屏次数"),
                         icon: <InformationCircleIcon style={{cursor: "auto"}} />
                     }}
                     name='Framerate'
@@ -139,8 +139,8 @@ export const ScrecorderModal: React.FC<ScrecorderModalProp> = React.memo((props)
                     <YakitSelect options={FramerateData} disabled={disabled} />
                 </Form.Item>
                 <Form.Item
-                    label='倍速'
-                    help='直接录制倍速视频，免视频后期处理'
+                    label={i18next.t("倍速")}
+                    help={i18next.t("直接录制倍速视频，免视频后期处理")}
                     name='CoefficientPTS'
                 >
                     <YakitSelect options={CoefficientPTSData} disabled={disabled} />
@@ -148,19 +148,16 @@ export const ScrecorderModal: React.FC<ScrecorderModalProp> = React.memo((props)
                 <div className={styles["disable-mouse"]}>
                     <Form.Item noStyle valuePropName='checked' name='DisableMouse'>
                         <YakitSwitch size='large' disabled={disabled} />
-                    </Form.Item>
-                    鼠标捕捉
+                    </Form.Item>{i18next.t("鼠标捕捉")}
                 </div>
                 {footer ? (
                     footer
                 ) : (
                     <div className={styles["footer-btns"]}>
-                        <YakitButton type='outline2' size='large' onClick={() => onClose()}>
-                            取消
+                        <YakitButton type='outline2' size='large' onClick={() => onClose()}>{i18next.t("取消")}
                         </YakitButton>
                         <YakitButton htmlType='submit' type='primary' size='large'>
-                            <PlayIcon style={{height: 16}} />
-                            开始录屏
+                            <PlayIcon style={{height: 16}} />{i18next.t("开始录屏")}
                         </YakitButton>
                     </div>
                 )}

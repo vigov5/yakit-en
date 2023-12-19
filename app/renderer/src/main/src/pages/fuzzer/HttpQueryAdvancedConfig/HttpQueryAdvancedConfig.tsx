@@ -51,6 +51,7 @@ import "hint.css"
 import YakitCollapse from "@/components/yakitUI/YakitCollapse/YakitCollapse"
 import {CopyableField} from "@/utils/inputUtil"
 import emiter from "@/utils/eventBus/eventBus"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 const {YakitPanel} = YakitCollapse
@@ -76,15 +77,15 @@ const variableModeOptions = [
 const fuzzTagModeOptions = [
     {
         value: "close",
-        label: "关闭"
+        label: i18next.t("关闭")
     },
     {
         value: "standard",
-        label: "标准"
+        label: i18next.t("标准")
     },
     {
         value: "legacy",
-        label: "兼容"
+        label: i18next.t("兼容")
     }
 ]
 
@@ -145,11 +146,11 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
         getRemoteValue(WEB_FUZZ_Advanced_Config_ActiveKey).then((data) => {
             try {
                 // setTimeout(() => {
-                //     setActiveKey(data ? JSON.parse(data) : "请求包配置")
+                //     setActiveKey(data ? JSON.parse(data) : i18next.t("请求包配置"))
                 // }, 100)
-                setActiveKey(data ? JSON.parse(data) : "请求包配置")
+                setActiveKey(data ? JSON.parse(data) : i18next.t("请求包配置"))
             } catch (error) {
-                yakitFailed("获取折叠面板的激活key失败:" + error)
+                yakitFailed(i18next.t("获取折叠面板的激活key失败:") + error)
             }
         })
         return () => {
@@ -192,7 +193,7 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                     proxyListRef.current = newList
                 }
             } catch (error) {
-                yakitFailed("代理列表获取失败:" + error)
+                yakitFailed(i18next.t("代理列表获取失败:") + error)
             }
         })
     }, [inViewport, refreshProxy])
@@ -224,7 +225,7 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
             })
             .then((rsp: {Results: {Key: string; Value: string}[]}) => {
                 showYakitModal({
-                    title: "渲染后变量内容",
+                    title: i18next.t("渲染后变量内容"),
                     footer: <></>,
                     content: (
                         <div className={styles["render-variables-modal-content"]}>
@@ -247,7 +248,7 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                 })
             })
             .catch((err) => {
-                yakitNotify("error", "预览失败:" + err)
+                yakitNotify("error", i18next.t("预览失败:") + err)
             })
     })
     const onReset = useMemoizedFn((restValue) => {
@@ -314,16 +315,16 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
         }
     })
     const retryActive: string[] = useMemo(() => {
-        let newRetryActive = ["重试条件"]
+        let newRetryActive = [i18next.t("重试条件")]
         if (retry) {
-            newRetryActive = [...newRetryActive, "重试条件"]
+            newRetryActive = [...newRetryActive, i18next.t("重试条件")]
         } else {
-            newRetryActive = newRetryActive.filter((ele) => ele !== "重试条件")
+            newRetryActive = newRetryActive.filter((ele) => ele !== i18next.t("重试条件"))
         }
         if (noRetry) {
-            newRetryActive = [...newRetryActive, "不重试条件"]
+            newRetryActive = [...newRetryActive, i18next.t("不重试条件")]
         } else {
-            newRetryActive = newRetryActive.filter((ele) => ele !== "不重试条件")
+            newRetryActive = newRetryActive.filter((ele) => ele !== i18next.t("不重试条件"))
         }
         return newRetryActive
     }, [retry, noRetry])
@@ -385,21 +386,20 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                 }}
             >
                 <div className={styles["advanced-config-extra-formItem"]}>
-                    <Form.Item label='强制 HTTPS' name='isHttps' valuePropName='checked'>
+                    <Form.Item label={i18next.t("强制 HTTPS")} name='isHttps' valuePropName='checked'>
                         <YakitSwitch />
                     </Form.Item>
-                    <Form.Item label='国密TLS' name='isGmTLS' valuePropName='checked'>
+                    <Form.Item label={i18next.t("国密TLS")} name='isGmTLS' valuePropName='checked'>
                         <YakitSwitch />
                     </Form.Item>
-                    <Form.Item label='真实Host' name='actualHost'>
-                        <YakitInput placeholder='请输入...' size='small' />
+                    <Form.Item label={i18next.t("真实Host")} name='actualHost'>
+                        <YakitInput placeholder={i18next.t("请输入...")} size='small' />
                     </Form.Item>
                     <Form.Item
                         label={
-                            <span className={styles["advanced-config-form-label"]}>
-                                设置代理
+                            <span className={styles["advanced-config-form-label"]}>{i18next.t("设置代理")}
                                 <Tooltip
-                                    title='设置多个代理时，会智能选择能用的代理进行发包'
+                                    title={i18next.t("设置多个代理时，会智能选择能用的代理进行发包")}
                                     overlayStyle={{width: 150}}
                                 >
                                     <InformationCircleIcon className={styles["info-icon"]} />
@@ -411,14 +411,14 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                         <YakitSelect
                             allowClear
                             options={proxyList}
-                            placeholder='请输入...'
+                            placeholder={i18next.t("请输入...")}
                             mode='tags'
                             size='small'
                             maxTagCount={1}
                             dropdownMatchSelectWidth={245}
                         />
                     </Form.Item>
-                    <Form.Item label={"禁用系统代理"} name={"noSystemProxy"} valuePropName='checked'>
+                    <Form.Item label={i18next.t("禁用系统代理")} name={"noSystemProxy"} valuePropName='checked'>
                         <YakitSwitch />
                     </Form.Item>
                 </div>
@@ -428,8 +428,8 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                     destroyInactivePanel={true}
                 >
                     <YakitPanel
-                        header='请求包配置'
-                        key='请求包配置'
+                        header={i18next.t("请求包配置")}
+                        key={i18next.t("请求包配置")}
                         extra={
                             <YakitButton
                                 type='text'
@@ -448,25 +448,22 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                                     onReset(restValue)
                                 }}
                                 size='small'
-                            >
-                                重置
+                            >{i18next.t("重置")}
                             </YakitButton>
                         }
                     >
-                        <Form.Item label='Fuzztag 辅助'>
+                        <Form.Item label={i18next.t("Fuzztag 辅助")}>
                             <YakitButton
                                 size='small'
                                 type='outline1'
                                 onClick={() => onInsertYakFuzzer()}
                                 icon={<PlusSmIcon />}
-                            >
-                                插入 yak.fuzz 语法
+                            >{i18next.t("插入 yak.fuzz 语法")}
                             </YakitButton>
                         </Form.Item>
                         <Form.Item
                             label={
-                                <span className={styles["advanced-config-form-label"]}>
-                                    渲染 Fuzz
+                                <span className={styles["advanced-config-form-label"]}>{i18next.t("渲染 Fuzz")}
                                     <Tooltip
                                         title='兼容模式支持嵌套使用时内层大括号省略 {{base64(url(www.example.com))}}，但标准模式不可省略，关闭后Fuzztag将失效。'
                                         overlayStyle={{width: 150}}
@@ -480,21 +477,21 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                             <YakitRadioButtons buttonStyle='solid' options={fuzzTagModeOptions} size={"small"} />
                         </Form.Item>
 
-                        <Form.Item label='强制同步渲染' name='fuzzTagSyncIndex' valuePropName='checked'>
+                        <Form.Item label={i18next.t("强制同步渲染")} name='fuzzTagSyncIndex' valuePropName='checked'>
                             <YakitSwitch />
                         </Form.Item>
 
-                        <Form.Item label='不修复长度' name='noFixContentLength' valuePropName='checked'>
+                        <Form.Item label={i18next.t("不修复长度")} name='noFixContentLength' valuePropName='checked'>
                             <YakitSwitch />
                         </Form.Item>
 
-                        <Form.Item label='超时时长' name='timeout' style={{marginBottom: 0}}>
+                        <Form.Item label={i18next.t("超时时长")} name='timeout' style={{marginBottom: 0}}>
                             <YakitInputNumber type='horizontal' size='small' />
                         </Form.Item>
                     </YakitPanel>
                     <YakitPanel
-                        header='并发配置'
-                        key='发包配置'
+                        header={i18next.t("并发配置")}
+                        key={i18next.t("发包配置")}
                         extra={
                             <YakitButton
                                 type='text'
@@ -513,19 +510,18 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                                     onReset(restValue)
                                 }}
                                 size='small'
-                            >
-                                重置
+                            >{i18next.t("重置")}
                             </YakitButton>
                         }
                     >
-                        <Form.Item label='重复发包' name='repeatTimes' help={`一般用来测试条件竞争或者大并发的情况`}>
+                        <Form.Item label={i18next.t("重复发包")} name='repeatTimes' help={i18next.t("一般用来测试条件竞争或者大并发的情况")}>
                             <YakitInputNumber type='horizontal' size='small' />
                         </Form.Item>
-                        <Form.Item label='并发线程' name='concurrent'>
+                        <Form.Item label={i18next.t("并发线程")} name='concurrent'>
                             <YakitInputNumber type='horizontal' size='small' />
                         </Form.Item>
 
-                        <Form.Item label='随机延迟' style={{marginBottom: 0}}>
+                        <Form.Item label={i18next.t("随机延迟")} style={{marginBottom: 0}}>
                             <div className={styles["advanced-config-delay"]}>
                                 <Form.Item
                                     name='minDelaySeconds'
@@ -559,8 +555,8 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                         </Form.Item>
                     </YakitPanel>
                     <YakitPanel
-                        header='重试配置'
-                        key='重试配置'
+                        header={i18next.t("重试配置")}
+                        key={i18next.t("重试配置")}
                         extra={
                             <YakitButton
                                 type='text'
@@ -584,12 +580,11 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                                     onReset(restValue)
                                 }}
                                 size='small'
-                            >
-                                重置
+                            >{i18next.t("重置")}
                             </YakitButton>
                         }
                     >
-                        <Form.Item label='重试次数' name='maxRetryTimes'>
+                        <Form.Item label={i18next.t("重试次数")} name='maxRetryTimes'>
                             <YakitInputNumber type='horizontal' size='small' min={0} />
                         </Form.Item>
                         <YakitCollapse activeKey={retryActive} destroyInactivePanel={true} bordered={false}>
@@ -597,14 +592,14 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                                 header={
                                     <Form.Item name='retry' noStyle valuePropName='checked'>
                                         <YakitCheckbox>
-                                            <span style={{marginLeft: 6, cursor: "pointer"}}>重试条件</span>
+                                            <span style={{marginLeft: 6, cursor: "pointer"}}>{i18next.t("重试条件")}</span>
                                         </YakitCheckbox>
                                     </Form.Item>
                                 }
-                                key='重试条件'
+                                key={i18next.t("重试条件")}
                                 className={styles["advanced-config-collapse-secondary-item"]}
                             >
-                                <Form.Item label='状态码' name={["retryConfiguration", "statusCode"]}>
+                                <Form.Item label={i18next.t("状态码")} name={["retryConfiguration", "statusCode"]}>
                                     <YakitInput placeholder='200,300-399' size='small' disabled={!retry} />
                                 </Form.Item>
                             </YakitPanel>
@@ -612,15 +607,15 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                                 header={
                                     <Form.Item name='noRetry' noStyle valuePropName='checked'>
                                         <YakitCheckbox>
-                                            <span style={{marginLeft: 6, cursor: "pointer"}}>不重试条件</span>
+                                            <span style={{marginLeft: 6, cursor: "pointer"}}>{i18next.t("不重试条件")}</span>
                                         </YakitCheckbox>
                                     </Form.Item>
                                 }
-                                key='不重试条件'
+                                key={i18next.t("不重试条件")}
                                 className={styles["advanced-config-collapse-secondary-item"]}
                             >
                                 <Form.Item
-                                    label='状态码'
+                                    label={i18next.t("状态码")}
                                     name={["noRetryConfiguration", "statusCode"]}
                                     style={{marginBottom: 0}}
                                 >
@@ -630,8 +625,8 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                         </YakitCollapse>
                     </YakitPanel>
                     <YakitPanel
-                        header='重定向配置'
-                        key='重定向配置'
+                        header={i18next.t("重定向配置")}
+                        key={i18next.t("重定向配置")}
                         extra={
                             <YakitButton
                                 type='text'
@@ -653,19 +648,18 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                                     onReset(restValue)
                                 }}
                                 size='small'
-                            >
-                                重置
+                            >{i18next.t("重置")}
                             </YakitButton>
                         }
                     >
-                        <Form.Item label='禁用重定向' name='noFollowRedirect' valuePropName={"checked"}>
+                        <Form.Item label={i18next.t("禁用重定向")} name='noFollowRedirect' valuePropName={"checked"}>
                             <YakitSwitch />
                         </Form.Item>
-                        <Form.Item label='重定向次数' name='redirectCount'>
+                        <Form.Item label={i18next.t("重定向次数")} name='redirectCount'>
                             <YakitInputNumber type='horizontal' size='small' />
                         </Form.Item>
                         <Form.Item
-                            label='JS 重定向'
+                            label={i18next.t("JS 重定向")}
                             name='followJSRedirect'
                             valuePropName={"checked"}
                             style={{marginBottom: 0}}
@@ -674,8 +668,8 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                         </Form.Item>
                     </YakitPanel>
                     <YakitPanel
-                        header={"DNS配置"}
-                        key={"DNS配置"}
+                        header={i18next.t("DNS配置")}
+                        key={i18next.t("DNS配置")}
                         extra={
                             <YakitButton
                                 type='text'
@@ -690,12 +684,11 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                                     onReset(restValue)
                                 }}
                                 size='small'
-                            >
-                                重置
+                            >{i18next.t("重置")}
                             </YakitButton>
                         }
                     >
-                        <Form.Item label='DNS服务器' name='dnsServers'>
+                        <Form.Item label={i18next.t("DNS服务器")} name='dnsServers'>
                             <YakitSelect
                                 options={["8.8.8.8", "8.8.4.4", "1.1.1.1", "1.0.0.1"].map((i) => {
                                     return {value: i, label: i}
@@ -703,10 +696,10 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                                 mode='tags'
                                 allowClear={true}
                                 size={"small"}
-                                placeholder={"指定DNS服务器"}
+                                placeholder={i18next.t("指定DNS服务器")}
                             />
                         </Form.Item>
-                        <Form.Item label={"Hosts配置"} name='etcHosts' style={{marginBottom: 0}}>
+                        <Form.Item label={i18next.t("Hosts配置")} name='etcHosts' style={{marginBottom: 0}}>
                             <Space direction={"vertical"}>
                                 {(etcHosts || []).map((i, n) => (
                                     <Tooltip
@@ -743,20 +736,18 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                                             })
                                         })
                                     }}
-                                >
-                                    添加 Hosts 映射
+                                >{i18next.t("添加 Hosts 映射")}
                                 </YakitButton>
                             </Space>
                         </Form.Item>
                     </YakitPanel>
                     <YakitPanel
                         header={
-                            <div className={styles["matchers-panel"]}>
-                                匹配器
+                            <div className={styles["matchers-panel"]}>{i18next.t("匹配器")}
                                 <div className={styles["matchers-number"]}>{matchersList?.length}</div>
                             </div>
                         }
-                        key='匹配器'
+                        key={i18next.t("匹配器")}
                         extra={
                             <>
                                 <YakitButton
@@ -773,8 +764,7 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                                         onReset(restValue)
                                     }}
                                     size='small'
-                                >
-                                    重置
+                                >{i18next.t("重置")}
                                 </YakitButton>
                                 <Divider type='vertical' style={{margin: 0}} />
                                 <YakitButton
@@ -782,14 +772,13 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                                     size='small'
                                     onClick={(e) => {
                                         e.stopPropagation()
-                                        if (activeKey?.findIndex((ele) => ele === "匹配器") === -1) {
-                                            onSwitchCollapse([...activeKey, "匹配器"])
+                                        if (activeKey?.findIndex((ele) => ele === i18next.t("匹配器")) === -1) {
+                                            onSwitchCollapse([...activeKey, i18next.t("匹配器")])
                                         }
                                         onAddMatchingAndExtractionCard("matchers")
                                     }}
                                     className={styles["btn-padding-right-0"]}
-                                >
-                                    添加/调试
+                                >{i18next.t("添加/调试")}
                                     <HollowLightningBoltIcon />
                                 </YakitButton>
                             </>
@@ -823,12 +812,11 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                     </YakitPanel>
                     <YakitPanel
                         header={
-                            <div className={styles["matchers-panel"]}>
-                                数据提取器
+                            <div className={styles["matchers-panel"]}>{i18next.t("数据提取器")}
                                 <div className={styles["matchers-number"]}>{extractorList?.length}</div>
                             </div>
                         }
-                        key='数据提取器'
+                        key={i18next.t("数据提取器")}
                         extra={
                             <>
                                 <YakitButton
@@ -842,8 +830,7 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                                         onReset(restValue)
                                     }}
                                     size='small'
-                                >
-                                    重置
+                                >{i18next.t("重置")}
                                 </YakitButton>
                                 <Divider type='vertical' style={{margin: 0}} />
                                 <YakitButton
@@ -851,14 +838,13 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                                     size='small'
                                     onClick={(e) => {
                                         e.stopPropagation()
-                                        if (activeKey?.findIndex((ele) => ele === "数据提取器") === -1) {
-                                            onSwitchCollapse([...activeKey, "数据提取器"])
+                                        if (activeKey?.findIndex((ele) => ele === i18next.t("数据提取器")) === -1) {
+                                            onSwitchCollapse([...activeKey, i18next.t("数据提取器")])
                                         }
                                         onAddMatchingAndExtractionCard("extractors")
                                     }}
                                     className={styles["btn-padding-right-0"]}
-                                >
-                                    添加/调试
+                                >{i18next.t("添加/调试")}
                                     <HollowLightningBoltIcon />
                                 </YakitButton>
                             </>
@@ -872,8 +858,8 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                         />
                     </YakitPanel>
                     <YakitPanel
-                        header='设置变量'
-                        key='设置变量'
+                        header={i18next.t("设置变量")}
+                        key={i18next.t("设置变量")}
                         extra={
                             <>
                                 <YakitButton
@@ -888,8 +874,7 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                                         setVariableActiveKey(["0"])
                                     }}
                                     size='small'
-                                >
-                                    重置
+                                >{i18next.t("重置")}
                                 </YakitButton>
                                 <Divider type='vertical' style={{margin: 0}} />
                                 <YakitButton
@@ -899,8 +884,7 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                                         onRenderVariables()
                                     }}
                                     size='small'
-                                >
-                                    预览
+                                >{i18next.t("预览")}
                                 </YakitButton>
                                 <Divider type='vertical' style={{margin: 0}} />
                                 <YakitButton
@@ -923,16 +907,15 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                                                 `${variables?.length || 0}`
                                             ])
                                         } else {
-                                            yakitNotify("error", `请将已添加【变量${index}】设置完成后再进行添加`)
+                                            yakitNotify("error", i18next.t("请将已添加【变量${index}】设置完成后再进行添加", { v1: index }))
                                         }
-                                        if (activeKey?.findIndex((ele) => ele === "设置变量") === -1) {
-                                            onSwitchCollapse([...activeKey, "设置变量"])
+                                        if (activeKey?.findIndex((ele) => ele === i18next.t("设置变量")) === -1) {
+                                            onSwitchCollapse([...activeKey, i18next.t("设置变量")])
                                         }
                                     }}
                                     className={styles["btn-padding-right-0"]}
                                     size='small'
-                                >
-                                    添加
+                                >{i18next.t("添加")}
                                     <PlusIcon />
                                 </YakitButton>
                             </>
@@ -954,7 +937,7 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                                             {fields.map(({key, name}, i) => (
                                                 <YakitPanel
                                                     key={`${key}`}
-                                                    header={`变量${name}`}
+                                                    header={i18next.t("变量${name}", { v1: name })}
                                                     className={styles["variable-list-panel"]}
                                                     extra={
                                                         <div
@@ -1012,8 +995,7 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                                                     icon={<PlusIcon />}
                                                     className={styles["plus-button-bolck"]}
                                                     block
-                                                >
-                                                    添加
+                                                >{i18next.t("添加")}
                                                 </YakitButton>
                                             </>
                                         )}
@@ -1023,7 +1005,7 @@ export const HttpQueryAdvancedConfig: React.FC<HttpQueryAdvancedConfigProps> = R
                         </Form.List>
                     </YakitPanel>
                 </YakitCollapse>
-                <div className={styles["to-end"]}>已经到底啦～</div>
+                <div className={styles["to-end"]}>{i18next.t("已经到底啦～")}</div>
             </Form>
             <MatcherAndExtractionDrawer
                 visibleDrawer={visibleDrawer}
@@ -1049,12 +1031,12 @@ export const SetVariableItem: React.FC<SetVariableItemProps> = React.memo((props
     return (
         <div className={styles["variable-item"]}>
             <Form.Item name={[name, "Key"]} noStyle wrapperCol={{span: 24}}>
-                <input placeholder='变量名' className={styles["variable-item-input"]} />
+                <input placeholder={i18next.t("变量名")} className={styles["variable-item-input"]} />
             </Form.Item>
 
             <div className={styles["variable-item-textarea-body"]}>
                 <Form.Item name={[name, "Value"]} noStyle wrapperCol={{span: 24}}>
-                    <AutoTextarea className={styles["variable-item-textarea"]} placeholder='变量值' />
+                    <AutoTextarea className={styles["variable-item-textarea"]} placeholder={i18next.t("变量值")} />
                 </Form.Item>
                 <ResizerIcon className={styles["resizer-icon"]} />
             </div>
@@ -1105,8 +1087,7 @@ const MatchersList: React.FC<MatchersListProps> = React.memo((props) => {
                         icon={<PlusIcon />}
                         className={styles["plus-button-bolck"]}
                         block
-                    >
-                        添加
+                    >{i18next.t("添加")}
                     </YakitButton>
                 </>
             )}
@@ -1157,8 +1138,7 @@ const ExtractorsList: React.FC<ExtractorsListProps> = React.memo((props) => {
                         icon={<PlusIcon />}
                         className={styles["plus-button-bolck"]}
                         block
-                    >
-                        添加
+                    >{i18next.t("添加")}
                     </YakitButton>
                 </>
             )}
@@ -1184,7 +1164,7 @@ const MatchersAndExtractorsListItemOperate: React.FC<MatchersAndExtractorsListIt
             >
                 <TrashIcon className={styles["trash-icon"]} onClick={() => onRemove()} />
 
-                <Tooltip title='调试'>
+                <Tooltip title={i18next.t("调试")}>
                     <HollowLightningBoltIcon
                         className={styles["hollow-lightningBolt-icon"]}
                         onClick={() => {

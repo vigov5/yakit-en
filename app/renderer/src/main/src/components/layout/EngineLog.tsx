@@ -6,6 +6,7 @@ import ReactResizeDetector from "react-resize-detector"
 
 import styles from "./EngineLog.module.scss"
 import { getReleaseEditionName } from "@/utils/envfile"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -34,7 +35,7 @@ export const EngineLog: React.FC<EngineLogProps> = React.memo((props) => {
             return
         }
 
-        writeToConsole(`欢迎使用 ${getReleaseEditionName()}!\n`)
+        writeToConsole(i18next.t("欢迎使用 ${getReleaseEditionName()}!\n", {v1: getReleaseEditionName()}))
 
         ipcRenderer.on("live-engine-stdio", (e, stdout) => {
             writeToConsole(stdout)
@@ -55,7 +56,7 @@ export const EngineLog: React.FC<EngineLogProps> = React.memo((props) => {
     return (
         <div className={styles["engine-log-wrapper"]}>
             <div className={styles["engine-log-header"]}>
-                <div className={styles["header-title"]}>连接日志</div>
+                <div className={styles["header-title"]}>{i18next.t("连接日志")}</div>
                 <div className={styles["header-close"]} onClick={onCancel}>
                     <EngineLogCloseSvgIcon />
                 </div>

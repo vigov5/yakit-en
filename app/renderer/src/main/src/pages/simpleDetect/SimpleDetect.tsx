@@ -54,24 +54,25 @@ import {YakitButton} from "@/components/yakitUI/YakitButton/YakitButton"
 import {YakitRoute} from "@/routes/newRoute"
 import {StartBruteParams} from "@/pages/brute/BrutePage"
 import emiter from "@/utils/eventBus/eventBus"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 const CheckboxGroup = Checkbox.Group
 
-const plainOptions = ["操作系统类漏洞","WEB中间件漏洞","WEB应用漏洞","网络安全设备漏洞","OA产品漏洞","CMS产品漏洞","弱口令", "CVE合规漏洞"]
+const plainOptions = [i18next.t("操作系统类漏洞"),i18next.t("WEB中间件漏洞"),i18next.t("WEB应用漏洞"),i18next.t("网络安全设备漏洞"),i18next.t("OA产品漏洞"),i18next.t("CMS产品漏洞"),i18next.t("弱口令"), i18next.t("CVE合规漏洞")]
 const layout = {
     labelCol: {span: 6},
     wrapperCol: {span: 16}
 }
 const marks: SliderMarks = {
     1: {
-        label: <div>慢速</div>
+        label: <div>{i18next.t("慢速")}</div>
     },
     2: {
-        label: <div>适中</div>
+        label: <div>{i18next.t("适中")}</div>
     },
     3: {
-        label: <div>快速</div>
+        label: <div>{i18next.t("快速")}</div>
     }
 }
 
@@ -188,8 +189,8 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
         usernameValue: "",
         passwordValue: ""
     })
-    const [_, setScanType, getScanType] = useGetState<string>("基础扫描")
-    const [checkedList, setCheckedList, getCheckedList] = useGetState<CheckboxValueType[]>(["弱口令", "CVE合规漏洞"])
+    const [_, setScanType, getScanType] = useGetState<string>(i18next.t("基础扫描"))
+    const [checkedList, setCheckedList, getCheckedList] = useGetState<CheckboxValueType[]>([i18next.t("弱口令"), i18next.t("CVE合规漏洞")])
     const [__, setScanDeep, getScanDeep] = useGetState<number>(3)
     const isInputValue = useRef<boolean>(false)
     // 是否已经修改速度
@@ -197,7 +198,7 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
 
     useEffect(() => {
         let obj: any = {}
-        if (getScanType() === "专项扫描" && !getCheckedList().includes("弱口令")) {
+        if (getScanType() === i18next.t("专项扫描") && !getCheckedList().includes(i18next.t("弱口令"))) {
             obj.EnableBrute = false
         } else {
             obj.EnableBrute = true
@@ -236,14 +237,14 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
             let selectArr: any[] = []
             arr.map((item) => {
                 switch (item) {
-                    case "弱口令":
-                        selectArr.push("弱口令")
+                    case i18next.t("弱口令"):
+                        selectArr.push(i18next.t("弱口令"))
                         break
-                    case "网络设备扫描":
-                        selectArr.push("网络设备扫描")
+                    case i18next.t("网络设备扫描"):
+                        selectArr.push(i18next.t("网络设备扫描"))
                         break
-                    case "合规检测":
-                        selectArr.push("合规检测")
+                    case i18next.t("合规检测"):
+                        selectArr.push(i18next.t("合规检测"))
                         break
                     default:
                         setScanType(item)
@@ -252,7 +253,7 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
             })
             if (selectArr.length > 0) {
                 setCheckedList(selectArr)
-                setScanType("自定义")
+                setScanType(i18next.t("自定义"))
             }
         }
     }, [YakScriptOnlineGroup])
@@ -275,7 +276,7 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
     useEffect(() => {
         if (TaskName) {
             form.setFieldsValue({
-                TaskName: TaskName || "漏洞扫描任务"
+                TaskName: TaskName || i18next.t("漏洞扫描任务")
             })
         }
     }, [TaskName])
@@ -284,7 +285,7 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
     const saveTask = (v?: string) => {
         const cacheData = v ? JSON.parse(v) : false
         let newParams: PortScanParams = {...getPortParams()}
-        const OnlineGroup: string = getScanType() !== "专项扫描" ? getScanType() : [...checkedList].join(",")
+        const OnlineGroup: string = getScanType() !== i18next.t("专项扫描") ? getScanType() : [...checkedList].join(",")
         let StartBruteParams: StartBruteParams = {...getBruteParams()}
         // 继续任务暂存报告参数 用于恢复任务下载 --如果直接关闭Dom则无法存储报告
         const ReportParams = getReportParams()
@@ -328,7 +329,7 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
             }
         } else {
             let newParams: PortScanParams = {...getPortParams()}
-            const OnlineGroup: string = getScanType() !== "专项扫描" ? getScanType() : [...checkedList].join(",")
+            const OnlineGroup: string = getScanType() !== i18next.t("专项扫描") ? getScanType() : [...checkedList].join(",")
             obj = {
                 LastRecord: {
                     LastRecordPtr: filePtrValue,
@@ -419,24 +420,24 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
     const onFinish = useMemoizedFn((values) => {
         const {TaskName} = values
         if (!portParams.Targets && !portParams.TargetsFile) {
-            warn("需要设置扫描目标")
+            warn(i18next.t("需要设置扫描目标"))
             return
         }
         if (TaskName.length === 0) {
-            warn("请输入任务名称")
+            warn(i18next.t("请输入任务名称"))
             return
         }
-        if (getScanType() === "专项扫描" && getCheckedList().length === 0) {
-            warn("请选择自定义内容")
+        if (getScanType() === i18next.t("专项扫描") && getCheckedList().length === 0) {
+            warn(i18next.t("请选择自定义内容"))
             return
         }
         if (portParams.Ports.length === 0) {
-            warn("请选择或输入扫描端口")
+            warn(i18next.t("请选择或输入扫描端口"))
             return
         }
 
         const OnlineGroup: string =
-            getScanType() !== "专项扫描" ? getScanType() : [...checkedList].filter((name) => name !== "弱口令").join(",")
+            getScanType() !== i18next.t("专项扫描") ? getScanType() : [...checkedList].filter((name) => name !== i18next.t("弱口令")).join(",")
         // 继续任务 参数拦截
         if (Uid) {
             recoverRun()
@@ -459,7 +460,7 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
                     run(OnlineGroup, TaskName)
                 })
                 .catch((e) => {
-                    failed(`查询扫描模式错误:${e}`)
+                    failed(i18next.t("查询扫描模式错误:${e}", { v1: e }))
                 })
                 .finally(() => {})
         }
@@ -477,11 +478,11 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
     const judgeExtra = () => {
         let str: string = ""
         switch (getScanType()) {
-            case "基础扫描":
-                str = "包含合规检测、小字典弱口令检测与部分漏洞检测"
+            case i18next.t("基础扫描"):
+                str = i18next.t("包含合规检测、小字典弱口令检测与部分漏洞检测")
                 break
-            case "专项扫描":
-                str = "针对不同场景的专项漏洞检测扫描"
+            case i18next.t("专项扫描"):
+                str = i18next.t("针对不同场景的专项漏洞检测扫描")
                 break
         }
         return str
@@ -506,7 +507,7 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
                                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                             ]
                             if (!typeArr.includes(f.type)) {
-                                failed(`${f.name}非txt、Excel文件，请上传txt、Excel格式文件！`)
+                                failed(i18next.t("${f.name}非txt、Excel文件，请上传txt、Excel格式文件！", {v1: f.name}))
                                 return false
                             }
                             setUploadLoading(true)
@@ -517,7 +518,7 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
                                 let arr = TargetsFile.split(",")
                                 // 限制最多3个文件上传
                                 if (arr.length >= 3) {
-                                    info("最多支持3个文件上传")
+                                    info(i18next.t("最多支持3个文件上传"))
                                     setUploadLoading(false)
                                     return
                                 }
@@ -525,7 +526,7 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
                                 if (!arr.includes(absPath)) {
                                     setPortParams({...portParams, TargetsFile: `${TargetsFile},${absPath}`})
                                 } else {
-                                    info("路径已存在，请勿重复上传")
+                                    info(i18next.t("路径已存在，请勿重复上传"))
                                 }
                             } // 当未上传过文件时
                             else {
@@ -536,14 +537,14 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
                         }}
                         item={{
                             style: {textAlign: "left"},
-                            label: "扫描目标:"
+                            label: i18next.t("扫描目标:")
                         }}
                         textarea={{
                             isBubbing: true,
                             setValue: (Targets) => setPortParams({...portParams, Targets}),
                             value: portParams.Targets,
                             rows: 1,
-                            placeholder: "域名/主机/IP/IP段均可，逗号分隔或按行分割",
+                            placeholder: i18next.t("域名/主机/IP/IP段均可，逗号分隔或按行分割"),
                             disabled: executing || shield
                         }}
                         otherHelpNode={
@@ -557,14 +558,13 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
                                             })
                                         }}
                                         checked={portParams.SkippedHostAliveScan}
-                                    >
-                                        跳过主机存活检测
+                                    >{i18next.t("跳过主机存活检测")}
                                     </Checkbox>
                                 </span>
                                 <span
                                     onClick={() => {
                                         let m = showDrawer({
-                                            title: "设置高级参数",
+                                            title: i18next.t("设置高级参数"),
                                             width: "60%",
                                             onClose: () => {
                                                 isSetSpeed.current = getScanDeep()
@@ -588,8 +588,7 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
                                         })
                                     }}
                                     className={styles["help-hint-title"]}
-                                >
-                                    更多参数
+                                >{i18next.t("更多参数")}
                                 </span>
                                 <span
                                     onClick={() => {
@@ -601,19 +600,16 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
                                         })
                                     }}
                                     className={styles["help-hint-title"]}
-                                >
-                                    未完成任务
+                                >{i18next.t("未完成任务")}
                                 </span>
                             </>
                         }
                         suffixNode={
                             executing ? (
-                                <Button type='primary' danger disabled={!executing} onClick={onCancel}>
-                                    立即停止任务
+                                <Button type='primary' danger disabled={!executing} onClick={onCancel}>{i18next.t("立即停止任务")}
                                 </Button>
                             ) : (
-                                <Button type='primary' htmlType='submit' disabled={isDownloadPlugin}>
-                                    开始检测
+                                <Button type='primary' htmlType='submit' disabled={isDownloadPlugin}>{i18next.t("开始检测")}
                                 </Button>
                             )
                         }
@@ -651,23 +647,23 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
                     </Form.Item>
                 )}
                 <div style={executing ? {display: "none"} : {}}>
-                    <Form.Item name='scan_type' label='扫描模式' extra={judgeExtra()}>
+                    <Form.Item name='scan_type' label={i18next.t("扫描模式")} extra={judgeExtra()}>
                         <Radio.Group
                             buttonStyle='solid'
-                            defaultValue={"基础扫描"}
+                            defaultValue={i18next.t("基础扫描")}
                             onChange={(e) => {
                                 setScanType(e.target.value)
                             }}
                             value={getScanType()}
                             disabled={shield}
                         >
-                            <Radio.Button value='基础扫描'>基础扫描</Radio.Button>
-                            <Radio.Button value='专项扫描'>专项扫描</Radio.Button>
+                            <Radio.Button value={i18next.t("基础扫描")}>{i18next.t("基础扫描")}</Radio.Button>
+                            <Radio.Button value={i18next.t("专项扫描")}>{i18next.t("专项扫描")}</Radio.Button>
                         </Radio.Group>
                         
                     </Form.Item>
                     
-                    {getScanType() === "专项扫描" && (
+                    {getScanType() === i18next.t("专项扫描") && (
                         <Form.Item label=" " colon={false} style={{marginTop:"-16px"}}>
                             <CheckboxGroup
                                 disabled={shield}
@@ -679,11 +675,11 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
                         )}
                     
                     <div style={{display: "none"}}>
-                        <Form.Item name='TaskName' label='任务名称'>
+                        <Form.Item name='TaskName' label={i18next.t("任务名称")}>
                             <Input
                                 disabled={shield}
                                 style={{width: 400}}
-                                placeholder='请输入任务名称'
+                                placeholder={i18next.t("请输入任务名称")}
                                 allowClear
                                 onChange={() => {
                                     isInputValue.current = true
@@ -692,7 +688,7 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
                         </Form.Item>
                     </div>
 
-                    <Form.Item name='scan_deep' label='扫描速度' style={{position: "relative"}}>
+                    <Form.Item name='scan_deep' label={i18next.t("扫描速度")} style={{position: "relative"}}>
                         <Slider
                             tipFormatter={null}
                             value={getScanDeep()}
@@ -703,8 +699,7 @@ export const SimpleDetectForm: React.FC<SimpleDetectFormProps> = (props) => {
                             marks={marks}
                             disabled={shield}
                         />
-                        <div style={{position: "absolute", top: 26, fontSize: 12, color: "gray"}}>
-                            扫描速度越慢，扫描结果就越详细，可根据实际情况进行选择
+                        <div style={{position: "absolute", top: 26, fontSize: 12, color: "gray"}}>{i18next.t("扫描速度越慢，扫描结果就越详细，可根据实际情况进行选择")}
                         </div>
                     </Form.Item>
                 </div>
@@ -747,7 +742,7 @@ export const SimpleDetectTable: React.FC<SimpleDetectTableProps> = React.forward
     const openPort = useRef<YakitPort[]>([])
     // 下载报告Modal
     const [reportModalVisible, setReportModalVisible] = useState<boolean>(false)
-    const [reportName, setReportName] = useState<string>(runTaskName || "默认报告名称")
+    const [reportName, setReportName] = useState<string>(runTaskName || i18next.t("默认报告名称"))
     const [reportLoading, setReportLoading] = useState<boolean>(false)
     const [_, setReportId, getReportId] = useGetState<number>()
     // 是否允许更改TaskName
@@ -813,7 +808,7 @@ export const SimpleDetectTable: React.FC<SimpleDetectTableProps> = React.forward
                         // closedPort.current.unshift(logInfo)
                     }
                 } catch (e) {
-                    failed("解析端口扫描结果失败...")
+                    failed(i18next.t("解析端口扫描结果失败..."))
                 }
             }
         })
@@ -875,13 +870,13 @@ export const SimpleDetectTable: React.FC<SimpleDetectTableProps> = React.forward
     }
 
     /** 区分继续任务与新任务 获取扫描主机数 Ping存活主机数 */
-    const getCardByJudgeOld = (v:"扫描主机数"|"Ping存活主机数") => {
+    const getCardByJudgeOld = (v) => {
         if(oldRunParams && oldRunParams.LastRecord.ExtraInfo){
             let oldCards = JSON.parse(oldRunParams.LastRecord.ExtraInfo).statusCards
-            const oldItem:StatusCardInfoProps[] = oldCards.filter((item) =>["存活主机数/扫描主机数"].includes(item.tag))
+            const oldItem:StatusCardInfoProps[] = oldCards.filter((item) =>[i18next.t("存活主机数/扫描主机数")].includes(item.tag))
             if(oldItem.length>0){
                 let strArr:string[] = oldItem[0].info[0].Data.split("/")
-                if(v==="Ping存活主机数") return strArr[0]
+                if(v===i18next.t("Ping存活主机数")) return strArr[0]
                 else return strArr[strArr.length - 1]
             }
             return getCardForId(v)
@@ -900,9 +895,9 @@ export const SimpleDetectTable: React.FC<SimpleDetectTableProps> = React.forward
             {Key: "runtime_id", Value: getCardForId("RuntimeIDFromRisks")},
             {Key: "report_name", Value: reportName},
             {Key: "plugins", Value: runPluginCount},
-            {Key: "host_total", Value: getCardByJudgeOld("扫描主机数")},
-            {Key: "ping_alive_host_total", Value: getCardByJudgeOld("Ping存活主机数")},
-            {Key: "port_total", Value: getCardForId("扫描端口数")}
+            {Key: "host_total", Value: getCardByJudgeOld(i18next.t("扫描主机数"))},
+            {Key: "ping_alive_host_total", Value: getCardByJudgeOld(i18next.t("Ping存活主机数"))},
+            {Key: "port_total", Value: getCardForId(i18next.t("扫描端口数"))}
         ]
         // 老报告生成
         if (oldRunParams && isLastReport) {
@@ -928,9 +923,9 @@ export const SimpleDetectTable: React.FC<SimpleDetectTableProps> = React.forward
                 {Key: "runtime_id", Value: getCardForId("RuntimeIDFromRisks")},
                 {Key: "report_name", Value: reportName},
                 {Key: "plugins", Value: runPluginCount},
-                {Key: "host_total", Value: getCardByJudgeOld("扫描主机数")},
-                {Key: "ping_alive_host_total", Value: getCardByJudgeOld("Ping存活主机数")},
-                {Key: "port_total", Value: getCardForId("扫描端口数")}
+                {Key: "host_total", Value: getCardByJudgeOld(i18next.t("扫描主机数"))},
+                {Key: "ping_alive_host_total", Value: getCardByJudgeOld(i18next.t("Ping存活主机数"))},
+                {Key: "port_total", Value: getCardForId(i18next.t("扫描端口数"))}
             ]
         }
     }))
@@ -944,22 +939,20 @@ export const SimpleDetectTable: React.FC<SimpleDetectTableProps> = React.forward
                     tabBarExtraContent={
                         <div>
                             {!executing && allowDownloadReport ? (
-                                <div className={styles["hole-text"]} onClick={creatReport}>
-                                    生成报告
+                                <div className={styles["hole-text"]} onClick={creatReport}>{i18next.t("生成报告")}
                                 </div>
                             ) : (
-                                <div className={styles["disable-hole-text"]}>生成报告</div>
+                                <div className={styles["disable-hole-text"]}>{i18next.t("生成报告")}</div>
                             )}
                         </div>
                     }
                 >
                     {!!infoState.riskState && infoState.riskState.length > 0 && (
-                        <Tabs.TabPane tab={`漏洞与风险`} key={"risk"} forceRender>
+                        <Tabs.TabPane tab={i18next.t("漏洞与风险")} key={"risk"} forceRender>
                             <AutoCard
                                 bodyStyle={{overflowY: "auto"}}
                                 extra={
-                                    <div className={styles["hole-text"]} onClick={openMenu}>
-                                        查看完整漏洞
+                                    <div className={styles["hole-text"]} onClick={openMenu}>{i18next.t("查看完整漏洞")}
                                     </div>
                                 }
                             >
@@ -972,7 +965,7 @@ export const SimpleDetectTable: React.FC<SimpleDetectTableProps> = React.forward
                         </Tabs.TabPane>
                     )}
 
-                    <Tabs.TabPane tab={"扫描端口列表"} key={"scanPort"} forceRender>
+                    <Tabs.TabPane tab={i18next.t("扫描端口列表")} key={"scanPort"} forceRender>
                         <div style={{width: "100%", height: "100%", overflow: "hidden auto"}}>
                             <Row style={{marginTop: 6}} gutter={6}>
                                 <Col span={24}>
@@ -996,13 +989,13 @@ export const SimpleDetectTable: React.FC<SimpleDetectTableProps> = React.forward
                 </Tabs>
             </div>
             <Modal
-                title='下载报告'
+                title={i18next.t("下载报告")}
                 visible={reportModalVisible}
                 footer={null}
                 onCancel={() => {
                     setReportModalVisible(false)
                     if (reportPercent < 1 && reportPercent > 0) {
-                        warn("取消生成报告")
+                        warn(i18next.t("取消生成报告"))
                     }
                 }}
             >
@@ -1010,7 +1003,7 @@ export const SimpleDetectTable: React.FC<SimpleDetectTableProps> = React.forward
                     <div style={{textAlign: "center"}}>
                         <Input
                             style={{width: 400}}
-                            placeholder='请输入任务名称'
+                            placeholder={i18next.t("请输入任务名称")}
                             allowClear
                             value={reportName}
                             onChange={(e) => {
@@ -1033,11 +1026,10 @@ export const SimpleDetectTable: React.FC<SimpleDetectTableProps> = React.forward
                             onClick={() => {
                                 setReportModalVisible(false)
                                 if (reportPercent < 1 && reportPercent > 0) {
-                                    warn("取消生成报告")
+                                    warn(i18next.t("取消生成报告"))
                                 }
                             }}
-                        >
-                            取消
+                        >{i18next.t("取消")}
                         </Button>
                         <Button
                             loading={reportLoading}
@@ -1047,8 +1039,7 @@ export const SimpleDetectTable: React.FC<SimpleDetectTableProps> = React.forward
                                 downloadReport()
                                 setShowReportPercent(true)
                             }}
-                        >
-                            确定
+                        >{i18next.t("确定")}
                         </Button>
                     </div>
                 </div>
@@ -1098,7 +1089,7 @@ export const DownloadAllPlugin: React.FC<DownloadAllPluginProps> = (props) => {
     }, [taskToken])
     const AddAllPlugin = useMemoizedFn(() => {
         if (!userInfo.isLogin) {
-            warn("我的插件需要先登录才能下载，请先登录")
+            warn(i18next.t("我的插件需要先登录才能下载，请先登录"))
             return
         }
         // 全部添加
@@ -1109,14 +1100,14 @@ export const DownloadAllPlugin: React.FC<DownloadAllPluginProps> = (props) => {
             .invoke("DownloadOnlinePluginAll", addParams, taskToken)
             .then(() => {})
             .catch((e) => {
-                failed(`添加失败:${e}`)
+                failed(i18next.t("添加失败:${e}", { v1: e }))
             })
     })
     const StopAllPlugin = () => {
         onClose && onClose()
         setAddLoading(false)
         ipcRenderer.invoke("cancel-DownloadOnlinePluginAll", taskToken).catch((e) => {
-            failed(`停止添加失败:${e}`)
+            failed(i18next.t("停止添加失败:${e}", { v1: e }))
         })
     }
     const onRemoveAllLocalPlugin = () => {
@@ -1124,10 +1115,10 @@ export const DownloadAllPlugin: React.FC<DownloadAllPluginProps> = (props) => {
         ipcRenderer
             .invoke("DeleteLocalPluginsByWhere", {})
             .then(() => {
-                success("全部删除成功")
+                success(i18next.t("全部删除成功"))
             })
             .catch((e) => {
-                failed(`删除所有本地插件错误:${e}`)
+                failed(i18next.t("删除所有本地插件错误:${e}", { v1: e }))
             })
     }
     if (type === "modal") {
@@ -1135,7 +1126,7 @@ export const DownloadAllPlugin: React.FC<DownloadAllPluginProps> = (props) => {
             <div className={styles["download-all-plugin-modal"]}>
                 {addLoading ? (
                     <div>
-                        <div>下载进度</div>
+                        <div>{i18next.t("下载进度")}</div>
                         <div className={styles["filter-opt-progress-modal"]}>
                             <Progress
                                 size='small'
@@ -1144,17 +1135,15 @@ export const DownloadAllPlugin: React.FC<DownloadAllPluginProps> = (props) => {
                             />
                         </div>
                         <div style={{textAlign: "center", marginTop: 10}}>
-                            <Button type='primary' onClick={StopAllPlugin}>
-                                取消
+                            <Button type='primary' onClick={StopAllPlugin}>{i18next.t("取消")}
                             </Button>
                         </div>
                     </div>
                 ) : (
                     <div>
-                        <div>检测到本地未下载任何插件，无法进行安全检测，请点击“一键导入”进行插件下载</div>
+                        <div>{i18next.t("检测到本地未下载任何插件，无法进行安全检测，请点击“一键导入”进行插件下载")}</div>
                         <div style={{textAlign: "center", marginTop: 10}}>
-                            <Button type='primary' onClick={AddAllPlugin}>
-                                一键导入
+                            <Button type='primary' onClick={AddAllPlugin}>{i18next.t("一键导入")}
                             </Button>
                         </div>
                     </div>
@@ -1174,8 +1163,7 @@ export const DownloadAllPlugin: React.FC<DownloadAllPluginProps> = (props) => {
                 </div>
             )}
             {addLoading ? (
-                <Button style={{marginLeft: 12}} size='small' type='primary' danger onClick={StopAllPlugin}>
-                    停止
+                <Button style={{marginLeft: 12}} size='small' type='primary' danger onClick={StopAllPlugin}>{i18next.t("停止")}
                 </Button>
             ) : (
                 <Popconfirm
@@ -1185,7 +1173,7 @@ export const DownloadAllPlugin: React.FC<DownloadAllPluginProps> = (props) => {
                     cancelText='No'
                     placement={"left"}
                 >
-                    <div className={styles["operation-text"]}>一键导入插件</div>
+                    <div className={styles["operation-text"]}>{i18next.t("一键导入插件")}</div>
                 </Popconfirm>
             )}
             {userInfo.role !== "admin" && (
@@ -1196,8 +1184,7 @@ export const DownloadAllPlugin: React.FC<DownloadAllPluginProps> = (props) => {
                     cancelText='No'
                     placement={"left"}
                 >
-                    <YakitButton type='text' colors="danger" className={styles["clean-local-plugin"]}>
-                        一键清除插件
+                    <YakitButton type='text' colors="danger" className={styles["clean-local-plugin"]}>{i18next.t("一键清除插件")}
                     </YakitButton>
                 </Popconfirm>
             )}
@@ -1273,9 +1260,9 @@ export const SimpleDetect: React.FC<SimpleDetectProps> = (props) => {
     // 是否显示之前的卡片
     const [showOldCard, setShowOldCard] = useState<boolean>(false)
 
-    const statusErrorCards = infoState.statusState.filter((item) => ["加载插件失败", "SYN扫描失败"].includes(item.tag))
+    const statusErrorCards = infoState.statusState.filter((item) => [i18next.t("加载插件失败"), i18next.t("SYN扫描失败")].includes(item.tag))
     const statusSucceeCards = infoState.statusState.filter((item) =>
-        ["加载插件", "漏洞/风险/指纹", "开放端口数/已扫主机数", "存活主机数/扫描主机数"].includes(item.tag)
+        [i18next.t("加载插件"), i18next.t("漏洞/风险/指纹"), i18next.t("开放端口数/已扫主机数"), i18next.t("存活主机数/扫描主机数")].includes(item.tag)
     )
     const statusCards = useMemo(() => {
         if (statusErrorCards.length > 0) {
@@ -1293,14 +1280,14 @@ export const SimpleDetect: React.FC<SimpleDetectProps> = (props) => {
         // 继续任务运行时 保持之前的 存活主机数/扫描主机数 数据
         else if(oldRunParams && oldRunParams.LastRecord.ExtraInfo){
             let oldCards = JSON.parse(oldRunParams.LastRecord.ExtraInfo).statusCards
-            const oldItem:StatusCardInfoProps[] = oldCards.filter((item) =>["存活主机数/扫描主机数"].includes(item.tag))
-            const nowStatusCards:StatusCardInfoProps [] = statusCards.filter((item) => item.tag !== "存活主机数/扫描主机数")
+            const oldItem:StatusCardInfoProps[] = oldCards.filter((item) =>[i18next.t("存活主机数/扫描主机数")].includes(item.tag))
+            const nowStatusCards:StatusCardInfoProps [] = statusCards.filter((item) => item.tag !== i18next.t("存活主机数/扫描主机数"))
             return [...oldItem,...nowStatusCards]
         }
         return statusCards
     }, [statusCards, showOldCard, oldRunParams])
 
-    const filePtr = infoState.statusState.filter((item) => ["当前文件指针"].includes(item.tag))
+    const filePtr = infoState.statusState.filter((item) => [i18next.t("当前文件指针")].includes(item.tag))
     const filePtrValue: number = Array.isArray(filePtr) ? parseInt(filePtr[0]?.info[0]?.Data) : 0
 
     const [runTaskNameEx, setRunTaskNameEx] = useState<string>()
@@ -1390,7 +1377,7 @@ export const SimpleDetect: React.FC<SimpleDetectProps> = (props) => {
         .splice(0, 3)
     return (
         <>
-            {loading && <Spin tip={"正在恢复未完成的任务"} />}
+            {loading && <Spin tip={i18next.t("正在恢复未完成的任务")} />}
             <div className={styles["simple-detect"]} style={loading ? {display: "none"} : {}}>
                 <ResizeBox
                     isVer={true}
@@ -1405,7 +1392,7 @@ export const SimpleDetect: React.FC<SimpleDetectProps> = (props) => {
                                 {(percent > 0 || executing) && (
                                     <Col span={6}>
                                         <div style={{display: "flex"}}>
-                                            <span style={{marginRight: 10}}>任务进度:</span>
+                                            <span style={{marginRight: 10}}>{i18next.t("任务进度:")}</span>
                                             <div style={{flex: 1}}>
                                                 <Progress
                                                     status={executing ? "active" : undefined}

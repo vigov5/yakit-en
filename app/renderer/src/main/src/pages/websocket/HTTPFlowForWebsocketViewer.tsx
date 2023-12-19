@@ -8,6 +8,7 @@ import {Uint8ArrayToString} from "@/utils/str";
 import {ThunderboltOutlined} from "@ant-design/icons";
 import {newWebFuzzerTab} from "@/pages/fuzzer/HTTPFuzzerPage";
 import {newWebsocketFuzzerTab} from "@/pages/websocket/WebsocketFuzzer";
+import i18next from "../../i18n"
 
 export interface HTTPFlowForWebsocketViewerProp {
     flow: HTTPFlow
@@ -21,8 +22,8 @@ export const HTTPFlowForWebsocketViewer: React.FC<HTTPFlowForWebsocketViewerProp
         title={<Space size={4}>
             <div>Websocket</div>
             <SelectOne data={[
-                {value: "request", text: "请求"},
-                {value: "response", text: "响应"},
+                {value: "request", text: i18next.t("请求")},
+                {value: "response", text: i18next.t("响应")},
             ]} value={mode} setValue={setMode} size={"small"} formItemStyle={{marginBottom: 0}}/>
             <Tag>{mode === "request" ? `请求大小：${flow.RequestSizeVerbose}` : `Body大小: ${flow.BodySizeVerbose}`}</Tag>
         </Space>} size={"small"}

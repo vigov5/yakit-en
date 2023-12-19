@@ -13,6 +13,7 @@ import {showYakitModal} from "@/components/yakitUI/YakitModal/YakitModalConfirm"
 import {YakitRoute} from "@/routes/newRoute"
 import {ImportLocalPlugin} from "@/pages/mitm/MITMPage"
 import emiter from "@/utils/eventBus/eventBus"
+import i18next from "../../../../i18n"
 
 const layout = {
     labelCol: {span: 5},
@@ -35,7 +36,7 @@ interface pwdRequestProps {
 
 export function onImportShare() {
     const m = showYakitModal({
-        title: "导入数据包 ID",
+        title: i18next.t("导入数据包 ID"),
         content: <ShareImport onClose={() => m.destroy()} />,
         footer: null
     })
@@ -94,7 +95,7 @@ export const ShareImport: React.FC<ShareImportProps> = (props) => {
             .then((pwd) => {
                 if (pwd) {
                     setIsShowPassword(true)
-                    warn("该分享需要输入密码!")
+                    warn(i18next.t("该分享需要输入密码!"))
                     setTimeout(() => {
                         setLoading(false)
                     }, 200)
@@ -106,7 +107,7 @@ export const ShareImport: React.FC<ShareImportProps> = (props) => {
                 setTimeout(() => {
                     setLoading(false)
                 }, 200)
-                yakitNotify("error", "密码验证失败：" + err)
+                yakitNotify("error", i18next.t("密码验证失败：") + err)
             })
     })
     /**
@@ -136,7 +137,7 @@ export const ShareImport: React.FC<ShareImportProps> = (props) => {
                 }
             })
             .catch((err) => {
-                yakitNotify("error", "获取分享数据失败：" + err)
+                yakitNotify("error", i18next.t("获取分享数据失败：") + err)
                 setTimeout(() => {
                     setLoading(false)
                 }, 200)
@@ -158,7 +159,7 @@ export const ShareImport: React.FC<ShareImportProps> = (props) => {
                 onClose()
             })
             .catch((err) => {
-                yakitNotify("error", "打开web fuzzer失败:" + err)
+                yakitNotify("error", i18next.t("打开web fuzzer失败:") + err)
             })
             .finally(() => {
                 setTimeout(() => {
@@ -186,7 +187,7 @@ export const ShareImport: React.FC<ShareImportProps> = (props) => {
                 onClose()
             })
             .catch((err) => {
-                yakitNotify("error", "储存HttpHistory分享数据失败" + err)
+                yakitNotify("error", i18next.t("储存HttpHistory分享数据失败") + err)
             })
             .finally(() => {
                 setTimeout(() => {
@@ -197,17 +198,16 @@ export const ShareImport: React.FC<ShareImportProps> = (props) => {
     return (
         <>
             <Form {...layout} name='control-hooks' onFinish={onFinish} style={{padding: 24}}>
-                <Form.Item name='share_id' label='分享id' rules={[{required: true, message: "该项为必填"}]}>
-                    <YakitInput placeholder='请输入分享id' />
+                <Form.Item name='share_id' label={i18next.t("分享id")} rules={[{required: true, message: i18next.t("该项为必填")}]}>
+                    <YakitInput placeholder={i18next.t("请输入分享id")} />
                 </Form.Item>
                 {isShowPassword && (
-                    <Form.Item name='extract_code' label='密码' rules={[{required: true, message: "该项为必填"}]}>
-                        <YakitInput placeholder='请输入密码' allowClear />
+                    <Form.Item name='extract_code' label={i18next.t("密码")} rules={[{required: true, message: i18next.t("该项为必填")}]}>
+                        <YakitInput placeholder={i18next.t("请输入密码")} allowClear />
                     </Form.Item>
                 )}
                 <Form.Item {...tailLayout}>
-                    <YakitButton type='primary' htmlType='submit' className='btn-sure' loading={loading}>
-                        确定
+                    <YakitButton type='primary' htmlType='submit' className='btn-sure' loading={loading}>{i18next.t("确定")}
                     </YakitButton>
                 </Form.Item>
             </Form>

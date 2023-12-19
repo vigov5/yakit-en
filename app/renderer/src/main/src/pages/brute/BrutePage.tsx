@@ -11,6 +11,7 @@ import useHoldingIPCRStream from "../../hook/useHoldingIPCRStream"
 import {SelectItem} from "../../utils/SelectItem"
 import { xtermClear } from "../../utils/xtermUtils"
 import { ContentUploadInput } from "../../components/functionTemplate/ContentUploadTextArea"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -119,8 +120,7 @@ export const BrutePage: React.FC<BrutePageProp> = (props) => {
                     style={{marginRight: 8, height: "100%"}}
                     bodyStyle={{padding: 8}}
                     title={
-                        <div>
-                            可用爆破类型{" "}
+                        <div>{i18next.t("可用爆破类型")}{" "}
                             <Button
                                 type={"link"}
                                 size={"small"}
@@ -155,12 +155,12 @@ export const BrutePage: React.FC<BrutePageProp> = (props) => {
                                 e.preventDefault()
 
                                 if (!params.Targets && !params.TargetFile) {
-                                    failed("请填写爆破目标")
+                                    failed(i18next.t("请填写爆破目标"))
                                     return
                                 }
 
                                 if (!params.Type) {
-                                    failed("请至少选择一个爆破类型")
+                                    failed(i18next.t("请至少选择一个爆破类型"))
                                     return
                                 }
 
@@ -208,7 +208,7 @@ export const BrutePage: React.FC<BrutePageProp> = (props) => {
                                         }}
                                         item={{
                                             style: {textAlign: "left"},
-                                            label: "输入目标:",
+                                            label: i18next.t("输入目标:"),
                                         }}
                                         textarea={{
                                             isBubbing: true,
@@ -223,12 +223,10 @@ export const BrutePage: React.FC<BrutePageProp> = (props) => {
                                                     type='primary'
                                                     danger
                                                     onClick={(e) => ipcRenderer.invoke("cancel-StartBrute", taskToken)}
-                                                >
-                                                    立即停止任务
+                                                >{i18next.t("立即停止任务")}
                                                 </Button>
                                             ) : (
-                                                <Button type='primary' htmlType='submit'>
-                                                    开始检测
+                                                <Button type='primary' htmlType='submit'>{i18next.t("开始检测")}
                                                 </Button>
                                             )
                                         }
@@ -236,14 +234,13 @@ export const BrutePage: React.FC<BrutePageProp> = (props) => {
                                 </Spin>
                                 <div style={{textAlign: "left", width: "100%", marginLeft: 68}}>
                                     <Space>
-                                        <Tag>目标并发:{params.Concurrent}</Tag>
+                                        <Tag>{i18next.t("目标并发:")}{params.Concurrent}</Tag>
                                         {(params?.TargetTaskConcurrent || 1) > 1 && (
-                                            <Tag>目标内爆破并发:{params.TargetTaskConcurrent}</Tag>
+                                            <Tag>{i18next.t("目标内爆破并发:")}{params.TargetTaskConcurrent}</Tag>
                                         )}
-                                        {params?.OkToStop ? <Tag>爆破成功即停止</Tag> : <Tag>爆破成功后仍继续</Tag>}
+                                        {params?.OkToStop ? <Tag>{i18next.t("爆破成功即停止")}</Tag> : <Tag>{i18next.t("爆破成功后仍继续")}</Tag>}
                                         {(params?.DelayMax || 0) > 0 && (
-                                            <Tag>
-                                                随机暂停:{params.DelayMin}-{params.DelayMax}s
+                                            <Tag>{i18next.t("随机暂停:")}{params.DelayMin}-{params.DelayMax}s
                                             </Tag>
                                         )}
                                         <Button
@@ -251,7 +248,7 @@ export const BrutePage: React.FC<BrutePageProp> = (props) => {
                                             size={"small"}
                                             onClick={(e) => {
                                                 showModal({
-                                                    title: "设置高级参数",
+                                                    title: i18next.t("设置高级参数"),
                                                     width: "50%",
                                                     content: (
                                                         <>
@@ -263,8 +260,7 @@ export const BrutePage: React.FC<BrutePageProp> = (props) => {
                                                     )
                                                 })
                                             }}
-                                        >
-                                            更多参数
+                                        >{i18next.t("更多参数")}
                                         </Button>
                                     </Space>
                                 </div>
@@ -276,37 +272,35 @@ export const BrutePage: React.FC<BrutePageProp> = (props) => {
                                             layout={"inline"}
                                         >
                                             <SwitchItem
-                                                label={"自动字典"}
+                                                label={i18next.t("自动字典")}
                                                 setValue={() => {
                                                 }}
                                                 formItemStyle={{marginBottom: 0}}
                                             />
                                             <InputItem
-                                                label={"爆破用户"}
+                                                label={i18next.t("爆破用户")}
                                                 style={{marginBottom: 0}}
                                                 suffix={
-                                                    <Button size={"small"} type={"link"}>
-                                                        导入文件
+                                                    <Button size={"small"} type={"link"}>{i18next.t("导入文件")}
                                                     </Button>
                                                 }
                                             />
                                             <InputItem
-                                                label={"爆破密码"}
+                                                label={i18next.t("爆破密码")}
                                                 style={{marginBottom: 0}}
                                                 suffix={
-                                                    <Button size={"small"} type={"link"}>
-                                                        导入文件
+                                                    <Button size={"small"} type={"link"}>{i18next.t("导入文件")}
                                                     </Button>
                                                 }
                                             />
                                             <InputInteger
-                                                label={"并发目标"}
+                                                label={i18next.t("并发目标")}
                                                 setValue={() => {
                                                 }}
                                                 formItemStyle={{marginBottom: 0}}
                                             />
                                             <InputInteger
-                                                label={"随机延时"}
+                                                label={i18next.t("随机延时")}
                                                 setValue={() => {
                                                 }}
                                                 formItemStyle={{marginBottom: 0}}
@@ -369,7 +363,7 @@ export const BruteParamsForm: React.FC<BruteParamsFormProp> = (props) => {
         >
             <SelectItem
                 style={{marginBottom: 10}}
-                label={"爆破用户字典"}
+                label={i18next.t("爆破用户字典")}
                 value={params.usernameValue || ""}
                 onChange={(value, dict) => {
                     if (!dict && (params.Usernames || []).length === 0) {
@@ -391,7 +385,7 @@ export const BruteParamsForm: React.FC<BruteParamsFormProp> = (props) => {
 
             <InputItem
                 style={{marginBottom: 5}}
-                label={"爆破用户"}
+                label={i18next.t("爆破用户")}
                 setValue={(Usernames) => {
                     if ((params.UsernamesDict || []).length === 0 && !Usernames) {
                         setParams({
@@ -416,7 +410,7 @@ export const BruteParamsForm: React.FC<BruteParamsFormProp> = (props) => {
                     checked={!params.ReplaceDefaultUsernameDict}
                     onChange={(e) => {
                         if ((params.UsernamesDict || []).length === 0 && (params.Usernames || []).length === 0) {
-                            warn("在内容未填时此项必须勾选")
+                            warn(i18next.t("在内容未填时此项必须勾选"))
                             setParams({
                                 ...params,
                                 ReplaceDefaultUsernameDict: false
@@ -430,12 +424,12 @@ export const BruteParamsForm: React.FC<BruteParamsFormProp> = (props) => {
                     }}
                 ></Checkbox>
                 &nbsp;
-                <span style={{color: "rgb(100,100,100)"}}>同时使用默认用户字典</span>
+                <span style={{color: "rgb(100,100,100)"}}>{i18next.t("同时使用默认用户字典")}</span>
             </Form.Item>
 
             <SelectItem
                 style={{marginBottom: 10}}
-                label={"爆破密码字典"}
+                label={i18next.t("爆破密码字典")}
                 value={params.passwordValue || ""}
                 onChange={(value, dict) => {
                     if (!dict && (params.Passwords || []).length === 0) {
@@ -456,7 +450,7 @@ export const BruteParamsForm: React.FC<BruteParamsFormProp> = (props) => {
             />
             <InputItem
                 style={{marginBottom: 5}}
-                label={"爆破密码"}
+                label={i18next.t("爆破密码")}
                 setValue={(item) => {
                     if ((params.PasswordsDict || []).length === 0 && !item) {
                         setParams({
@@ -478,7 +472,7 @@ export const BruteParamsForm: React.FC<BruteParamsFormProp> = (props) => {
                     checked={!params.ReplaceDefaultPasswordDict}
                     onChange={(e) => {
                         if ((params.PasswordsDict || []).length === 0 && (params.Passwords || []).length === 0) {
-                            warn("在内容未填时此项必须勾选")
+                            warn(i18next.t("在内容未填时此项必须勾选"))
                             setParams({
                                 ...params,
                                 ReplaceDefaultPasswordDict: false
@@ -492,36 +486,36 @@ export const BruteParamsForm: React.FC<BruteParamsFormProp> = (props) => {
                     }}
                 ></Checkbox>
                 &nbsp;
-                <span style={{color: "rgb(100,100,100)"}}>同时使用默认密码字典</span>
+                <span style={{color: "rgb(100,100,100)"}}>{i18next.t("同时使用默认密码字典")}</span>
             </Form.Item>
 
             <InputInteger
-                label={"目标并发"}
-                help={"同时爆破 n 个目标"}
+                label={i18next.t("目标并发")}
+                help={i18next.t("同时爆破 n 个目标")}
                 value={params.Concurrent}
                 setValue={(e) => setParams({...params, Concurrent: e})}
             />
             <InputInteger
-                label={"目标内并发"}
-                help={"每个目标同时执行多少爆破任务"}
+                label={i18next.t("目标内并发")}
+                help={i18next.t("每个目标同时执行多少爆破任务")}
                 value={params.TargetTaskConcurrent}
                 setValue={(e) => setParams({...params, TargetTaskConcurrent: e})}
             />
             <SwitchItem
-                label={"自动停止"}
-                help={"遇到第一个爆破结果时终止任务"}
+                label={i18next.t("自动停止")}
+                help={i18next.t("遇到第一个爆破结果时终止任务")}
                 setValue={(OkToStop) => setParams({...params, OkToStop})}
                 value={params.OkToStop}
             />
             <InputInteger
-                label={"最小延迟"}
+                label={i18next.t("最小延迟")}
                 max={params.DelayMax}
                 min={0}
                 setValue={(DelayMin) => setParams({...params, DelayMin})}
                 value={params.DelayMin}
             />
             <InputInteger
-                label={"最大延迟"}
+                label={i18next.t("最大延迟")}
                 setValue={(DelayMax) => setParams({...params, DelayMax})}
                 value={params.DelayMax}
                 min={params.DelayMin}

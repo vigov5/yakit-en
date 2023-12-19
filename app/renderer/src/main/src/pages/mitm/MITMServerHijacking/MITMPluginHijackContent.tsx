@@ -29,6 +29,7 @@ import {YakitPopover} from "@/components/yakitUI/YakitPopover/YakitPopover"
 import classNames from "classnames"
 import {YakitMenu} from "@/components/yakitUI/YakitMenu/YakitMenu"
 import {Dropdown} from "antd"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -201,12 +202,12 @@ export const MITMPluginHijackContent: React.FC<MITMPluginHijackContentProps> = (
      */
     const multipleMitm = (checkList: string[]) => {
         enableMITMPluginMode(checkList).then(() => {
-            info("启动 MITM 插件成功")
+            info(i18next.t("启动 MITM 插件成功"))
         })
     }
     const updateHooks = useMemoizedFn(() => {
         ipcRenderer.invoke("mitm-get-current-hook").catch((e) => {
-            yakitFailed(`更新 MITM 插件状态失败: ${e}`)
+            yakitFailed(i18next.t("更新 MITM 插件状态失败: ${e}", { v1: e }))
         })
     })
     const onRefresh = useMemoizedFn(() => {
@@ -228,10 +229,10 @@ export const MITMPluginHijackContent: React.FC<MITMPluginHijackContentProps> = (
         ipcRenderer
             .invoke("SaveYakScript", script)
             .then((data: YakScript) => {
-                yakitNotify("success", `保存本地插件成功`)
+                yakitNotify("success", i18next.t("保存本地插件成功"))
             })
             .catch((e: any) => {
-                yakitNotify("error", `保存插件失败:` + e)
+                yakitNotify("error", i18next.t("保存插件失败 ") + e)
             })
     })
 
@@ -241,7 +242,7 @@ export const MITMPluginHijackContent: React.FC<MITMPluginHijackContentProps> = (
                 return (
                     <div className={styles["hot-patch-heard-extra"]}>
                         <YakitPopconfirm
-                            title={"确认重置热加载代码？"}
+                            title={i18next.t("确认重置热加载代码？")}
                             onConfirm={() => {
                                 setScript(HotLoadDefaultData)
                                 onRefresh()
@@ -258,15 +259,14 @@ export const MITMPluginHijackContent: React.FC<MITMPluginHijackContentProps> = (
                                 ipcRenderer
                                     .invoke("mitm-exec-script-content", script.Content)
                                     .then(() => {
-                                        info("加载成功")
+                                        info(i18next.t("加载成功"))
                                     })
                                     .catch((e) => {
-                                        yakitFailed("加载失败：" + e)
+                                        yakitFailed(i18next.t("加载失败：") + e)
                                     })
                             }}
                         >
-                            <PlayIcon />
-                            热加载
+                            <PlayIcon />{i18next.t("热加载")}
                         </YakitButton>
                         {isFullScreen ? (
                             <ArrowsRetractIcon
@@ -288,7 +288,7 @@ export const MITMPluginHijackContent: React.FC<MITMPluginHijackContentProps> = (
                     <>
                         {(width > 400 && (
                             <YakitInput.Search
-                                placeholder='请输入插件名称搜索'
+                                placeholder={i18next.t("请输入插件名称搜索")}
                                 value={hookScriptNameSearch}
                                 onChange={(e) => setHookScriptNameSearch(e.target.value)}
                                 style={{maxWidth: 180}}
@@ -300,7 +300,7 @@ export const MITMPluginHijackContent: React.FC<MITMPluginHijackContentProps> = (
                                 overlayClassName={styles["filter-popover"]}
                                 content={
                                     <YakitInput.Search
-                                        placeholder='请输入插件名称搜索'
+                                        placeholder={i18next.t("请输入插件名称搜索")}
                                         value={hookScriptNameSearch}
                                         onChange={(e) => setHookScriptNameSearch(e.target.value)}
                                         style={{maxWidth: 250}}
@@ -378,9 +378,8 @@ export const MITMPluginHijackContent: React.FC<MITMPluginHijackContentProps> = (
                         {/* 用户热加载代码 */}
                         {script.Id ? (
                             <div className={styles["hot-patch-heard"]}>
-                                <span>插件名称：{script.ScriptName}</span>
-                                <YakitButton type='primary' onClick={() => onSaveHotCode()}>
-                                    保存源码
+                                <span>{i18next.t("插件名称：")}{script.ScriptName}</span>
+                                <YakitButton type='primary' onClick={() => onSaveHotCode()}>{i18next.t("保存源码")}
                                 </YakitButton>
                             </div>
                         ) : (
@@ -527,9 +526,9 @@ export const MITMPluginHijackContent: React.FC<MITMPluginHijackContentProps> = (
                             buttonStyle='solid'
                             value={mode}
                             options={[
-                                {label: "全部", value: "all"},
-                                {label: "已启用", value: "loaded"},
-                                {label: "热加载", value: "hot-patch"}
+                                {label: i18next.t("全部"), value: "all"},
+                                {label: i18next.t("已启用"), value: "loaded"},
+                                {label: i18next.t("热加载"), value: "hot-patch"}
                             ]}
                             onChange={(e) => setMode(e.target.value)}
                         />
@@ -540,15 +539,15 @@ export const MITMPluginHijackContent: React.FC<MITMPluginHijackContentProps> = (
                                     data={[
                                         {
                                             key: "all",
-                                            label: "全部"
+                                            label: i18next.t("全部")
                                         },
                                         {
                                             key: "loaded",
-                                            label: "已启用"
+                                            label: i18next.t("已启用")
                                         },
                                         {
                                             key: "hot-patch",
-                                            label: "热加载"
+                                            label: i18next.t("热加载")
                                         }
                                     ]}
                                     onClick={({key}) => setMode(key as "hot-patch" | "loaded" | "all")}
@@ -558,9 +557,9 @@ export const MITMPluginHijackContent: React.FC<MITMPluginHijackContentProps> = (
                         >
                             <YakitButton type='primary'>
                                 <MenuIcon />
-                                {mode === "all" && "全部"}
-                                {mode === "loaded" && "已启用"}
-                                {mode === "hot-patch" && "热加载"}
+                                {mode === "all" && i18next.t("全部")}
+                                {mode === "loaded" && i18next.t("已启用")}
+                                {mode === "hot-patch" && i18next.t("热加载")}
                             </YakitButton>
                         </Dropdown>
                     )}

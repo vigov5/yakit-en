@@ -41,6 +41,7 @@ import {DownloadOnlinePluginByScriptNamesResponse} from "../layout/publicMenu/ut
 import emiter from "@/utils/eventBus/eventBus"
 import styles from "./newHome.module.scss"
 import classNames from "classnames"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -55,8 +56,7 @@ const RouteTitle: React.FC<RouteTitleProps> = (props) => {
         <div className={styles["home-page-title"]}>
             {title}
             {echartsError && (
-                <div className={styles["spin-wrapper"]}>
-                    加载中...
+                <div className={styles["spin-wrapper"]}>{i18next.t("加载中...")}
                     <div className={styles["spin-style"]}>
                         <YakitSpin size='small' spinning={true} />
                     </div>
@@ -96,13 +96,13 @@ const RouteItem: React.FC<RouteItemProps> = (props) => {
             })
             .then((rsp: DownloadOnlinePluginByScriptNamesResponse) => {
                 if (rsp.Data.length > 0) {
-                    success("添加菜单成功")
+                    success(i18next.t("添加菜单成功"))
                     if (isCommunityEdition()) ipcRenderer.invoke("refresh-public-menu")
                     else ipcRenderer.invoke("change-main-menu")
                 }
             })
             .catch((e) => {
-                failed(`添加菜单失败:${e}`)
+                failed(i18next.t("添加菜单失败:${e}", { v1: e }))
             })
             .finally(() => {
                 getCustomizeMenus && getCustomizeMenus()
@@ -138,8 +138,7 @@ const RouteItem: React.FC<RouteItemProps> = (props) => {
                                     e.stopPropagation()
                                     addMenu(dataSource.pluginName || dataSource.label)
                                 }}
-                            >
-                                获取菜单
+                            >{i18next.t("获取菜单")}
                             </div>
                         )}
                     </div>
@@ -234,7 +233,7 @@ const PieEcharts: React.FC<PieChartProps> = (props) => {
         title: {
             show: false,
             text: 0,
-            subtext: "插件总数",
+            subtext: i18next.t("插件总数"),
             top: "38%",
             left: "23%",
             textAlign: "center",
@@ -379,7 +378,7 @@ const PieEcharts: React.FC<PieChartProps> = (props) => {
             .then((res: API.YakitSearch) => {
                 if (res.plugin_type) {
                     const chartListCache = res.plugin_type.map((item) => ({
-                        name: PluginType[item.value] ?? "未识别",
+                        name: PluginType[item.value] ?? i18next.t("未识别"),
                         value: item.count
                     }))
                     // console.log("chartListCache",chartListCache,res.plugin_type)
@@ -562,7 +561,7 @@ const PlugInShop: React.FC<PlugInShopProps> = (props) => {
                                     style={{cursor: "pointer"}}
                                     onClick={() => openStoreRoute()}
                                 >
-                                    <div className={styles["add-title"]}>今日新增数</div>
+                                    <div className={styles["add-title"]}>{i18next.t("今日新增数")}</div>
                                     <div className={styles["add-content"]}>
                                         <span>
                                             <CountUp
@@ -584,7 +583,7 @@ const PlugInShop: React.FC<PlugInShopProps> = (props) => {
                                     style={{cursor: "pointer"}}
                                     onClick={() => openStoreRoute()}
                                 >
-                                    <div className={styles["add-title"]}>本周新增数</div>
+                                    <div className={styles["add-title"]}>{i18next.t("本周新增数")}</div>
                                     <div className={styles["add-content"]}>
                                         <span>
                                             <CountUp
@@ -613,11 +612,9 @@ const PlugInShop: React.FC<PlugInShopProps> = (props) => {
                 </div>
             </div>
             <div className={styles["show-bottom-box"]}>
-                <div className={styles["bottom-box-title"]}>
-                    热搜词
+                <div className={styles["bottom-box-title"]}>{i18next.t("热搜词")}
                     {hotError && hotArr.length === 0 && (
-                        <div className={styles["spin-wrapper"]}>
-                            加载中...
+                        <div className={styles["spin-wrapper"]}>{i18next.t("加载中...")}
                             <div className={styles["spin-style"]}>
                                 <YakitSpin size='small' spinning={true} />
                             </div>
@@ -639,7 +636,7 @@ const PlugInShop: React.FC<PlugInShopProps> = (props) => {
                                 )
                             })
                         ) : (
-                            <div className={styles["hot-no-data"]}>暂无数据</div>
+                            <div className={styles["hot-no-data"]}>{i18next.t("暂无数据")}</div>
                         )}
                     </div>
                 )}
@@ -651,7 +648,7 @@ const PlugInShop: React.FC<PlugInShopProps> = (props) => {
 export const newHomeList: newHomeListData[] = [
     {
         id: "1",
-        label: "资产搜集",
+        label: i18next.t("资产搜集"),
         subMenuData: [
             {
                 id: "1-1",
@@ -663,18 +660,18 @@ export const newHomeList: newHomeListData[] = [
             {
                 id: "1-2",
                 key: YakitRoute.Plugin_OP,
-                label: "基础爬虫",
+                label: i18next.t("基础爬虫"),
                 icon: <PrivateSolidBasicCrawlerIcon />,
-                describe: "通过爬虫可快速了解网站的整体架构",
+                describe: i18next.t("通过爬虫可快速了解网站的整体架构"),
                 pluginName: ResidentPluginName.BasicCrawler,
                 isShow: false
             },
             {
                 id: "1-3",
                 key: YakitRoute.Plugin_OP,
-                label: "目录扫描",
+                label: i18next.t("目录扫描"),
                 icon: <PrivateSolidDirectoryScanningIcon />,
-                describe: "带有内置字典的综合目录扫描与爆破",
+                describe: i18next.t("带有内置字典的综合目录扫描与爆破"),
                 pluginName: ResidentPluginName.DirectoryScanning,
                 isShow: false
             }
@@ -682,7 +679,7 @@ export const newHomeList: newHomeListData[] = [
     },
     {
         id: "2",
-        label: "漏洞检测",
+        label: i18next.t("漏洞检测"),
         subMenuData: [
             {
                 id: "2-1",
@@ -702,7 +699,7 @@ export const newHomeList: newHomeListData[] = [
     },
     {
         id: "3",
-        label: "进阶功能",
+        label: i18next.t("进阶功能"),
         subMenuData: [
             {
                 id: "3-1",
@@ -722,7 +719,7 @@ export const newHomeList: newHomeListData[] = [
     },
     {
         id: "4",
-        label: "渗透测试工具",
+        label: i18next.t("渗透测试工具"),
         subMenuData: [
             {
                 id: "4-1",
@@ -749,7 +746,7 @@ export const newHomeList: newHomeListData[] = [
     },
     {
         id: "5",
-        label: "小工具",
+        label: i18next.t("小工具"),
         subMenuData: [
             {
                 id: "5-1",
@@ -776,7 +773,7 @@ export const newHomeList: newHomeListData[] = [
     },
     {
         id: "6",
-        label: "反连管理",
+        label: i18next.t("反连管理"),
         subMenuData: [
             {
                 id: "6-1",
@@ -903,7 +900,7 @@ const NewHome: React.FC<NewHomeProps> = (props) => {
                     <RouteList data={newHomeData[5]} colLimit={3} setOpenPage={setOpenPage} />
                 </div>
                 <div className={classNames(styles["bottom-small-block"], styles["plug-in-main"])}>
-                    <RouteTitle title='插件商店' echartsError={echartsError} />
+                    <RouteTitle title={i18next.t("插件商店")} echartsError={echartsError} />
                     <PlugInShop setOpenPage={setOpenPage} inViewport={inViewport} setEchartsError={setEchartsError} />
                 </div>
             </div>

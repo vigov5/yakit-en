@@ -7,6 +7,7 @@ import {DeleteOutlined, FireOutlined} from "@ant-design/icons"
 import {TargetRequest} from "./BatchExecutorPage"
 import {failed, info} from "../../../utils/notification"
 import {OneLine} from "../../../utils/inputUtil"
+import i18next from "../../../i18n"
 const {Paragraph} = Typography
 interface UnfinishedBatchTaskListProp {
     handler: (i: UnfinishedBatchTask) => any
@@ -46,7 +47,7 @@ const UnfinishedBatchTaskList: React.FC<UnfinishedBatchTaskListProp> = (props) =
                 setTasks(e.Tasks.reverse())
             })
             .catch((e) => {
-                failed(`获取未完成的任务失败: ${e}`)
+                failed(i18next.t("获取未完成的任务失败: ${e}", { v1: e }))
             })
             .finally(() => setTimeout(() => setLoading(false), 300))
     }
@@ -68,28 +69,26 @@ const UnfinishedBatchTaskList: React.FC<UnfinishedBatchTaskListProp> = (props) =
                                 <Progress percent={parseInt((i.Percent * 100).toFixed(2))} />
                             </div>
                             <Popconfirm
-                                title={"启动任务"}
+                                title={i18next.t("启动任务")}
                                 onConfirm={() => {
                                     props.handler(i)
                                 }}
                             >
-                                <Button size={"small"} type={"primary"}>
-                                    继续任务
+                                <Button size={"small"} type={"primary"}>{i18next.t("继续任务")}
                                 </Button>
                             </Popconfirm>
                             <Popconfirm
-                                title={"删除这个任务？"}
+                                title={i18next.t("删除这个任务？")}
                                 onConfirm={() => {
                                     ipcRenderer
                                         .invoke("PopExecBatchYakScriptUnfinishedTaskByUid", {Uid: i.Uid})
                                         .then((i: TargetRequest) => {
-                                            info("未完成的任务已删除")
+                                            info(i18next.t("未完成的任务已删除"))
                                         })
                                         .finally(() => update())
                                 }}
                             >
-                                <Button size={"small"} type={"link"} icon={<DeleteOutlined />} danger={true}>
-                                    删除
+                                <Button size={"small"} type={"link"} icon={<DeleteOutlined />} danger={true}>{i18next.t("删除")}
                                 </Button>
                             </Popconfirm>
                         </Space>
@@ -102,7 +101,7 @@ const UnfinishedBatchTaskList: React.FC<UnfinishedBatchTaskListProp> = (props) =
 
 export const showUnfinishedBatchTaskList = (handler: (i: UnfinishedBatchTask) => any) => {
     let m = showModal({
-        title: "未完成的任务：点击任务可继续执行",
+        title: i18next.t("未完成的任务：点击任务可继续执行"),
         width: 650,
         content: (
             <>
@@ -129,7 +128,7 @@ const UnfinishedSimpleDetectTaskList: React.FC<SimpleDetectBatchTaskListProp> = 
                 setTasks(e.Tasks.reverse())
             })
             .catch((e) => {
-                failed(`获取未完成的任务失败: ${e}`)
+                failed(i18next.t("获取未完成的任务失败: ${e}", { v1: e }))
             })
             .finally(() => setTimeout(() => setLoading(false), 300))
     }
@@ -156,7 +155,7 @@ const UnfinishedSimpleDetectTaskList: React.FC<SimpleDetectBatchTaskListProp> = 
                                 <Progress percent={parseInt((i.Percent * 100).toFixed(2))} />
                             </div>
                             <Popconfirm
-                                title={"启动任务"}
+                                title={i18next.t("启动任务")}
                                 onConfirm={() => {
                                     // 先get GetSimpleDetectUnfinishedTaskByUid
 
@@ -169,23 +168,21 @@ const UnfinishedSimpleDetectTaskList: React.FC<SimpleDetectBatchTaskListProp> = 
                                     props.handler(i)
                                 }}
                             >
-                                <Button size={"small"} type={"primary"}>
-                                    继续任务
+                                <Button size={"small"} type={"primary"}>{i18next.t("继续任务")}
                                 </Button>
                             </Popconfirm>
                             <Popconfirm
-                                title={"删除这个任务？"}
+                                title={i18next.t("删除这个任务？")}
                                 onConfirm={() => {
                                     ipcRenderer
                                         .invoke("PopSimpleDetectUnfinishedTaskByUid", {Uid: i.Uid})
                                         .then((i: TargetRequest) => {
-                                            info("未完成的任务已删除")
+                                            info(i18next.t("未完成的任务已删除"))
                                         })
                                         .finally(() => update())
                                 }}
                             >
-                                <Button size={"small"} type={"link"} icon={<DeleteOutlined />} danger={true}>
-                                    删除
+                                <Button size={"small"} type={"link"} icon={<DeleteOutlined />} danger={true}>{i18next.t("删除")}
                                 </Button>
                             </Popconfirm>
                         </Space>
@@ -198,7 +195,7 @@ const UnfinishedSimpleDetectTaskList: React.FC<SimpleDetectBatchTaskListProp> = 
 
 export const showUnfinishedSimpleDetectTaskList = (handler: (i: UnfinishedSimpleDetectBatchTask) => any) => {
     let m = showModal({
-        title: "未完成的任务：点击任务可继续执行",
+        title: i18next.t("未完成的任务：点击任务可继续执行"),
         width: 850,
         content: (
             <>

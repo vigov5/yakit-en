@@ -3,6 +3,7 @@ import {YakitDiffEditorProps} from "./YakitDiffEditorType"
 import * as monacoEditor from "monaco-editor/esm/vs/editor/editor.api"
 import {yakitNotify} from "@/utils/notification"
 import {useDebounceFn, useMemoizedFn, useUpdateEffect} from "ahooks"
+import i18next from "../../../i18n"
 
 import styles from "./YakitDiffEditor.module.scss"
 
@@ -65,7 +66,7 @@ export const YakitDiffEditor: React.FC<YakitDiffEditorProps> = memo((props) => {
 
         // 获取不到对比器元素节点
         if (!diffDivRef || !diffDivRef.current) {
-            yakitNotify("error", "对比器初始化失败，请关闭重试!")
+            yakitNotify("error", i18next.t("对比器初始化失败，请关闭重试!"))
             return
         }
 

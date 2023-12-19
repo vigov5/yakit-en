@@ -22,6 +22,7 @@ import {YakitSpin} from "@/components/yakitUI/YakitSpin/YakitSpin"
 import {PluginGV} from "../builtInData"
 import {YakitButton} from "@/components/yakitUI/YakitButton/YakitButton"
 import {OutlineRefreshIcon} from "@/assets/icon/outline"
+import i18next from "../../../i18n"
 
 import "../plugins.scss"
 import styles from "./PluginRecycleList.module.scss"
@@ -387,14 +388,13 @@ export const PluginRecycleList: React.FC<PluginRecycleListProps> = React.memo(
                             />
                         ) : (
                             <div className={styles["plugin-recycle-empty"]}>
-                                <YakitEmpty title='暂无数据' />
+                                <YakitEmpty title={i18next.t("暂无数据")} />
                                 <div className={styles["plugin-recycle-buttons"]}>
                                     <YakitButton
                                         type='outline1'
                                         icon={<OutlineRefreshIcon />}
                                         onClick={onRefListAndTotalAndGroup}
-                                    >
-                                        刷新
+                                    >{i18next.t("刷新")}
                                     </YakitButton>
                                 </div>
                             </div>
@@ -403,16 +403,15 @@ export const PluginRecycleList: React.FC<PluginRecycleListProps> = React.memo(
                 </div>
                 <YakitHint
                     visible={removeCheckVisible}
-                    title='是否要删除插件'
-                    content='确认后插件将彻底删除，无法找回'
+                    title={i18next.t("是否要删除插件")}
+                    content={i18next.t("确认后插件将彻底删除，无法找回")}
                     onOk={onPluginRemoveCheckOk}
                     onCancel={() => setRemoveCheckVisible(false)}
                     footerExtra={
                         <YakitCheckbox
                             checked={pluginRemoveCheck}
                             onChange={(e) => setPluginRemoveCheck(e.target.checked)}
-                        >
-                            下次不再提醒
+                        >{i18next.t("下次不再提醒")}
                         </YakitCheckbox>
                     }
                 />

@@ -9,6 +9,7 @@ import {PieGraph} from "../../graph/PieGraph"
 import {BarGraph} from "../../graph/BarGraph"
 import {EchartsCard, HollowPie, MultiPie, NightingleRose, StackedVerticalBar, VerticalOptionBar} from "./EchartsInit"
 import {FoldHoleCard, FoldRuleCard} from "./ReportExtendCard"
+import i18next from "../../../i18n"
 
 export interface ReportItemRenderProp {
     item: ReportItem
@@ -31,7 +32,7 @@ export const ReportItemRender: React.FC<ReportItemRenderProp> = (props) => {
                     />
                 )
             } catch (e) {
-                console.info("渲染图失败")
+                console.info(i18next.t("渲染图失败"))
                 console.info(e)
                 return (
                     <div style={{height: 300}}>
@@ -50,7 +51,7 @@ export const ReportItemRender: React.FC<ReportItemRenderProp> = (props) => {
                     />
                 )
             } catch (e) {
-                console.info("渲染图失败")
+                console.info(i18next.t("渲染图失败"))
                 console.info(e)
                 return (
                     <div style={{height: 300}}>

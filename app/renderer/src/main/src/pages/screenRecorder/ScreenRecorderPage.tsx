@@ -13,6 +13,7 @@ import styles from "./ScreenRecorderPage.module.scss"
 import screcorderEmpty from "./screcorderEmpty.png"
 import {YakitHint} from "@/components/yakitUI/YakitHint/YakitHint"
 import {YakitSpin} from "@/components/yakitUI/YakitSpin/YakitSpin"
+import i18next from "../../i18n"
 
 export interface ScreenRecorderPageProp {}
 
@@ -32,7 +33,7 @@ export const ScreenRecorderPage: React.FC<ScreenRecorderPageProp> = (props) => {
                 setAvailable(data.Ok)
             })
             .catch((err) => {
-                yakitFailed("IsScrecorderReady失败:" + err)
+                yakitFailed(i18next.t("IsScrecorderReady失败:") + err)
             })
             .finally(() => setTimeout(() => setLoading(false), 200))
     }
@@ -49,8 +50,8 @@ export const ScreenRecorderPage: React.FC<ScreenRecorderPageProp> = (props) => {
                 <div className={styles["not-installed-empty"]}>
                     <YakitEmpty
                         image={<img src={screcorderEmpty} alt='' style={{height: 200}} />}
-                        title={<div style={{fontSize: 14}}>未安装录屏</div>}
-                        description='点击“安装录屏”，录屏工具安装成功后即可开始录屏'
+                        title={<div style={{fontSize: 14}}>{i18next.t("未安装录屏")}</div>}
+                        description={i18next.t("点击“安装录屏”，录屏工具安装成功后即可开始录屏")}
                     />
                     <div className={styles["not-installed-buttons"]}>
                         <YakitButton
@@ -59,15 +60,14 @@ export const ScreenRecorderPage: React.FC<ScreenRecorderPageProp> = (props) => {
                             onClick={() => {
                                 setInstallVisible(true)
                             }}
-                        >
-                            安装录屏
+                        >{i18next.t("安装录屏")}
                         </YakitButton>
                     </div>
                 </div>
             )}
             <YakitHint
                 visible={installVisible}
-                title='录屏工具安装中...'
+                title={i18next.t("录屏工具安装中...")}
                 heardIcon={<SolidCloudDownloadIcon style={{color: "var(--yakit-warning-5)"}} />}
                 onCancel={() => {
                     setInstallVisible(false)
@@ -114,14 +114,14 @@ export const InstallFFmpeg: React.FC<InstallFFmpegProp> = (props) => {
                 timer.current = 0
             }
             if (timer.current > 30) {
-                yakitFailed(`[InstallScrecorder] error:连接超时`)
+                yakitFailed(i18next.t("[InstallScrecorder] error:连接超时"))
                 timer.current = 0
             }
             setPercent(Math.ceil(data.Progress))
             setResults([Uint8ArrayToString(data.Message), ...getResult()])
         })
         ipcRenderer.on(`${token}-error`, (e, error) => {
-            yakitFailed("下载失败：" + error)
+            yakitFailed(i18next.t("下载失败：") + error)
         })
         ipcRenderer.on(`${token}-end`, (e, data) => {
             onFinish()
@@ -157,7 +157,7 @@ export const InstallFFmpeg: React.FC<InstallFFmpegProp> = (props) => {
                     strokeColor='#F28B44'
                     trailColor='#F0F2F5'
                     percent={percent}
-                    format={(percent) => `已下载 ${percent}%`}
+                    format={(percent) => i18next.t("已下载 ${percent}%", { v1: percent })}
                 />
             </div>
             <div className={styles["download-progress-messages"]}>

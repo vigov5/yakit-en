@@ -44,6 +44,7 @@ import {MainOperatorContent} from "./layout/mainOperatorContent/MainOperatorCont
 import {MultipleNodeInfo} from "./layout/mainOperatorContent/MainOperatorContentType"
 import {WaterMark} from "@ant-design/pro-layout"
 import emiter from "@/utils/eventBus/eventBus"
+import i18next from "../i18n"
 
 import "./main.scss"
 import "./GlobalClass.scss"
@@ -135,7 +136,7 @@ export const SetUserInfo: React.FC<SetUserInfoProp> = React.memo((props) => {
                 // }
             })
             .catch((err) => {
-                failed("头像更换失败：" + err)
+                failed(i18next.t("头像更换失败：") + err)
             })
             .finally(() => {})
     })
@@ -155,7 +156,7 @@ export const SetUserInfo: React.FC<SetUserInfoProp> = React.memo((props) => {
                 })
                     .then((result) => {
                         if (result.ok) {
-                            success("头像更换成功")
+                            success(i18next.t("头像更换成功"))
                             setStoreUserInfo({
                                 ...userInfo,
                                 companyHeadImg: imgUrl
@@ -165,12 +166,12 @@ export const SetUserInfo: React.FC<SetUserInfoProp> = React.memo((props) => {
                         }
                     })
                     .catch((err) => {
-                        failed("头像更换失败：" + err)
+                        failed(i18next.t("头像更换失败：") + err)
                     })
                     .finally(() => {})
             })
             .catch((err) => {
-                failed("头像上传失败")
+                failed(i18next.t("头像上传失败"))
             })
             .finally(() => {})
     })
@@ -185,7 +186,7 @@ export const SetUserInfo: React.FC<SetUserInfoProp> = React.memo((props) => {
                 showUploadList={false}
                 beforeUpload={(f) => {
                     if (!FileType.includes(f.type)) {
-                        failed(`${f.name}非png、png、jpeg文件，请上传正确格式文件！`)
+                        failed(i18next.t("${f.name}非png、png、jpeg文件，请上传正确格式文件！", {v1: f.name}))
                         return false
                     }
                     setAvatar(f)
@@ -209,7 +210,7 @@ export const SetUserInfo: React.FC<SetUserInfoProp> = React.memo((props) => {
                 <div className='user-name'>{userInfo.companyName}</div>
                 {userInfo.role === "admin" && (
                     <>
-                        <div className='permission-show'>管理员</div>
+                        <div className='permission-show'>{i18next.t("管理员")}</div>
                         <span className='user-admin-icon'>
                             <EnterpriseLoginInfoIcon />
                         </span>
@@ -391,16 +392,16 @@ const Main: React.FC<MainProp> = React.memo((props) => {
             .then((value) => {
                 if (!value) {
                     const m = showModal({
-                        title: "重要提示",
+                        title: i18next.t("重要提示"),
                         content: (
                             <Space direction={"vertical"}>
-                                <div>{`本系统 >= 1.1.17，引擎 >= 1.1.18 后为了新增 "项目" 功能，项目数据库和用户数据库进行了严格分离`}</div>
-                                <div>用户可在 "数据库" - "项目管理" 中查看新的项目管理 （Beta）</div>
-                                <div>您的流量数据与扫描结果将会存储新的项目数据库中</div>
+                                <div>{i18next.t(`本系统 >= 1.1.17，引擎 >= 1.1.18 后为了新增 "项目" 功能，项目数据库和用户数据库进行了严格分离`)}</div>
+                                <div>{i18next.t(`用户可在 "数据库" - "项目管理" 中查看新的项目管理 （Beta）`)}</div>
+                                <div>{i18next.t(`您的流量数据与扫描结果将会存储新的项目数据库中`)}</div>
                                 <Alert
                                     type={"warning"}
                                     description={
-                                        "原本的用户数据并不会丢失，用户目录下 SQLite3 数据库 yakit-projects/default-yakit.db 包含所有用户信息"
+                                        i18next.t("原本的用户数据并不会丢失，用户目录下 SQLite3 数据库 yakit-projects/default-yakit.db 包含所有用户信息")
                                     }
                                 />
                                 <div>
@@ -418,8 +419,7 @@ const Main: React.FC<MainProp> = React.memo((props) => {
                                                 m.destroy()
                                                 setRemoteValue(firstUseProjectFlag, "1").catch((e) => {})
                                             }}
-                                        >
-                                            知道了，不再提示
+                                        >{i18next.t("知道了，不再提示")}
                                         </Button>
                                     </Button.Group>
                                 </div>
@@ -430,7 +430,7 @@ const Main: React.FC<MainProp> = React.memo((props) => {
                 }
             })
             .catch((e) => {
-                info("无法获取第一次使用项目标签")
+                info(i18next.t("无法获取第一次使用项目标签"))
             })
     }, [])
 
@@ -459,7 +459,7 @@ const Main: React.FC<MainProp> = React.memo((props) => {
     }, [userInfo])
     const onChatCS = useMemoizedFn(() => {
         if (!userInfo.isLogin) {
-            yakitNotify("warning", "请登录后使用")
+            yakitNotify("warning", i18next.t("请登录后使用"))
             return
         }
         setChatShow(true)
@@ -477,9 +477,9 @@ const Main: React.FC<MainProp> = React.memo((props) => {
         } else if (userInfo.isLogin) {
             return userInfo.companyName || ""
         } else if (isEnpriTrace()) {
-            return "EnpriTrace-试用版"
+            return i18next.t("EnpriTrace-试用版")
         } else if (isEnpriTraceAgent()) {
-            return "EnpriTraceAgent-试用版"
+            return i18next.t("EnpriTraceAgent-试用版")
         }
         return ""
     }
@@ -609,7 +609,7 @@ const Main: React.FC<MainProp> = React.memo((props) => {
                     {loginshow && <Login visible={loginshow} onCancel={() => setLoginShow(false)}></Login>}
                     <Modal
                         visible={passwordShow}
-                        title={"修改密码"}
+                        title={i18next.t("修改密码")}
                         destroyOnClose={true}
                         maskClosable={false}
                         bodyStyle={{padding: "10px 24px 24px 24px"}}
@@ -630,15 +630,14 @@ const Main: React.FC<MainProp> = React.memo((props) => {
             {controlShow && <ControlOperation controlName={controlName} />}
             <YakitHintModal
                 visible={false}
-                title='收到远程连接请求'
+                title={i18next.t("收到远程连接请求")}
                 content={
-                    <div>
-                        用户 <span style={{color: "#F28B44"}}>Alex-null</span>{" "}
+                    <div>{i18next.t("用户")} <span style={{color: "#F28B44"}}>Alex-null</span>{" "}
                         正在向你发起远程连接请求，是否同意对方连接？
                     </div>
                 }
-                cancelButtonText='拒绝'
-                okButtonText='同意'
+                cancelButtonText={i18next.t("拒绝")}
+                okButtonText={i18next.t("同意")}
                 onOk={() => {}}
                 onCancel={() => {}}
             />

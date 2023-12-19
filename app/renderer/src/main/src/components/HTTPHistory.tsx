@@ -13,6 +13,7 @@ import classNames from "classnames"
 import {RemoteGV} from "@/yakitGV"
 import emiter from "@/utils/eventBus/eventBus"
 import {WebTree} from "./WebTree/WebTree"
+import i18next from "../i18n"
 
 export interface HTTPPacketFuzzable {
     defaultHttps?: boolean
@@ -74,7 +75,7 @@ export const HTTPHistory: React.FC<HTTPHistoryProp> = (props) => {
     const [hTTPHistoryTabs, setHTTPHistoryTabs] = useState<Array<HTTPHistoryTabsItem>>([
         {
             key: "web-tree",
-            label: "网站树",
+            label: i18next.t("网站树"),
             contShow: false // 初始为false
         }
     ])
@@ -140,7 +141,7 @@ export const HTTPHistory: React.FC<HTTPHistoryProp> = (props) => {
             const val = JSON.parse(value)
             const host = val.host
             webTreeRef.current.onJumpWebTree(host)
-            handleTabClick({ key: "web-tree", label: "网站树", contShow: false })
+            handleTabClick({ key: "web-tree", label: i18next.t("网站树"), contShow: false })
         }
     })
     useEffect(() => {
@@ -207,7 +208,7 @@ export const HTTPHistory: React.FC<HTTPHistoryProp> = (props) => {
                                     <WebTree
                                         ref={webTreeRef}
                                         height={treeWrapHeight - 30}
-                                        searchPlaceholder='请输入域名进行搜索，例baidu.com'
+                                        searchPlaceholder={i18next.t("请输入域名进行搜索，例baidu.com")}
                                         treeQueryparams={treeQueryparams}
                                         refreshTreeFlag={refreshTreeFlag}
                                         onGetUrl={(searchURL, includeInUrl) => {

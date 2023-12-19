@@ -17,6 +17,7 @@ import style from "./MITMServerHijacking.module.scss"
 import {QuitIcon} from "@/assets/newIcon"
 import classNames from "classnames"
 import {YakitTag} from "@/components/yakitUI/YakitTag/YakitTag"
+import i18next from "../../../i18n"
 
 type MITMStatus = "hijacking" | "hijacked" | "idle"
 const {Text} = Typography
@@ -55,7 +56,7 @@ export const MITMServerHijacking: React.FC<MITMServerHijackingProp> = (props) =>
     useEffect(() => {
         if (!!props.enableInitialMITMPlugin && (props?.defaultPlugins || []).length > 0) {
             enableMITMPluginMode(props.defaultPlugins).then(() => {
-                info("启动初始 MITM 插件成功")
+                info(i18next.t("启动初始 MITM 插件成功"))
             })
         }
     }, [props.enableInitialMITMPlugin, props.defaultPlugins])
@@ -68,7 +69,7 @@ export const MITMServerHijacking: React.FC<MITMServerHijackingProp> = (props) =>
                 setStatus("idle")
             })
             .catch((e: any) => {
-                notification["error"]({message: `停止中间人劫持失败：${e}`})
+                notification["error"]({message: i18next.t("停止中间人劫持失败：${e}", { v1: e })})
             })
             .finally(() =>{
                 // setLoading(false)
@@ -78,7 +79,7 @@ export const MITMServerHijacking: React.FC<MITMServerHijackingProp> = (props) =>
         <div className={style["mitm-server"]}>
             <div className={style["mitm-server-heard"]}>
                 <div className={style["mitm-server-title"]}>
-                    <div className={style["mitm-server-heard-name"]}>劫持 HTTP Request</div>
+                    <div className={style["mitm-server-heard-name"]}>{i18next.t("劫持 HTTP Request")}</div>
                     <div className={classNames(style["mitm-server-heard-addr"], "content-ellipsis")}>
                         <span style={{marginRight: 8}}>{addr}</span>
                         {tip
@@ -96,16 +97,13 @@ export const MITMServerHijacking: React.FC<MITMServerHijackingProp> = (props) =>
                 </div>
                 <div className={style["mitm-server-extra"]}>
                     <div className={style["mitm-server-links"]}>
-                        <div className={style["link-item"]} onClick={() => setVisible(true)}>
-                            规则配置
+                        <div className={style["link-item"]} onClick={() => setVisible(true)}>{i18next.t("规则配置")}
                         </div>
                         <Divider type='vertical' style={{margin: "0 4px", top: 1}} />
-                        <div className={style["link-item"]} onClick={() => setFiltersVisible(true)}>
-                            过滤器
+                        <div className={style["link-item"]} onClick={() => setFiltersVisible(true)}>{i18next.t("过滤器")}
                         </div>
                         <Divider type='vertical' style={{margin: "0 4px", top: 1}} />
-                        <div className={style["link-item"]} onClick={() => setDownloadVisible(true)}>
-                            证书下载
+                        <div className={style["link-item"]} onClick={() => setDownloadVisible(true)}>{i18next.t("证书下载")}
                         </div>
                     </div>
                     {/*<YakitButton*/}

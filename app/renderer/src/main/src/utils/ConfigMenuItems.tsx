@@ -7,16 +7,17 @@ import {InputFileNameItem, InputFileNameItemProps, SelectOne} from "./inputUtil"
 import {showModal} from "./showModal"
 import {saveABSFileToOpen} from "./openWebsite"
 import {randomString} from "./randomUtil"
+import i18next from "../i18n"
 
 export const updateMenuItem = () => {
     ipcRenderer.invoke("change-main-menu", {}).then(() => {
-        info("更新菜单栏")
+        info(i18next.t("更新菜单栏"))
     })
 }
 
 export const showConfigMenuItems = () => {
     let m = showModal({
-        title: "配置菜单栏",
+        title: i18next.t("配置菜单栏"),
         width: 800,
         content: (
             <ConfigMenuItems
@@ -69,7 +70,7 @@ const ConfigMenuItems: React.FC<ConfigMenuItemsProp> = (props) => {
                             RawJson: config
                         })
                         .then(() => {
-                            info("导入成功")
+                            info(i18next.t("导入成功"))
                             if (props.onFinished) props.onFinished()
                         })
                 }
@@ -80,7 +81,7 @@ const ConfigMenuItems: React.FC<ConfigMenuItemsProp> = (props) => {
                             JsonFileName: jsonFileName
                         })
                         .then(() => {
-                            info("导入成功")
+                            info(i18next.t("导入成功"))
                             if (props.onFinished) props.onFinished()
                         })
                 }
@@ -90,14 +91,14 @@ const ConfigMenuItems: React.FC<ConfigMenuItemsProp> = (props) => {
                 label={" "}
                 colon={false}
                 data={[
-                    {text: "导入配置文件", value: "import-file"},
-                    {text: "导入JSON", value: "import"},
-                    {text: "导出配置", value: "export"}
+                    {text: i18next.t("导入配置文件"), value: "import-file"},
+                    {text: i18next.t("导入JSON"), value: "import"},
+                    {text: i18next.t("导出配置"), value: "export"}
                 ]}
                 value={mode}
                 setValue={setMode}
                 help={
-                    mode === "import" ? `导入配置将会追加菜单栏配置，并不会完全覆盖` : "导出配置将会把数据导出为 JSON"
+                    mode === "import" ? i18next.t("导入配置将会追加菜单栏配置，并不会完全覆盖") : i18next.t("导出配置将会把数据导出为 JSON")
                 }
             />
             {loading ? (
@@ -105,7 +106,7 @@ const ConfigMenuItems: React.FC<ConfigMenuItemsProp> = (props) => {
             ) : (
                 <>
                     {mode === "import" && (
-                        <Form.Item label={"配置 JSON"}>
+                        <Form.Item label={i18next.t("配置 JSON")}>
                             <div style={{height: 400}}>
                                 <YakCodeEditor
                                     originValue={StringToUint8Array(config, "utf8")}
@@ -116,11 +117,11 @@ const ConfigMenuItems: React.FC<ConfigMenuItemsProp> = (props) => {
                         </Form.Item>
                     )}
                     {mode === "import-file" && (
-                        <InputFileNameItem label={"文件名"} filename={jsonFileName} setFileName={setJsonFileName} />
+                        <InputFileNameItem label={i18next.t("文件名")} filename={jsonFileName} setFileName={setJsonFileName} />
                     )}
                     {mode === "export" && (
                         <Form.Item
-                            label={"配置 JSON"}
+                            label={i18next.t("配置 JSON")}
                             help={
                                 <>
                                     <Button
@@ -128,8 +129,7 @@ const ConfigMenuItems: React.FC<ConfigMenuItemsProp> = (props) => {
                                             saveABSFileToOpen(`config-${randomString(10)}.json`, config)
                                         }}
                                         type={"link"}
-                                    >
-                                        下载为 JSON 文件
+                                    >{i18next.t("下载为 JSON 文件")}
                                     </Button>
                                 </>
                             }
@@ -152,10 +152,10 @@ const ConfigMenuItems: React.FC<ConfigMenuItemsProp> = (props) => {
                                 </Button>
                             )}
                             <Popconfirm
-                                title={"删除当前配置，不可恢复，确认操作吗？"}
+                                title={i18next.t("删除当前配置，不可恢复，确认操作吗？")}
                                 onConfirm={() => {
                                     ipcRenderer.invoke("DeleteAllMenuItem", {}).then(() => {
-                                        info("删除全部菜单栏配置成功")
+                                        info(i18next.t("删除全部菜单栏配置成功"))
                                         if (props.onFinished) props.onFinished()
                                     })
                                 }}

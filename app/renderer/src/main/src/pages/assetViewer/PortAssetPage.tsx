@@ -43,6 +43,7 @@ import {YakitEmpty} from "@/components/yakitUI/YakitEmpty/YakitEmpty"
 import {YakitDropdownMenu} from "@/components/yakitUI/YakitDropdownMenu/YakitDropdownMenu"
 import {YakitResizeBox} from "@/components/yakitUI/YakitResizeBox/YakitResizeBox"
 import YakitCollapse from "@/components/yakitUI/YakitCollapse/YakitCollapse"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 const {YakitPanel} = YakitCollapse
@@ -269,7 +270,7 @@ export const PortAssetTable: React.FC<PortAssetTableProp> = (props) => {
     const columns: ColumnsTypeProps[] = useMemo<ColumnsTypeProps[]>(() => {
         return [
             {
-                title: "网络地址",
+                title: i18next.t("网络地址"),
                 dataKey: "Host",
                 filterProps: {
                     filterKey: "Hosts",
@@ -285,7 +286,7 @@ export const PortAssetTable: React.FC<PortAssetTableProp> = (props) => {
                 fixed: "left"
             },
             {
-                title: "端口",
+                title: i18next.t("端口"),
                 dataKey: "Port",
                 width: 100,
                 filterProps: {
@@ -296,7 +297,7 @@ export const PortAssetTable: React.FC<PortAssetTableProp> = (props) => {
                 render: (text) => <YakitTag color='blue'>{text}</YakitTag>
             },
             {
-                title: "协议",
+                title: i18next.t("协议"),
                 dataKey: "Proto",
                 width: 100,
                 filterProps: {
@@ -307,7 +308,7 @@ export const PortAssetTable: React.FC<PortAssetTableProp> = (props) => {
                 render: (text) => <YakitTag color='success'>{text}</YakitTag>
             },
             {
-                title: "服务指纹",
+                title: i18next.t("服务指纹"),
                 dataKey: "ServiceType",
                 filterProps: {
                     filterKey: "Service",
@@ -329,7 +330,7 @@ export const PortAssetTable: React.FC<PortAssetTableProp> = (props) => {
                                 }, 200)
                             }}
                         />
-                        <span className={styles["valid-data"]}>有效数据</span>
+                        <span className={styles["valid-data"]}>{i18next.t("有效数据")}</span>
                     </div>
                 ),
                 filterProps: {
@@ -339,12 +340,12 @@ export const PortAssetTable: React.FC<PortAssetTableProp> = (props) => {
                 }
             },
             {
-                title: "最近更新时间",
+                title: i18next.t("最近更新时间"),
                 dataKey: "UpdatedAt",
                 render: (text) => (text ? formatTimestamp(text) : "-")
             },
             {
-                title: "操作",
+                title: i18next.t("操作"),
                 dataKey: "Action",
                 width: 60,
                 render: (_, i: PortAsset) => {
@@ -448,17 +449,17 @@ export const PortAssetTable: React.FC<PortAssetTableProp> = (props) => {
     const menuData: YakitMenuItemType[] = useMemo(() => {
         return [
             {
-                label: "发送到漏洞检测",
+                label: i18next.t("发送到漏洞检测"),
                 key: "bug-test"
             },
             {
-                label: "发送到端口扫描",
+                label: i18next.t("发送到端口扫描"),
                 key: "scan-port"
             },
-            {label: "发送到爆破", key: "brute"},
+            {label: i18next.t("发送到爆破"), key: "brute"},
             {type: "divider"},
             {
-                label: "删除框选数据",
+                label: i18next.t("删除框选数据"),
                 key: "remove"
             }
         ]
@@ -478,11 +479,11 @@ export const PortAssetTable: React.FC<PortAssetTableProp> = (props) => {
                                 label:
                                     selectedRows.length > 0 ? (
                                         <div className={styles["context-menu-remove"]}>
-                                            <span>删除框选数据</span>
+                                            <span>{i18next.t("删除框选数据")}</span>
                                             <span className={styles["number"]}>{selectedRows.length}条</span>
                                         </div>
                                     ) : (
-                                        "删除"
+                                        i18next.t("删除")
                                     ),
                                 key: info.key
                             }
@@ -556,10 +557,10 @@ export const PortAssetTable: React.FC<PortAssetTableProp> = (props) => {
                     firstNode={
                         <div className={styles["portAsset"]}>
                             <div className={styles["portAsset-head"]}>
-                                <div className={styles["head-title"]}>端口资产列表</div>
+                                <div className={styles["head-title"]}>{i18next.t("端口资产列表")}</div>
                                 <div className={styles["head-extra"]}>
                                     <YakitInput.Search
-                                        placeholder='请输入网络地址、端口、服务指纹、title关键词搜索'
+                                        placeholder={i18next.t("请输入网络地址、端口、服务指纹、title关键词搜索")}
                                         style={{width: 320}}
                                         onSearch={onSearch}
                                         onPressEnter={() => update(1)}
@@ -577,11 +578,11 @@ export const PortAssetTable: React.FC<PortAssetTableProp> = (props) => {
                                             data: [
                                                 {
                                                     key: "noResetRefresh",
-                                                    label: "仅刷新"
+                                                    label: i18next.t("仅刷新")
                                                 },
                                                 {
                                                     key: "resetRefresh",
-                                                    label: "重置查询条件刷新"
+                                                    label: i18next.t("重置查询条件刷新")
                                                 }
                                             ],
                                             onClick: ({key}) => {
@@ -610,7 +611,7 @@ export const PortAssetTable: React.FC<PortAssetTableProp> = (props) => {
                                     {allResponse.Total > 0 && !advancedConfig && (
                                         <>
                                             <Divider type='vertical' style={{margin: "0 8px", marginRight: 12}} />
-                                            <span style={{marginRight: 4}}>高级筛选</span>
+                                            <span style={{marginRight: 4}}>{i18next.t("高级筛选")}</span>
                                             <YakitSwitch checked={advancedConfig} onChange={setAdvancedConfig} />
                                         </>
                                     )}
@@ -636,7 +637,7 @@ export const PortAssetTable: React.FC<PortAssetTableProp> = (props) => {
                                             />
                                             <YakitPopconfirm
                                                 title={
-                                                    selected.length > 0 ? "确定删除勾选数据吗？" : "确定清空列表数据吗?"
+                                                    selected.length > 0 ? i18next.t("确定删除勾选数据吗？") : "确定清空列表数据吗?"
                                                 }
                                                 onConfirm={() => {
                                                     onRemove()
@@ -644,7 +645,7 @@ export const PortAssetTable: React.FC<PortAssetTableProp> = (props) => {
                                                 placement='bottomRight'
                                             >
                                                 <YakitButton type='outline1' colors='danger' icon={<TrashIcon />}>
-                                                    {selected.length > 0 ? "删除" : "清空"}
+                                                    {selected.length > 0 ? i18next.t("删除") : i18next.t("清空")}
                                                 </YakitButton>
                                             </YakitPopconfirm>
 
@@ -653,14 +654,14 @@ export const PortAssetTable: React.FC<PortAssetTableProp> = (props) => {
                                                     menu={{
                                                         data: [
                                                             {
-                                                                label: "发送到漏洞检测",
+                                                                label: i18next.t("发送到漏洞检测"),
                                                                 key: "bug-test"
                                                             },
                                                             {
-                                                                label: "发送到端口扫描",
+                                                                label: i18next.t("发送到端口扫描"),
                                                                 key: "scan-port"
                                                             },
-                                                            {label: "发送到爆破", key: "brute"}
+                                                            {label: i18next.t("发送到爆破"), key: "brute"}
                                                         ],
                                                         onClick: ({key}) => {
                                                             ipcRenderer
@@ -687,8 +688,7 @@ export const PortAssetTable: React.FC<PortAssetTableProp> = (props) => {
                                                         icon={<PaperAirplaneIcon />}
                                                         type={"primary"}
                                                         disabled={selected.length === 0}
-                                                    >
-                                                        发送到...
+                                                    >{i18next.t("发送到...")}
                                                     </YakitButton>
                                                 </YakitDropdownMenu>
                                             )}
@@ -815,7 +815,7 @@ const PortAssetQuery: React.FC<PortAssetQueryProps> = React.memo((props) => {
     return (
         <div className={classNames(styles["portAsset-query"])} style={{display: visible ? "" : "none"}}>
             <div className={styles["query-head"]}>
-                <span>高级筛选</span>
+                <span>{i18next.t("高级筛选")}</span>
                 <YakitSwitch checked={visible} onChange={setVisible} />
             </div>
             <YakitSpin spinning={loading} wrapperClassName={styles['portAsset-query-loading']}>
@@ -838,8 +838,7 @@ const PortAssetQuery: React.FC<PortAssetQueryProps> = React.memo((props) => {
                                         queryList[item.GroupName] = []
                                         setQueryList({...queryList})
                                     }}
-                                >
-                                    清空
+                                >{i18next.t("清空")}
                                 </YakitButton>
                             }
                         >
@@ -868,7 +867,7 @@ const PortAssetQuery: React.FC<PortAssetQueryProps> = React.memo((props) => {
                         </YakitPanel>
                     ))}
                 </YakitCollapse>
-                {portsGroupList.length === 0 && <YakitEmpty style={{paddingTop: 48}} title='暂无指纹信息' />}
+                {portsGroupList.length === 0 && <YakitEmpty style={{paddingTop: 48}} title={i18next.t("暂无指纹信息")} />}
             </YakitSpin>
         </div>
     )
@@ -881,8 +880,8 @@ export const PortAssetDescription: React.FC<PortAssetDescriptionProp> = (props) 
     const {port} = props
     return (
         <>
-            <Descriptions size={"small"} bordered={true} column={!port.ServiceType ? 1 : 2} title={"端口资产详情"}>
-                <Descriptions.Item label='状态'>
+            <Descriptions size={"small"} bordered={true} column={!port.ServiceType ? 1 : 2} title={i18next.t("端口资产详情")}>
+                <Descriptions.Item label={i18next.t("状态")}>
                     <YakitCopyText showText={port.State} />
                 </Descriptions.Item>
                 {port.HtmlTitle && (
@@ -891,12 +890,12 @@ export const PortAssetDescription: React.FC<PortAssetDescriptionProp> = (props) 
                     </Descriptions.Item>
                 )}
                 {port.ServiceType && (
-                    <Descriptions.Item span={2} label='应用'>
+                    <Descriptions.Item span={2} label={i18next.t("应用")}>
                         <YakitCopyText showText={port.ServiceType} />
                     </Descriptions.Item>
                 )}
                 {port.Reason && (
-                    <Descriptions.Item span={2} label='失败原因'>
+                    <Descriptions.Item span={2} label={i18next.t("失败原因")}>
                         <YakitCopyText showText={port.Reason} />
                     </Descriptions.Item>
                 )}
@@ -910,14 +909,14 @@ export const PortAssetDescription: React.FC<PortAssetDescriptionProp> = (props) 
                     </Descriptions.Item>
                 ) : undefined}
                 {port.Fingerprint && (
-                    <Descriptions.Item span={2} label='指纹信息'>
+                    <Descriptions.Item span={2} label={i18next.t("指纹信息")}>
                         <div style={{height: 200}}>
                             <YakEditor value={port.Fingerprint} noLineNumber={true} noMiniMap={true} />
                         </div>
                     </Descriptions.Item>
                 )}
             </Descriptions>
-            <div className='descriptions-no-more'>暂无更多</div>
+            <div className='descriptions-no-more'>{i18next.t("暂无更多")}</div>
         </>
     )
 }

@@ -13,6 +13,7 @@ import {NetWorkApi} from "@/services/fetch"
 import {API} from "@/services/swagger/resposeType"
 import {OnlineUserItem} from "@/components/OnlineUserItem/OnlineUserItem"
 import {PaginationSchema} from "@/pages/invoker/schema"
+import i18next from "../../i18n"
 export interface UserQuery {
     keywords: string
     role?: string
@@ -45,7 +46,7 @@ const CreateUserForm: React.FC<CreateUserFormProps> = (props) => {
 
     const onAdd = useMemoizedFn(() => {
         if (!appid) {
-            info("请先选择用户")
+            info(i18next.t("请先选择用户"))
             return
         }
         const param = {
@@ -70,7 +71,7 @@ const CreateUserForm: React.FC<CreateUserFormProps> = (props) => {
                 })
             })
             .catch((err) => {
-                failed("增加信任用户失败：" + err)
+                failed(i18next.t("增加信任用户失败：") + err)
             })
             .finally(() => {
                 setTimeout(() => {
@@ -109,7 +110,7 @@ const CreateUserForm: React.FC<CreateUserFormProps> = (props) => {
                     setUserList(res)
                 })
                 .catch((err) => {
-                    failed("获取普通用户失败：" + err)
+                    failed(i18next.t("获取普通用户失败：") + err)
                 })
                 .finally(() => {
                     setTimeout(() => setLoading(false), 200)
@@ -125,7 +126,7 @@ const CreateUserForm: React.FC<CreateUserFormProps> = (props) => {
         <div style={{marginTop: 24}} className='trust-list-admin-page-container'>
             <Form {...layout} form={form} onFinish={() => onAdd()}>
                 <div className='add-account-body' style={{marginLeft: 50}}>
-                    <span>添加用户：</span>
+                    <span>{i18next.t("添加用户：")}</span>
                     <ItemSelects
                         isItem={false}
                         select={{
@@ -137,7 +138,7 @@ const CreateUserForm: React.FC<CreateUserFormProps> = (props) => {
                             optValue: "name",
                             optText: "appid",
                             optKey:"appid",
-                            placeholder: "请输入完整的用户名",
+                            placeholder: i18next.t("请输入完整的用户名"),
                             optionLabelProp: "name",
                             value: currentUser,
                             onSelect: (_, option: any) => {
@@ -152,7 +153,7 @@ const CreateUserForm: React.FC<CreateUserFormProps> = (props) => {
                 </div>
 
                 <div style={{marginLeft: 50}}>
-                    <span>选择角色：</span>
+                    <span>{i18next.t("选择角色：")}</span>
                     <ItemSelects
                         isItem={false}
                         select={{
@@ -163,20 +164,20 @@ const CreateUserForm: React.FC<CreateUserFormProps> = (props) => {
                             data: [
                                 {
                                     value: "trusted",
-                                    label: "信任用户"
+                                    label: i18next.t("信任用户")
                                 },
                                 {
                                     value: "admin",
-                                    label: "管理员"
+                                    label: i18next.t("管理员")
                                 },
                                 {
                                     value: "licenseAdmin",
-                                    label: "License管理员"
+                                    label: i18next.t("License管理员")
                                 }
                             ],
                             optValue: "value",
                             optText: "label",
-                            placeholder: "请选择角色",
+                            placeholder: i18next.t("请选择角色"),
                             optionLabelProp: "title",
                             value: role,
                             onSelect: (_, option: any) => onSelectRole(option),
@@ -185,8 +186,7 @@ const CreateUserForm: React.FC<CreateUserFormProps> = (props) => {
                     ></ItemSelects>
                 </div>
                 <div style={{textAlign: "center", marginTop: 20}}>
-                    <Button type='primary' htmlType='submit' loading={loading}>
-                        添加
+                    <Button type='primary' htmlType='submit' loading={loading}>{i18next.t("添加")}
                     </Button>
                 </div>
             </Form>
@@ -240,7 +240,7 @@ export const TrustListPage: React.FC<TrustListPageProp> = (props) => {
                 setTotal(res.pagemeta.total)
             })
             .catch((err) => {
-                failed("获取账号列表失败：" + err)
+                failed(i18next.t("获取账号列表失败：") + err)
             })
             .finally(() => {
                 setTimeout(() => {
@@ -270,11 +270,11 @@ export const TrustListPage: React.FC<TrustListPageProp> = (props) => {
             }
         })
             .then((res) => {
-                success("删除用户成功")
+                success(i18next.t("删除用户成功"))
                 update()
             })
             .catch((err) => {
-                failed("删除账号失败：" + err)
+                failed(i18next.t("删除账号失败：") + err)
             })
             .finally(() => {})
     }
@@ -307,7 +307,7 @@ export const TrustListPage: React.FC<TrustListPageProp> = (props) => {
 
     const columns: ColumnsType<API.UserList> = [
         {
-            title: "用户",
+            title: i18next.t("用户"),
             dataIndex: "name",
             render: (text: string, record) => (
                 <div style={{display: "flex"}}>
@@ -320,22 +320,22 @@ export const TrustListPage: React.FC<TrustListPageProp> = (props) => {
             )
         },
         {
-            title: "用户角色",
+            title: i18next.t("用户角色"),
             dataIndex: "role",
             render: (text) => {
                 let role = text
                 switch (text) {
                     case "admin":
-                        role = "管理员"
+                        role = i18next.t("管理员")
                         break
                     case "superAdmin":
-                        role = "超级管理员"
+                        role = i18next.t("超级管理员")
                         break
                     case "licenseAdmin":
-                        role = "License管理员"
+                        role = i18next.t("License管理员")
                         break
                     case "trusted":
-                        role = "信任用户"
+                        role = i18next.t("信任用户")
                         break
                     default:
                         role = "--"
@@ -345,23 +345,22 @@ export const TrustListPage: React.FC<TrustListPageProp> = (props) => {
             }
         },
         {
-            title: "创建时间",
+            title: i18next.t("创建时间"),
             dataIndex: "created_at",
             render: (text) => <span>{moment.unix(text).format("YYYY-MM-DD HH:mm")}</span>
         },
         {
-            title: "操作",
+            title: i18next.t("操作"),
             render: (i) => (
                 <Space>
                     <Popconfirm
-                        title={"确定移除该用户吗？"}
+                        title={i18next.t("确定移除该用户吗？")}
                         onConfirm={() => {
                             onRemove([i.appid])
                         }}
                         placement="right"
                     >
-                        <Button size={"small"} danger={true} type="link">
-                            移除
+                        <Button size={"small"} danger={true} type="link">{i18next.t("移除")}
                         </Button>
                     </Popconfirm>
                 </Space>
@@ -390,7 +389,7 @@ export const TrustListPage: React.FC<TrustListPageProp> = (props) => {
                         <div className='table-title'>
                             <div className='filter'>
                                 <Input.Search
-                                    placeholder={"请输入用户名进行搜索"}
+                                    placeholder={i18next.t("请输入用户名进行搜索")}
                                     enterButton={true}
                                     size={"small"}
                                     style={{width: 200}}
@@ -407,18 +406,16 @@ export const TrustListPage: React.FC<TrustListPageProp> = (props) => {
                                 <Space>
                                     {!!selectedRowKeys.length ? (
                                         <Popconfirm
-                                            title={"确定删除选择的用户吗？不可恢复"}
+                                            title={i18next.t("确定删除选择的用户吗？不可恢复")}
                                             onConfirm={() => {
                                                 onRemove(selectedRowKeys)
                                             }}
                                         >
-                                            <Button type='primary' htmlType='submit' size='small'>
-                                                批量移除
+                                            <Button type='primary' htmlType='submit' size='small'>{i18next.t("批量移除")}
                                             </Button>
                                         </Popconfirm>
                                     ) : (
-                                        <Button type='primary' size='small' disabled={true}>
-                                            批量移除
+                                        <Button type='primary' size='small' disabled={true}>{i18next.t("批量移除")}
                                         </Button>
                                     )}
                                     <Button
@@ -426,8 +423,7 @@ export const TrustListPage: React.FC<TrustListPageProp> = (props) => {
                                         htmlType='submit'
                                         size='small'
                                         onClick={() => setCreateUserShow(!createUserShow)}
-                                    >
-                                        添加用户
+                                    >{i18next.t("添加用户")}
                                     </Button>
                                 </Space>
                             </div>
@@ -445,7 +441,7 @@ export const TrustListPage: React.FC<TrustListPageProp> = (props) => {
             />
             <Modal
                 visible={createUserShow}
-                title={"添加用户"}
+                title={i18next.t("添加用户")}
                 destroyOnClose={true}
                 maskClosable={false}
                 bodyStyle={{padding: "10px 24px 24px 24px"}}

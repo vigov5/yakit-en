@@ -10,6 +10,7 @@ import {debugYakitModal, showYakitModal} from "@/components/yakitUI/YakitModal/Y
 import {useMemoizedFn} from "ahooks";
 import {showByContextMenu} from "@/components/functionTemplate/showByContext";
 import {showByCursorMenu} from "@/utils/showByCursor";
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron");
 
@@ -47,7 +48,7 @@ export const ChaosMakerOperators: React.FC<ChaosMakerOperatorsProp> = (props) =>
             // debugYakitModal(data)
         }).catch(e => {
             if (e) {
-                failed(`获取探针列表失败: ${e}`)
+                failed(i18next.t("获取探针列表失败: ${e}", { v1: e }))
             }
         })
     })
@@ -58,7 +59,7 @@ export const ChaosMakerOperators: React.FC<ChaosMakerOperatorsProp> = (props) =>
             debugYakitModal(data)
         }).catch(e => {
             if (e) {
-                failed(`获取探针列表失败: ${e}`)
+                failed(i18next.t("获取探针列表失败: ${e}", { v1: e }))
             }
         })
     })
@@ -88,7 +89,7 @@ export const ChaosMakerOperators: React.FC<ChaosMakerOperatorsProp> = (props) =>
         e.preventDefault()
 
     }} layout={"vertical"} disabled={props.running}>
-        <Form.Item help={"如果添加探针，模拟攻击流量将会额外对探针进行发送"}>
+        <Form.Item help={i18next.t("如果添加探针，模拟攻击流量将会额外对探针进行发送")}>
             <Space>
                 {availableAddrs.map(i => {
                     return <AutoCard
@@ -96,13 +97,13 @@ export const ChaosMakerOperators: React.FC<ChaosMakerOperatorsProp> = (props) =>
                             showByCursorMenu({
                                 content: [
                                     {
-                                        title: "断开并移除Agent", onClick: () => {
+                                        title: i18next.t("断开并移除Agent"), onClick: () => {
                                             ipcRenderer.invoke("DisconnectVulinboxAgent", {
                                                 Addr: i.Addr,
                                             }).then(() => {
-                                                info("断开并移除成功")
+                                                info(i18next.t("断开并移除成功"))
                                             }).catch(e => {
-                                                failed(`断开并移除失败: ${e}`)
+                                                failed(i18next.t("断开并移除失败: ${e}", { v1: e }))
                                             }).finally(() => {
                                                 updateAvailableAddrs()
                                             })
@@ -128,11 +129,11 @@ export const ChaosMakerOperators: React.FC<ChaosMakerOperatorsProp> = (props) =>
                     >{i.Addr}[{(() => {
                         switch (i.Status) {
                             case "offline":
-                                return "离线"
+                                return i18next.t("离线")
                             case "online":
-                                return "在线"
+                                return i18next.t("在线")
                             default:
-                                return "外部"
+                                return i18next.t("外部")
                         }
                     })()}]</AutoCard>
                 })}
@@ -141,9 +142,9 @@ export const ChaosMakerOperators: React.FC<ChaosMakerOperatorsProp> = (props) =>
                         showByCursorMenu({
                             content: [
                                 {
-                                    title: "添加节点", onClick: () => {
+                                    title: i18next.t("添加节点"), onClick: () => {
                                         const m = showModal({
-                                            title: "添加一个新的 BAS 节点", width: "50%",
+                                            title: i18next.t("添加一个新的 BAS 节点"), width: "50%",
                                             content: (
                                                 <AddBASAgent onFinished={(data) => {
                                                     if (data.IsAvailable) {
@@ -152,10 +153,9 @@ export const ChaosMakerOperators: React.FC<ChaosMakerOperatorsProp> = (props) =>
                                                         return
                                                     } else {
                                                         showYakitModal({
-                                                            title: "错误提示",
+                                                            title: i18next.t("错误提示"),
                                                             content: (
-                                                                <div style={{margin: 24}}>
-                                                                    添加 Agent 失败：{data.Reason}
+                                                                <div style={{margin: 24}}>{i18next.t("添加 Agent 失败：")}{data.Reason}
                                                                 </div>
                                                             ),
                                                             okButtonProps: {hidden: true},
@@ -169,13 +169,13 @@ export const ChaosMakerOperators: React.FC<ChaosMakerOperatorsProp> = (props) =>
                                     }
                                 },
                                 {
-                                    title: "查看节点信息", onClick: () => {
+                                    title: i18next.t("查看节点信息"), onClick: () => {
                                         debugUpdateAvailableAddrs()
                                     }
                                 }
                             ]
                         }, e.clientX, e.clientY)
-                    }}>添加探针</YakitButton>
+                    }}>{i18next.t("添加探针")}</YakitButton>
                 </AutoCard>
                 {
                     props.couldBeenReset ? <AutoCard
@@ -191,8 +191,7 @@ export const ChaosMakerOperators: React.FC<ChaosMakerOperatorsProp> = (props) =>
                             }
                         }}
                     >
-                        <div style={{fontWeight: "bold", color: "#fff"}}>
-                            重置 BAS 操作台
+                        <div style={{fontWeight: "bold", color: "#fff"}}>{i18next.t("重置 BAS 操作台")}
                         </div>
                     </AutoCard> : <AutoCard style={{
                         height: 40, width: 40, borderRadius: '6px',
@@ -203,8 +202,7 @@ export const ChaosMakerOperators: React.FC<ChaosMakerOperatorsProp> = (props) =>
                             props.onExecute(params)
                         }
                     }}>
-                        <div style={{fontWeight: "bold", color: "#fff"}}>
-                            配置模拟攻击参数
+                        <div style={{fontWeight: "bold", color: "#fff"}}>{i18next.t("配置模拟攻击参数")}
                         </div>
                     </AutoCard>
                 }
@@ -250,18 +248,18 @@ export const AddBASAgent: React.FC<AddBASAgentProp> = (props) => {
                     props.onFinished(data)
                 }
             }).catch(e => {
-                failed(`检测BAS节点失败：${e}`)
+                failed(i18next.t("检测BAS节点失败：${e}", { v1: e }))
             }).finally(() => setTimeout(() => setLoading(false), 300))
         }}
     >
         <InputItem
-            label={"需要导入的地址"} required={true} setValue={Addr => setParams({...params, Addr})}
+            label={i18next.t("需要导入的地址")} required={true} setValue={Addr => setParams({...params, Addr})}
             value={params.Addr} disable={loading} autoComplete={["127.0.0.1:8787"]}
         />
-        <InputInteger label={"连接超时"} setValue={Timeout => setParams({...params, Timeout})} value={params.Timeout}
+        <InputInteger label={i18next.t("连接超时")} setValue={Timeout => setParams({...params, Timeout})} value={params.Timeout}
                       disable={loading}/>
         <Form.Item colon={false} label={" "}>
-            <YakitButton type="primary" htmlType="submit" loading={loading}> 添加该节点 </YakitButton>
+            <YakitButton type="primary" htmlType="submit" loading={loading}>{i18next.t("添加该节点")} </YakitButton>
         </Form.Item>
     </Form>
 };

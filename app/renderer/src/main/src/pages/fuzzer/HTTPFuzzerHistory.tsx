@@ -18,6 +18,7 @@ import {YakitPopover} from "@/components/yakitUI/YakitPopover/YakitPopover"
 import {YakitTag} from "@/components/yakitUI/YakitTag/YakitTag"
 import {YakitPopconfirm} from "@/components/yakitUI/YakitPopconfirm/YakitPopconfirm"
 import {YakitSwitch} from "@/components/yakitUI/YakitSwitch/YakitSwitch"
+import i18next from "../../i18n"
 
 export interface HTTPFuzzerHistorySelectorProp {
     currentSelectId?: number
@@ -118,7 +119,7 @@ export const HTTPFuzzerHistorySelector: React.FC<HTTPFuzzerHistorySelectorProp> 
                         }}
                     />
                     <YakitPopconfirm
-                        title={"确定删除吗？"}
+                        title={i18next.t("确定删除吗？")}
                         onConfirm={() => {
                             deleteAll()
                         }}
@@ -157,15 +158,14 @@ export const HTTPFuzzerHistorySelector: React.FC<HTTPFuzzerHistorySelectorProp> 
                 </Form.Item>
             </Form> */}
             <div style={{display: "flex", alignItems: "center", gap: 8}}>
-                <span>快速搜索：</span>
+                <span>{i18next.t("快速搜索：")}</span>
                 <YakitInput.Search
                     value={keyword}
                     onChange={(e) => setKeyword(e.target.value)}
                     onSearch={() => reload(1, limit)}
                     onPressEnter={() => reload(1, limit)}
                 />
-                <span>
-                    查看全部
+                <span>{i18next.t("查看全部")}
                     <YakitSwitch checked={showAll} onChange={onSwitchShowAll} />
                 </span>
             </div>
@@ -252,9 +252,9 @@ export const HTTPFuzzerHistorySelector: React.FC<HTTPFuzzerHistorySelectorProp> 
                                                 </YakitTag>
                                             </div>
 
-                                            <YakitTag>共{i.HTTPFlowTotal}个</YakitTag>
+                                            <YakitTag>{i18next.t("共")}{i.HTTPFlowTotal}个</YakitTag>
                                             {i.HTTPFlowSuccessCount != i.HTTPFlowTotal && (
-                                                <YakitTag>成功:{i.HTTPFlowSuccessCount}个</YakitTag>
+                                                <YakitTag>{i18next.t("成功:")}{i.HTTPFlowSuccessCount}个</YakitTag>
                                             )}
                                             {currentSelectId == i.Id && <CheckIcon className={styles["check-icon"]} />}
                                         </div>

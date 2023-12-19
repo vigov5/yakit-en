@@ -7,6 +7,7 @@ import {Uint8ArrayToString} from "@/utils/str"
 import {writeXTerm, xtermFit} from "@/utils/xtermUtils"
 import {XTerm} from "xterm-for-react"
 import ReactResizeDetector from "react-resize-detector"
+import i18next from "../../i18n"
 
 export interface EngineConsoleProp {}
 
@@ -36,7 +37,7 @@ export const EngineConsole: React.FC<EngineConsoleProp> = (props) => {
         })
 
         ipcRenderer.invoke("AttachCombinedOutput", {}, token).then(() => {
-            info(`启动输出监控成功`)
+            info(i18next.t("启动输出监控成功"))
         })
 
         return () => {

@@ -3,6 +3,7 @@ import {RandStrWithLenProp} from "./Rand"
 import {InputItem} from "../../../utils/inputUtil"
 import {Form, Input, InputNumber} from "antd"
 import {YakitInput} from "@/components/yakitUI/YakitInput/YakitInput"
+import i18next from "../../../i18n"
 
 export interface FuzzWithRangeProp extends RandStrWithLenProp {
     help?: string
@@ -38,7 +39,7 @@ export const RangeChar: React.FC<RangeCharProp> = (props) => {
 
     return (
         <>
-            <Form.Item label={"设置字符最小 ASCII 码"}>
+            <Form.Item label={i18next.t("设置字符最小 ASCII 码")}>
                 <YakitInput
                     value={min}
                     prefix={"0x"}
@@ -54,7 +55,7 @@ export const RangeChar: React.FC<RangeCharProp> = (props) => {
                     }}
                 />
             </Form.Item>
-            <Form.Item label={"设置字符最大 ASCII 码"}>
+            <Form.Item label={i18next.t("设置字符最大 ASCII 码")}>
                 <YakitInput
                     prefix={"0x"}
                     value={max}

@@ -11,6 +11,7 @@ import {OneLine} from "../utils/inputUtil"
 import {showModal} from "../utils/showModal"
 import {CodeOutlined, QuestionCircleOutlined, UserOutlined} from "@ant-design/icons"
 import {YakEditor} from "../utils/editors"
+import i18next from "../i18n"
 
 export interface SimplePluginListProp {
     readOnly?: boolean
@@ -62,7 +63,7 @@ export const SimplePluginList: React.FC<SimplePluginListProp> = React.memo((prop
 
     const search = useMemoizedFn((searchParams?: {limit?: number; keyword?: string},tag?:string[]) => {
         const {limit, keyword} = searchParams || {}
-        console.info("插件菜单栏搜索", keyword, limit)
+        console.info(i18next.t("插件菜单栏搜索"), keyword, limit)
         setPluginLoading(true)
         queryYakScriptList(
             props.pluginTypes ? props.pluginTypes : "",
@@ -118,7 +119,7 @@ export const SimplePluginList: React.FC<SimplePluginListProp> = React.memo((prop
             onClickScript={props.onPluginClick}
             unSelectScript={unselectYakScript}
             search={search}
-            title={props?.verbose || "插件"}
+            title={props?.verbose || i18next.t("插件")}
             bodyStyle={{
                 padding: "0 4px",
                 overflow: "hidden"
@@ -150,12 +151,12 @@ export const SimplePluginListFromYakScriptNames: React.FC<SimplePluginListFromYa
         return (
             <div className={"plugin-list-body"}>
                 <AutoCard
-                    title={"未完成的任务列表"}
+                    title={i18next.t("未完成的任务列表")}
                     size={"small"}
                     bordered={false}
                     extra={[
                         <Space>
-                            <Tag>共{getLists().length}个</Tag>
+                            <Tag>{i18next.t("共")}{getLists().length}个</Tag>
                         </Space>
                     ]}
                 >

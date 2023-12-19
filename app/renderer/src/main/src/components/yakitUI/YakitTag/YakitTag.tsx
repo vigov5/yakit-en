@@ -8,6 +8,7 @@ import {useMemoizedFn} from "ahooks"
 import {CheckOutlined, LoadingOutlined} from "@ant-design/icons"
 import {success} from "@/utils/notification"
 import {OutlineXIcon} from "@/assets/icon/outline"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -84,7 +85,7 @@ export const CopyComponents: React.FC<CopyComponentsProps> = (props) => {
             setTimeout(() => {
                 setIsShowSure(false)
             }, 2000)
-            success("复制成功")
+            success(i18next.t("复制成功"))
         }, 1000)
         if (props.onAfterCopy) props.onAfterCopy(e)
     })

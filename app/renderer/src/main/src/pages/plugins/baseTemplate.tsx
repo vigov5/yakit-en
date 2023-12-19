@@ -71,6 +71,7 @@ import YakitLogo from "@/assets/yakitLogo.png"
 import "./plugins.scss"
 import styles from "./baseTemplate.module.scss"
 import classNames from "classnames"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -79,7 +80,7 @@ export const PluginsLayout: React.FC<PluginsLayoutProps> = memo((props) => {
     const {title, subTitle, extraHeader, hidden, children} = props
 
     const titleNode = useMemo(() => {
-        if (!title) return <div className={styles["title-style"]}>插件商店</div>
+        if (!title) return <div className={styles["title-style"]}>{i18next.t("插件商店")}</div>
 
         if (typeof title === "string") return <div className={styles["title-style"]}>{title}</div>
         else return title
@@ -174,8 +175,7 @@ export const PluginDetails: <T>(props: PluginDetailsProps<T>) => any = memo((pro
                                     indeterminate={checkIndeterminate}
                                     checked={checked}
                                     onChange={(e) => onCheck(e.target.checked)}
-                                />
-                                全选
+                                />{i18next.t("全选")}
                             </div>
                             <div className={styles["count-num"]}>
                                 Total <span className={styles["num-style"]}>{total}</span>
@@ -194,13 +194,11 @@ export const PluginDetails: <T>(props: PluginDetailsProps<T>) => any = memo((pro
             </div>
             <div className={styles["details-wrapper"]}>
                 <div className={styles["details-header"]}>
-                    <div className={styles["header-title"]}>
-                        插件详情
-                        <span className={styles["subtitle-style"]}>线上数据需要下载到本地才可执行</span>
+                    <div className={styles["header-title"]}>{i18next.t("插件详情")}
+                        <span className={styles["subtitle-style"]}>{i18next.t("线上数据需要下载到本地才可执行")}</span>
                     </div>
                     <div className={styles["header-btn"]}>
-                        <YakitButton type='text2' icon={<OutlineReplyIcon />} onClick={onBack}>
-                            返回
+                        <YakitButton type='text2' icon={<OutlineReplyIcon />} onClick={onBack}>{i18next.t("返回")}
                         </YakitButton>
                         <div className={styles["divider-style"]}></div>
                         <YakitButton
@@ -307,7 +305,7 @@ export const PluginDetailHeader: React.FC<PluginDetailHeaderProps> = memo((props
                                     onVisibleChange={setPrShow}
                                 >
                                     <YakitButton type='text2' isActive={prShow}>
-                                        {`${contributes.length}位协作者`}
+                                        {`${contributes.length}`+i18next.t("位协作者")}
                                         {prShow ? <SolidChevronupIcon /> : <SolidChevrondownIcon />}
                                     </YakitButton>
                                 </YakitPopover>
@@ -327,9 +325,9 @@ export const PluginDetailHeader: React.FC<PluginDetailHeaderProps> = memo((props
                                         styles["text-style"],
                                         "yakit-content-single-ellipsis"
                                     )}
-                                    title={`插件ID : ${pluginId}`}
+                                    title={i18next.t("插件ID : ${pluginId}", { v1: pluginId })}
                                 >
-                                    {`插件ID : ${pluginId}`}
+                                    {i18next.t("插件ID : ${pluginId}", { v1: pluginId })}
                                 </div>
                                 <CopyComponents className={classNames(styles["copy-icon-style"])} copyText={pluginId} />
                             </div>
@@ -338,7 +336,7 @@ export const PluginDetailHeader: React.FC<PluginDetailHeaderProps> = memo((props
                 </div>
 
                 <div className={styles["divider-style"]}></div>
-                <div className={classNames(styles["constant-wrapper"], styles["text-style"])}>{`更新时间 : ${formatDate(
+                <div className={classNames(styles["constant-wrapper"], styles["text-style"])}>{i18next.t("更新时间")+`: ${formatDate(
                     updated_at
                 )}`}</div>
             </div>
@@ -443,7 +441,7 @@ export const PluginModifyInfo: React.FC<PluginModifyInfoProps> = memo(
                 })
                 .catch((e) => {
                     if (isEdit && kind === "other") return
-                    yakitNotify("error", "获取内置漏洞类型失败:" + e)
+                    yakitNotify("error", i18next.t("获取内置漏洞类型失败:") + e)
                 })
                 .finally(() => {
                     setTimeout(() => {
@@ -533,8 +531,7 @@ export const PluginModifyInfo: React.FC<PluginModifyInfoProps> = memo(
             >
                 <Form.Item
                     label={
-                        <>
-                            插件名称<span className='plugins-item-required'>*</span>:
+                        <>{i18next.t("插件名称")}<span className='plugins-item-required'>*</span>:
                         </>
                     }
                     name='ScriptName'
@@ -542,15 +539,15 @@ export const PluginModifyInfo: React.FC<PluginModifyInfoProps> = memo(
                     rules={[
                         {
                             validator: async (_, value) => {
-                                if (!value || !value.trim()) return Promise.reject(new Error("插件名称必填"))
-                                if (value.trim().length > 100) return Promise.reject(new Error("名称最长100位"))
+                                if (!value || !value.trim()) return Promise.reject(new Error(i18next.t("插件名称必填")))
+                                if (value.trim().length > 100) return Promise.reject(new Error(i18next.t("名称最长100位")))
                             }
                         }
                     ]}
                 >
                     <YakitInput
                         wrapperClassName={styles["modify-input"]}
-                        placeholder='请输入...'
+                        placeholder={i18next.t("请输入...")}
                         size='large'
                         prefix={<OutlineIdentificationIcon />}
                         maxLength={100}
@@ -560,8 +557,7 @@ export const PluginModifyInfo: React.FC<PluginModifyInfoProps> = memo(
                 {kind === "other" && (
                     <Form.Item
                         label={
-                            <>
-                                插件描述<span className='plugins-item-required'>*</span>:
+                            <>{i18next.t("插件描述")}<span className='plugins-item-required'>*</span>:
                             </>
                         }
                         name='Help'
@@ -569,14 +565,14 @@ export const PluginModifyInfo: React.FC<PluginModifyInfoProps> = memo(
                         rules={[
                             {
                                 validator: async (_, value) => {
-                                    if (!value || !value.trim()) return Promise.reject(new Error("插件描述必填"))
+                                    if (!value || !value.trim()) return Promise.reject(new Error(i18next.t("插件描述必填")))
                                 }
                             }
                         ]}
                     >
                         <YakitInput.TextArea
                             autoSize={{minRows: 2, maxRows: 2}}
-                            placeholder='请输入...'
+                            placeholder={i18next.t("请输入...")}
                             onKeyDown={(e) => {
                                 const keyCode = e.keyCode ? e.keyCode : e.key
                                 if (keyCode === 13) {
@@ -590,20 +586,19 @@ export const PluginModifyInfo: React.FC<PluginModifyInfoProps> = memo(
                 {kind === "bug" && (
                     <Form.Item
                         label={
-                            <>
-                                漏洞类型<span className='plugins-item-required'>*</span>:
+                            <>{i18next.t("漏洞类型")}<span className='plugins-item-required'>*</span>:
                             </>
                         }
                     >
-                        <Form.Item noStyle name='RiskType' rules={[{required: true, message: "漏洞类型必填"}]}>
+                        <Form.Item noStyle name='RiskType' rules={[{required: true, message: i18next.t("漏洞类型必填")}]}>
                             <YakitSelect
                                 wrapperClassName={styles["modify-select"]}
                                 size='large'
-                                placeholder='请选择或输入CWE编号，例如:1120，如都不满足可自行输入类型'
+                                placeholder={i18next.t("请选择或输入CWE编号，例如:1120，如都不满足可自行输入类型")}
                                 showSearch={true}
                                 filterOption={false}
                                 allowClear={true}
-                                notFoundContent={bugLoading ? <YakitSpin spinning={true} /> : "暂无数据"}
+                                notFoundContent={bugLoading ? <YakitSpin spinning={true} /> : i18next.t("暂无数据")}
                                 onSearch={onBugSearch}
                                 onChange={onBugChange}
                             >
@@ -637,22 +632,21 @@ export const PluginModifyInfo: React.FC<PluginModifyInfoProps> = memo(
                             }${userRisk}`}</div>
                             {isHasBugInfo ? (
                                 <div className={styles["info-content"]}>
-                                    <div className={styles["content-style"]}>
-                                        该漏洞类型没有漏洞描述和修复建议，建议填写补充说明
+                                    <div className={styles["content-style"]}>{i18next.t("该漏洞类型没有漏洞描述和修复建议，建议填写补充说明")}
                                     </div>
                                 </div>
                             ) : (
                                 <>
                                     <div className={styles["info-content"]}>
-                                        <div className={styles["header-style"]}>漏洞描述</div>
+                                        <div className={styles["header-style"]}>{i18next.t("漏洞描述")}</div>
                                         <div className={styles["content-style"]}>
-                                            {bugInfo?.Description || "暂无描述"}
+                                            {bugInfo?.Description || i18next.t("暂无描述")}
                                         </div>
                                     </div>
                                     <div className={styles["info-content"]}>
-                                        <div className={styles["header-style"]}>修复建议</div>
+                                        <div className={styles["header-style"]}>{i18next.t("修复建议")}</div>
                                         <div className={styles["content-style"]}>
-                                            {bugInfo?.CWESolution || "暂无修复建议"}
+                                            {bugInfo?.CWESolution || i18next.t("暂无修复建议")}
                                         </div>
                                     </div>
                                 </>
@@ -661,7 +655,7 @@ export const PluginModifyInfo: React.FC<PluginModifyInfoProps> = memo(
                     </div>
                 )}
                 {kind === "bug" && (
-                    <Form.Item label='补充说明 :' name='RiskAnnotation'>
+                    <Form.Item label={i18next.t("补充说明 :")} name='RiskAnnotation'>
                         <YakitInput.TextArea
                             autoSize={{minRows: 2, maxRows: 2}}
                             onKeyDown={(e) => {
@@ -681,7 +675,7 @@ export const PluginModifyInfo: React.FC<PluginModifyInfoProps> = memo(
                         </>
                     }
                 >
-                    <Form.Item noStyle name='Tags' rules={[{required: true, message: "Tags必填"}]}>
+                    <Form.Item noStyle name='Tags' rules={[{required: true, message: i18next.t("Tags必填")}]}>
                         <YakitSelect
                             wrapperClassName={styles["multiple-modify-select"]}
                             mode='tags'
@@ -776,13 +770,12 @@ export const PluginModifySetting: React.FC<PluginModifySettingProps> = memo(
                 <div className={styles["setting-params"]}>
                     <div className={styles["setting-params-header"]}>
                         <div className={styles["header-title"]}>
-                            <span className={styles["title-style"]}>增加参数</span>
-                            <span className={styles["sub-title-style"]}>可自定义输入项</span>
+                            <span className={styles["title-style"]}>{i18next.t("增加参数")}</span>
+                            <span className={styles["sub-title-style"]}>{i18next.t("可自定义输入项")}</span>
                         </div>
                         {data.Params.length > 0 && (
                             <YakitButton type='text' onClick={() => onShowParamModal()}>
-                                <OutlinePluscircleIcon />
-                                添加参数
+                                <OutlinePluscircleIcon />{i18next.t("添加参数")}
                             </YakitButton>
                         )}
                     </div>
@@ -795,8 +788,7 @@ export const PluginModifySetting: React.FC<PluginModifySettingProps> = memo(
                                 onClick={() => onShowParamModal()}
                                 block={true}
                             >
-                                <OutlinePluscircleIcon />
-                                添加参数
+                                <OutlinePluscircleIcon />{i18next.t("添加参数")}
                             </YakitButton>
                         </div>
                     )}
@@ -813,12 +805,10 @@ export const PluginModifySetting: React.FC<PluginModifySettingProps> = memo(
                                 <YakitSwitch
                                     checked={data.EnablePluginSelector}
                                     onChange={(check) => setData({...data, EnablePluginSelector: check})}
-                                />
-                                启用插件联动 UI
+                                />{i18next.t("启用插件联动 UI")}
                             </div>
                             {data.EnablePluginSelector && (
-                                <div className={styles[".switch-wrapper"]}>
-                                    联动插件类型 :
+                                <div className={styles[".switch-wrapper"]}>{i18next.t("联动插件类型 :")}
                                     <YakitSelect
                                         size='large'
                                         value={
@@ -831,7 +821,7 @@ export const PluginModifySetting: React.FC<PluginModifySettingProps> = memo(
                                         }
                                     >
                                         <YakitSelect.Option value='mitm'>MITM</YakitSelect.Option>
-                                        <YakitSelect.Option value='port_scan'>端口扫描</YakitSelect.Option>
+                                        <YakitSelect.Option value='port_scan'>{i18next.t("端口扫描")}</YakitSelect.Option>
                                     </YakitSelect>
                                 </div>
                             )}
@@ -849,8 +839,7 @@ export const PluginModifySetting: React.FC<PluginModifySettingProps> = memo(
                                             setTags([...arr])
                                         }
                                     }}
-                                />
-                                用于自定义 DNSLOG 平台
+                                />{i18next.t("用于自定义 DNSLOG 平台")}
                             </div>
                         </div>
                     </>
@@ -869,8 +858,7 @@ export const PluginModifySetting: React.FC<PluginModifySettingProps> = memo(
                                         setTags([...arr])
                                     }
                                 }}
-                            />
-                            用于自定义HTTP数据包变形
+                            />{i18next.t("用于自定义HTTP数据包变形")}
                         </div>
                     </div>
                 )}
@@ -888,15 +876,15 @@ export const PluginModifySetting: React.FC<PluginModifySettingProps> = memo(
 
 /** @name 插件参数类型 */
 const PluginParamTypeList: {text: string; value: string}[] = [
-    {text: "字符串 / string", value: "string"},
-    {text: "布尔值 / boolean", value: "boolean"},
-    {text: "HTTP 数据包 / yak", value: "http-packet"},
-    {text: "Yak 代码块 / yak", value: "yak"},
-    {text: "文本块 / text", value: "text"},
-    {text: "整数（大于零） / uint", value: "uint"},
-    {text: "浮点数 / float", value: "float"},
-    {text: "上传文件路径 / uploadPath", value: "upload-path"},
-    {text: "下拉框 / select", value: "select"}
+    {text: i18next.t("字符串 / string"), value: "string"},
+    {text: i18next.t("布尔值 / boolean"), value: "boolean"},
+    {text: i18next.t("HTTP 数据包 / yak"), value: "http-packet"},
+    {text: i18next.t("Yak 代码块 / yak"), value: "yak"},
+    {text: i18next.t("文本块 / text"), value: "text"},
+    {text: i18next.t("整数（大于零） / uint"), value: "uint"},
+    {text: i18next.t("浮点数 / float"), value: "float"},
+    {text: i18next.t("上传文件路径 / uploadPath"), value: "upload-path"},
+    {text: i18next.t("下拉框 / select"), value: "select"}
 ]
 /** @name 新增插件参数弹框 */
 export const PluginAddParamModal: React.FC<PluginAddParamModalProps> = memo((props) => {
@@ -922,7 +910,7 @@ export const PluginAddParamModal: React.FC<PluginAddParamModalProps> = memo((pro
         if (userType === "select") {
             return (
                 <>
-                    <Form.Item label='是否支持多选' name={["ExtraSetting", "double"]}>
+                    <Form.Item label={i18next.t("是否支持多选")} name={["ExtraSetting", "double"]}>
                         <YakitSwitch />
                     </Form.Item>
                     <Form.List
@@ -930,17 +918,16 @@ export const PluginAddParamModal: React.FC<PluginAddParamModalProps> = memo((pro
                         rules={[
                             {
                                 validator: async (_, data) => {
-                                    if (!data) return Promise.reject(new Error("最少添加一个选项"))
-                                    if (data.length === 0) return Promise.reject(new Error("最少添加一个选项"))
+                                    if (!data) return Promise.reject(new Error(i18next.t("最少添加一个选项")))
+                                    if (data.length === 0) return Promise.reject(new Error(i18next.t("最少添加一个选项")))
                                 }
                             }
                         ]}
                     >
                         {(fields, {add, remove}, {errors}) => (
                             <>
-                                <Form.Item label='下拉框选项'>
-                                    <YakitButton type='text' onClick={() => add()}>
-                                        新增选项
+                                <Form.Item label={i18next.t("下拉框选项")}>
+                                    <YakitButton type='text' onClick={() => add()}>{i18next.t("新增选项")}
                                         <OutlinePlusIcon />
                                     </YakitButton>
                                     <Form.ErrorList errors={errors} />
@@ -951,41 +938,41 @@ export const PluginAddParamModal: React.FC<PluginAddParamModalProps> = memo((pro
                                             {...restField}
                                             labelCol={{span: 8}}
                                             name={[name, "label"]}
-                                            label='选项名称'
+                                            label={i18next.t("选项名称")}
                                             rules={[
                                                 {
                                                     validator: async (_, value) => {
                                                         if ((value || "").trim().length > 15) {
-                                                            return Promise.reject(new Error("选项名称最长15位"))
+                                                            return Promise.reject(new Error(i18next.t("选项名称最长15位")))
                                                         }
                                                     }
                                                 }
                                             ]}
                                         >
-                                            <YakitInput placeholder='不填默认为选项值' maxLength={15} />
+                                            <YakitInput placeholder={i18next.t("不填默认为选项值")} maxLength={15} />
                                         </Form.Item>
                                         <Form.Item
                                             {...restField}
                                             labelCol={{span: 8}}
                                             name={[name, "value"]}
-                                            label='选项值'
+                                            label={i18next.t("选项值")}
                                             required={true}
                                             rules={[
                                                 {
                                                     validator: async (_, value) => {
                                                         if (!value || !value.trim()) {
-                                                            return Promise.reject(new Error("请输入选项值"))
+                                                            return Promise.reject(new Error(i18next.t("请输入...")))
                                                         }
                                                         if (value.trim().length > 15) {
                                                             {
-                                                                return Promise.reject(new Error("选项值最长15位"))
+                                                                return Promise.reject(new Error(i18next.t("选项值最长15位")))
                                                             }
                                                         }
                                                     }
                                                 }
                                             ]}
                                         >
-                                            <YakitInput placeholder='必填项,最长15位' maxLength={15} />
+                                            <YakitInput placeholder={i18next.t("必填项,最长15位")} maxLength={15} />
                                         </Form.Item>
                                         <YakitButton
                                             type='text'
@@ -1038,7 +1025,7 @@ export const PluginAddParamModal: React.FC<PluginAddParamModalProps> = memo((pro
 
     return (
         <YakitModal
-            title={isEdit ? "编辑参数" : "添加新参数"}
+            title={isEdit ? i18next.t("编辑参数") : i18next.t("添加新参数")}
             type='white'
             width='80%'
             centered={true}
@@ -1065,13 +1052,13 @@ export const PluginAddParamModal: React.FC<PluginAddParamModalProps> = memo((pro
                         rules={[
                             {
                                 validator: async (_, value) => {
-                                    if (!value || !value.trim()) return Promise.reject(new Error("参数名必填"))
-                                    if (value.trim().length > 30) return Promise.reject(new Error("参数名最长30位"))
+                                    if (!value || !value.trim()) return Promise.reject(new Error(i18next.t("参数名必填")))
+                                    if (value.trim().length > 30) return Promise.reject(new Error(i18next.t("参数名最长30位")))
                                 }
                             }
                         ]}
                     >
-                        <YakitInput placeholder='填入想要增加的参数名' maxLength={30} />
+                        <YakitInput placeholder={i18next.t("填入想要增加的参数名")} maxLength={30} />
                     </Form.Item>
                     <Form.Item
                         label='参数显示名称(可中文)'
@@ -1080,18 +1067,18 @@ export const PluginAddParamModal: React.FC<PluginAddParamModalProps> = memo((pro
                             {
                                 validator: async (_, value) => {
                                     if ((value || "").trim().length > 30)
-                                        return Promise.reject(new Error("参数显示名称最长30位"))
+                                        return Promise.reject(new Error(i18next.t("参数显示名称最长30位")))
                                 }
                             }
                         ]}
                     >
-                        <YakitInput placeholder='输入想要显示的参数名' maxLength={30} />
+                        <YakitInput placeholder={i18next.t("输入想要显示的参数名")} maxLength={30} />
                     </Form.Item>
-                    <Form.Item label='必要参数' name='Required' valuePropName='checked'>
+                    <Form.Item label={i18next.t("必要参数")} name='Required' valuePropName='checked'>
                         <YakitSwitch onChange={(value: boolean) => onRequiredChange(value)} />
                     </Form.Item>
-                    <Form.Item label='参数类型' name='TypeVerbose' rules={[{required: true, message: "参数类型必填"}]}>
-                        <YakitSelect placeholder='请选择参数的类型' onChange={(value: string) => onTypeChange(value)}>
+                    <Form.Item label={i18next.t("参数类型")} name='TypeVerbose' rules={[{required: true, message: i18next.t("参数类型必填")}]}>
+                        <YakitSelect placeholder={i18next.t("请选择参数的类型")} onChange={(value: string) => onTypeChange(value)}>
                             {PluginParamTypeList.map((item) => {
                                 return (
                                     <YakitSelect.Option key={item.value} value={item.value}>
@@ -1103,14 +1090,14 @@ export const PluginAddParamModal: React.FC<PluginAddParamModalProps> = memo((pro
                     </Form.Item>
                     {userType !== "upload-path" && (
                         <Form.Item
-                            label='默认值'
+                            label={i18next.t("默认值")}
                             name='DefaultValue'
                             rules={[
                                 {
                                     validator: async (_, value) => {
                                         if (userType === "boolean") return
                                         if ((value || "").trim().length > 30) {
-                                            return Promise.reject(new Error("默认值最长30位"))
+                                            return Promise.reject(new Error(i18next.t("默认值最长30位")))
                                         }
                                     }
                                 }
@@ -1118,18 +1105,18 @@ export const PluginAddParamModal: React.FC<PluginAddParamModalProps> = memo((pro
                         >
                             {userType === "boolean" ? (
                                 <YakitSelect>
-                                    <YakitSelect.Option value='true'>布尔值 / true</YakitSelect.Option>
-                                    <YakitSelect.Option value='false'>布尔值 / false</YakitSelect.Option>
+                                    <YakitSelect.Option value='true'>{i18next.t("布尔值 / true")}</YakitSelect.Option>
+                                    <YakitSelect.Option value='false'>{i18next.t("布尔值 / false")}</YakitSelect.Option>
                                 </YakitSelect>
                             ) : (
-                                <YakitInput placeholder='该参数的默认值' maxLength={30} />
+                                <YakitInput placeholder={i18next.t("该参数的默认值")} maxLength={30} />
                             )}
                         </Form.Item>
                     )}
                     {showTypeItem}
-                    <Form.Item label='参数帮助信息' name='Help'>
+                    <Form.Item label={i18next.t("参数帮助信息")} name='Help'>
                         <YakitInput.TextArea
-                            placeholder='填写该参数的帮助信息，帮助用户更容易理解该内容'
+                            placeholder={i18next.t("填写该参数的帮助信息，帮助用户更容易理解该内容")}
                             autoSize={{minRows: 2, maxRows: 2}}
                             onKeyDown={(e) => {
                                 const keyCode = e.keyCode ? e.keyCode : e.key
@@ -1142,27 +1129,27 @@ export const PluginAddParamModal: React.FC<PluginAddParamModalProps> = memo((pro
                     </Form.Item>
                     {!userRequired && (
                         <Form.Item
-                            label='参数组'
+                            label={i18next.t("参数组")}
                             name='Group'
                             rules={[
                                 {
                                     validator: async (_, value) => {
                                         if ((value || "").trim().length > 20) {
-                                            return Promise.reject(new Error("参数组最长20位"))
+                                            return Promise.reject(new Error(i18next.t("参数组最长20位")))
                                         }
                                     }
                                 }
                             ]}
                         >
                             <YakitInput
-                                placeholder='参数组，在用户输入界面将会把参数分成组，一般用于设置可选参数'
+                                placeholder={i18next.t("参数组，在用户输入界面将会把参数分成组，一般用于设置可选参数")}
                                 maxLength={20}
                             />
                         </Form.Item>
                     )}
 
                     <Form.Item style={{textAlign: "right"}}>
-                        <YakitButton htmlType='submit'>{isEdit ? "修改参数" : "添加参数"}</YakitButton>
+                        <YakitButton htmlType='submit'>{isEdit ? i18next.t("修改参数") : i18next.t("添加参数")}</YakitButton>
                     </Form.Item>
                 </Form>
             </div>
@@ -1224,11 +1211,11 @@ export const PluginParamList: React.FC<PluginParamListProps> = memo((props) => {
             })}
         >
             <div className={styles["list-header"]}>
-                <div className={classNames(styles["header-title"], styles["type-style"])}>类型</div>
-                <div className={classNames(styles["header-title"], styles["name-style"])}>参数名</div>
-                <div className={classNames(styles["header-title"], styles["default-style"])}>默认值</div>
-                <div className={classNames(styles["header-title"], styles["required-style"])}>必要参数</div>
-                <div className={classNames(styles["header-title"], styles["op-style"])}>操作</div>
+                <div className={classNames(styles["header-title"], styles["type-style"])}>{i18next.t("类型")}</div>
+                <div className={classNames(styles["header-title"], styles["name-style"])}>{i18next.t("参数名")}</div>
+                <div className={classNames(styles["header-title"], styles["default-style"])}>{i18next.t("默认值")}</div>
+                <div className={classNames(styles["header-title"], styles["required-style"])}>{i18next.t("必要参数")}</div>
+                <div className={classNames(styles["header-title"], styles["op-style"])}>{i18next.t("操作")}</div>
             </div>
 
             <DragDropContext onDragEnd={onDragEnd}>
@@ -1356,7 +1343,7 @@ export const PluginEditorDiff: React.FC<PluginEditorDiffProps> = memo((props) =>
     return (
         <div className={styles["plugin-edtior-diff-wrapper"]}>
             <div className={styles["edit-diff-title"]}>
-                {isDiff ? "代码对比" : "源码"}
+                {isDiff ? i18next.t("代码对比") : i18next.t("源码")}
                 <YakitButton
                     size='small'
                     type='text2'
@@ -1368,12 +1355,12 @@ export const PluginEditorDiff: React.FC<PluginEditorDiffProps> = memo((props) =>
                 <>
                     <div className={styles["edit-diff-header"]}>
                         <div className={styles["header-body"]}>
-                            <span className={styles["body-title"]}>插件源码</span>
+                            <span className={styles["body-title"]}>{i18next.t("插件源码")}</span>
                             <span className={styles["body-sub-title"]}>2022-06-05 10:28</span>
                         </div>
                         <div className={classNames(styles["header-body"], styles["header-right-body"])}>
                             <span className={styles["body-sub-title"]}>2022-06-05 10:28</span>
-                            <span className={styles["body-title"]}>申请人提交源码</span>
+                            <span className={styles["body-title"]}>{i18next.t("申请人提交源码")}</span>
                         </div>
                     </div>
                     {oldCode && newCode && (
@@ -1528,11 +1515,11 @@ export const statusTag: {[key: string]: ReactNode} = {
 
 /** 搜索过滤条件对应展示名称 */
 export const filterToName: Record<string, string> = {
-    type: "插件状态",
+    type: i18next.t("插件状态"),
     tags: "TAG",
-    plugin_type: "插件类型",
-    status: "审核状态",
-    group: "插件分组"
+    plugin_type: i18next.t("插件类型"),
+    status: i18next.t("审核状态"),
+    group: i18next.t("插件分组")
 }
 
 export const defaultFilter: PluginFilterParams = {

@@ -3,6 +3,7 @@ import {RandStrWithLenProp} from "./Rand"
 import {Form, Typography} from "antd"
 import {InputItem} from "@/utils/inputUtil"
 import {YakitInput} from "@/components/yakitUI/YakitInput/YakitInput"
+import i18next from "../../../i18n"
 
 const {Text} = Typography
 
@@ -45,7 +46,7 @@ export const SingleTag: React.FC<SingleTagProp> = (props) => {
     return (
         <>
             {props.help && (
-                <Form.Item label={"标签介绍"}>
+                <Form.Item label={i18next.t("标签介绍")}>
                     <Text mark={true}>{props.help}</Text>
                 </Form.Item>
             )}
@@ -87,7 +88,7 @@ export const EncodeTag: React.FC<EncodeTagProp> = (props) => {
     return (
         <>
             {props.help && (
-                <Form.Item label={"编码标签介绍"}>
+                <Form.Item label={i18next.t("编码标签介绍")}>
                     <Text mark={true}>{props.help}</Text>
                 </Form.Item>
             )}

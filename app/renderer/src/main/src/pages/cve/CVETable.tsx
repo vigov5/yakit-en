@@ -42,6 +42,7 @@ import {formatDate, formatTimestamp} from "@/utils/timeUtil"
 import {YakitInput} from "@/components/yakitUI/YakitInput/YakitInput"
 import {getRemoteValue, setRemoteValue} from "@/utils/kv"
 import {YakitAutoComplete} from "@/components/yakitUI/YakitAutoComplete/YakitAutoComplete"
+import i18next from "../../i18n"
 
 export interface CVETableProp {
     available: boolean
@@ -224,17 +225,17 @@ const CVETableList: React.FC<CVETableListProps> = React.memo((props) => {
     const columns: ColumnsTypeProps[] = useMemo<ColumnsTypeProps[]>(() => {
         return [
             {
-                title: "CVE编号",
+                title: i18next.t("CVE编号"),
                 dataKey: "CVE",
                 width: 160
             },
             {
-                title: "概述",
+                title: i18next.t("概述"),
                 dataKey: "Title",
                 render: (_, i: CVEDetail) => i.Title || i.DescriptionZh || i.DescriptionOrigin
             },
             {
-                title: "CWE 编号",
+                title: i18next.t("CWE 编号"),
                 dataKey: "CWE",
                 width: 160,
                 render: (text: string) =>
@@ -251,7 +252,7 @@ const CVETableList: React.FC<CVETableListProps> = React.memo((props) => {
                     )
             },
             {
-                title: "影响产品",
+                title: i18next.t("影响产品"),
                 dataKey: "Product",
                 width: 200
             },
@@ -264,18 +265,18 @@ const CVETableList: React.FC<CVETableListProps> = React.memo((props) => {
             //     dataKey: "AccessComplexity"
             // },
             {
-                title: "漏洞级别",
+                title: i18next.t("漏洞级别"),
                 dataKey: "BaseCVSSv2Score",
                 width: 120,
                 render: (_, i: CVEDetail) => {
                     let color = "success"
-                    if (i.Severity === "严重") {
+                    if (i.Severity === i18next.t("严重")) {
                         color = "serious"
                     }
-                    if (i.Severity === "高危") {
+                    if (i.Severity === i18next.t("高危")) {
                         color = "danger"
                     }
-                    if (i.Severity === "中危") {
+                    if (i.Severity === i18next.t("中危")) {
                         color = "warning"
                     }
                     return i.Severity === "-" ? (
@@ -295,7 +296,7 @@ const CVETableList: React.FC<CVETableListProps> = React.memo((props) => {
                 }
             },
             {
-                title: "披露时间",
+                title: i18next.t("披露时间"),
                 dataKey: "PublishedAt",
                 render: (v) => (v ? formatTimestamp(v) : "-"),
                 sorterProps: {
@@ -304,7 +305,7 @@ const CVETableList: React.FC<CVETableListProps> = React.memo((props) => {
                 }
             },
             {
-                title: "更新时间",
+                title: i18next.t("更新时间"),
                 dataKey: "LastModifiedData",
                 render: (v) => (v ? formatTimestamp(v) : "-"),
                 sorterProps: {
@@ -355,17 +356,16 @@ const CVETableList: React.FC<CVETableListProps> = React.memo((props) => {
                             <div className={styles["cve-list-title-left"]}>
                                 {!advancedQuery && (
                                     <div className={styles["cve-list-title-query"]}>
-                                        <span className={styles["cve-list-title-query-text"]}>高级查询</span>
+                                        <span className={styles["cve-list-title-query-text"]}>{i18next.t("高级查询")}</span>
                                         <YakitSwitch checked={advancedQuery} onChange={setAdvancedQuery} />
                                     </div>
                                 )}
-                                <div className={styles["cve-list-title"]}>CVE 数据库管理</div>
+                                <div className={styles["cve-list-title"]}>{i18next.t("CVE 数据库管理")}</div>
                                 <div className={styles["cve-list-total"]}>
                                     <span>Total</span>
                                     <span className={styles["cve-list-total-number"]}>{total}</span>
                                 </div>
-                                <div className={styles["cve-list-time"]}>
-                                    更新时间:{updateTime ? formatDate(updateTime) : "-"}
+                                <div className={styles["cve-list-time"]}>{i18next.t("更新时间:")}{updateTime ? formatDate(updateTime) : "-"}
                                 </div>
                             </div>
                             <div className={styles["cve-list-title-extra"]}>
@@ -404,7 +404,7 @@ const CVETableList: React.FC<CVETableListProps> = React.memo((props) => {
                                     inputSearchModuleTypeProps={{
                                         size: "middle",
                                         value: params[searchType],
-                                        placeholder: searchType === "Keywords" ? "CVE编号或关键字搜索" : "CEW编号搜索",
+                                        placeholder: searchType === "Keywords" ? i18next.t("CVE编号或关键字搜索") : i18next.t("CEW编号搜索"),
                                         onChange: (e) => {
                                             setParams({
                                                 ...params,
@@ -429,8 +429,8 @@ const CVETableList: React.FC<CVETableListProps> = React.memo((props) => {
                                         // setDataBaseUpdateVisible(true)
                                         showByRightContext({
                                             data: [
-                                                {label: "只更新最新数据", key: "update-latest-data"},
-                                                {label: "全量更新", key: "update-full-data"}
+                                                {label: i18next.t("只更新最新数据"), key: "update-latest-data"},
+                                                {label: i18next.t("全量更新"), key: "update-full-data"}
                                             ],
                                             onClick: (e) => {
                                                 switch (e.key) {
@@ -447,8 +447,7 @@ const CVETableList: React.FC<CVETableListProps> = React.memo((props) => {
                                         })
                                     }}
                                 >
-                                    <RefreshIcon />
-                                    数据库更新
+                                    <RefreshIcon />{i18next.t("数据库更新")}
                                 </YakitButton>
                             </div>
                         </div>
@@ -472,19 +471,18 @@ const CVETableList: React.FC<CVETableListProps> = React.memo((props) => {
                 />
             ) : (
                 <>
-                    <div className={styles["cve-list-title"]}>CVE 数据库管理</div>
+                    <div className={styles["cve-list-title"]}>{i18next.t("CVE 数据库管理")}</div>
                     <div className={styles["cve-list-btns"]}>
                         <YakitEmpty
-                            title='暂无数据'
-                            description='点击下方按钮进行数据库初始化,（如已经下载/更新CVE数据库，建议关掉当前页面后重新打开）'
+                            title={i18next.t("暂无数据")}
+                            description={i18next.t("点击下方按钮进行数据库初始化,（如已经下载/更新CVE数据库，建议关掉当前页面后重新打开）")}
                         />
                         <YakitButton
                             type='outline1'
                             icon={<CloudDownloadIcon />}
                             onClick={() => setDataBaseUpdateVisible(true)}
                             style={{marginTop: 16}}
-                        >
-                            初始化数据库
+                        >{i18next.t("初始化数据库")}
                         </YakitButton>
                     </div>
                 </>
@@ -537,7 +535,7 @@ export const DatabaseUpdateModal: React.FC<DatabaseUpdateModalProps> = React.mem
                 setStatus("init")
                 setMessages([])
                 setError(true)
-                yakitFailed(`[UpdateCVEDatabase] error:连接超时`)
+                yakitFailed(i18next.t("[UpdateCVEDatabase] error:连接超时"))
                 timer.current = 0
             }
             setPercent(Math.ceil(data.Progress))
@@ -584,7 +582,7 @@ export const DatabaseUpdateModal: React.FC<DatabaseUpdateModalProps> = React.mem
                     setHttpProxyList(list)
                 }
             } catch (error) {
-                yakitFailed("CVE代理list获取失败:" + error)
+                yakitFailed(i18next.t("CVE代理list获取失败:") + error)
             }
         })
         getRemoteValue("cveProxy").then((v) => {
@@ -593,7 +591,7 @@ export const DatabaseUpdateModal: React.FC<DatabaseUpdateModalProps> = React.mem
                     setProxy(v)
                 }
             } catch (error) {
-                yakitFailed("CVE代理获取失败:" + error)
+                yakitFailed(i18next.t("CVE代理获取失败:") + error)
             }
         })
     })
@@ -607,16 +605,12 @@ export const DatabaseUpdateModal: React.FC<DatabaseUpdateModalProps> = React.mem
     const tipNode = useMemo(
         () =>
             latestMode ? (
-                <p>
-                    差量更新数据仅更新最新数据
-                    <br />
-                    （OpenAI 可能暂未翻译）
-                    <br />
-                    被拒绝的 CVE 将不会更新
+                <p>{i18next.t("差量更新数据仅更新最新数据")}
+                    <br />{i18next.t("（OpenAI 可能暂未翻译）")}
+                    <br />{i18next.t("被拒绝的 CVE 将不会更新")}
                 </p>
             ) : (
-                <p>
-                    如果更新失败，可点击该地址下载：
+                <p>{i18next.t("如果更新失败，可点击该地址下载：")}
                     <a
                         href={url}
                         style={{color: "var(--yakit-primary-5)"}}
@@ -625,8 +619,7 @@ export const DatabaseUpdateModal: React.FC<DatabaseUpdateModalProps> = React.mem
                         }}
                     >
                         {url}
-                    </a>
-                    , 下载后请将文件放在~/yakit-projects项目文件下
+                    </a>{i18next.t(", 下载后请将文件放在~/yakit-projects项目文件下")}
                 </p>
             ),
         [props.latestMode]
@@ -639,10 +632,10 @@ export const DatabaseUpdateModal: React.FC<DatabaseUpdateModalProps> = React.mem
                     <>
                         {latestMode && (
                             <div className={styles["hint-content-proxy"]}>
-                                <span style={{width: 75}}>设置代理：</span>
+                                <span style={{width: 75}}>{i18next.t("设置代理：")}</span>
                                 <YakitAutoComplete
                                     options={httpProxyList.map((item) => ({value: item, label: item}))}
-                                    placeholder='设置代理'
+                                    placeholder={i18next.t("设置代理")}
                                     value={proxy}
                                     onChange={(v) => {
                                         setProxy(v)
@@ -654,9 +647,9 @@ export const DatabaseUpdateModal: React.FC<DatabaseUpdateModalProps> = React.mem
                         <p>
                             {available
                                 ? latestMode
-                                    ? "差量更新数据库仅更新最新数据"
-                                    : "点击“强制更新”，可更新本地CVE数据库"
-                                : "本地CVE数据库未初始化，请点击“初始化”下载CVE数据库"}
+                                    ? i18next.t("差量更新数据库仅更新最新数据")
+                                    : i18next.t("点击“强制更新”，可更新本地CVE数据库")
+                                : i18next.t("本地CVE数据库未初始化，请点击“初始化”下载CVE数据库")}
                         </p>
                         {tipNode}
                     </>
@@ -670,7 +663,7 @@ export const DatabaseUpdateModal: React.FC<DatabaseUpdateModalProps> = React.mem
                                 strokeColor='#F28B44'
                                 trailColor='#F0F2F5'
                                 percent={percent}
-                                format={(percent) => `已下载 ${percent}%`}
+                                format={(percent) => i18next.t("已下载 ${percent}%", { v1: percent })}
                             />
                         </div>
                         <div className={styles["database-update-messages"]}>
@@ -681,7 +674,7 @@ export const DatabaseUpdateModal: React.FC<DatabaseUpdateModalProps> = React.mem
                     </>
                 )
             case "done":
-                return <p>需要重启Yakit才能生效，如果重启后还未加载出数据，建议关掉当前页面重新打开。</p>
+                return <p>{i18next.t("需要重启Yakit才能生效，如果重启后还未加载出数据，建议关掉当前页面重新打开。")}</p>
             default:
                 break
         }
@@ -698,32 +691,32 @@ export const DatabaseUpdateModal: React.FC<DatabaseUpdateModalProps> = React.mem
     })
     const titleRender = useMemoizedFn(() => {
         if (status === "done") {
-            return "更新完成"
+            return i18next.t("更新完成")
         }
 
         if (props.latestMode) {
-            return "CVE 差量最新数据更新"
+            return i18next.t("CVE 差量最新数据更新")
         }
 
         if (available) {
-            return "CVE数据库更新"
+            return i18next.t("CVE数据库更新")
         } else {
-            return "CVE数据初始化"
+            return i18next.t("CVE数据初始化")
         }
     })
     const okButtonTextRender = useMemoizedFn(() => {
         if (status === "done") {
-            return "重启"
+            return i18next.t("重启")
         }
 
         if (props.latestMode) {
-            return "更新最新数据"
+            return i18next.t("更新最新数据")
         }
 
         if (available) {
-            return "强制更新"
+            return i18next.t("强制更新")
         } else {
-            return "初始化"
+            return i18next.t("初始化")
         }
     })
     return (
@@ -741,7 +734,7 @@ export const DatabaseUpdateModal: React.FC<DatabaseUpdateModalProps> = React.mem
                         .invoke("relaunch")
                         .then(() => {})
                         .catch((e) => {
-                            failed(`重启失败: ${e}`)
+                            failed(i18next.t("重启失败: ${e}", { v1: e }))
                         })
                 } else {
                     if (latestMode) {
@@ -757,7 +750,7 @@ export const DatabaseUpdateModal: React.FC<DatabaseUpdateModalProps> = React.mem
                         .invoke("UpdateCVEDatabase", params, token)
                         .then(() => {})
                         .catch((e) => {
-                            failed(`更新 CVE 数据库失败！${e}`)
+                            failed(i18next.t("更新 CVE 数据库失败！${e}", { v1: e }))
                         })
                 }
             }}

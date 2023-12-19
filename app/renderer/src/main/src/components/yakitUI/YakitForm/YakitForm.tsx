@@ -6,6 +6,7 @@ import classNames from "classnames"
 import {YakitInput} from "../YakitInput/YakitInput"
 import {useMemoizedFn} from "ahooks"
 import {failed} from "@/utils/notification"
+import i18next from "../../../i18n"
 
 const {Dragger} = Upload
 
@@ -35,18 +36,18 @@ export const YakitFormDragger: React.FC<YakitFormDraggerProps> = React.memo((pro
     const [fileNumber, setFileNumber] = useState<number>(0)
     const getContent = useMemoizedFn((path: string, fileType: string) => {
         if (!path) {
-            failed("请输入路径")
+            failed(i18next.t("请输入路径"))
             return
         }
         const index = path.lastIndexOf(".")
 
         if (selectType === "file" && index === -1) {
-            failed("请输入正确的路径")
+            failed(i18next.t("请输入正确的路径"))
             return
         }
 
         if (props.accept && !props.accept.split(",").includes(fileType)) {
-            failed(`仅支持${props.accept}格式的文件`)
+            failed(i18next.t("仅支持${props.accept}格式的文件", {v1: props.accept}))
             return
         }
         // 设置名字
@@ -61,7 +62,7 @@ export const YakitFormDragger: React.FC<YakitFormDraggerProps> = React.memo((pro
                     setContent(res)
                 })
                 .catch((err) => {
-                    failed("数据获取失败：" + err)
+                    failed(i18next.t("数据获取失败：") + err)
                     setContent("")
                 })
                 .finally(() => setTimeout(() => setUploadLoading(false), 200))
@@ -73,7 +74,7 @@ export const YakitFormDragger: React.FC<YakitFormDraggerProps> = React.memo((pro
             case "textarea":
                 return (
                     <YakitInput.TextArea
-                        placeholder='请输入绝对路径'
+                        placeholder={i18next.t("请输入绝对路径")}
                         value={fileName || name}
                         {...textareaProps}
                         onChange={(e) => {
@@ -86,7 +87,7 @@ export const YakitFormDragger: React.FC<YakitFormDraggerProps> = React.memo((pro
                             e.stopPropagation()
                             const index = name.lastIndexOf(".")
                             if (selectType === "file" && index === -1) {
-                                failed("请输入正确的路径")
+                                failed(i18next.t("请输入正确的路径"))
                                 return
                             }
                             const type = name.substring(index, name.length)
@@ -106,7 +107,7 @@ export const YakitFormDragger: React.FC<YakitFormDraggerProps> = React.memo((pro
                             if (!name) return
                             const index = name.lastIndexOf(".")
                             if (selectType === "file" && index === -1) {
-                                failed("请输入正确的路径")
+                                failed(i18next.t("请输入正确的路径"))
                                 return
                             }
                             const type = name.substring(index, name.length)
@@ -119,7 +120,7 @@ export const YakitFormDragger: React.FC<YakitFormDraggerProps> = React.memo((pro
             default:
                 return (
                     <YakitInput
-                        placeholder='请输入绝对路径'
+                        placeholder={i18next.t("请输入绝对路径")}
                         size={size}
                         value={fileName || name}
                         {...InputProps}
@@ -133,7 +134,7 @@ export const YakitFormDragger: React.FC<YakitFormDraggerProps> = React.memo((pro
                             e.stopPropagation()
                             const index = name.lastIndexOf(".")
                             if (selectType === "file" && index === -1) {
-                                failed("请输入正确的路径")
+                                failed(i18next.t("请输入正确的路径"))
                                 return
                             }
                             const type = name.substring(index, name.length)
@@ -153,7 +154,7 @@ export const YakitFormDragger: React.FC<YakitFormDraggerProps> = React.memo((pro
                             if (!name) return
                             const index = name.lastIndexOf(".")
                             if (selectType === "file" && index === -1) {
-                                failed("请输入正确的路径")
+                                failed(i18next.t("请输入正确的路径"))
                                 return
                             }
                             const type = name.substring(index, name.length)
@@ -186,7 +187,7 @@ export const YakitFormDragger: React.FC<YakitFormDraggerProps> = React.memo((pro
     const onUploadFolder = useMemoizedFn(() => {
         ipcRenderer
             .invoke("openDialog", {
-                title: "请选择文件夹",
+                title: i18next.t("请选择文件夹"),
                 properties: ["openDirectory"]
             })
             .then((data: any) => {
@@ -237,9 +238,8 @@ export const YakitFormDragger: React.FC<YakitFormDraggerProps> = React.memo((pro
                     }}
                 >
                     {renderContent(
-                        <span>
-                            可将文件拖入框内或点击此处
-                            <span className={styles["dragger-help-active"]}>上传文件</span>
+                        <span>{i18next.t("可将文件拖入框内或点击此处")}
+                            <span className={styles["dragger-help-active"]}>{i18next.t("上传文件")}</span>
                         </span>
                     )}
                 </Dragger>
@@ -247,14 +247,11 @@ export const YakitFormDragger: React.FC<YakitFormDraggerProps> = React.memo((pro
                 <>
                     {renderContent(
                         <div className={styles["form-item-help"]}>
-                            <span>
-                                点击此处
-                                <span className={styles["dragger-help-active"]} onClick={() => onUploadFolder()}>
-                                    上传文件夹
+                            <span>{i18next.t("点击此处")}
+                                <span className={styles["dragger-help-active"]} onClick={() => onUploadFolder()}>{i18next.t("上传文件夹")}
                                 </span>
                             </span>
-                            <span>
-                                识别到<span className={styles["dragger-help-number"]}>{fileNumber}</span>个文件路径
+                            <span>{i18next.t("识别到")}<span className={styles["dragger-help-number"]}>{fileNumber}</span>{i18next.t("个文件路径")}
                             </span>
                         </div>
                     )}

@@ -11,6 +11,7 @@ import {ConfigPrivateDomain} from "@/components/ConfigPrivateDomain/ConfigPrivat
 import {showModal} from "../utils/showModal"
 import yakitImg from "../assets/yakit.jpg"
 import {GetReleaseEdition, isEnterpriseEdition} from "@/utils/envfile";
+import i18next from "../i18n"
 const {ipcRenderer} = window.require("electron")
 
 export interface LoginProp {
@@ -61,7 +62,7 @@ const Login: React.FC<LoginProp> = (props) => {
                 if (res) ipcRenderer.send("user-sign-in", {url: res, type: type})
             })
             .catch((err) => {
-                failed("登录错误:" + err)
+                failed(i18next.t("登录错误:") + err)
             })
             .finally(() => {
                 setTimeout(() => setLoading(false), 200)
@@ -75,9 +76,9 @@ const Login: React.FC<LoginProp> = (props) => {
             const {ok, info} = res
             if (ok) {
                 Modal.confirm({
-                    title: "数据同步",
+                    title: i18next.t("数据同步"),
                     icon: <ExclamationCircleOutlined />,
-                    content: "是否选择将远端的数据同步本地",
+                    content: i18next.t("是否选择将远端的数据同步本地"),
                     onOk() {
                         ipcRenderer
                             .invoke(
@@ -86,7 +87,7 @@ const Login: React.FC<LoginProp> = (props) => {
                                 taskToken
                             )
                             .catch((e) => {
-                                failed(`拉取全部插件失败:${e}`)
+                                failed(i18next.t("拉取全部插件失败:${e}", { v1: e }))
                             })
                         setTimeout(() => setLoading(false), 200)
                         props.onCancel()
@@ -118,20 +119,18 @@ const Login: React.FC<LoginProp> = (props) => {
         >
             <AutoSpin spinning={loading}>
                 <div className='login-type-body'>
-                    <h2 className='login-text'>登录</h2>
+                    <h2 className='login-text'>{i18next.t("登录")}</h2>
                     <div className='login-icon-body'>
                         {/*<div className='login-icon' onClick={() => githubAuth()}>*/}
                         <div className='login-icon' onClick={() => fetchLogin("github")}>
                             <div className='login-icon-text'>
-                                <GithubOutlined className='type-icon' />
-                                使用 GitHub 账号登录
+                                <GithubOutlined className='type-icon' />{i18next.t("使用 GitHub 账号登录")}
                             </div>
                             <RightOutlined className='icon-right' />
                         </div>
                         <div className='login-icon' onClick={() => fetchLogin("wechat")}>
                             <div className='login-icon-text'>
-                                <WechatOutlined className='type-icon icon-wx' />
-                                使用微信账号登录
+                                <WechatOutlined className='type-icon icon-wx' />{i18next.t("使用微信账号登录")}
                             </div>
                             <RightOutlined className='icon-right' />
                         </div>

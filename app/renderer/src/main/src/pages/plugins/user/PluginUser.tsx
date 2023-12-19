@@ -72,16 +72,17 @@ import classNames from "classnames"
 import "../plugins.scss"
 import styles from "./PluginUser.module.scss"
 import {SolidPrivatepluginIcon} from "@/assets/icon/colors"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
 export const mePluginTypeList = [
     {
-        label: "我的云端插件",
+        label: i18next.t("我的云端插件"),
         value: "myOnlinePlugin"
     },
     {
-        label: "回收站",
+        label: i18next.t("回收站"),
         value: "recycle"
     }
 ]
@@ -298,7 +299,7 @@ export const PluginUser: React.FC<PluginUserProps> = React.memo((props) => {
                                         icon={<OutlineClouddownloadIcon />}
                                         type='outline2'
                                         size='large'
-                                        name={isSelectUserNum ? "下载" : "一键下载"}
+                                        name={isSelectUserNum ? i18next.t("下载") : i18next.t("一键下载")}
                                         onClick={onDownload}
                                         loading={downloadLoading}
                                         disabled={initTotalUser === 0}
@@ -308,7 +309,7 @@ export const PluginUser: React.FC<PluginUserProps> = React.memo((props) => {
                                         icon={<OutlineTrashIcon />}
                                         type='outline2'
                                         size='large'
-                                        name={isSelectUserNum ? "删除" : "清空"}
+                                        name={isSelectUserNum ? i18next.t("删除") : i18next.t("清空")}
                                         onClick={onRemove}
                                         loading={removeLoading}
                                         disabled={initTotalUser === 0}
@@ -317,7 +318,7 @@ export const PluginUser: React.FC<PluginUserProps> = React.memo((props) => {
                                         maxWidth={1050}
                                         icon={<SolidPluscircleIcon />}
                                         size='large'
-                                        name='新建插件'
+                                        name={i18next.t("新建插件")}
                                         onClick={onNewAddPlugin}
                                     />
                                 </>
@@ -328,7 +329,7 @@ export const PluginUser: React.FC<PluginUserProps> = React.memo((props) => {
                                         icon={<OutlineTrashIcon />}
                                         type='outline2'
                                         size='large'
-                                        name={isSelectRecycleNum ? "删除" : "清空"}
+                                        name={isSelectRecycleNum ? i18next.t("删除") : i18next.t("清空")}
                                         onClick={onRecycleRemove}
                                         disabled={initTotalRecycle === 0}
                                     />
@@ -336,7 +337,7 @@ export const PluginUser: React.FC<PluginUserProps> = React.memo((props) => {
                                         maxWidth={1050}
                                         icon={<OutlineDatabasebackupIcon />}
                                         size='large'
-                                        name='还原'
+                                        name={i18next.t("还原")}
                                         onClick={onRecycleReduction}
                                         disabled={initTotalRecycle === 0}
                                     />
@@ -939,17 +940,15 @@ const PluginUserList: React.FC<PluginUserListProps> = React.memo(
                             />
                         ) : (
                             <div className={styles["plugin-user-empty"]}>
-                                <YakitEmpty title='暂无数据' description='可新建插件同步至云端，创建属于自己的插件' />
+                                <YakitEmpty title={i18next.t("暂无数据")} description={i18next.t("可新建插件同步至云端，创建属于自己的插件")} />
                                 <div className={styles["plugin-user-buttons"]}>
-                                    <YakitButton type='outline1' icon={<OutlinePlusIcon />} onClick={onAddPlugin}>
-                                        新建插件
+                                    <YakitButton type='outline1' icon={<OutlinePlusIcon />} onClick={onAddPlugin}>{i18next.t("新建插件")}
                                     </YakitButton>
                                     <YakitButton
                                         type='outline1'
                                         icon={<OutlineRefreshIcon />}
                                         onClick={onRefListAndTotalAndGroup}
-                                    >
-                                        刷新
+                                    >{i18next.t("刷新")}
                                     </YakitButton>
                                 </div>
                             </div>
@@ -958,16 +957,15 @@ const PluginUserList: React.FC<PluginUserListProps> = React.memo(
                 </PluginsContainer>
                 <YakitHint
                     visible={removeCheckVisible}
-                    title='是否要删除插件'
-                    content='确认删除插件后，插件将会放在回收站'
+                    title={i18next.t("是否要删除插件")}
+                    content={i18next.t("确认删除插件后，插件将会放在回收站")}
                     onOk={onPluginRemoveCheckOk}
                     onCancel={() => setRemoveCheckVisible(false)}
                     footerExtra={
                         <YakitCheckbox
                             checked={pluginRemoveCheck}
                             onChange={(e) => setPluginRemoveCheck(e.target.checked)}
-                        >
-                            下次不再提醒
+                        >{i18next.t("下次不再提醒")}
                         </YakitCheckbox>
                     }
                 />
@@ -980,7 +978,7 @@ export const OnlineUserExtraOperate: React.FC<OnlineUserExtraOperateProps> = Rea
     const {plugin, onSelect, dispatch, userInfoRole} = props
     const onShare = useMemoizedFn((uuid: string) => {
         ipcRenderer.invoke("copy-clipboard", uuid).then(() => {
-            yakitNotify("success", "分享ID复制成功")
+            yakitNotify("success", i18next.t("分享ID复制成功"))
         })
     })
     /**下载 */
@@ -1080,17 +1078,17 @@ export const OnlineUserExtraOperate: React.FC<OnlineUserExtraOperateProps> = Rea
                 data: [
                     {
                         key: "share",
-                        label: "分享",
+                        label: i18next.t("分享"),
                         itemIcon: <OutlineShareIcon className={styles["plugin-user-extra-node-icon"]} />
                     },
                     {
                         key: "download",
-                        label: "下载",
+                        label: i18next.t("下载"),
                         itemIcon: <OutlineClouddownloadIcon className={styles["plugin-user-extra-node-icon"]} />
                     },
                     {
                         key: "editState",
-                        label: plugin.is_private ? "改为公开" : "改为私密",
+                        label: plugin.is_private ? i18next.t("改为公开") : i18next.t("改为私密"),
                         itemIcon: plugin.is_private ? (
                             <OutlineLockopenIcon className={styles["plugin-user-extra-node-icon"]} />
                         ) : (
@@ -1101,7 +1099,7 @@ export const OnlineUserExtraOperate: React.FC<OnlineUserExtraOperateProps> = Rea
                     {
                         key: "remove",
                         itemIcon: <OutlineTrashIcon className={styles["plugin-user-extra-node-icon"]} />,
-                        label: "删除",
+                        label: i18next.t("删除"),
                         type: "danger"
                     }
                 ],

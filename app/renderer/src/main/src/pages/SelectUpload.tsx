@@ -5,6 +5,7 @@ import {failed, success} from "@/utils/notification"
 import {PaginationSchema} from "./invoker/schema"
 import {randomString} from "@/utils/randomUtil"
 import { ProjectDescription, ProjectIOProgress, ProjectsResponse } from "./softwareSettings/ProjectManage"
+import i18next from "../i18n"
 
 const {Option} = Select
 const {ipcRenderer} = window.require("electron")
@@ -44,14 +45,14 @@ const SelectUpload: React.FC<SelectUploadProps> = (props) => {
                 if (res?.data?.ok) {
                     setPercent(1)
                     onCancel()
-                    success("上传数据成功")
+                    success(i18next.t("上传数据成功"))
                 }
                 else{
-                    failed(`项目上传失败`)
+                    failed(i18next.t("项目上传失败"))
                 }
             })
             .catch((err) => {
-                failed(`项目上传失败:${err}`)
+                failed(i18next.t("项目上传失败:${err}", { v1: err }))
             })
             .finally(() => {
                 setTimeout(() => setLoading(false), 200)
@@ -133,7 +134,7 @@ const SelectUpload: React.FC<SelectUploadProps> = (props) => {
                 }
             })
             .catch((e) => {
-                failed(`查看全部 Projects 失败：${e}`)
+                failed(i18next.t("查看全部 Projects 失败：${e}", { v1: e }))
             })
             .finally(() => setTimeout(() => setSelectLoading(false), 300))
     }
@@ -146,21 +147,21 @@ const SelectUpload: React.FC<SelectUploadProps> = (props) => {
     })
     return (
         <Form {...layout} form={form} onFinish={onFinish}>
-            <Form.Item name='allow_password' label='加密方式' rules={[{required: true, message: "该项为必填"}]}>
-                <Select placeholder='请选择加密方式' onChange={setAllowPassword}>
-                    <Option value='1'>加密上传</Option>
-                    <Option value='0'>明文上传</Option>
+            <Form.Item name='allow_password' label={i18next.t("加密方式")} rules={[{required: true, message: i18next.t("该项为必填")}]}>
+                <Select placeholder={i18next.t("请选择加密方式")} onChange={setAllowPassword}>
+                    <Option value='1'>{i18next.t("加密上传")}</Option>
+                    <Option value='0'>{i18next.t("明文上传")}</Option>
                 </Select>
             </Form.Item>
             {allowPassword === "1" && (
-                <Form.Item name='password' label='密码' rules={[{required: true, message: "该项为必填"}]}>
-                    <Input placeholder='请输入密码' />
+                <Form.Item name='password' label={i18next.t("密码")} rules={[{required: true, message: i18next.t("该项为必填")}]}>
+                    <Input placeholder={i18next.t("请输入密码")} />
                 </Form.Item>
             )}
-            <Form.Item name='name' label='项目' rules={[{required: true, message: "该项为必填"}]}>
+            <Form.Item name='name' label={i18next.t("项目")} rules={[{required: true, message: i18next.t("该项为必填")}]}>
                 <Select
                     showSearch
-                    placeholder='请选择项目'
+                    placeholder={i18next.t("请选择项目")}
                     optionFilterProp='children'
                     filterOption={(input, option) =>
                         (option!.children as unknown as string).toLowerCase().includes(input.toLowerCase())
@@ -187,8 +188,7 @@ const SelectUpload: React.FC<SelectUploadProps> = (props) => {
                 </div>
             )}
             <div style={{textAlign: "center"}}>
-                <Button style={{width: 200}} type='primary' htmlType='submit' loading={loading}>
-                    确定
+                <Button style={{width: 200}} type='primary' htmlType='submit' loading={loading}>{i18next.t("确定")}
                 </Button>
             </div>
         </Form>

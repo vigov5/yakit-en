@@ -13,6 +13,7 @@ import {SelectIcon} from "../../assets/icons"
 import {report} from "process"
 import {onRemoveToolFC} from "../../utils/deleteTool"
 import "./ReportViewerPage.scss"
+import i18next from "../../i18n"
 export interface ReportViewerPageProp {
 }
 
@@ -143,14 +144,14 @@ export const ReportList: React.FC<ReportListProp> = (props) => {
 
     return (
         <AutoCard
-            title={<Space>报告列表</Space>}
+            title={<Space>{i18next.t("报告列表")}</Space>}
             size={"small"}
             loading={loading}
             bordered={false}
             bodyStyle={{overflowY: "auto"}}
             extra={
                 <Space>
-                    <Tooltip title={<>{`点击列表中的报告检查内容`}</>}>
+                    <Tooltip title={<>{i18next.t("点击列表中的报告检查内容")}</>}>
                         <a href='#'>
                             <QuestionOutlined/>
                         </a>
@@ -166,7 +167,7 @@ export const ReportList: React.FC<ReportListProp> = (props) => {
                     <Popconfirm
                         title={
                             selectedRowKeys.length > 0
-                                ? "确定删除选择的报告吗？不可恢复"
+                                ? i18next.t("确定删除选择的报告吗？不可恢复")
                                 : "确定删除所有报告吗? 不可恢复"
                         }
                         onConfirm={onRemove}
@@ -193,7 +194,7 @@ export const ReportList: React.FC<ReportListProp> = (props) => {
                             extra={<Tag>{formatTimestamp(item.PublishedAt)}</Tag>}
                             hoverable={true}
                         >
-                            <Tooltip title='点击选中后，可删除'>
+                            <Tooltip title={i18next.t("点击选中后，可删除")}>
                                 <SelectIcon
                                     //  @ts-ignore
                                     className={`icon-select  ${
@@ -209,8 +210,8 @@ export const ReportList: React.FC<ReportListProp> = (props) => {
 
                             <Space wrap={true}>
                                 {item.Id && <Tag color={"red"}>ID:{item.Id}</Tag>}
-                                {item.Owner && <Tag color={"green"}>发起人:{item.Owner}</Tag>}
-                                {item.From && <Tag color={"orange"}>来源:{item.From}</Tag>}
+                                {item.Owner && <Tag color={"green"}>{i18next.t("发起人:")}{item.Owner}</Tag>}
+                                {item.From && <Tag color={"orange"}>{i18next.t("来源:")}{item.From}</Tag>}
                             </Space>
                         </AutoCard>
                     )
@@ -222,7 +223,7 @@ export const ReportList: React.FC<ReportListProp> = (props) => {
                     current:typeof response.Pagination.Page === "number"? response.Pagination.Page:parseInt(response.Pagination.Page) ,
                     simple: true,
                     total,
-                    showTotal: (i) => <Tag>共{i}条历史记录</Tag>,
+                    showTotal: (i) => <Tag>{i18next.t("共")}{i}条历史记录</Tag>,
                     onChange: (page: number, limit?: number) => {
                         update(page, limit)
                     }

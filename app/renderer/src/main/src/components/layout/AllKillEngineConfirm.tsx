@@ -8,6 +8,7 @@ import {Loading3QuartersSvgIcon, YaklangInstallHintSvgIcon} from "./icons"
 
 import classNames from "classnames"
 import styles from "./AllKillEngineConfirm.module.scss"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -36,7 +37,7 @@ export const AllKillEngineConfirm: React.FC<AllKillEngineConfirmProps> = React.m
                 if (+hosts[1]) setCurrentPort(+hosts[1] || 0)
             })
             .catch((e) => {
-                failed(`获取连接引擎端口错误 ${e}`)
+                failed(i18next.t("获取连接引擎端口错误 ${e}", { v1: e }))
                 setTimeout(() => setLoading(false), 300)
             })
             .finally(() => {
@@ -127,7 +128,7 @@ export const AllKillEngineConfirm: React.FC<AllKillEngineConfirmProps> = React.m
 
                 <div className={styles["confirm-body"]}>
                     <div className={classNames(styles["body-title"], {[styles["loading-body-title"]]: loading})}>
-                        {loading ? "进程关闭中，请稍等 ..." : "更新引擎，需关闭所有本地进程"}
+                        {loading ? i18next.t("进程关闭中，请稍等 ...") : i18next.t("更新引擎，需关闭所有本地进程")}
                     </div>
                     {!loading && (
                         <div className={styles["body-content"]}>

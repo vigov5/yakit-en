@@ -26,6 +26,7 @@ import {isEnpriTrace} from "@/utils/envfile"
 import {CreateReport} from "./CreateReport"
 import {v4 as uuidv4} from "uuid"
 import {StartBruteParams} from "../brute/BrutePage"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 const ScanPortTemplate = "scan-port-template"
@@ -64,7 +65,7 @@ export interface PortScanParams {
 
 const ScanKind: {[key: string]: string} = {
     syn: "SYN",
-    fingerprint: "指纹",
+    fingerprint: i18next.t("指纹"),
     all: "SYN+指纹"
 }
 const ScanKindKeys: string[] = Object.keys(ScanKind)
@@ -151,7 +152,7 @@ export const PortScanPage: React.FC<PortScanPageProp> = (props) => {
                         // closedPort.current.unshift(logInfo)
                     }
                 } catch (e) {
-                    failed("解析端口扫描结果失败...")
+                    failed(i18next.t("解析端口扫描结果失败..."))
                 }
             }
             writeExecResultXTerm(xtermRef, data)
@@ -189,7 +190,7 @@ export const PortScanPage: React.FC<PortScanPageProp> = (props) => {
     return (
         <div style={{width: "100%", height: "100%"}}>
             <Tabs className='scan-port-tabs no-theme-tabs' tabBarStyle={{marginBottom: 5}}>
-                <Tabs.TabPane tab={"扫描端口操作台"} key={"scan"}>
+                <Tabs.TabPane tab={i18next.t("扫描端口操作台")} key={"scan"}>
                     <div className='scan-port-body'>
                         <div style={{width: 360, height: "100%"}}>
                             <SimplePluginList
@@ -215,7 +216,7 @@ export const PortScanPage: React.FC<PortScanPageProp> = (props) => {
                                             return
                                         }
                                         if (!params.Targets && !params.TargetsFile) {
-                                            failed("需要设置扫描目标")
+                                            failed(i18next.t("需要设置扫描目标"))
                                             return
                                         }
 
@@ -229,7 +230,7 @@ export const PortScanPage: React.FC<PortScanPageProp> = (props) => {
                                             setAllowDownloadReport(true)
                                             const TaskName = `${
                                                 params.Targets.split(",")[0].split(/\n/)[0]
-                                            }风险评估报告`
+                                            }`+i18next.t("风险评估报告")
                                             const runTaskNameEx = TaskName + "-" + getNowUUID()
                                             let PortScanRequest = {...params, TaskName: runTaskNameEx}
                                             ipcRenderer.invoke(
@@ -259,7 +260,7 @@ export const PortScanPage: React.FC<PortScanPageProp> = (props) => {
                                                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                                 ]
                                                 if (!typeArr.includes(f.type)) {
-                                                    failed(`${f.name}非txt、Excel文件，请上传txt、Excel格式文件！`)
+                                                    failed(i18next.t("${f.name}非txt、Excel文件，请上传txt、Excel格式文件！", {v1: f.name}))
                                                     return false
                                                 }
 
@@ -280,14 +281,14 @@ export const PortScanPage: React.FC<PortScanPageProp> = (props) => {
                                             }}
                                             item={{
                                                 style: {textAlign: "left"},
-                                                label: "扫描目标"
+                                                label: i18next.t("扫描目标")
                                             }}
                                             textarea={{
                                                 isBubbing: true,
                                                 setValue: (Targets) => setParams({...params, Targets}),
                                                 value: params.Targets,
                                                 rows: 1,
-                                                placeholder: "域名/主机/IP/IP段均可，逗号分隔或按行分割"
+                                                placeholder: i18next.t("域名/主机/IP/IP段均可，逗号分隔或按行分割")
                                             }}
                                             suffixNode={
                                                 loading ? (
@@ -302,23 +303,21 @@ export const PortScanPage: React.FC<PortScanPageProp> = (props) => {
                                                             }
                                                             ipcRenderer.invoke("cancel-PortScan", token)
                                                         }}
-                                                    >
-                                                        停止扫描
+                                                    >{i18next.t("停止扫描")}
                                                     </Button>
                                                 ) : (
                                                     <Button
                                                         className='form-submit-style'
                                                         type='primary'
                                                         htmlType='submit'
-                                                    >
-                                                        开始扫描
+                                                    >{i18next.t("开始扫描")}
                                                     </Button>
                                                 )
                                             }
                                         />
                                     </Spin>
 
-                                    <Form.Item label='预设端口' colon={false} className='form-item-margin'>
+                                    <Form.Item label={i18next.t("预设端口")} colon={false} className='form-item-margin'>
                                         <Checkbox.Group
                                             onChange={(value) => {
                                                 let res: string = (value || [])
@@ -333,16 +332,16 @@ export const PortScanPage: React.FC<PortScanPageProp> = (props) => {
                                                 }
                                             }}
                                         >
-                                            <Checkbox value={"top100"}>常见100端口</Checkbox>
-                                            <Checkbox value={"topweb"}>常见 Web 端口</Checkbox>
-                                            <Checkbox value={"top1000+"}>常见一两千</Checkbox>
-                                            <Checkbox value={"topdb"}>常见数据库与 MQ</Checkbox>
-                                            <Checkbox value={"topudp"}>常见 UDP 端口</Checkbox>
-                                            {templatePort && <Checkbox value={"template"}>默认模板</Checkbox>}
+                                            <Checkbox value={"top100"}>{i18next.t("常见100端口")}</Checkbox>
+                                            <Checkbox value={"topweb"}>{i18next.t("常见 Web 端口")}</Checkbox>
+                                            <Checkbox value={"top1000+"}>{i18next.t("常见一两千")}</Checkbox>
+                                            <Checkbox value={"topdb"}>{i18next.t("常见数据库与 MQ")}</Checkbox>
+                                            <Checkbox value={"topudp"}>{i18next.t("常见 UDP 端口")}</Checkbox>
+                                            {templatePort && <Checkbox value={"template"}>{i18next.t("默认模板")}</Checkbox>}
                                         </Checkbox.Group>
                                     </Form.Item>
 
-                                    <Form.Item label='扫描端口' colon={false} className='form-item-margin'>
+                                    <Form.Item label={i18next.t("扫描端口")} colon={false} className='form-item-margin'>
                                         <Input.TextArea
                                             style={{width: "75%"}}
                                             rows={2}
@@ -350,26 +349,25 @@ export const PortScanPage: React.FC<PortScanPageProp> = (props) => {
                                             onChange={(e) => setParams({...params, Ports: e.target.value})}
                                         />
                                         <Space size={"small"} style={{marginBottom: 4}}>
-                                            <Tooltip title={"保存为模版"}>
+                                            <Tooltip title={i18next.t("保存为模版")}>
                                                 <a
                                                     className='link-button-bfc'
                                                     onClick={() => {
                                                         if (!params.Ports) {
-                                                            failed("请输入端口后再保存")
+                                                            failed(i18next.t("请输入端口后再保存"))
                                                             return
                                                         }
                                                         ipcRenderer
                                                             .invoke("set-local-cache", ScanPortTemplate, params.Ports)
                                                             .then(() => {
                                                                 setTemplatePort(params.Ports)
-                                                                success("保存成功")
+                                                                success(i18next.t("保存成功"))
                                                             })
                                                     }}
-                                                >
-                                                    保存
+                                                >{i18next.t("保存")}
                                                 </a>
                                             </Tooltip>
-                                            <Tooltip title={"重置为默认扫描端口"}>
+                                            <Tooltip title={i18next.t("重置为默认扫描端口")}>
                                                 <a
                                                     href={"#"}
                                                     onClick={() => {
@@ -384,8 +382,8 @@ export const PortScanPage: React.FC<PortScanPageProp> = (props) => {
 
                                     <Form.Item label=' ' colon={false} className='form-item-margin'>
                                         <Space>
-                                            <Tag>扫描模式:{ScanKind[params.Mode]}</Tag>
-                                            <Tag>指纹并发:{params.Concurrent}</Tag>
+                                            <Tag>{i18next.t("扫描模式:")}{ScanKind[params.Mode]}</Tag>
+                                            <Tag>{i18next.t("指纹并发:")}{params.Concurrent}</Tag>
                                             <Checkbox
                                                 onClick={(e) => {
                                                     setParams({
@@ -394,15 +392,14 @@ export const PortScanPage: React.FC<PortScanPageProp> = (props) => {
                                                     })
                                                 }}
                                                 checked={params.SkippedHostAliveScan}
-                                            >
-                                                跳过主机存活检测
+                                            >{i18next.t("跳过主机存活检测")}
                                             </Checkbox>
                                             <Button
                                                 type='link'
                                                 size='small'
                                                 onClick={() => {
                                                     showDrawer({
-                                                        title: "设置高级参数",
+                                                        title: i18next.t("设置高级参数"),
                                                         width: "60%",
                                                         content: (
                                                             <>
@@ -414,8 +411,7 @@ export const PortScanPage: React.FC<PortScanPageProp> = (props) => {
                                                         )
                                                     })
                                                 }}
-                                            >
-                                                更多参数
+                                            >{i18next.t("更多参数")}
                                             </Button>
                                         </Space>
                                     </Form.Item>
@@ -440,7 +436,7 @@ export const PortScanPage: React.FC<PortScanPageProp> = (props) => {
                                         ) : null
                                     }
                                 >
-                                    <Tabs.TabPane tab={"扫描端口列表"} key={"scanPort"} forceRender>
+                                    <Tabs.TabPane tab={i18next.t("扫描端口列表")} key={"scanPort"} forceRender>
                                         <div style={{width: "100%", height: "100%", overflow: "hidden auto"}}>
                                             <Row style={{marginTop: 6}} gutter={6}>
                                                 <Col span={24}>
@@ -452,7 +448,7 @@ export const PortScanPage: React.FC<PortScanPageProp> = (props) => {
                                             </Row>
                                         </div>
                                     </Tabs.TabPane>
-                                    <Tabs.TabPane tab={"插件日志"} key={"pluginPort"} forceRender>
+                                    <Tabs.TabPane tab={i18next.t("插件日志")} key={"pluginPort"} forceRender>
                                         <div style={{width: "100%", height: "100%", overflow: "hidden auto"}}>
                                             <PluginResultUI
                                                 loading={loading}
@@ -477,9 +473,9 @@ export const PortScanPage: React.FC<PortScanPageProp> = (props) => {
                                         >
                                             <div style={{textAlign: "right", marginBottom: 8}}>
                                                 {loading ? (
-                                                    <Tag color={"green"}>正在执行...</Tag>
+                                                    <Tag color={"green"}>{i18next.t("正在执行...")}</Tag>
                                                 ) : (
-                                                    <Tag>闲置中...</Tag>
+                                                    <Tag>{i18next.t("闲置中...")}</Tag>
                                                 )}
                                             </div>
 
@@ -499,7 +495,7 @@ export const PortScanPage: React.FC<PortScanPageProp> = (props) => {
                         </div>
                     </div>
                 </Tabs.TabPane>
-                <Tabs.TabPane tab={"端口资产管理"} key={"port"}>
+                <Tabs.TabPane tab={i18next.t("端口资产管理")} key={"port"}>
                     <div style={{height: "100%", overflowY: "auto", padding: "0 6px"}}>
                         <PortAssetTable
                             onClicked={(i) => {
@@ -586,16 +582,16 @@ export const ScanPortForm: React.FC<ScanPortFormProp> = (props) => {
             {!isSimpleDetectShow && (
                 <>
                     <SelectOne
-                        label={"扫描模式"}
+                        label={i18next.t("扫描模式")}
                         data={ScanKindKeys.map((item) => {
                             return {value: item, text: ScanKind[item]}
                         })}
-                        help={"SYN 扫描需要 yak 启动时具有root"}
+                        help={i18next.t("SYN 扫描需要 yak 启动时具有root")}
                         setValue={(Mode) => setParams({...params, Mode})}
                         value={params.Mode}
                     />
                     <SelectOne
-                        label={"扫描协议"}
+                        label={i18next.t("扫描协议")}
                         data={[
                             {text: "TCP", value: "tcp"},
                             {text: "UDP", value: "udp", disabled: params.Mode === "syn" || params.Mode === "all"}
@@ -608,10 +604,10 @@ export const ScanPortForm: React.FC<ScanPortFormProp> = (props) => {
 
             {!isSimpleDetectShow && (params.Mode === "all" || params.Mode === "syn") && (
                 <>
-                    <Divider orientation={"left"}>SYN 配置</Divider>
+                    <Divider orientation={"left"}>{i18next.t("SYN 配置")}</Divider>
                     <InputInteger
-                        label={"SYN 并发"}
-                        help={"每秒发送 SYN 数据包数量，可视为 SYN 并发量"}
+                        label={i18next.t("SYN 并发")}
+                        help={i18next.t("每秒发送 SYN 数据包数量，可视为 SYN 并发量")}
                         value={params.SynConcurrent}
                         min={10}
                         setValue={(e) => setParams({...params, SynConcurrent: e})}
@@ -620,10 +616,10 @@ export const ScanPortForm: React.FC<ScanPortFormProp> = (props) => {
             )}
             {(params.Mode === "all" || params.Mode === "fingerprint") && (
                 <>
-                    <Divider orientation={"left"}>指纹扫描配置</Divider>
+                    <Divider orientation={"left"}>{i18next.t("指纹扫描配置")}</Divider>
                     {isSimpleDetectShow && (
                         <>
-                            <Form.Item label='预设端口' className='form-item-margin'>
+                            <Form.Item label={i18next.t("预设端口")} className='form-item-margin'>
                                 <Checkbox.Group
                                     value={getPortroupValue()}
                                     onChange={(value) => {
@@ -642,20 +638,20 @@ export const ScanPortForm: React.FC<ScanPortFormProp> = (props) => {
                                         setPortroupValue(value)
                                     }}
                                 >
-                                    <Checkbox value={"fast"}>快速默认端口</Checkbox>
-                                    <Checkbox value={"middle"}>适中默认端口</Checkbox>
-                                    <Checkbox value={"slow"}>慢速默认端口</Checkbox>
-                                    <Checkbox value={"top100"}>常见100端口</Checkbox>
-                                    <Checkbox value={"topweb"}>常见 Web 端口</Checkbox>
-                                    <Checkbox value={"top1000+"}>常见一两千</Checkbox>
-                                    <Checkbox value={"topdb"}>常见数据库与 MQ</Checkbox>
-                                    <Checkbox value={"topudp"}>常见 UDP 端口</Checkbox>
-                                    <Checkbox value={"defect"}>常见弱口令端口</Checkbox>
-                                    <Checkbox value={"all"}>全端口</Checkbox>
+                                    <Checkbox value={"fast"}>{i18next.t("快速默认端口")}</Checkbox>
+                                    <Checkbox value={"middle"}>{i18next.t("适中默认端口")}</Checkbox>
+                                    <Checkbox value={"slow"}>{i18next.t("慢速默认端口")}</Checkbox>
+                                    <Checkbox value={"top100"}>{i18next.t("常见100端口")}</Checkbox>
+                                    <Checkbox value={"topweb"}>{i18next.t("常见 Web 端口")}</Checkbox>
+                                    <Checkbox value={"top1000+"}>{i18next.t("常见一两千")}</Checkbox>
+                                    <Checkbox value={"topdb"}>{i18next.t("常见数据库与 MQ")}</Checkbox>
+                                    <Checkbox value={"topudp"}>{i18next.t("常见 UDP 端口")}</Checkbox>
+                                    <Checkbox value={"defect"}>{i18next.t("常见弱口令端口")}</Checkbox>
+                                    <Checkbox value={"all"}>{i18next.t("全端口")}</Checkbox>
                                 </Checkbox.Group>
                             </Form.Item>
 
-                            <Form.Item label='扫描端口' className='form-item-margin' style={{position: "relative"}}>
+                            <Form.Item label={i18next.t("扫描端口")} className='form-item-margin' style={{position: "relative"}}>
                                 <Input.TextArea
                                     style={{width: "100%"}}
                                     rows={2}
@@ -663,7 +659,7 @@ export const ScanPortForm: React.FC<ScanPortFormProp> = (props) => {
                                     onChange={(e) => setParams({...params, Ports: e.target.value})}
                                 />
                                 <Space size={"small"} style={{marginLeft: 8, position: "absolute", bottom: 0}}>
-                                    <Tooltip title={"重置为默认扫描端口"}>
+                                    <Tooltip title={i18next.t("重置为默认扫描端口")}>
                                         <a
                                             href={"#"}
                                             onClick={() => {
@@ -678,7 +674,7 @@ export const ScanPortForm: React.FC<ScanPortFormProp> = (props) => {
                         </>
                     )}
                     <InputInteger
-                        label={"指纹扫描并发"}
+                        label={i18next.t("指纹扫描并发")}
                         // help={"推荐最多同时扫描200个端口"}
                         value={params.Concurrent}
                         min={1}
@@ -686,34 +682,34 @@ export const ScanPortForm: React.FC<ScanPortFormProp> = (props) => {
                         setValue={(e) => setParams({...params, Concurrent: e})}
                     />
                     <SwitchItem
-                        label={"主动模式"}
-                        help={"允许指纹探测主动发包"}
+                        label={i18next.t("主动模式")}
+                        help={i18next.t("允许指纹探测主动发包")}
                         setValue={(Active) => setParams({...params, Active})}
                         value={params.Active}
                     />
                     <SelectOne
-                        label={"服务指纹级别"}
-                        help={"级别越高探测的详细程度越多，主动发包越多，时间越长"}
+                        label={i18next.t("服务指纹级别")}
+                        help={i18next.t("级别越高探测的详细程度越多，主动发包越多，时间越长")}
                         data={[
-                            {value: 1, text: "基础"},
-                            {value: 3, text: "适中"},
-                            {value: 7, text: "详细"},
-                            {value: 100, text: "全部"}
+                            {value: 1, text: i18next.t("基础")},
+                            {value: 3, text: i18next.t("适中")},
+                            {value: 7, text: i18next.t("详细")},
+                            {value: 100, text: i18next.t("全部")}
                         ]}
                         value={params.ProbeMax}
                         setValue={(ProbeMax) => setParams({...params, ProbeMax})}
                     />
                     <InputInteger
-                        label={"主动发包超时时间"}
-                        help={"某些指纹的检测需要检查目标针对某一个探针请求的响应，需要主动发包"}
+                        label={i18next.t("主动发包超时时间")}
+                        help={i18next.t("某些指纹的检测需要检查目标针对某一个探针请求的响应，需要主动发包")}
                         value={params.ProbeTimeout}
                         setValue={(ProbeTimeout) => setParams({...params, ProbeTimeout})}
                     />
                     {!isSimpleDetectShow && (
                         <ManyMultiSelectForString
-                            label={"TCP 代理"}
+                            label={i18next.t("TCP 代理")}
                             help={
-                                "支持 HTTP/Sock4/Sock4a/Socks5 协议，例如 http://127.0.0.1:7890  socks5://127.0.0.1:7890"
+                                i18next.t("支持 HTTP/Sock4/Sock4a/Socks5 协议，例如 http://127.0.0.1:7890  socks5://127.0.0.1:7890")
                             }
                             data={[
                                 "http://127.0.0.1:7890",
@@ -729,18 +725,18 @@ export const ScanPortForm: React.FC<ScanPortFormProp> = (props) => {
                         />
                     )}
                     <SelectOne
-                        label={"高级指纹选项"}
+                        label={i18next.t("高级指纹选项")}
                         data={[
-                            {value: "web", text: "仅web指纹"},
-                            {value: "service", text: "服务指纹"},
-                            {value: "all", text: "全部指纹"}
+                            {value: "web", text: i18next.t("仅web指纹")},
+                            {value: "service", text: i18next.t("服务指纹")},
+                            {value: "all", text: i18next.t("全部指纹")}
                         ]}
                         setValue={(FingerprintMode) => setParams({...params, FingerprintMode})}
                         value={params.FingerprintMode}
                     />
                     {isSimpleDetectShow && simpleParams && setSimpleParams && (
                         <>
-                            <Divider orientation={"left"}>弱口令配置</Divider>
+                            <Divider orientation={"left"}>{i18next.t("弱口令配置")}</Divider>
                             <ContentUploadInput
                                 type='textarea'
                                 dragger={{
@@ -749,7 +745,7 @@ export const ScanPortForm: React.FC<ScanPortFormProp> = (props) => {
                                 }}
                                 beforeUpload={(f) => {
                                     if (!typeArr.includes(f.type)) {
-                                        failed(`${f.name}非txt、Excel文件，请上传txt、Excel格式文件！`)
+                                        failed(i18next.t("${f.name}非txt、Excel文件，请上传txt、Excel格式文件！", {v1: f.name}))
                                         return false
                                     }
                                     setSimpleParams({
@@ -760,7 +756,7 @@ export const ScanPortForm: React.FC<ScanPortFormProp> = (props) => {
                                 }}
                                 item={{
                                     style: {textAlign: "left"},
-                                    label: "用户字典:"
+                                    label: i18next.t("用户字典:")
                                 }}
                                 textarea={{
                                     isBubbing: true,
@@ -769,7 +765,7 @@ export const ScanPortForm: React.FC<ScanPortFormProp> = (props) => {
                                     },
                                     value: usernamesValue,
                                     rows: 1,
-                                    // placeholder: "域名/主机/IP/IP段均可，逗号分隔或按行分割",
+                                    // placeholder: i18next.t("域名/主机/IP/IP段均可，逗号分隔或按行分割"),
                                     disabled: false
                                 }}
                                 otherHelpNode={
@@ -783,8 +779,7 @@ export const ScanPortForm: React.FC<ScanPortFormProp> = (props) => {
                                                     ReplaceDefaultUsernameDict: !simpleParams.ReplaceDefaultUsernameDict
                                                 })
                                             }}
-                                        >
-                                            同时使用默认用户字典
+                                        >{i18next.t("同时使用默认用户字典")}
                                         </Checkbox>
                                         {simpleParams.UsernameFile && (
                                             <div>
@@ -814,7 +809,7 @@ export const ScanPortForm: React.FC<ScanPortFormProp> = (props) => {
                                 }}
                                 beforeUpload={(f) => {
                                     if (!typeArr.includes(f.type)) {
-                                        failed(`${f.name}非txt、Excel文件，请上传txt、Excel格式文件！`)
+                                        failed(i18next.t("${f.name}非txt、Excel文件，请上传txt、Excel格式文件！", {v1: f.name}))
                                         return false
                                     }
                                     setSimpleParams({
@@ -825,7 +820,7 @@ export const ScanPortForm: React.FC<ScanPortFormProp> = (props) => {
                                 }}
                                 item={{
                                     style: {textAlign: "left"},
-                                    label: "密码字典:"
+                                    label: i18next.t("密码字典:")
                                 }}
                                 textarea={{
                                     isBubbing: true,
@@ -834,7 +829,7 @@ export const ScanPortForm: React.FC<ScanPortFormProp> = (props) => {
                                     },
                                     value: passwordsValue,
                                     rows: 1,
-                                    // placeholder: "域名/主机/IP/IP段均可，逗号分隔或按行分割",
+                                    // placeholder: i18next.t("域名/主机/IP/IP段均可，逗号分隔或按行分割"),
                                     disabled: false
                                 }}
                                 otherHelpNode={
@@ -848,8 +843,7 @@ export const ScanPortForm: React.FC<ScanPortFormProp> = (props) => {
                                                     ReplaceDefaultPasswordDict: !simpleParams.ReplaceDefaultPasswordDict
                                                 })
                                             }}
-                                        >
-                                            同时使用默认密码字典
+                                        >{i18next.t("同时使用默认密码字典")}
                                         </Checkbox>
                                         {simpleParams.PasswordFile && (
                                             <div>
@@ -872,52 +866,51 @@ export const ScanPortForm: React.FC<ScanPortFormProp> = (props) => {
                                 }
                             />
                             <InputInteger
-                                label={"目标并发"}
-                                help={"同时爆破 n 个目标"}
+                                label={i18next.t("目标并发")}
+                                help={i18next.t("同时爆破 n 个目标")}
                                 value={simpleParams.Concurrent}
                                 setValue={(e) => setSimpleParams({...simpleParams, Concurrent: e})}
                             />
                             <InputInteger
-                                label={"目标内并发"}
-                                help={"每个目标同时执行多少爆破任务"}
+                                label={i18next.t("目标内并发")}
+                                help={i18next.t("每个目标同时执行多少爆破任务")}
                                 value={simpleParams.TargetTaskConcurrent}
                                 setValue={(e) => setSimpleParams({...simpleParams, TargetTaskConcurrent: e})}
                             />
                             <SwitchItem
-                                label={"自动停止"}
-                                help={"遇到第一个爆破结果时终止任务"}
+                                label={i18next.t("自动停止")}
+                                help={i18next.t("遇到第一个爆破结果时终止任务")}
                                 setValue={(OkToStop) => setSimpleParams({...simpleParams, OkToStop})}
                                 value={simpleParams.OkToStop}
                             />
                             <InputInteger
-                                label={"最小延迟"}
+                                label={i18next.t("最小延迟")}
                                 max={simpleParams.DelayMax}
                                 min={0}
                                 setValue={(DelayMin) => setSimpleParams({...simpleParams, DelayMin})}
                                 value={simpleParams.DelayMin}
                             />
                             <InputInteger
-                                label={"最大延迟"}
+                                label={i18next.t("最大延迟")}
                                 setValue={(DelayMax) => setSimpleParams({...simpleParams, DelayMax})}
                                 value={simpleParams.DelayMax}
                                 min={simpleParams.DelayMin}
                             />
                         </>
                     )}
-                    <Divider orientation={"left"}>基础爬虫配置</Divider>
+                    <Divider orientation={"left"}>{i18next.t("基础爬虫配置")}</Divider>
                     <Form.Item
-                        label={"爬虫设置"}
+                        label={i18next.t("爬虫设置")}
                         help={"在发现网站内容是一个 HTTP(s) 服务后，进行最基础的爬虫以发现更多数据"}
                     >
                         <Space>
                             <Checkbox
                                 onChange={(e) => setParams({...params, EnableBasicCrawler: e.target.checked})}
                                 checked={params.EnableBasicCrawler}
-                            >
-                                启用爬虫
+                            >{i18next.t("启用爬虫")}
                             </Checkbox>
                             <InputNumber
-                                addonBefore={"爬虫请求数"}
+                                addonBefore={i18next.t("爬虫请求数")}
                                 value={params.BasicCrawlerRequestMax}
                                 onChange={(e) => setParams({...params, BasicCrawlerRequestMax: e as number})}
                             />
@@ -926,9 +919,9 @@ export const ScanPortForm: React.FC<ScanPortFormProp> = (props) => {
                 </>
             )}
 
-            <Divider orientation={"left"}>其他配置</Divider>
+            <Divider orientation={"left"}>{i18next.t("其他配置")}</Divider>
             <SwitchItem
-                label={"扫描结果入库"}
+                label={i18next.t("扫描结果入库")}
                 setValue={(SaveToDB) => {
                     setParams({...params, SaveToDB, SaveClosedPorts: false})
                 }}
@@ -936,40 +929,40 @@ export const ScanPortForm: React.FC<ScanPortFormProp> = (props) => {
             />
             {params.SaveToDB && (
                 <SwitchItem
-                    label={"保存关闭的端口"}
+                    label={i18next.t("保存关闭的端口")}
                     setValue={(SaveClosedPorts) => setParams({...params, SaveClosedPorts})}
                     value={params.SaveClosedPorts}
                 />
             )}
             <SwitchItem
-                label={"自动扫相关C段"}
-                help={"可以把域名 /IP 转化为 C 段目标，直接进行扫描"}
+                label={i18next.t("自动扫相关C段")}
+                help={i18next.t("可以把域名 /IP 转化为 C 段目标，直接进行扫描")}
                 value={params.EnableCClassScan}
                 setValue={(EnableCClassScan) => setParams({...params, EnableCClassScan})}
             />
             <SwitchItem
-                label={"跳过主机存活检测"}
-                help={"主机存活检测，根据当前用户权限使用 ICMP/TCP Ping 探测主机是否存活"}
+                label={i18next.t("跳过主机存活检测")}
+                help={i18next.t("主机存活检测，根据当前用户权限使用 ICMP/TCP Ping 探测主机是否存活")}
                 value={params.SkippedHostAliveScan}
                 setValue={(SkippedHostAliveScan) => setParams({...params, SkippedHostAliveScan})}
             />
             {!params.SkippedHostAliveScan && (
                 <>
                     <InputItem
-                        label={"TCP Ping 端口"}
-                        help={"配置 TCP Ping 端口：以这些端口是否开放作为 TCP Ping 依据"}
+                        label={i18next.t("TCP Ping 端口")}
+                        help={i18next.t("配置 TCP Ping 端口：以这些端口是否开放作为 TCP Ping 依据")}
                         value={params.HostAlivePorts}
                         setValue={(HostAlivePorts) => setParams({...params, HostAlivePorts})}
                     />
                 </>
             )}
             <InputItem
-                label={"排除主机"}
+                label={i18next.t("排除主机")}
                 setValue={(ExcludeHosts) => setParams({...params, ExcludeHosts})}
                 value={params.ExcludeHosts}
             />
             <InputItem
-                label={"排除端口"}
+                label={i18next.t("排除端口")}
                 setValue={(ExcludePorts) => setParams({...params, ExcludePorts})}
                 value={params.ExcludePorts}
             />

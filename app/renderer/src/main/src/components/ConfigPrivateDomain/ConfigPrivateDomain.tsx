@@ -16,8 +16,8 @@ import {InformationCircleIcon} from "@/assets/newIcon"
 import {RemoteGV} from "@/yakitGV"
 import {YakitRoute} from "@/routes/newRoute"
 import emiter from "@/utils/eventBus/eventBus"
-const {ipcRenderer} = window.require("electron")
 import i18next from "../../i18n"
+const {ipcRenderer} = window.require("electron")
 
 interface OnlineProfileProps {
     BaseUrl: string

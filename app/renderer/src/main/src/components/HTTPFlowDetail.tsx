@@ -47,6 +47,7 @@ import {YakitDropdownMenu} from "./yakitUI/YakitDropdownMenu/YakitDropdownMenu"
 import {openABSFileLocated} from "@/utils/openWebsite"
 import emiter from "@/utils/eventBus/eventBus"
 import {OutlineLog2Icon} from "@/assets/icon/outline"
+import i18next from "../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -109,7 +110,7 @@ export const FuzzerResponseToHTTPFlowDetail = (rsp: FuzzerResponseToHTTPFlowDeta
                 setId(d.Id)
             })
             .catch((e) => {
-                failed(`分析参数失败: ${e}`)
+                failed(i18next.t("分析参数失败: ${e}", { v1: e }))
             })
             .finally(() => setTimeout(() => setLoading(false), 300))
     }, [response])
@@ -128,7 +129,7 @@ export const FuzzerResponseToHTTPFlowDetail = (rsp: FuzzerResponseToHTTPFlowDeta
     }
 
     if (loading) {
-        return <Spin tip={"正在分析详细参数"} />
+        return <Spin tip={i18next.t("正在分析详细参数")} />
     }
 
     return (
@@ -186,7 +187,7 @@ export const HTTPFlowDetail: React.FC<HTTPFlowDetailProp> = (props) => {
                 menu: [
                     {
                         key: "copy-url",
-                        label: "复制URL"
+                        label: i18next.t("复制URL")
                     }
                 ],
                 onRun: (editor, key) => {
@@ -203,14 +204,14 @@ export const HTTPFlowDetail: React.FC<HTTPFlowDetailProp> = (props) => {
                 <>
                     {props.noHeader ? undefined : (
                         <PageHeader
-                            title={`请求详情`}
+                            title={i18next.t("请求详情")}
                             subTitle={`${props.id}${
                                 (props.payloads || []).length > 0 ? `  Payload: ${props.payloads?.join(",")}` : ""
                             }`}
                             extra={
                                 props.fetchRequest ? (
                                     <Space>
-                                        <Tooltip title={"上一个请求"}>
+                                        <Tooltip title={i18next.t("上一个请求")}>
                                             <Button
                                                 type='link'
                                                 disabled={!!props.isFront}
@@ -220,7 +221,7 @@ export const HTTPFlowDetail: React.FC<HTTPFlowDetailProp> = (props) => {
                                                 }}
                                             ></Button>
                                         </Tooltip>
-                                        <Tooltip title={"下一个请求"}>
+                                        <Tooltip title={i18next.t("下一个请求")}>
                                             <Button
                                                 type='link'
                                                 disabled={!!props.isBehind}
@@ -239,12 +240,12 @@ export const HTTPFlowDetail: React.FC<HTTPFlowDetailProp> = (props) => {
                     )}
                     <Space direction={"vertical"} style={{width: "100%"}}>
                         <Descriptions column={4} bordered={true} size={"small"}>
-                            <Descriptions.Item key={"method"} span={1} label={"HTTP 方法"}>
+                            <Descriptions.Item key={"method"} span={1} label={i18next.t("HTTP 方法")}>
                                 <Tag color={"geekblue"}>
                                     <Text style={{maxWidth: 500}}>{flow.Method}</Text>
                                 </Tag>
                             </Descriptions.Item>
-                            <Descriptions.Item key={"url"} span={3} label={"请求 URL"}>
+                            <Descriptions.Item key={"url"} span={3} label={i18next.t("请求 URL")}>
                                 <Text style={{maxWidth: 500}} copyable={true}>
                                     {flow.Url}
                                 </Text>
@@ -264,7 +265,7 @@ export const HTTPFlowDetail: React.FC<HTTPFlowDetailProp> = (props) => {
                             <Descriptions.Item key={"status"} span={1} label={"StatusCode"}>
                                 <Tag color={"geekblue"}>{flow.StatusCode}</Tag>
                             </Descriptions.Item>
-                            <Descriptions.Item key={"size"} span={1} label={"Body大小"}>
+                            <Descriptions.Item key={"size"} span={1} label={i18next.t("Body大小")}>
                                 <Tag color={"geekblue"}>
                                     <div style={{maxWidth: 500}}>{flow.BodySizeVerbose}</div>
                                 </Tag>
@@ -279,7 +280,7 @@ export const HTTPFlowDetail: React.FC<HTTPFlowDetailProp> = (props) => {
                             {flow.GetParams.length > 0 || flow.PostParams.length > 0 || flow.CookieParams.length > 0 ? (
                                 <Tabs>
                                     {flow.GetParams.length > 0 && (
-                                        <Tabs.TabPane key={"get"} tab={"GET 参数"}>
+                                        <Tabs.TabPane key={"get"} tab={i18next.t("GET 参数")}>
                                             <FuzzableParamList
                                                 data={flow.GetParams}
                                                 sendToWebFuzzer={() => {
@@ -289,7 +290,7 @@ export const HTTPFlowDetail: React.FC<HTTPFlowDetailProp> = (props) => {
                                         </Tabs.TabPane>
                                     )}
                                     {flow.PostParams.length > 0 && (
-                                        <Tabs.TabPane key={"post"} tab={"POST 参数"}>
+                                        <Tabs.TabPane key={"post"} tab={i18next.t("POST 参数")}>
                                             <FuzzableParamList
                                                 data={flow.PostParams}
                                                 sendToWebFuzzer={() => {
@@ -299,7 +300,7 @@ export const HTTPFlowDetail: React.FC<HTTPFlowDetailProp> = (props) => {
                                         </Tabs.TabPane>
                                     )}
                                     {flow.CookieParams.length > 0 && (
-                                        <Tabs.TabPane key={"cookie"} tab={"Cookie 参数"}>
+                                        <Tabs.TabPane key={"cookie"} tab={i18next.t("Cookie 参数")}>
                                             <FuzzableParamList
                                                 data={flow.CookieParams}
                                                 sendToWebFuzzer={() => {
@@ -316,7 +317,7 @@ export const HTTPFlowDetail: React.FC<HTTPFlowDetailProp> = (props) => {
 
                         <Row gutter={8}>
                             <Col span={12}>
-                                <Card title={"原始 HTTP 请求"} size={"small"} bodyStyle={{padding: 0}}>
+                                <Card title={i18next.t("原始 HTTP 请求")} size={"small"} bodyStyle={{padding: 0}}>
                                     <div style={{height: 350}}>
                                         <NewHTTPPacketEditor
                                             readOnly={true}
@@ -335,7 +336,7 @@ export const HTTPFlowDetail: React.FC<HTTPFlowDetailProp> = (props) => {
                                 </Card>
                             </Col>
                             <Col span={12}>
-                                <Card title={"原始 HTTP 响应"} size={"small"} bodyStyle={{padding: 0}}>
+                                <Card title={i18next.t("原始 HTTP 响应")} size={"small"} bodyStyle={{padding: 0}}>
                                     <div style={{height: 350}}>
                                         <NewHTTPPacketEditor
                                             readOnly={true}
@@ -579,7 +580,7 @@ export const HTTPFlowDetailMini: React.FC<HTTPFlowDetailProp> = (props) => {
                 }
             })
             .catch((e) => {
-                failed("获取规则提取数据失败")
+                failed(i18next.t("获取规则提取数据失败"))
             })
             .finally(() => {
                 if ((i.Domains || []).length > 0 || (i.RootDomains || []).length > 0) {
@@ -667,7 +668,7 @@ export const HTTPFlowDetailMini: React.FC<HTTPFlowDetailProp> = (props) => {
                                     extraEnd={
                                         <div className={classNames(styles["http-history-fold-box"])}>
                                             <div className={styles["http-history-icon-box"]}>
-                                                <Tooltip placement='top' title='向右收起'>
+                                                <Tooltip placement='top' title={i18next.t("向右收起")}>
                                                     <SideBarOpenIcon
                                                         className={styles["fold-icon"]}
                                                         onClick={() => {
@@ -726,7 +727,7 @@ export const HTTPFlowDetailMini: React.FC<HTTPFlowDetailProp> = (props) => {
                                             </Button.Group>
                                             <div className={classNames(styles["http-history-fold-box"])}>
                                                 <div className={styles["http-history-icon-box"]}>
-                                                    <Tooltip placement='top' title='向右收起'>
+                                                    <Tooltip placement='top' title={i18next.t("向右收起")}>
                                                         <SideBarOpenIcon
                                                             className={styles["fold-icon"]}
                                                             onClick={() => {
@@ -750,7 +751,7 @@ export const HTTPFlowDetailMini: React.FC<HTTPFlowDetailProp> = (props) => {
                                 <div className={styles["empty-box"]}>
                                     <div className={classNames(styles["empty-box-fold-box"])}>
                                         <div className={styles["empty-box-icon-box"]}>
-                                            <Tooltip placement='top' title='向右收起'>
+                                            <Tooltip placement='top' title={i18next.t("向右收起")}>
                                                 <SideBarOpenIcon
                                                     className={styles["fold-icon"]}
                                                     onClick={() => {
@@ -761,7 +762,7 @@ export const HTTPFlowDetailMini: React.FC<HTTPFlowDetailProp> = (props) => {
                                             </Tooltip>
                                         </div>
                                     </div>
-                                    <YakitEmpty style={{paddingTop: 48}} title='暂无数据' />
+                                    <YakitEmpty style={{paddingTop: 48}} title={i18next.t("暂无数据")} />
                                 </div>
                             </Col>
                         )}
@@ -771,7 +772,7 @@ export const HTTPFlowDetailMini: React.FC<HTTPFlowDetailProp> = (props) => {
             {isFold && pageType !== "MITM" && (
                 <div className={classNames(styles["http-history-fold-box"], styles["http-history-fold-border-box"])}>
                     <div className={classNames(styles["http-history-icon-box"])} style={{height: 32}}>
-                        <Tooltip placement='top' title='向左展开'>
+                        <Tooltip placement='top' title={i18next.t("向左展开")}>
                             <SideBarCloseIcon
                                 className={styles["fold-icon"]}
                                 onClick={() => {
@@ -859,7 +860,7 @@ export const HTTPFlowDetailRequestAndResponse: React.FC<HTTPFlowDetailRequestAnd
                 menu: [
                     {
                         key: "copy-url",
-                        label: "复制URL"
+                        label: i18next.t("复制URL")
                     }
                 ],
                 onRun: (editor, key) => {
@@ -979,7 +980,7 @@ export const HTTPFlowDetailRequestAndResponse: React.FC<HTTPFlowDetailRequestAnd
         <YakitResizeBox
             firstNode={() => {
                 if (flow === undefined) {
-                    return <Empty description={"选择想要查看的 HTTP 记录请求"} />
+                    return <Empty description={i18next.t("选择想要查看的 HTTP 记录请求")} />
                 }
                 if (flow?.IsWebsocket) {
                     return <HTTPFlowForWebsocketViewer flow={flow} />
@@ -1058,8 +1059,8 @@ export const HTTPFlowDetailRequestAndResponse: React.FC<HTTPFlowDetailRequestAnd
                         dataCompare={{
                             rightCode: beforeResValue,
                             leftCode: resType === "request" ? flow?.Request || new Uint8Array() : undefined,
-                            leftTitle: "请求",
-                            rightTitle: "原始请求"
+                            leftTitle: i18next.t("请求"),
+                            rightTitle: i18next.t("原始请求")
                         }}
                         onEditor={(Editor) => {
                             setReqEditor(Editor)
@@ -1070,7 +1071,7 @@ export const HTTPFlowDetailRequestAndResponse: React.FC<HTTPFlowDetailRequestAnd
             firstMinSize={300}
             secondNode={() => {
                 if (flow === undefined) {
-                    return <Empty description={"选择想要查看的 HTTP 记录响应"} />
+                    return <Empty description={i18next.t("选择想要查看的 HTTP 记录响应")} />
                 }
                 if (flow?.IsWebsocket) {
                     return <WebsocketFrameHistory websocketHash={flow.WebsocketHash || ""} />
@@ -1128,8 +1129,8 @@ export const HTTPFlowDetailRequestAndResponse: React.FC<HTTPFlowDetailRequestAnd
                                         <YakitDropdownMenu
                                             menu={{
                                                 data: [
-                                                    {key: "tooLargeResponseHeaderFile", label: "查看Header"},
-                                                    {key: "tooLargeResponseBodyFile", label: "查看Body"}
+                                                    {key: "tooLargeResponseHeaderFile", label: i18next.t("查看Header")},
+                                                    {key: "tooLargeResponseBodyFile", label: i18next.t("查看Body")}
                                                 ],
                                                 onClick: ({key}) => {
                                                     switch (key) {
@@ -1145,7 +1146,7 @@ export const HTTPFlowDetailRequestAndResponse: React.FC<HTTPFlowDetailRequestAnd
                                                                             flow.TooLargeResponseHeaderFile
                                                                         )
                                                                     } else {
-                                                                        failed("目标文件已不存在!")
+                                                                        failed(i18next.t("目标文件已不存在!"))
                                                                     }
                                                                 })
                                                                 .catch(() => {})
@@ -1159,7 +1160,7 @@ export const HTTPFlowDetailRequestAndResponse: React.FC<HTTPFlowDetailRequestAnd
                                                                             flow.TooLargeResponseBodyFile
                                                                         )
                                                                     } else {
-                                                                        failed("目标文件已不存在!")
+                                                                        failed(i18next.t("目标文件已不存在!"))
                                                                     }
                                                                 })
                                                                 .catch(() => {})
@@ -1210,8 +1211,8 @@ export const HTTPFlowDetailRequestAndResponse: React.FC<HTTPFlowDetailRequestAnd
                         dataCompare={{
                             rightCode: beforeRspValue,
                             leftCode: rspType === "response" ? flow?.Response || new Uint8Array() : undefined,
-                            leftTitle: "响应",
-                            rightTitle: "原始响应"
+                            leftTitle: i18next.t("响应"),
+                            rightTitle: i18next.t("原始响应")
                         }}
                         onEditor={(Editor) => {
                             setResEditor(Editor)
@@ -1227,11 +1228,11 @@ export const HTTPFlowDetailRequestAndResponse: React.FC<HTTPFlowDetailRequestAnd
 function infoTypeVerbose(i: HTTPFlowInfoType) {
     switch (i) {
         case "domains":
-            return "域名 "
+            return i18next.t("域名 ")
         case "json":
-            return "对象 "
+            return i18next.t("对象 ")
         case "rules":
-            return "规则 "
+            return i18next.t("规则 ")
         default:
             return "-"
     }

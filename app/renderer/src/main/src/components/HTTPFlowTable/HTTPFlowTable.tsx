@@ -69,6 +69,7 @@ import {ExportSelect} from "../DataExport/DataExport"
 import emiter from "@/utils/eventBus/eventBus"
 import {MITMConsts} from "@/pages/mitm/MITMConsts"
 import {HTTPHistorySourcePageType} from "../HTTPHistory"
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -643,9 +644,9 @@ const defSort: SortProps = {
 
 const SourceType = [
     {text: "MITM", value: "mitm"},
-    {text: "插件", value: "scan"},
+    {text: i18next.t("插件"), value: "scan"},
     {
-        text: "爬虫",
+        text: i18next.t("爬虫"),
         value: "basic-crawler"
     }
 ]
@@ -985,7 +986,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                     })
                 } catch (e) {
                     updateData()
-                    yakitNotify("error", `加载屏蔽参数失败: ${e}`)
+                    yakitNotify("error", i18next.t("加载屏蔽参数失败: ${e}", { v1: e }))
                 }
             })
             .finally(() => {
@@ -1453,7 +1454,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
     const columns: ColumnsTypeProps[] = useMemo<ColumnsTypeProps[]>(() => {
         return [
             {
-                title: "序号",
+                title: i18next.t("序号"),
                 dataKey: "Id",
                 fixed: "left",
                 ellipsis: false,
@@ -1461,7 +1462,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                 enableDrag: false
             },
             {
-                title: "方法",
+                title: i18next.t("方法"),
                 dataKey: "Method",
                 width: 80,
                 filterProps: {
@@ -1495,7 +1496,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                 }
             },
             {
-                title: "状态码",
+                title: i18next.t("状态码"),
                 dataKey: "StatusCode",
                 width: 100,
                 filterProps: {
@@ -1582,7 +1583,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                 width: 200
             },
             {
-                title: "响应长度",
+                title: i18next.t("响应长度"),
                 dataKey: "BodyLength",
                 width: 200,
                 minWidth: 140,
@@ -1656,7 +1657,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                 }
             },
             {
-                title: "参数",
+                title: i18next.t("参数"),
                 dataKey: "GetParamsTotal",
                 filterProps: {
                     filterKey: "HaveParamsTotal",
@@ -1666,11 +1667,11 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                     },
                     filters: [
                         {
-                            label: "有",
+                            label: i18next.t("有"),
                             value: "true"
                         },
                         {
-                            label: "无",
+                            label: i18next.t("无"),
                             value: "false"
                         }
                     ]
@@ -1688,7 +1689,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                 )
             },
             {
-                title: "响应类型",
+                title: i18next.t("响应类型"),
                 dataKey: "ContentType",
                 render: (text) => {
                     let contentTypeFixed =
@@ -1716,7 +1717,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                 }
             },
             {
-                title: "请求时间",
+                title: i18next.t("请求时间"),
                 dataKey: "UpdatedAt",
                 // sorterProps: {
                 //     sorterKey: "updated_at",
@@ -1730,13 +1731,13 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                 render: (text) => <div title={formatTimestamp(text)}>{text === 0 ? "-" : formatTime(text)}</div>
             },
             {
-                title: "请求大小",
+                title: i18next.t("请求大小"),
                 dataKey: "RequestSizeVerbose",
                 // fixed: "right",
                 enableDrag: false
             },
             {
-                title: "操作",
+                title: i18next.t("操作"),
                 dataKey: "action",
                 width: 80,
                 fixed: "right",
@@ -1787,11 +1788,11 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
     // 标注颜色批量
     const CalloutColorBatch = useMemoizedFn((flowList: HTTPFlow[], number: number, i: any) => {
         if (flowList.length === 0) {
-            yakitNotify("warning", "请选择数据")
+            yakitNotify("warning", i18next.t("请选择数据"))
             return
         }
         if (flowList.length > number) {
-            yakitNotify("warning", `最多同时只能操作${number}条数据`)
+            yakitNotify("warning", i18next.t("最多同时只能操作${number}条数据", { v1: number }))
             return
         }
         const newList = flowList.map((flow) => {
@@ -1806,7 +1807,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                 CheckTags: newList
             })
             .then(() => {
-                // info(`设置 HTTPFlow 颜色成功`)
+                // info(i18next.t("设置 HTTPFlow 颜色成功");)
                 let newData: HTTPFlow[] = []
                 const l = data.length
                 for (let index = 0; index < l; index++) {
@@ -1825,11 +1826,11 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
     // 移除颜色  批量
     const onRemoveCalloutColorBatch = useMemoizedFn((flowList: HTTPFlow[], number: number) => {
         if (flowList.length === 0) {
-            yakitNotify("warning", "请选择数据")
+            yakitNotify("warning", i18next.t("请选择数据"))
             return
         }
         if (flowList.length > number) {
-            yakitNotify("warning", `最多同时只能操作${number}条数据`)
+            yakitNotify("warning", i18next.t("最多同时只能操作${number}条数据", { v1: number }))
             return
         }
         const newList = flowList.map((flow) => {
@@ -1844,7 +1845,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                 CheckTags: newList
             })
             .then(() => {
-                // info(`清除 HTTPFlow 颜色成功`)
+                // info(i18next.t("清除 HTTPFlow 颜色成功");)
                 let newData: HTTPFlow[] = []
                 const l = data.length
                 for (let index = 0; index < l; index++) {
@@ -1873,7 +1874,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                 ...query
             })
             .then(() => {
-                yakitNotify("info", "删除成功")
+                yakitNotify("info", i18next.t("删除成功"))
                 updateData()
             })
             .finally(() => setTimeout(() => setLoading(false), 100))
@@ -1918,7 +1919,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                 updateData()
             })
             .catch((e: any) => {
-                yakitNotify("error", `历史记录删除失败: ${e}`)
+                yakitNotify("error", i18next.t("历史记录删除失败: ${e}", { v1: e }))
             })
             .finally(() => {
                 onUpdateHistoryOrMitm()
@@ -1954,14 +1955,14 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                 updateData()
             })
             .catch((e: any) => {
-                yakitNotify("error", `历史记录删除失败: ${e}`)
+                yakitNotify("error", i18next.t("历史记录删除失败: ${e}", { v1: e }))
             })
             .finally(() => {
                 onUpdateHistoryOrMitm()
                 setTimeout(() => setLoading(false), 300)
             })
         setLoading(true)
-        yakitNotify("info", "正在删除...如自动刷新失败请手动刷新")
+        yakitNotify("info", i18next.t("正在删除...如自动刷新失败请手动刷新"))
         setCompareLeft({content: "", language: "http"})
         setCompareRight({content: "", language: "http"})
         setCompareState(0)
@@ -1972,15 +1973,15 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
     const onBatch = useMemoizedFn((f: Function, number: number, all?: boolean) => {
         const length = selectedRows.length
         if (length <= 0) {
-            yakitNotify("warning", `请选择数据`)
+            yakitNotify("warning", i18next.t("请选择数据"))
             return
         }
         if (isAllSelect && !all) {
-            yakitNotify("warning", "该批量操作不支持全选")
+            yakitNotify("warning", i18next.t("该批量操作不支持全选"))
             return
         }
         if (number < length) {
-            yakitNotify("warning", `最多同时只能发送${number}条数据`)
+            yakitNotify("warning", i18next.t("最多同时只能发送${number}条数据", { v1: number }))
             return
         }
         for (let i = 0; i < length; i++) {
@@ -2013,10 +2014,10 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
         const header: string[] = []
         const filterVal: string[] = []
         exportTitle.map((item) => {
-            if (item === "请求包") {
+            if (item === i18next.t("请求包")) {
                 header.push(item)
                 filterVal.push("Request")
-            } else if (item === "响应包") {
+            } else if (item === i18next.t("响应包")) {
                 header.push(item)
                 filterVal.push("Response")
             } else {
@@ -2060,15 +2061,15 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
             // 这里的key值 不一定和表格的key对应的上
             const arrList = [
                 {
-                    title: "序号",
+                    title: i18next.t("序号"),
                     key: "id"
                 },
                 {
-                    title: "方法",
+                    title: i18next.t("方法"),
                     key: "method"
                 },
                 {
-                    title: "状态码",
+                    title: i18next.t("状态码"),
                     key: "status_code"
                 },
                 {
@@ -2088,31 +2089,31 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                     key: "iP_address"
                 },
                 {
-                    title: "响应长度",
+                    title: i18next.t("响应长度"),
                     key: "body_length"
                 },
                 {
-                    title: "参数",
+                    title: i18next.t("参数"),
                     key: "get_params_total"
                 },
                 {
-                    title: "响应类型",
+                    title: i18next.t("响应类型"),
                     key: "content_type"
                 },
                 {
-                    title: "请求时间",
+                    title: i18next.t("请求时间"),
                     key: "updated_at"
                 },
                 {
-                    title: "请求大小",
+                    title: i18next.t("请求大小"),
                     key: "request"
                 },
                 {
-                    title: "请求包",
+                    title: i18next.t("请求包"),
                     key: "request"
                 },
                 {
-                    title: "响应包",
+                    title: i18next.t("响应包"),
                     key: "response"
                 }
             ]
@@ -2126,15 +2127,15 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
     })
     const onExcelExport = (list) => {
         const titleValue = columns
-        .filter((item) => !["序号", "操作"].includes(item.title))
+        .filter((item) => ![i18next.t("序号"), i18next.t("操作")].includes(item.title))
         .map((item) => item.title)
-            const exportValue = [...titleValue, "请求包", "响应包"]
+            const exportValue = [...titleValue, i18next.t("请求包"), i18next.t("响应包")]
             const m = showYakitModal({
-                title: "导出字段",
+                title: i18next.t("导出字段"),
                 content: (
                     <ExportSelect
                         exportValue={exportValue}
-                        setExportTitle={(v: string[]) => setExportTitle(["序号", ...v])}
+                        setExportTitle={(v: string[]) => setExportTitle([i18next.t("序号"), ...v])}
                         exportKey='MITM-HTTP-HISTORY-EXPORT-KEY'
                         fileName='History'
                         getData={(pagination) => getExcelData(pagination, list)}
@@ -2152,15 +2153,15 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
 
     const menuData = [
         {
-            key: "发送到 Web Fuzzer",
-            label: "发送到 Web Fuzzer",
+            key: i18next.t("发送到 Web Fuzzer"),
+            label: i18next.t("发送到 Web Fuzzer"),
             number: 10,
             onClickSingle: (v) => onSendToTab(v),
             onClickBatch: (_, number) => onBatch(onSendToTab, number, selectedRowKeys.length === total)
         },
         {
-            key: "数据包扫描",
-            label: "数据包扫描",
+            key: i18next.t("数据包扫描"),
+            label: i18next.t("数据包扫描"),
             number: 10,
             onClickSingle: () => {},
             onClickBatch: () => {},
@@ -2170,13 +2171,13 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
             }))
         },
         {
-            key: "复制 URL",
-            label: "复制 URL",
+            key: i18next.t("复制 URL"),
+            label: i18next.t("复制 URL"),
             number: 30,
             onClickSingle: (v) => callCopyToClipboard(v.Url),
             onClickBatch: (v, number) => {
                 if (v.length === 0) {
-                    yakitNotify("warning", "请选择数据")
+                    yakitNotify("warning", i18next.t("请选择数据"))
                     return
                 }
                 if (v.length < number) {
@@ -2184,13 +2185,13 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                     setSelectedRowKeys([])
                     setSelectedRows([])
                 } else {
-                    yakitNotify("warning", `最多同时只能复制${number}条数据`)
+                    yakitNotify("warning", i18next.t("最多同时只能复制${number}条数据", { v1: number }))
                 }
             }
         },
         {
-            key: "下载 Response Body",
-            label: "下载 Response Body",
+            key: i18next.t("下载 Response Body"),
+            label: i18next.t("下载 Response Body"),
             onClickSingle: (v) => {
                 ipcRenderer.invoke("GetResponseBodyByHTTPFlowID", {Id: v.Id}).then((bytes: {Raw: Uint8Array}) => {
                     saveABSFileToOpen(`response-body.txt`, bytes.Raw)
@@ -2198,15 +2199,15 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
             }
         },
         {
-            key: "浏览器中打开",
-            label: "浏览器中打开",
+            key: i18next.t("浏览器中打开"),
+            label: i18next.t("浏览器中打开"),
             onClickSingle: (v) => {
                 showResponseViaHTTPFlowID(v)
             }
         },
         {
-            key: "复制为 CSRF Poc",
-            label: "复制为 CSRF Poc",
+            key: i18next.t("复制为 CSRF Poc"),
+            label: i18next.t("复制为 CSRF Poc"),
             onClickSingle: (v) => {
                 const flow = v as HTTPFlow
                 if (!flow) return
@@ -2216,23 +2217,23 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
             }
         },
         {
-            key: "复制为 Yak PoC 模版",
-            label: "复制为 Yak PoC 模版",
+            key: i18next.t("复制为 Yak PoC 模版"),
+            label: i18next.t("复制为 Yak PoC 模版"),
             onClickSingle: () => {},
             children: [
                 {
-                    key: "数据包 PoC 模版",
-                    label: "数据包 PoC 模版"
+                    key: i18next.t("数据包 PoC 模版"),
+                    label: i18next.t("数据包 PoC 模版")
                 },
                 {
-                    key: "批量检测 PoC 模版",
-                    label: "批量检测 PoC 模版"
+                    key: i18next.t("批量检测 PoC 模版"),
+                    label: i18next.t("批量检测 PoC 模版")
                 }
             ]
         },
         {
-            key: "标注颜色",
-            label: "标注颜色",
+            key: i18next.t("标注颜色"),
+            label: i18next.t("标注颜色"),
             number: 20,
             onClickSingle: () => {},
             onClickBatch: () => {},
@@ -2246,66 +2247,66 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
             })
         },
         {
-            key: "移除颜色",
-            label: "移除颜色",
+            key: i18next.t("移除颜色"),
+            label: i18next.t("移除颜色"),
             number: 20,
             onClickSingle: (v) => onRemoveCalloutColor(v, data, setData),
             onClickBatch: (list, n) => onRemoveCalloutColorBatch(list, n)
         },
         {
-            key: "发送到对比器",
-            label: "发送到对比器",
+            key: i18next.t("发送到对比器"),
+            label: i18next.t("发送到对比器"),
             onClickSingle: () => {},
             children: [
                 {
-                    key: "发送到对比器左侧",
-                    label: "发送到对比器左侧",
+                    key: i18next.t("发送到对比器左侧"),
+                    label: i18next.t("发送到对比器左侧"),
                     disabled: [false, true, false][compareState]
                 },
                 {
-                    key: "发送到对比器右侧",
-                    label: "发送到对比器右侧",
+                    key: i18next.t("发送到对比器右侧"),
+                    label: i18next.t("发送到对比器右侧"),
                     disabled: [false, false, true][compareState]
                 }
             ]
         },
         {
-            key: "屏蔽",
-            label: "屏蔽",
+            key: i18next.t("屏蔽"),
+            label: i18next.t("屏蔽"),
             onClickSingle: () => {},
             children: [
                 {
-                    key: "屏蔽该记录",
-                    label: "屏蔽该记录"
+                    key: i18next.t("屏蔽该记录"),
+                    label: i18next.t("屏蔽该记录")
                 },
                 {
-                    key: "屏蔽URL",
-                    label: "屏蔽URL"
+                    key: i18next.t("屏蔽URL"),
+                    label: i18next.t("屏蔽URL")
                 },
                 {
-                    key: "屏蔽域名",
-                    label: "屏蔽域名"
+                    key: i18next.t("屏蔽域名"),
+                    label: i18next.t("屏蔽域名")
                 }
             ]
         },
         {
-            key: "删除",
-            label: "删除",
+            key: i18next.t("删除"),
+            label: i18next.t("删除"),
             onClickSingle: () => {},
             onClickBatch: () => {},
             all: true,
             children: [
                 {
-                    key: "删除记录",
-                    label: "删除记录",
+                    key: i18next.t("删除记录"),
+                    label: i18next.t("删除记录"),
                     onClick: (v) => onRemoveHttpHistory({Id: [v.Id]}),
                     onClickBatch: (list) => {
                         onRemoveHttpHistory({Id: list.map((ele) => ele.Id)})
                     }
                 },
                 {
-                    key: "删除URL",
-                    label: "删除URL",
+                    key: i18next.t("删除URL"),
+                    label: i18next.t("删除URL"),
                     onClick: (v) => onRemoveHttpHistory({URLPrefix: v.Url}),
                     onClickBatch: (list) => {
                         const urls = list.map((ele) => ele.Url)
@@ -2317,8 +2318,8 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                     }
                 },
                 {
-                    key: "删除域名",
-                    label: "删除域名",
+                    key: i18next.t("删除域名"),
+                    label: i18next.t("删除域名"),
                     onClick: (v) => onRemoveHttpHistory({URLPrefix: v?.HostPort?.split(":")[0]}),
                     onClickBatch: (list) => {
                         const hosts = list.map((ele) => ele.HostPort?.split(":")[0])
@@ -2332,8 +2333,8 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
             ]
         },
         {
-            key: "分享数据包",
-            label: "分享数据包",
+            key: i18next.t("分享数据包"),
+            label: i18next.t("分享数据包"),
             number: 30,
             onClickSingle: (v) => onShareData([v.Id], 50),
             onClickBatch: (list, n) => {
@@ -2342,8 +2343,8 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
             }
         },
         {
-            key: "导出数据",
-            label: "导出数据",
+            key: i18next.t("导出数据"),
+            label: i18next.t("导出数据"),
             onClickSingle: (v) => onExcelExport([v]),
             onClickBatch: (list, n) => onExcelExport(list)
         }
@@ -2362,52 +2363,52 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                         children: ele.children || []
                     }
                 }),
-                // openKeys:['复制为 Yak PoC 模版',],
+                // openKeys:[i18next.t("复制为 Yak PoC 模版"),],
                 onClick: ({key, keyPath}) => {
-                    if (keyPath.includes("数据包扫描")) {
+                    if (keyPath.includes(i18next.t("数据包扫描"))) {
                         const scanItem = packetScanDefaultValue.find((e) => e.Verbose === key)
                         if (!scanItem) return
                         execPacketScan([rowData.Id], scanItem.Keyword)
                         return
                     }
-                    if (keyPath.includes("标注颜色")) {
+                    if (keyPath.includes(i18next.t("标注颜色"))) {
                         const colorItem = availableColors.find((e) => e.title === key)
                         if (!colorItem) return
                         CalloutColor(rowData, colorItem, data, setData)
                         return
                     }
                     switch (key) {
-                        case "数据包 PoC 模版":
+                        case i18next.t("数据包 PoC 模版"):
                             onPocMould(rowData)
                             break
-                        case "批量检测 PoC 模版":
+                        case i18next.t("批量检测 PoC 模版"):
                             onBatchPocMould(rowData)
                             break
-                        case "屏蔽该记录":
+                        case i18next.t("屏蔽该记录"):
                             onShieldRecord(rowData)
                             break
-                        case "屏蔽URL":
+                        case i18next.t("屏蔽URL"):
                             onShieldURL(rowData)
                             break
-                        case "屏蔽域名":
+                        case i18next.t("屏蔽域名"):
                             onShieldDomain(rowData)
                             break
-                        case "删除记录":
+                        case i18next.t("删除记录"):
                             onRemoveHttpHistory({Id: [rowData.Id]})
                             break
-                        case "删除URL":
+                        case i18next.t("删除URL"):
                             onRemoveHttpHistory({URLPrefix: rowData.Url})
                             break
-                        case "删除域名":
+                        case i18next.t("删除域名"):
                             onRemoveHttpHistory({URLPrefix: rowData?.HostPort?.split(":")[0]})
                             break
-                        case "发送到对比器左侧":
+                        case i18next.t("发送到对比器左侧"):
                             setCompareLeft({
                                 content: new Buffer(rowData.Request).toString("utf8"),
                                 language: "http"
                             })
                             break
-                        case "发送到对比器右侧":
+                        case i18next.t("发送到对比器右侧"):
                             setCompareRight({
                                 content: new Buffer(rowData.Request).toString("utf8"),
                                 language: "http"
@@ -2515,19 +2516,19 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
      */
     const onShareData = useMemoizedFn((ids: string[], number: number) => {
         if (isAllSelect) {
-            yakitNotify("warning", "该批量操作不支持全选")
+            yakitNotify("warning", i18next.t("该批量操作不支持全选"))
             return
         }
         if (ids.length === 0) {
-            yakitNotify("warning", "请选择数据")
+            yakitNotify("warning", i18next.t("请选择数据"))
             return
         }
         if (ids.length > number) {
-            yakitNotify("warning", `最多同时只能操作${number}条数据`)
+            yakitNotify("warning", i18next.t("最多同时只能操作${number}条数据", { v1: number }))
             return
         }
         const m = showYakitModal({
-            title: "导入分享数据",
+            title: i18next.t("导入分享数据"),
             content: <ShareModal module={YakitRoute.DB_HTTPHistory} shareContent={JSON.stringify(ids)} />,
             onCancel: () => {
                 m.destroy()
@@ -2542,7 +2543,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
         return (
             <YakitInput.Search
                 size='small'
-                placeholder='请输入关键词搜索'
+                placeholder={i18next.t("请输入关键词搜索")}
                 value={params.Keyword}
                 onChange={(e) => {
                     setParams({...params, Keyword: e.target.value})
@@ -2709,7 +2710,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                                     ) : (
                                         <YakitInput.Search
                                             className={style["http-history-table-right-search"]}
-                                            placeholder='请输入关键词搜索'
+                                            placeholder={i18next.t("请输入关键词搜索")}
                                             value={params.Keyword}
                                             onChange={(e) => {
                                                 setParams({...params, Keyword: e.target.value})
@@ -2794,11 +2795,11 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                                                                             }
                                                                         })}
                                                                     onClick={({key, keyPath}) => {
-                                                                        if (keyPath.includes("数据包扫描")) {
+                                                                        if (keyPath.includes(i18next.t("数据包扫描"))) {
                                                                             const currentItemScan = menuData.find(
                                                                                 (f) =>
                                                                                     f.onClickBatch &&
-                                                                                    f.key === "数据包扫描"
+                                                                                    f.key === i18next.t("数据包扫描")
                                                                             )
                                                                             if (!currentItemScan) return
                                                                             onBatch(
@@ -2808,11 +2809,11 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                                                                             )
                                                                             return
                                                                         }
-                                                                        if (keyPath.includes("标注颜色")) {
+                                                                        if (keyPath.includes(i18next.t("标注颜色"))) {
                                                                             const currentItemColor = menuData.find(
                                                                                 (f) =>
                                                                                     f.onClickBatch &&
-                                                                                    f.key === "标注颜色"
+                                                                                    f.key === i18next.t("标注颜色")
                                                                             )
                                                                             const colorItem = availableColors.find(
                                                                                 (e) => e.title === key
@@ -2826,12 +2827,12 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                                                                             return
                                                                         }
                                                                         switch (key) {
-                                                                            case "删除记录":
+                                                                            case i18next.t("删除记录"):
                                                                                 onRemoveHttpHistory({
                                                                                     Id: selectedRowKeys
                                                                                 })
                                                                                 break
-                                                                            case "删除URL":
+                                                                            case i18next.t("删除URL"):
                                                                                 const urls = selectedRows.map(
                                                                                     (ele) => ele.Url
                                                                                 )
@@ -2841,7 +2842,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                                                                                     }
                                                                                 })
                                                                                 break
-                                                                            case "删除域名":
+                                                                            case i18next.t("删除域名"):
                                                                                 const hosts = selectedRows.map(
                                                                                     (ele) => ele.HostPort?.split(":")[0]
                                                                                 )
@@ -2896,11 +2897,11 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                                                     data: [
                                                         {
                                                             key: "resetId",
-                                                            label: "重置请求 ID"
+                                                            label: i18next.t("重置请求 ID")
                                                         },
                                                         {
                                                             key: "noResetId",
-                                                            label: "不重置请求 ID"
+                                                            label: i18next.t("不重置请求 ID")
                                                         }
                                                     ],
                                                     onClick: ({key}) => {
@@ -2931,11 +2932,11 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                                                 data: [
                                                     {
                                                         key: "noResetRefresh",
-                                                        label: "仅刷新"
+                                                        label: i18next.t("仅刷新")
                                                     },
                                                     {
                                                         key: "resetRefresh",
-                                                        label: "重置查询条件刷新"
+                                                        label: i18next.t("重置查询条件刷新")
                                                     }
                                                 ],
                                                 onClick: ({key}) => {

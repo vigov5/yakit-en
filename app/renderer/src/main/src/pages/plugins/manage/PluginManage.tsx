@@ -56,6 +56,7 @@ import {YakitButton} from "@/components/yakitUI/YakitButton/YakitButton"
 
 import "../plugins.scss"
 import styles from "./pluginManage.module.scss"
+import i18next from "../../../i18n"
 
 interface PluginManageProps {}
 
@@ -526,13 +527,13 @@ export const PluginManage: React.FC<PluginManageProps> = (props) => {
                     data: [
                         {
                             key: "download",
-                            label: "下载",
+                            label: i18next.t("下载"),
                             itemIcon: <OutlineClouddownloadIcon />
                         },
                         {type: "divider"},
                         {
                             key: "del",
-                            label: "删除",
+                            label: i18next.t("删除"),
                             type: "danger",
                             itemIcon: <OutlineTrashIcon />
                         }
@@ -625,7 +626,7 @@ export const PluginManage: React.FC<PluginManageProps> = (props) => {
             )}
 
             <PluginsLayout
-                title='插件管理'
+                title={i18next.t("插件管理")}
                 hidden={!!plugin}
                 subTitle={<TypeSelect active={pluginStatusSelect} list={DefaultStatusList} setActive={onSetActive} />}
                 extraHeader={
@@ -637,7 +638,7 @@ export const PluginManage: React.FC<PluginManageProps> = (props) => {
                                 <FuncFilterPopover
                                     maxWidth={1150}
                                     icon={<SolidChevrondownIcon />}
-                                    name='插件分组'
+                                    name={i18next.t("插件分组")}
                                     disabled={selectNum === 0 && !allCheck}
                                     button={{
                                         type: "outline2",
@@ -646,8 +647,8 @@ export const PluginManage: React.FC<PluginManageProps> = (props) => {
                                     menu={{
                                         type: "primary",
                                         data: [
-                                            {key: "add-group", label: "加入分组"},
-                                            {key: "edit-group", label: "编辑分组"}
+                                            {key: "add-group", label: i18next.t("加入分组")},
+                                            {key: "edit-group", label: i18next.t("编辑分组")}
                                         ],
                                         onClick: ({key}) => {
                                             onGroupMenu(key)
@@ -663,7 +664,7 @@ export const PluginManage: React.FC<PluginManageProps> = (props) => {
                                     disabled={selectNum === 0 && !allCheck}
                                     type='outline2'
                                     size='large'
-                                    name={"修改作者"}
+                                    name={i18next.t("修改作者")}
                                     onClick={onShowModifyAuthor}
                                 />
                             )}
@@ -673,7 +674,7 @@ export const PluginManage: React.FC<PluginManageProps> = (props) => {
                                 type='outline2'
                                 size='large'
                                 loading={downloadLoading}
-                                name={selectNum > 0 ? "下载" : "一键下载"}
+                                name={selectNum > 0 ? i18next.t("下载") : i18next.t("一键下载")}
                                 onClick={() => onBatchDownload()}
                                 disabled={initTotal === 0}
                             />
@@ -682,7 +683,7 @@ export const PluginManage: React.FC<PluginManageProps> = (props) => {
                                 icon={<OutlineTrashIcon />}
                                 type='outline2'
                                 size='large'
-                                name={selectNum > 0 ? "删除" : "清空"}
+                                name={selectNum > 0 ? i18next.t("删除") : i18next.t("清空")}
                                 onClick={onShowDelPlugin}
                                 disabled={initTotal === 0}
                             />
@@ -773,15 +774,14 @@ export const PluginManage: React.FC<PluginManageProps> = (props) => {
                             />
                         ) : (
                             <div className={styles["plugin-manage-empty"]}>
-                                <YakitEmpty title='暂无数据' />
+                                <YakitEmpty title={i18next.t("暂无数据")} />
 
                                 <div className={styles["plugin-manage-buttons"]}>
                                     <YakitButton
                                         type='outline1'
                                         icon={<OutlineRefreshIcon />}
                                         onClick={onRefListAndTotalAndGroup}
-                                    >
-                                        刷新
+                                    >{i18next.t("刷新")}
                                     </YakitButton>
                                 </div>
                             </div>
@@ -847,7 +847,7 @@ const ModifyAuthorModal: React.FC<ModifyAuthorModalProps> = memo((props) => {
                     setList(res?.data || [])
                 })
                 .catch((err) => {
-                    yakitNotify("error", "获取普通用户失败：" + err)
+                    yakitNotify("error", i18next.t("获取普通用户失败：") + err)
                 })
                 .finally(() => {
                     setTimeout(() => setLoading(false), 200)
@@ -876,7 +876,7 @@ const ModifyAuthorModal: React.FC<ModifyAuthorModalProps> = memo((props) => {
                 onOK()
             })
             .catch((err) => {
-                yakitNotify("error", "批量修改失败，原因:" + err)
+                yakitNotify("error", i18next.t("批量修改失败，原因:") + err)
             })
             .finally(() => {
                 setTimeout(() => setSubmitLoading(false), 200)
@@ -898,7 +898,7 @@ const ModifyAuthorModal: React.FC<ModifyAuthorModalProps> = memo((props) => {
 
     return (
         <YakitModal
-            title='批量修改插件作者'
+            title={i18next.t("批量修改插件作者")}
             width={448}
             type='white'
             centered={true}
@@ -913,17 +913,16 @@ const ModifyAuthorModal: React.FC<ModifyAuthorModalProps> = memo((props) => {
             <div className={styles["modify-author-modal-body"]}>
                 <Form.Item
                     labelCol={{span: 24}}
-                    label={<>作者：</>}
+                    label={<>{i18next.t("作者：")}</>}
                     help={
-                        <>
-                            共选择了 <span className={styles["modify-author-hint-span"]}>{plugins.length || 0}</span>{" "}
+                        <>{i18next.t("共选择了")} <span className={styles["modify-author-hint-span"]}>{plugins.length || 0}</span>{" "}
                             个插件
                         </>
                     }
                     validateStatus={status}
                 >
                     <YakitSelect
-                        placeholder='请输入用户名进行搜索'
+                        placeholder={i18next.t("请输入用户名进行搜索")}
                         showArrow={false}
                         showSearch={true}
                         filterOption={false}
@@ -963,9 +962,9 @@ export const ReasonModal: React.FC<ReasonModalProps> = memo((props) => {
     const {visible, setVisible, type = "nopass", total, onOK} = props
 
     const title = useMemo(() => {
-        if (type === "nopass") return "不通过原因"
-        if (type === "del") return "删除原因"
-        return "未知错误窗口,请关闭重试!"
+        if (type === "nopass") return i18next.t("不通过原因")
+        if (type === "del") return i18next.t("删除原因")
+        return i18next.t("未知错误窗口,请关闭重试!")
     }, [type])
 
     useEffect(() => {
@@ -975,7 +974,7 @@ export const ReasonModal: React.FC<ReasonModalProps> = memo((props) => {
     const [value, setValue] = useState<string>("")
     const onSubmit = useMemoizedFn(() => {
         if (!value) {
-            yakitNotify("error", "请输入删除原因!")
+            yakitNotify("error", i18next.t("请输入删除原因!"))
             return
         }
         onOK(value)
@@ -1003,8 +1002,7 @@ export const ReasonModal: React.FC<ReasonModalProps> = memo((props) => {
                     onChange={(e) => setValue(e.target.value)}
                 />
                 {total && (
-                    <div className={styles["hint-wrapper"]}>
-                        共选择了 <span className={styles["total-num"]}>{total || 0}</span> 个插件
+                    <div className={styles["hint-wrapper"]}>{i18next.t("共选择了")} <span className={styles["total-num"]}>{total || 0}</span>{i18next.t("个插件")}
                     </div>
                 )}
             </div>

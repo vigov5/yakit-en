@@ -25,6 +25,7 @@ import {PaginationSchema, QueryGeneralRequest, QueryGeneralResponse} from "../in
 import {YakitInputNumber} from "@/components/yakitUI/YakitInputNumber/YakitInputNumber"
 import {YakitButton} from "@/components/yakitUI/YakitButton/YakitButton"
 import {YakitSelect} from "@/components/yakitUI/YakitSelect/YakitSelect"
+import i18next from "../../i18n"
 const {ipcRenderer} = window.require("electron")
 
 interface EditableCellProps {
@@ -141,10 +142,10 @@ export const PayloadAddEditForm: React.FC<PayloadAddEditFormProps> = (props) => 
             }
         }
         if (editParams.Content.length === 0) {
-            warn("字典内容不可为空")
+            warn(i18next.t("字典内容不可为空"))
         }
         if (!judgeNum(editParams.HitCount)) {
-            warn("字典次数内容不合规")
+            warn(i18next.t("字典次数内容不合规"))
         }
     })
 
@@ -153,8 +154,7 @@ export const PayloadAddEditForm: React.FC<PayloadAddEditFormProps> = (props) => 
             <Form layout='vertical' form={form}>
                 <Form.Item
                     label={
-                        <div className={styles["name"]}>
-                            字典内容<span className={styles["must"]}>*</span>:
+                        <div className={styles["name"]}>{i18next.t("字典内容")}<span className={styles["must"]}>*</span>:
                         </div>
                     }
                 >
@@ -167,13 +167,12 @@ export const PayloadAddEditForm: React.FC<PayloadAddEditFormProps> = (props) => 
                             const {value} = e.target
                             setEditParams({...editParams, Content: value})
                         }}
-                        placeholder='请输入字典内容...'
+                        placeholder={i18next.t("请输入字典内容...")}
                     />
                 </Form.Item>
                 <Form.Item
                     label={
-                        <div className={styles["name"]}>
-                            命中次数<span className={styles["must"]}></span>:
+                        <div className={styles["name"]}>{i18next.t("命中次数")}<span className={styles["must"]}></span>:
                         </div>
                     }
                 >
@@ -181,7 +180,7 @@ export const PayloadAddEditForm: React.FC<PayloadAddEditFormProps> = (props) => 
                         // size='small'
                         style={{width: "100%"}}
                         value={editParams.HitCount}
-                        placeholder='请输入命中次数...'
+                        placeholder={i18next.t("请输入命中次数...")}
                         onChange={(value) => {
                             setEditParams({...editParams, HitCount: value as number})
                         }}
@@ -194,11 +193,9 @@ export const PayloadAddEditForm: React.FC<PayloadAddEditFormProps> = (props) => 
                             onClose()
                         }}
                         type='outline2'
-                    >
-                        取消
+                    >{i18next.t("取消")}
                     </YakitButton>
-                    <YakitButton size='large' type='primary' htmlType={"submit"} onClick={onFinish}>
-                        保存
+                    <YakitButton size='large' type='primary' htmlType={"submit"} onClick={onFinish}>{i18next.t("保存")}
                     </YakitButton>
                 </div>
             </Form>
@@ -340,13 +337,13 @@ export const NewPayloadTable: React.FC<NewPayloadTableProps> = (props) => {
             }
         },
         {
-            title: "字典内容",
+            title: i18next.t("字典内容"),
             dataIndex: "Content",
             editable: true,
             render: (text) => <div className={styles["basic"]}>{text}</div>
         },
         {
-            title: () => <Tooltip title={"新增命中次数字段，命中次数越高，在爆破时优先级也会越高"}>命中次数</Tooltip>,
+            title: () => <Tooltip title={i18next.t("新增命中次数字段，命中次数越高，在爆破时优先级也会越高")}>{i18next.t("命中次数")}</Tooltip>,
             dataIndex: "HitCount",
             width: 102,
             editable: true,
@@ -369,7 +366,7 @@ export const NewPayloadTable: React.FC<NewPayloadTableProps> = (props) => {
                         <div className={styles["icon"]}>
                             <OutlineArrowupIcon />
                         </div>
-                        <div className={styles["content"]}>升序</div>
+                        <div className={styles["content"]}>{i18next.t("升序")}</div>
                     </div>
                     <div
                         className={classNames(styles["filter-item"], {
@@ -381,14 +378,14 @@ export const NewPayloadTable: React.FC<NewPayloadTableProps> = (props) => {
                         <div className={styles["icon"]}>
                             <OutlineArrowdownIcon />
                         </div>
-                        <div className={styles["content"]}>降序</div>
+                        <div className={styles["content"]}>{i18next.t("降序")}</div>
                     </div>
                 </div>
             ),
             render: (text) => <div className={styles["basic"]}>{text}</div>
         },
         {
-            title: "操作",
+            title: i18next.t("操作"),
             dataIndex: "operation",
             width: 88,
             // @ts-ignore
@@ -406,7 +403,7 @@ export const NewPayloadTable: React.FC<NewPayloadTableProps> = (props) => {
                             className={styles["edit"]}
                             onClick={() => {
                                 const m = showYakitModal({
-                                    title: "编辑",
+                                    title: i18next.t("编辑"),
                                     width: 448,
                                     type: "white",
                                     footer: null,
@@ -429,7 +426,7 @@ export const NewPayloadTable: React.FC<NewPayloadTableProps> = (props) => {
 
     const InsertColumns: ColumnTypes[number][] = [
         {
-            title: "序号",
+            title: i18next.t("序号"),
             dataIndex: "index",
             width: 88,
             render: (text, record, index) => {
@@ -458,12 +455,12 @@ export const NewPayloadTable: React.FC<NewPayloadTableProps> = (props) => {
             }
         },
         {
-            title: "字典内容",
+            title: i18next.t("字典内容"),
             dataIndex: "Content",
             render: (text) => <div className={styles["basic"]}>{text}</div>
         },
         {
-            title: () => <Tooltip title={"新增命中次数字段，命中次数越高，在爆破时优先级也会越高"}>命中次数</Tooltip>,
+            title: () => <Tooltip title={i18next.t("新增命中次数字段，命中次数越高，在爆破时优先级也会越高")}>{i18next.t("命中次数")}</Tooltip>,
             dataIndex: "HitCount",
             width: 102,
             filterIcon: (filtered) => (
@@ -485,7 +482,7 @@ export const NewPayloadTable: React.FC<NewPayloadTableProps> = (props) => {
                         <div className={styles["icon"]}>
                             <OutlineArrowupIcon />
                         </div>
-                        <div className={styles["content"]}>升序</div>
+                        <div className={styles["content"]}>{i18next.t("升序")}</div>
                     </div>
                     <div
                         className={classNames(styles["filter-item"], {
@@ -497,7 +494,7 @@ export const NewPayloadTable: React.FC<NewPayloadTableProps> = (props) => {
                         <div className={styles["icon"]}>
                             <OutlineArrowdownIcon />
                         </div>
-                        <div className={styles["content"]}>降序</div>
+                        <div className={styles["content"]}>{i18next.t("降序")}</div>
                     </div>
                 </div>
             ),
@@ -510,16 +507,16 @@ export const NewPayloadTable: React.FC<NewPayloadTableProps> = (props) => {
             ipcRenderer
                 .invoke("UpdatePayload", updatePayload)
                 .then(() => {
-                    success(`修改成功`)
+                    success(i18next.t("修改成功"))
                     resolve(true)
                 })
                 .catch((e: any) => {
                     resolve(false)
                     if (e.toString().includes("UNIQUE constraint failed: payloads.hash")) {
-                        warn("已有相同字典内容，请修改后再保存")
+                        warn(i18next.t("已有相同字典内容，请修改后再保存"))
                         return
                     }
-                    failed("更新失败：" + e)
+                    failed(i18next.t("更新失败：") + e)
                 })
                 .finally(() => {
                     onQueryPayload(pagination?.Page, pagination?.Limit)
@@ -550,10 +547,10 @@ export const NewPayloadTable: React.FC<NewPayloadTableProps> = (props) => {
             onUpdatePayload({Id: row.Id, Data: {...newRow}})
         }
         if (newRow.Content.length === 0) {
-            warn("字典内容不可为空")
+            warn(i18next.t("字典内容不可为空"))
         }
         if (!judgeNum(newRow.HitCount)) {
-            warn("字典次数内容不合规")
+            warn(i18next.t("字典次数内容不合规"))
         }
     }
 
@@ -619,10 +616,10 @@ export const NewPayloadTable: React.FC<NewPayloadTableProps> = (props) => {
         // console.log("Right click:", record, column)
         showByRightContext({
             data: [
-                {label: "编辑", key: "edit"},
-                {label: "备份到其他字典", key: "copy"},
-                {label: "移动到其他字典", key: "move"},
-                {label: "删除", key: "delete"}
+                {label: i18next.t("编辑"), key: "edit"},
+                {label: i18next.t("备份到其他字典"), key: "copy"},
+                {label: i18next.t("移动到其他字典"), key: "move"},
+                {label: i18next.t("删除"), key: "delete"}
             ],
             onClick: (e) => {
                 switch (e.key) {
@@ -662,7 +659,7 @@ export const NewPayloadTable: React.FC<NewPayloadTableProps> = (props) => {
                     total: response?.Total || 0,
                     pageSizeOptions: ["10", "20", "30", "40"], // 指定每页显示条目数量的选项
                     showSizeChanger: true, // 是否显示切换每页条目数量的控件
-                    showTotal: (i) => <span className={styles["show-total"]}>共{i}条记录</span>,
+                    showTotal: (i) => <span className={styles["show-total"]}>{i18next.t("共")}{i}条记录</span>,
                     onChange: (page: number, limit?: number) => {
                         setSelectPayloadArr([])
                         onQueryPayload(page, limit)

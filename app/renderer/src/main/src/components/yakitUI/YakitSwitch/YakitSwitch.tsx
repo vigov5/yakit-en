@@ -5,6 +5,7 @@ import styles from "./YakitSwitch.module.scss"
 import classNames from "classnames"
 import {CheckIcon, RemoveIcon} from "@/assets/newIcon"
 import "./yakitSwitchAnimation.scss"
+import i18next from "../../../i18n"
 
 /**
  * 更新说明
@@ -31,8 +32,8 @@ export const YakitSwitch: React.FC<YakitSwitchProps> = (props) => {
     let children = {}
     if (showInnerText && showExtraSize.findIndex((ele) => ele === size) !== -1) {
         children = {
-            checkedChildren: "开",
-            unCheckedChildren: "关"
+            checkedChildren: i18next.t("开"),
+            unCheckedChildren: i18next.t("关")
         }
     }
     if (showInnerIcon && showExtraSize.findIndex((ele) => ele === size) !== -1) {

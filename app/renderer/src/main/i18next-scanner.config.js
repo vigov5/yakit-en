@@ -24,7 +24,7 @@ module.exports = {
         loadPath: './src/locales/{{lng}}/{{ns}}.json',
         savePath: './src/locales/{{lng}}/{{ns}}.json',
       },
-      nsSeparator: ':',
+      nsSeparator: false,
       keySeparator: false,
       interpolation: {
         prefix: '{{',

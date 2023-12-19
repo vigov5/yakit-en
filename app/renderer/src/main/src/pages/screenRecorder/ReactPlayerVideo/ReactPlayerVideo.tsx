@@ -1,6 +1,7 @@
 import {FastForwardIcon, RewindIcon} from "@/assets/newIcon"
 import {Tooltip} from "antd"
 import React, {useEffect, useRef, useState} from "react"
+import i18next from "../../../i18n"
 
 import {
     Player,
@@ -52,9 +53,9 @@ export const ReactPlayerVideo: React.FC<ReactPlayerVideoProps> = React.memo((pro
                 className={styles["player-video"]}
             >
                 <BigPlayButton position='center' />
-                {error && <div className={styles["player-video-tip"]}>该视频文件不可播放</div>}
+                {error && <div className={styles["player-video-tip"]}>{i18next.t("该视频文件不可播放")}</div>}
                 <ControlBar autoHide={true} disableDefaultControls={false} className={styles["player-control-bar"]}>
-                    <div className={isPre ? "hint--top-right" : ""} aria-label='上一个'>
+                    <div className={isPre ? "hint--top-right" : ""} aria-label={i18next.t("上一个")}>
                         <RewindIcon
                             className={classNames(styles["bar-icon"], {
                                 [styles["not-allowed-icon"]]: !isPre
@@ -70,7 +71,7 @@ export const ReactPlayerVideo: React.FC<ReactPlayerVideoProps> = React.memo((pro
                             [styles["not-allowed-icon"]]: error
                         })}
                     />
-                    <div className={isNext ? "hint--top" : ""} aria-label='下一个'>
+                    <div className={isNext ? "hint--top" : ""} aria-label={i18next.t("下一个")}>
                         <FastForwardIcon
                             className={classNames(styles["bar-icon"], {
                                 [styles["not-allowed-icon"]]: !isNext

@@ -3,6 +3,7 @@ import styles from "./TabRenameModalContent.module.scss"
 import {RemoveIcon} from "@/assets/newIcon"
 import {YakitInput} from "@/components/yakitUI/YakitInput/YakitInput"
 import {YakitButton} from "@/components/yakitUI/YakitButton/YakitButton"
+import i18next from "../../../i18n"
 
 interface TabRenameModalProps {
     title: string
@@ -45,11 +46,9 @@ const TabRenameModalContent: React.FC<TabRenameModalProps> = React.memo((props) 
                         onClose()
                         setValue("")
                     }}
-                >
-                    取消
+                >{i18next.t("取消")}
                 </YakitButton>
-                <YakitButton type='primary' onClick={() => onOk(value)}>
-                    确定
+                <YakitButton type='primary' onClick={() => onOk(value)}>{i18next.t("确定")}
                 </YakitButton>
             </div>
         </div>

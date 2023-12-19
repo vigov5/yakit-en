@@ -5,6 +5,7 @@ import {genDefaultPagination, QueryGeneralRequest, QueryGeneralResponse} from "@
 import {useMemoizedFn} from "ahooks";
 import {CopyableField} from "@/utils/inputUtil";
 import styles from "./hTTPFlowDetail.module.scss"
+import i18next from "../i18n"
 
 export interface HTTPFlowExtractedDataTableProp {
     title: React.ReactNode
@@ -64,12 +65,12 @@ export const HTTPFlowExtractedDataTable: React.FC<HTTPFlowExtractedDataTableProp
             key={"Id"}
             columns={[
                 {
-                    title: "规则名",
+                    title: i18next.t("规则名"),
                     render: (i: HTTPFlowExtractedData) => <div className='content-ellipsis' style={{width:100,overflow:"hidden"}}>{i.RuleName}</div>,
                     width: 100
                 },
                 {
-                    title: "规则数据",
+                    title: i18next.t("规则数据"),
                     render: (i: HTTPFlowExtractedData) => <div className='content-ellipsis' style={{width:200,overflow:"hidden"}}>{i.Data.slice(0,50)}</div>,
                     width: 210
                 },

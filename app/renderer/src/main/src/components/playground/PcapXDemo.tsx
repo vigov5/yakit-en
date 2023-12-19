@@ -13,6 +13,7 @@ import {PacketListDemo} from "@/components/playground/PacketListDemo";
 import {debugYakitModal, debugYakitModalAny} from "@/components/yakitUI/YakitModal/YakitModalConfirm";
 import {DemoItemSelectMultiForString} from "@/demoComponents/itemSelect/ItemSelect";
 import {YakEditor} from "@/utils/editors";
+import i18next from "../../i18n"
 
 export interface PcapXDemoProp {
 
@@ -81,18 +82,16 @@ export const PcapXDemo: React.FC<PcapXDemoProp> = (props) => {
 
     return <YakitResizeBox
         firstNode={<AutoCard
-            size={"small"} bordered={false} title={"设置参数"}
+            size={"small"} bordered={false} title={i18next.t("设置参数")}
             extra={<Space>
                 {loading ? <YakitButton
                     colors={"danger"}
                     onClick={() => {
                         cancel()
-                    }}>
-                    停止嗅探
+                    }}>{i18next.t("停止嗅探")}
                 </YakitButton> : <YakitButton onClick={() => {
                     startSniff()
-                }}>
-                    开始嗅探
+                }}>{i18next.t("开始嗅探")}
                 </YakitButton>}
             </Space>}
             style={{marginTop: 3}}
@@ -104,7 +103,7 @@ export const PcapXDemo: React.FC<PcapXDemoProp> = (props) => {
                     data={(pcapMeta?.AvailablePcapDevices || []).map(i => ({
                         value: i.Name, label: `${i.Name} ${i.IP}`
                     }))}
-                    label={"网卡"}
+                    label={i18next.t("网卡")}
                     setValue={(data) => {
                         setFirstRequest({...firstRequest, NetInterfaceList: data.split(",")})
                     }}
@@ -112,7 +111,7 @@ export const PcapXDemo: React.FC<PcapXDemoProp> = (props) => {
                     help={<Space>
                         {
                             pcapMeta?.DefaultPublicNetInterface &&
-                            <div>默认网卡: {pcapMeta?.DefaultPublicNetInterface.Name}</div>
+                            <div>{i18next.t("默认网卡:")} {pcapMeta?.DefaultPublicNetInterface.Name}</div>
                         }
                     </Space>}
                     disabled={loading}
@@ -120,28 +119,28 @@ export const PcapXDemo: React.FC<PcapXDemoProp> = (props) => {
 
                 {loading ? <>
                     <DemoItemSelectMultiForString
-                        label={"视图表格"}
+                        label={i18next.t("视图表格")}
                         data={[
-                            {value: "raw", label: "原始数据包"},
-                            {value: "tcp-reassembled", label: "TCP数据"},
-                            {value: "session", label: "活跃会话"},
+                            {value: "raw", label: i18next.t("原始数据包")},
+                            {value: "tcp-reassembled", label: i18next.t("TCP数据")},
+                            {value: "session", label: i18next.t("活跃会话")},
                         ]}
                     />
                     <DemoItemSelectMultiForString
                         data={(pcapMeta?.AvailableSessionTypes || []).map(i => ({value: i.Value, label: i.Key}))}
-                        label={"会话协议"}
+                        label={i18next.t("会话协议")}
                     />
                     <DemoItemSelectMultiForString
                         data={(pcapMeta?.AvailableLinkLayerTypes || []).map(i => ({value: i.Value, label: i.Key}))}
-                        label={"链路层协议"}
+                        label={i18next.t("链路层协议")}
                     />
                     <DemoItemSelectMultiForString
                         data={(pcapMeta?.AvailableNetworkLayerTypes || []).map(i => ({value: i.Value, label: i.Key}))}
-                        label={"网络层协议"}
+                        label={i18next.t("网络层协议")}
                     />
                     <DemoItemSelectMultiForString
                         data={(pcapMeta?.AvailableTransportLayerTypes || []).map(i => ({value: i.Value, label: i.Key}))}
-                        label={"传输层协议"}
+                        label={i18next.t("传输层协议")}
                     />
                 </> : <>
 

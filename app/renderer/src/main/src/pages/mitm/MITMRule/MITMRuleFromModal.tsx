@@ -32,6 +32,7 @@ import {ValidateStatus} from "antd/lib/form/FormItem"
 import {InternalTextAreaProps} from "@/components/yakitUI/YakitInput/YakitInputType"
 import {YakitSizeType} from "@/components/yakitUI/YakitInputNumber/YakitInputNumberType"
 import {SizeType} from "antd/lib/config-provider/SizeContext"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -102,13 +103,13 @@ export const MITMRuleFromModal: React.FC<MITMRuleFromModalProps> = (props) => {
     return (
         <>
             <YakitModal
-                title={isEdit ? "修改规则" : "新增规则"}
+                title={isEdit ? i18next.t("修改规则") : i18next.t("新增规则")}
                 visible={modalVisible}
                 // visible={true}
                 onCancel={() => onClose()}
                 closable
                 okType='primary'
-                okText={isEdit ? "修改" : "添加该规则"}
+                okText={isEdit ? i18next.t("修改") : i18next.t("添加该规则")}
                 width={720}
                 zIndex={1001}
                 onOk={() => onOk()}
@@ -138,10 +139,10 @@ export const MITMRuleFromModal: React.FC<MITMRuleFromModalProps> = (props) => {
                     >
                         <YakitInputNumber type='horizontal' min={1} />
                     </Form.Item> */}
-                    <Form.Item label='规则名称' name='VerboseName'>
+                    <Form.Item label={i18next.t("规则名称")} name='VerboseName'>
                         <YakitInput />
                     </Form.Item>
-                    <Form.Item label='规则内容' name='Rule' rules={[{required: true, message: "该项为必填"}]}>
+                    <Form.Item label={i18next.t("规则内容")} name='Rule' rules={[{required: true, message: i18next.t("该项为必填")}]}>
                         <RuleContent getRule={getRule} ref={ruleContentRef} />
                     </Form.Item>
                     <Row>
@@ -152,22 +153,22 @@ export const MITMRuleFromModal: React.FC<MITMRuleFromModalProps> = (props) => {
                     </Row>
 
                     <Form.Item
-                        label='替换结果'
-                        help='HTTP Header 与 HTTP Cookie 优先级较高，会覆盖文本内容'
+                        label={i18next.t("替换结果")}
+                        help={i18next.t("HTTP Header 与 HTTP Cookie 优先级较高，会覆盖文本内容")}
                         name='ResultType'
                     >
                         <YakitRadioButtons
                             size='large'
                             options={[
-                                {label: "文本", value: 1},
+                                {label: i18next.t("文本"), value: 1},
                                 {label: "HTTP Header/Cookie", value: 2}
                             ]}
                             buttonStyle='solid'
                         />
                     </Form.Item>
                     {(resultType === 1 && (
-                        <Form.Item label='文本' name='Result'>
-                            <YakitInput placeholder='输入想要替换的内容，可以为空～' />
+                        <Form.Item label={i18next.t("文本")} name='Result'>
+                            <YakitInput placeholder={i18next.t("输入想要替换的内容，可以为空～")} />
                         </Form.Item>
                     )) || (
                         <>
@@ -195,12 +196,12 @@ export const MITMRuleFromModal: React.FC<MITMRuleFromModalProps> = (props) => {
                             <Divider dashed style={{marginTop: 0}} />
                         </Col>
                     </Row>
-                    <Form.Item label='命中颜色' name='Color'>
+                    <Form.Item label={i18next.t("命中颜色")} name='Color'>
                         <YakitSelect size='middle' wrapperStyle={{width: "100%"}}>
                             {colorSelectNode}
                         </YakitSelect>
                     </Form.Item>
-                    <Form.Item label='标记 Tag' name='ExtraTag'>
+                    <Form.Item label={i18next.t("标记 Tag")} name='ExtraTag'>
                         <YakitSelect size='middle' mode='tags' wrapperStyle={{width: "100%"}} />
                     </Form.Item>
                 </Form>
@@ -240,7 +241,7 @@ const ExtractRegular: React.FC<ExtractRegularProps> = React.memo((props) => {
                 // 这里能获取到选择到的内容
                 setSelected(model.getValueInRange(selection))
             } catch (e) {
-                failed("提取选择数据错误" + e)
+                failed(i18next.t("提取选择数据错误") + e)
             }
         }
         setSelectedFunc()
@@ -264,7 +265,7 @@ const ExtractRegular: React.FC<ExtractRegularProps> = React.memo((props) => {
                     setMatchedRegexp(e.SelectedRegexp)
                 })
                 .catch((e) => {
-                    failed(`无法生成数据提取规则: ${e}`)
+                    failed(i18next.t("无法生成数据提取规则: ${e}", { v1: e }))
                 })
         },
         [selected],
@@ -348,8 +349,7 @@ export const RegexpInput: React.FC<RegexpInputProps> = React.memo((props) => {
                     size={inputSize}
                 />
                 <div className={styles["yakit-editor-btn"]}>
-                    <div className={styles["cancel-btn"]} onClick={() => setIsEdit(false)}>
-                        取消
+                    <div className={styles["cancel-btn"]} onClick={() => setIsEdit(false)}>{i18next.t("取消")}
                     </div>
                     <Divider type='vertical' style={{margin: "0 8px", top: 1}} />
                     <div
@@ -358,8 +358,7 @@ export const RegexpInput: React.FC<RegexpInputProps> = React.memo((props) => {
                             setIsEdit(false)
                             onSure(editMatchedRegexp)
                         }}
-                    >
-                        确定
+                    >{i18next.t("确定")}
                     </div>
                 </div>
             </div>
@@ -373,11 +372,9 @@ const ExtraHTTPSelect: React.FC<ExtraHTTPSelectProps> = React.memo((props) => {
     return (
         <div className={styles["yakit-extra-http-select"]}>
             <div className={styles["yakit-extra-http-select-heard"]}>
-                <YakitButton type='text' icon={<PlusCircleIcon />} onClick={() => setVisibleHTTPHeader(true)}>
-                    添加
+                <YakitButton type='text' icon={<PlusCircleIcon />} onClick={() => setVisibleHTTPHeader(true)}>{i18next.t("添加")}
                 </YakitButton>
-                <div className={styles["extra-tip"]}>
-                    已设置 <span className={styles["number"]}>{list.length}</span> 个额外 {tip}
+                <div className={styles["extra-tip"]}>{i18next.t("已设置")} <span className={styles["number"]}>{list.length}</span>{i18next.t("个额外")} {tip}
                 </div>
             </div>
             {(tip === "Header" && (
@@ -407,7 +404,7 @@ const InputHTTPHeaderForm: React.FC<InputHTTPHeaderFormProps> = React.memo((prop
     const [form] = Form.useForm()
     return (
         <YakitModal
-            title='输入新的 HTTP Header'
+            title={i18next.t("输入新的 HTTP Header")}
             visible={visible}
             onCancel={() => setVisible(false)}
             zIndex={1002}
@@ -425,7 +422,7 @@ const InputHTTPHeaderForm: React.FC<InputHTTPHeaderFormProps> = React.memo((prop
                 form={form}
                 className={styles["http-heard-form"]}
             >
-                <Form.Item label='HTTP Header' name='Header' rules={[{required: true, message: "该项为必填"}]}>
+                <Form.Item label='HTTP Header' name='Header' rules={[{required: true, message: i18next.t("该项为必填")}]}>
                     <YakitAutoComplete
                         options={[
                             "Authorization",
@@ -483,8 +480,7 @@ const InputHTTPHeaderForm: React.FC<InputHTTPHeaderFormProps> = React.memo((prop
                     <YakitInput />
                 </Form.Item>
                 <Form.Item colon={false} label={" "}>
-                    <YakitButton type='primary' htmlType='submit'>
-                        设置该 Header
+                    <YakitButton type='primary' htmlType='submit'>{i18next.t("设置该 Header")}
                     </YakitButton>
                 </Form.Item>
             </Form>
@@ -498,7 +494,7 @@ const InputHTTPCookieForm: React.FC<InputHTTPHeaderFormProps> = React.memo((prop
     const [advanced, setAdvanced] = useState(false)
     return (
         <YakitModal
-            title='输入新的 Cookie 值'
+            title={i18next.t("输入新的 Cookie 值")}
             visible={visible}
             onCancel={() => setVisible(false)}
             zIndex={1002}
@@ -517,7 +513,7 @@ const InputHTTPCookieForm: React.FC<InputHTTPHeaderFormProps> = React.memo((prop
                 form={form}
                 className={styles["http-heard-form"]}
             >
-                <Form.Item label='Cookie Key' name='Key' rules={[{required: true, message: "该项为必填"}]}>
+                <Form.Item label='Cookie Key' name='Key' rules={[{required: true, message: i18next.t("该项为必填")}]}>
                     <YakitAutoComplete
                         options={["JSESSION", "PHPSESSION", "SESSION", "admin", "test", "debug"].map((ele) => ({
                             value: ele,
@@ -532,11 +528,10 @@ const InputHTTPCookieForm: React.FC<InputHTTPHeaderFormProps> = React.memo((prop
                         size='middle'
                     />
                 </Form.Item>
-                <Form.Item label='Cookie Value' name='Value' rules={[{required: true, message: "该项为必填"}]}>
+                <Form.Item label='Cookie Value' name='Value' rules={[{required: true, message: i18next.t("该项为必填")}]}>
                     <YakitInput />
                 </Form.Item>
-                <Divider orientation={"left"}>
-                    高级配置&emsp;
+                <Divider orientation={"left"}>{i18next.t("高级配置")}&emsp;
                     <YakitSwitch checked={advanced} onChange={(c) => setAdvanced(c)} />
                 </Divider>
                 {advanced && (
@@ -550,22 +545,22 @@ const InputHTTPCookieForm: React.FC<InputHTTPHeaderFormProps> = React.memo((prop
                         <Form.Item label='HttpOnly' name='HttpOnly'>
                             <YakitSwitch />
                         </Form.Item>
-                        <Form.Item label='Secure' name='Secure' help='仅允许 Cookie 在 HTTPS 生效'>
+                        <Form.Item label='Secure' name='Secure' help={i18next.t("仅允许 Cookie 在 HTTPS 生效")}>
                             <YakitSwitch />
                         </Form.Item>
-                        <Form.Item label='SameSite 策略' name='SameSiteMode' initialValue='default'>
+                        <Form.Item label={i18next.t("SameSite 策略")} name='SameSiteMode' initialValue='default'>
                             <YakitRadioButtons
                                 size='large'
                                 options={[
-                                    {label: "默认策略", value: "default"},
-                                    {label: "Lax 策略", value: "lax"},
-                                    {label: "Strict 策略", value: "strict"},
-                                    {label: "不设置", value: "none"}
+                                    {label: i18next.t("默认策略"), value: "default"},
+                                    {label: i18next.t("Lax 策略"), value: "lax"},
+                                    {label: i18next.t("Strict 策略"), value: "strict"},
+                                    {label: i18next.t("不设置"), value: "none"}
                                 ]}
                                 buttonStyle='solid'
                             />
                         </Form.Item>
-                        <Form.Item label='Expires 时间戳' name='Expires'>
+                        <Form.Item label={i18next.t("Expires 时间戳")} name='Expires'>
                             <YakitInputNumber type='horizontal' />
                         </Form.Item>
                         <Form.Item label='MaxAge' name='MaxAge'>
@@ -574,8 +569,7 @@ const InputHTTPCookieForm: React.FC<InputHTTPHeaderFormProps> = React.memo((prop
                     </>
                 )}
                 <Form.Item colon={false} label={" "}>
-                    <YakitButton type='primary' htmlType='submit'>
-                        添加该 Cookie
+                    <YakitButton type='primary' htmlType='submit'>{i18next.t("添加该 Cookie")}
                     </YakitButton>
                 </Form.Item>
             </Form>
@@ -606,7 +600,7 @@ export const RuleContent: React.FC<RuleContentProps> = React.forwardRef((props, 
                 <YakitInput
                     {...inputProps}
                     value={rule}
-                    placeholder='可用右侧辅助工具，自动生成正则'
+                    placeholder={i18next.t("可用右侧辅助工具，自动生成正则")}
                     addonAfter={
                         <AdjustmentsIcon className={styles["icon-adjustments"]} onClick={() => setRuleVisible(true)} />
                     }
@@ -618,8 +612,8 @@ export const RuleContent: React.FC<RuleContentProps> = React.forwardRef((props, 
                 />
             )}
             <YakitModal
-                title='自动提取正则'
-                subTitle='在编译器中选中内容，即可自动生成正则'
+                title={i18next.t("自动提取正则")}
+                subTitle={i18next.t("在编译器中选中内容，即可自动生成正则")}
                 visible={ruleVisible}
                 onCancel={() => setRuleVisible(false)}
                 width={840}

@@ -36,6 +36,7 @@ import {SolidCloudpluginIcon, SolidPrivatepluginIcon} from "@/assets/icon/colors
 
 import "../plugins.scss"
 import styles from "./PluginsLocalDetail.module.scss"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -136,11 +137,11 @@ export const PluginsLocalDetail: React.FC<PluginsLocalDetailProps> = (props) => 
         e.stopPropagation()
         if (!plugin) return
         if (plugin.IsCorePlugin) {
-            yakitNotify("error", "内置插件无法编辑，建议复制源码新建插件进行编辑。")
+            yakitNotify("error", i18next.t("内置插件无法编辑，建议复制源码新建插件进行编辑。"))
             return
         }
         if (plugin.Type === "packet-hack") {
-            yakitNotify("error", "该类型已下架，不可编辑")
+            yakitNotify("error", i18next.t("该类型已下架，不可编辑"))
             return
         }
         if (plugin.Id && +plugin.Id) {
@@ -181,7 +182,7 @@ export const PluginsLocalDetail: React.FC<PluginsLocalDetailProps> = (props) => 
             if (value) setSelectList([...selectList, data])
             else setSelectList(selectList.filter((item) => item.ScriptName !== data.ScriptName))
         } catch (error) {
-            yakitNotify("error", "勾选失败:" + error)
+            yakitNotify("error", i18next.t("勾选失败:") + error)
         }
     })
     /**全选 */
@@ -240,10 +241,10 @@ export const PluginsLocalDetail: React.FC<PluginsLocalDetailProps> = (props) => 
                 .then((data: {Groups: string[]}) => {
                     const list = data.Groups || []
                     if (list.length === 0) {
-                        yakitNotify("info", "该插件暂未添加到菜单栏")
+                        yakitNotify("info", i18next.t("该插件暂未添加到菜单栏"))
                     } else {
                         const m = showYakitModal({
-                            title: "移除菜单栏",
+                            title: i18next.t("移除菜单栏"),
                             content: (
                                 <RemoveMenuModalContent pluginName={plugin.ScriptName} onCancel={() => m.destroy()} />
                             ),
@@ -255,7 +256,7 @@ export const PluginsLocalDetail: React.FC<PluginsLocalDetailProps> = (props) => 
                     }
                 })
                 .catch((e: any) => {
-                    yakitNotify("error", "获取菜单失败：" + e)
+                    yakitNotify("error", i18next.t("获取菜单失败：") + e)
                 })
         })
     })
@@ -281,7 +282,7 @@ export const PluginsLocalDetail: React.FC<PluginsLocalDetailProps> = (props) => 
     /**详情批量上传 */
     const onBatchUpload = useMemoizedFn(() => {
         if (selectList.length === 0) {
-            yakitNotify("error", "请先勾选数据")
+            yakitNotify("error", i18next.t("请先勾选数据"))
             return
         }
         const names = selectList.map((ele) => ele.ScriptName)
@@ -307,7 +308,7 @@ export const PluginsLocalDetail: React.FC<PluginsLocalDetailProps> = (props) => 
     return (
         <>
             <PluginDetails<YakScript>
-                title='本地插件'
+                title={i18next.t("本地插件")}
                 filterNode={
                     <>
                         {/* 第二版放出来 */}
@@ -323,7 +324,7 @@ export const PluginsLocalDetail: React.FC<PluginsLocalDetailProps> = (props) => 
                     <div className={"details-filter-extra-wrapper"}>
                         <FilterPopoverBtn defaultFilter={filters} onFilter={onFilter} type='local' />
                         <div style={{height: 12}} className='divider-style'></div>
-                        <Tooltip title='上传插件' overlayClassName='plugins-tooltip'>
+                        <Tooltip title={i18next.t("上传插件")} overlayClassName='plugins-tooltip'>
                             <YakitButton
                                 type='text2'
                                 disabled={allCheck || selectList.length === 0}
@@ -340,8 +341,7 @@ export const PluginsLocalDetail: React.FC<PluginsLocalDetailProps> = (props) => 
                             </Tooltip>
                         )} */}
                         <div style={{height: 12}} className='divider-style'></div>
-                        <YakitButton type='text' onClick={onNewAddPlugin}>
-                            新建插件
+                        <YakitButton type='text' onClick={onNewAddPlugin}>{i18next.t("新建插件")}
                         </YakitButton>
                     </div>
                 }
@@ -392,7 +392,7 @@ export const PluginsLocalDetail: React.FC<PluginsLocalDetailProps> = (props) => 
             >
                 <div className={styles["details-content-wrapper"]}>
                     <Tabs defaultActiveKey='execute' tabPosition='right' className='plugins-tabs'>
-                        <TabPane tab='执行' key='execute'>
+                        <TabPane tab={i18next.t("执行")} key='execute'>
                             <div className={styles["plugin-execute-wrapper"]}>
                                 {executorShow ? (
                                     <LocalPluginExecutor
@@ -413,7 +413,7 @@ export const PluginsLocalDetail: React.FC<PluginsLocalDetailProps> = (props) => 
                                 )}
                             </div>
                         </TabPane>
-                        <TabPane tab='源码' key='code'>
+                        <TabPane tab={i18next.t("源码")} key='code'>
                             <div className={styles["plugin-info-wrapper"]}>
                                 <PluginDetailHeader
                                     pluginName={plugin.ScriptName}
@@ -442,7 +442,7 @@ export const PluginsLocalDetail: React.FC<PluginsLocalDetailProps> = (props) => 
                                                     data: [
                                                         {
                                                             key: "share",
-                                                            label: "导出",
+                                                            label: i18next.t("导出"),
                                                             itemIcon: (
                                                                 <OutlineExportIcon
                                                                     className={styles["plugin-local-extra-node-icon"]}
@@ -451,7 +451,7 @@ export const PluginsLocalDetail: React.FC<PluginsLocalDetailProps> = (props) => 
                                                         },
                                                         {
                                                             key: "local-debugging",
-                                                            label: "本地调试",
+                                                            label: i18next.t("本地调试"),
                                                             itemIcon: (
                                                                 <OutlineTerminalIcon
                                                                     className={styles["plugin-local-extra-node-icon"]}
@@ -460,7 +460,7 @@ export const PluginsLocalDetail: React.FC<PluginsLocalDetailProps> = (props) => 
                                                         },
                                                         {
                                                             key: "add-to-menu",
-                                                            label: "添加到菜单栏",
+                                                            label: i18next.t("添加到菜单栏"),
                                                             itemIcon: (
                                                                 <OutlinePluscircleIcon
                                                                     className={styles["plugin-local-extra-node-icon"]}
@@ -475,7 +475,7 @@ export const PluginsLocalDetail: React.FC<PluginsLocalDetailProps> = (props) => 
                                                                     className={styles["plugin-local-extra-node-icon"]}
                                                                 />
                                                             ),
-                                                            label: "移出菜单栏",
+                                                            label: i18next.t("移出菜单栏"),
                                                             type: "danger"
                                                         }
                                                     ],
@@ -492,8 +492,7 @@ export const PluginsLocalDetail: React.FC<PluginsLocalDetailProps> = (props) => 
                                                         onClick={onUpload}
                                                         className={styles["cloud-upload-icon"]}
                                                         loading={uploadLoading}
-                                                    >
-                                                        上传
+                                                    >{i18next.t("上传")}
                                                     </YakitButton>
                                                 </>
                                             )}
@@ -514,13 +513,13 @@ export const PluginsLocalDetail: React.FC<PluginsLocalDetailProps> = (props) => 
                                 </div>
                             </div>
                         </TabPane>
-                        <TabPane tab='日志' key='log'>
+                        <TabPane tab={i18next.t("日志")} key='log'>
                             <div className={styles["plugin-log-wrapper"]}>
                                 <YakitPluginOnlineJournal pluginId={+plugin.OnlineId} />
                             </div>
                         </TabPane>
-                        <TabPane tab='问题反馈' key='feedback' disabled={true}>
-                            <div>问题反馈</div>
+                        <TabPane tab={i18next.t("问题反馈")} key='feedback' disabled={true}>
+                            <div>{i18next.t("问题反馈")}</div>
                         </TabPane>
                     </Tabs>
                 </div>
@@ -554,7 +553,7 @@ const RemoveMenuModalContent: React.FC<RemoveMenuModalContentProps> = React.memo
                     setGroups(list)
                 })
                 .catch((e: any) => {
-                    yakitNotify("error", "获取菜单失败：" + e)
+                    yakitNotify("error", i18next.t("获取菜单失败：") + e)
                 })
                 .finally()
         })
@@ -572,18 +571,17 @@ const RemoveMenuModalContent: React.FC<RemoveMenuModalContentProps> = React.memo
                 updateGroups()
             })
             .catch((e: any) => {
-                yakitNotify("error", "移除菜单失败：" + e)
+                yakitNotify("error", i18next.t("移除菜单失败：") + e)
             })
     })
     return (
         <div className={styles["remove-menu-body"]}>
             {groups.map((element) => {
                 return (
-                    <YakitButton type='outline2' key={element} onClick={() => onClickRemove(element)}>
-                        从 {element} 中移除
+                    <YakitButton type='outline2' key={element} onClick={() => onClickRemove(element)}>{i18next.t("从")} {element} 中移除
                     </YakitButton>
                 )
-            }) || "暂无数据"}
+            }) || i18next.t("暂无数据")}
         </div>
     )
 })

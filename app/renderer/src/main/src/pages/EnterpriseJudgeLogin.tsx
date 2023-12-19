@@ -7,6 +7,7 @@ import {getRemoteValue, setRemoteValue} from "@/utils/kv"
 import {useGetState} from "ahooks"
 import {aboutLoginUpload} from "@/utils/login"
 import {isEnpriTrace, isEnpriTraceAgent} from "@/utils/envfile"
+import i18next from "../i18n"
 const {ipcRenderer} = window.require("electron")
 export interface EnterpriseJudgeLoginProps {
     setJudgeLicense: (v: boolean) => void
@@ -71,7 +72,7 @@ const EnterpriseJudgeLogin: React.FC<EnterpriseJudgeLoginProps> = (props) => {
                 }
             })
             .catch((e) => {
-                info("请重新激活License")
+                info(i18next.t("请重新激活License"))
                 setLoading(false)
                 setLicensePageLoading(false)
             })
@@ -86,7 +87,7 @@ const EnterpriseJudgeLogin: React.FC<EnterpriseJudgeLoginProps> = (props) => {
         <>
             {loading ? (
                 <div style={{paddingTop: 10, textAlign: "center"}}>
-                    <Spin tip='验证License中'></Spin>
+                    <Spin tip={i18next.t("验证License中")}></Spin>
                 </div>
             ) : (
                 <>
