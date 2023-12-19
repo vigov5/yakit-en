@@ -1603,7 +1603,7 @@ const PluginTypeText = (type) => {
     }
 }
 
-export const loadLocalYakitPluginCode = i18next.t(`yakit.AutoInitYakit()
+export const loadLocalYakitPluginCode = `yakit.AutoInitYakit()
 
 log.setLevel("info")
 
@@ -1620,7 +1620,7 @@ if err != nil {
 }
 
 yakit.Output("更新本地仓库成功")
-`);
+`;
 
 export const loadNucleiPoCFromLocal = `yakit.AutoInitYakit();
 

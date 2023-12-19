@@ -284,7 +284,7 @@ export const ConfigPrivateDomain: React.FC<ConfigPrivateDomainProps> = React.mem
                 >
                     <YakitAutoComplete
                         options={httpHistoryList.map((item) => ({value: item, label: item}))}
-                        placeholder={i18next.t('请输入你的i18next.t("私有域地址")')}
+                        placeholder={i18next.t('请输入你的私有域地址')}
                         defaultOpen={!enterpriseLogin}
                     />
                 </Form.Item>
@@ -295,7 +295,7 @@ export const ConfigPrivateDomain: React.FC<ConfigPrivateDomainProps> = React.mem
                             <span className='form-label'>
                                 {i18next.t("设置代理")}
                                 <Tooltip
-                                    title={i18next.t('特殊情况无法访问插件商店时，可i18next.t("设置代理")进行访问')}
+                                    title={i18next.t('特殊情况无法访问插件商店时，可设置代理进行访问')}
                                     overlayStyle={{width: 150}}
                                 >
                                     <InformationCircleIcon className='info-icon' />
