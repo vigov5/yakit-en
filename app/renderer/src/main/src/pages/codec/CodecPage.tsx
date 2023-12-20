@@ -52,7 +52,7 @@ const generateSM4AmpAESParams = () => {
             FieldVerbose: i18next.t("密钥（HEX 编码）"),
             Required: true,
             TypeVerbose: "string",
-            Help: "HEX(十六进制) 编码后的 KEY"
+            Help: i18next.t("HEX(十六进制) 编码后的 KEY")
         },
         {
             Field: "iv",
@@ -91,7 +91,7 @@ const SM4AmpAESDecHelp = () => {
 
 const EncAmpDecMenu: CodecType[] = [
     {
-        verbose: "国密算法(sm4)对称加解密",
+        verbose: i18next.t("国密算法(sm4)对称加解密"),
         subTypes: [
             {
                 key: "sm4-cbc-encrypt",
@@ -191,9 +191,9 @@ const CodecMenu: CodecType[] = [
     {
         verbose: "Java",
         subTypes: [
-            {key: "java-unserialize-hex-dumper", verbose: "反序列化(SerialDumper)"},
-            {key: "java-unserialize-hex", verbose: "反序列化 Java 对象流(hex)"},
-            {key: "java-unserialize-base64", verbose: "反序列化 Java 对象流(base64)"},
+            {key: "java-unserialize-hex-dumper", verbose: i18next.t("反序列化(SerialDumper)")},
+            {key: "java-unserialize-hex", verbose: i18next.t("反序列化 Java 对象流(hex)")},
+            {key: "java-unserialize-base64", verbose: i18next.t("反序列化 Java 对象流(base64)")},
             {key: "java-serialize-json", verbose: i18next.t("Java 对象流序列化（JSON=>HEX）")}
         ]
     },
@@ -225,10 +225,10 @@ const CodecMenu: CodecType[] = [
         ]
     },
     {
-        verbose: "计算(HASH)",
+        verbose: i18next.t("计算(HASH)"),
         subTypes: [
             {key: "md5", verbose: i18next.t("计算 md5")},
-            {key: "sm3", verbose: "计算 SM3(国密3)"},
+            {key: "sm3", verbose: i18next.t("计算 SM3(国密3)")},
             {key: "sha1", verbose: i18next.t("计算 Sha1")},
             {key: "sha256", verbose: i18next.t("计算 Sha256")},
             {key: "sha512", verbose: i18next.t("计算 Sha512")}
@@ -251,7 +251,7 @@ const CodecMenu: CodecType[] = [
             {key: "json-inline", verbose: i18next.t("JSON 压缩成一行")}
         ]
     },
-    {key: "fuzz", verbose: "模糊测试(标签同 Web Fuzzer)"},
+    {key: "fuzz", verbose: i18next.t("模糊测试(标签同 Web Fuzzer)")},
     {
         verbose: "HTTP",
         subTypes: [

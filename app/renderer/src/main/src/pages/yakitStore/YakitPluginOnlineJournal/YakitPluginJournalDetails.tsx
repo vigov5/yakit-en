@@ -228,7 +228,7 @@ export const YakitPluginJournalDetails: React.FC<YakitPluginJournalDetailsProps>
                                             >{i18next.t("默认启动")}{" "}
                                                 <Tooltip
                                                     title={
-                                                        "设置默认启动后，将在恰当时候启动该插件(Yak插件不会自动启动，但会自动增加在左侧基础安全工具菜单栏)"
+                                                        i18next.t("设置默认启动后，将在恰当时候启动该插件(Yak插件不会自动启动，但会自动增加在左侧基础安全工具菜单栏)")
                                                     }
                                                 >
                                                     <Button type={"link"} icon={<QuestionCircleOutlined />} />

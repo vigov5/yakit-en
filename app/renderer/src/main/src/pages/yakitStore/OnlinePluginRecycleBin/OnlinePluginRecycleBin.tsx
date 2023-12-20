@@ -97,9 +97,9 @@ export const OnlinePluginRecycleBin: React.FC = () => {
     const onTips = useMemoizedFn((type: boolean) => {
         let typeTest = type ? i18next.t("删除") : i18next.t("还原")
         if (isSelectAll || selectedRowKeysRecord.length === 0) {
-            return i18next.t("是否${typeTest}所有的数据?${type && '不可恢复' || ''}", {v1: typeTest, v2: type && '不可恢复' || ''})
+            return i18next.t("是否${typeTest}所有的数据?${type && '不可恢复' || ''}", {v1: typeTest, v2: type && i18next.t('不可恢复') || ''})
         } else {
-            return i18next.t("是否${typeTest}所选择的的数据?${type && '不可恢复' || ''}", {v1: typeTest, v2: type && '不可恢复' || ''})
+            return i18next.t("是否${typeTest}所选择的的数据?${type && '不可恢复' || ''}", {v1: typeTest, v2: type && i18next.t('不可恢复') || ''})
         }
     })
 

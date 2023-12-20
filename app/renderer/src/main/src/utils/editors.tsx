@@ -814,9 +814,9 @@ export const HTTPPacketEditor: React.FC<HTTPPacketEditorProp> = React.memo((prop
                                                         formItemStyle={{marginBottom: 4}}
                                                         label={i18next.t("字号")}
                                                         data={[
-                                                            {text: i18next.t("小"), value: 12},
-                                                            {text: i18next.t("中"), value: 16},
-                                                            {text: i18next.t("大"), value: 20}
+                                                            {text: "S", value: 12},
+                                                            {text: "M", value: 16},
+                                                            {text: "L", value: 20}
                                                         ]}
                                                         oldTheme={false}
                                                         value={fontSize}
@@ -1636,9 +1636,9 @@ export const NewHTTPPacketEditor: React.FC<NewHTTPPacketEditorProp> = React.memo
                                                                 formItemStyle={{marginBottom: 4}}
                                                                 label={i18next.t("字号")}
                                                                 data={[
-                                                                    {text: i18next.t("小"), value: 12},
-                                                                    {text: i18next.t("中"), value: 16},
-                                                                    {text: i18next.t("大"), value: 20}
+                                                                    {text: "S", value: 12},
+                                                                    {text: "M", value: 16},
+                                                                    {text: "L", value: 20}
                                                                 ]}
                                                                 oldTheme={false}
                                                                 value={fontSize}

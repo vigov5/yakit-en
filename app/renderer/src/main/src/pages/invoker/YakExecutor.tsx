@@ -1064,7 +1064,7 @@ export const YakExecutor: React.FC<YakExecutorProp> = (props) => {
                                             <TabPane
                                                 tab={
                                                     <div style={{width: 50, textAlign: "center"}} key={"terminal"}>
-                                                        终端(监修中)
+                                                        {i18next.t("终端(监修中)")}
                                                     </div>
                                                 }
                                                 disabled

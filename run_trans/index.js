@@ -38,17 +38,19 @@ function extractVariables(inputString) {
     }
   }
 
-  let text = "{ " + tokens.join(", ") + " }";
-  console.log(text)
-
-  return `i18next.t("${replacedString}", ${text})`;
+  if (tokens.length > 0) {
+    let text = "{ " + tokens.join(", ") + " }";
+    return `i18next.t("${replacedString}", ${text})`;
+  } else {
+    return `i18next.t("${replacedString}");`
+  }
 }
 
 function appendXXXToStringLiterals(ast) {
   traverse(ast, {
     StringLiteral(path) {
       if (containsChineseCharacters(path.node.value)) {
-        console.log('StringLiteral - Chinese characters found: ' + path.node.value);
+        // console.log('StringLiteral - Chinese characters found: ' + path.node.value);
         all.push(path.node);
       }
     },
@@ -64,19 +66,24 @@ function appendXXXToStringLiterals(ast) {
         return acc;
       }, '');
 
-      console.log('TemplateLiteral value:', finalString);
+      // console.log('TemplateLiteral value:', finalString);
       if (containsChineseCharacters(finalString)) {
         templates.push(finalString);
       }
     },
     JSXText(path) {
       if (containsChineseCharacters(path.node.value)) {
-        console.log('JSXText - Chinese characters found: ' + path.node.value);
+        // console.log('JSXText - Chinese characters found: ' + path.node.value);
         // console.log(path);
         all.push(path.node);
       }
     }
   });
+}
+
+
+function escapeRegExp(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
 async function parseAndModifyTSX(filePath) {
@@ -93,9 +100,6 @@ async function parseAndModifyTSX(filePath) {
 
     for (i = 0; i < templates.length; i++) {
       console.log("    Processing: " + templates[i] + "...");
-      // let x = await translate(templates[i], { to: 'en' });
-      // const str2 = x.text.charAt(0).toUpperCase() + x.text.slice(1);
-      // console.log("    FIMAL:" + x.text);
       if (tsxContent.indexOf(templates[i]) !== -1) {
         let newTemplate = extractVariables(templates[i]);
         console.log(newTemplate);
@@ -105,23 +109,27 @@ async function parseAndModifyTSX(filePath) {
       }
     }
 
-    // let uniqueSet = new Set(all.map(element => element.value.trim()));
-    // console.log(all.length);
-    // let uniqueArray = [...uniqueSet];
-    // console.log(uniqueArray.length);
+    let uniqueSet = new Set(all.map(element => element.value.trim()));
+    console.log(all.length);
+    let uniqueArray = [...uniqueSet];
+    uniqueArray = uniqueArray.sort((a, b) => b.length - a.length);
+    console.log(uniqueArray.length);
 
-    // for (i = 0; i < uniqueArray.length; i++) {
-    //   console.log("    Processing: " + uniqueArray[i] + "...");
-    //   let trimed = uniqueArray[i];
-    //   const regexPattern = new RegExp(`${trimed}`, 'g');
-    //   tsxContent = tsxContent.replace(regexPattern, `i18next.t("${trimed}")`);
-    // }
+    for (i = 0; i < uniqueArray.length; i++) {
+      console.log("    Processing: " + uniqueArray[i] + "...");
+      let trimed = uniqueArray[i];
+      const regexPattern = new RegExp(`(["'\`])${escapeRegExp(trimed)}(["'\`])`, 'g');
+      tsxContent = tsxContent.replace(regexPattern, `i18next.t("${trimed}")`);
+      const regexPattern1 = new RegExp(`\>([\\s|\\n]*?)${escapeRegExp(trimed)}`, 'gm');
+      tsxContent = tsxContent.replace(regexPattern1, `>{i18next.t("${trimed}")}`);
+    }
 
-    // tsxContent = tsxContent.replace(new RegExp(`"i18next.t\\("`, 'g'), "i18next.t(\"");
-    // tsxContent = tsxContent.replace(new RegExp(`"\\)"`, 'g'), "\")");
-    // tsxContent = tsxContent.replace(new RegExp(`=i18next.t([^\\)]+\\))`, 'g'), "={i18next.t$1}");
-    // tsxContent = tsxContent.replace(new RegExp(`\>([\\s|\\n]*?)i18next.t([^\\)]+\\))`, 'gm'), ">$1{i18next.t$2}");
-    // tsxContent = tsxContent.replace(new RegExp(`\>i18next.t([^\\)]+\\))`, 'gm'), ">$1{i18next.t$2}");
+    tsxContent = tsxContent.replace(new RegExp(`"i18next.t\\("`, 'g'), "i18next.t(\"");
+    tsxContent = tsxContent.replace(new RegExp(`"\\)"`, 'g'), "\")");
+    tsxContent = tsxContent.replace(new RegExp(`=i18next.t([^\\)]+\\))`, 'g'), "={i18next.t$1}");
+    tsxContent = tsxContent.replace(new RegExp(`='i18next.t([^\\)]+\\))'`, 'g'), "={i18next.t$1}");
+    tsxContent = tsxContent.replace(new RegExp(`\>([\\s|\\n]*?)i18next.t([^\\)]+\\))`, 'gm'), ">$1{i18next.t$2}");
+    tsxContent = tsxContent.replace(new RegExp(`\>i18next.t([^\\)]+\\))`, 'gm'), ">$1{i18next.t$2}");
 
     return tsxContent;
   } catch (error) {
@@ -135,17 +143,10 @@ async function parseAndModifyTSX(filePath) {
   let inputFilePath = process.argv[2];
   const modifiedContent = await parseAndModifyTSX(inputFilePath);
 
-  const outputDirectory = './xxx';
 
   if (modifiedContent !== null) {
     try {
-      const relativePath = path.relative(process.cwd(), inputFilePath);
-      console.log("relativePath", relativePath);
-      const outputFilePath = path.join(outputDirectory, relativePath);
-      console.log("outputFilePath", outputFilePath);
-
-      fs.mkdirSync(path.dirname(outputFilePath), { recursive: true });
-      fs.writeFileSync(outputFilePath, modifiedContent, 'utf-8');
+      fs.writeFileSync(inputFilePath, modifiedContent, 'utf-8');
 
       console.log('Processed:', inputFilePath);
       

@@ -51,7 +51,7 @@ export const ConfigPcapPermissionForm: React.FC<ConfigPcapPermissionFormProp> = 
             // <Button type={"link"} icon={<QuestionCircleTwoTone/>}/>
             help={
                 <>
-                    <Tooltip title={"原理：MacOS 通过设置 /dev/bpf* 权限组，可参考 Wireshark ChmodBPF 相关配置，Linux 可通过 setcap 命令设置 pcap 权限，Windows 推荐直接以 UAC 提升管理员权限启动"}>
+                    <Tooltip title={i18next.t("原理：MacOS 通过设置 /dev/bpf* 权限组，可参考 Wireshark ChmodBPF 相关配置，Linux 可通过 setcap 命令设置 pcap 权限，Windows 推荐直接以 UAC 提升管理员权限启动")}>
                         <Button type={"link"} icon={<QuestionCircleTwoTone/>}/>
                     </Tooltip>
                     {isWindows ? i18next.t("Windows 可用管理员权限启动 ${getReleaseEditionName()} 以获取对 Pcap 的使用权限", {v1: getReleaseEditionName()}) : i18next.t("Linux 与 MacOS 可通过设置权限与组为用户态赋予网卡完全权限")}

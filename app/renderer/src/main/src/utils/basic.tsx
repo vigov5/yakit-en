@@ -398,14 +398,14 @@ export const ConfigGlobalReverse = React.memo(() => {
                 type={"password"} disable={ok}
                 help={i18next.t("yak bridge 命令的 --secret 参数值")}
             />
-            <Divider orientation={"left"}>{isCommunityEdition()&&'Yakit'} 全局 DNSLog 配置</Divider>
+            <Divider orientation={"left"}>{isCommunityEdition()&&'Yakit'} {i18next.t("全局 DNSLog 配置")}</Divider>
             <SwitchItem
                 label={i18next.t("复用 Yak Bridge 配置")} disabled={ok}
                 value={inheritBridge} setValue={setInheritBridge}/>
             {!inheritBridge && <InputItem
                 label={i18next.t("DNSLog 配置")} disable={ok}
                 value={dnslogAddr}
-                help={"配置好 Yak Bridge 的 DNSLog 系统的地址：[ip]:[port]"}
+                help={i18next.t("配置好 Yak Bridge 的 DNSLog 系统的地址：[ip]:[port]")}
                 setValue={setDNSLogAddr}
             />}
             {!inheritBridge && <InputItem

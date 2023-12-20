@@ -329,7 +329,7 @@ export const BatchExecutorResultByFilter: React.FC<BatchExecutorResultByFilterPr
         <div className="result-notice-body">
             <div className="notice-body">
                 <div className="notice-body-header notice-font-in-progress">{i18next.t("执行中状态")}</div>
-                <div className="notice-body-counter">{progressRunning}进程 / {scanTaskExecutingCount}任务</div>
+                <div className="notice-body-counter">{progressRunning} {i18next.t("进程")} / {scanTaskExecutingCount} {i18next.t("任务")}</div>
             </div>
             <Divider type="vertical" className="notice-divider"/>
             <div className="notice-body">

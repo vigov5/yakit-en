@@ -649,7 +649,7 @@ export const AddToMenuActionForm: React.FC<AddToMenuActionFormProp> = (props) =>
                 }}
             >
                 <Form.Item
-                    label={"菜单选项名(展示名称)"}
+                    label={i18next.t("菜单选项名(展示名称)")}
                     name='Verbose'
                     rules={[{required: true, message: i18next.t("该项为必填")}]}
                 >
@@ -792,7 +792,7 @@ export const PluginManagement: React.FC<PluginManagementProps> = React.memo<Plug
             >{i18next.t("本地调试")}
             </Button>
             <Popconfirm
-                title={"确定要删除该插件?如果添加左侧菜单栏也会同步删除，且不可恢复"}
+                title={i18next.t("确定要删除该插件?如果添加左侧菜单栏也会同步删除，且不可恢复")}
                 onConfirm={() => {
                     ipcRenderer.invoke("delete-yak-script", script.Id).then(() => {
                         ipcRenderer.invoke("change-main-menu")

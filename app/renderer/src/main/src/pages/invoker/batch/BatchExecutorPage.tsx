@@ -676,7 +676,7 @@ export const ExecSelectedPlugins: React.FC<ExecSelectedPluginsProp> = React.memo
                         >
                             <Button type='link' style={{padding: 4}}>
                                 {" "}
-                                额外配置{" "}
+                                {i18next.t("额外配置")}{" "}
                             </Button>
                         </Popover>
                         <Button
@@ -988,7 +988,7 @@ export const Timer: React.FC<TimerProp> = React.memo((props) => {
             </Tag>
         )
     return (
-        <Tag style={{maxWidth: 103}} color={props.color || "green"}>{i18next.t("已运行")}{duration}秒
+        <Tag style={{maxWidth: 103}} color={props.color || "green"}>{i18next.t("已运行")} {duration} {i18next.t("秒")}
         </Tag>
     )
 })

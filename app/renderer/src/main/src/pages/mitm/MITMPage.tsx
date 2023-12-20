@@ -561,7 +561,7 @@ export const MITMServer: React.FC<MITMServerProps> = React.memo((props) => {
                                 disabled={checkList.length === 0}
                                 className={style["empty-button"]}
                             >
-                                清空
+                                {i18next.t("清空")}
                             </YakitButton>
                         </div>
                         <MITMPluginLocalList

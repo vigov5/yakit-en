@@ -569,7 +569,7 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
     /** 加载页随机宣传语 */
     const loadingTitle = useMemo(() => LoadingTitle[Math.floor(Math.random() * (LoadingTitle.length - 0)) + 0], [])
     /** Title */
-    const Title = useMemo(() => yakitStatus==="control-remote"?i18next.t("远程控制中 ..."):`欢迎使用 ${getReleaseEditionName()}`, [])
+    const Title = useMemo(() => yakitStatus==="control-remote"?i18next.t("远程控制中 ..."):i18next.t("欢迎使用 ${getReleaseEditionName()}", {v1: getReleaseEditionName()}), [])
     
     return (
         <div className={styles["yakit-loading-wrapper"]}>
@@ -816,7 +816,7 @@ const DownloadYaklang: React.FC<DownloadYaklangProps> = React.memo((props) => {
         ipcRenderer
             .invoke("install-yak-engine", latestVersion)
             .then(() => {
-                success(`安装成功，如未生效，重启 ${getReleaseEditionName()} 即可`)
+                success(i18next.t("安装成功，如未生效，重启 ${getReleaseEditionName()} 即可", {v1: getReleaseEditionName()}))
             })
             .catch((err: any) => {
                 failed(`安装失败: ${err.message.indexOf("operation not permitted") > -1 ? i18next.t("请关闭引擎后重试") : err}`)

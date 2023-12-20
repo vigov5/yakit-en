@@ -29,6 +29,7 @@ import {YakitModal} from "../yakitUI/YakitModal/YakitModal"
 import {YakitSelect} from "../yakitUI/YakitSelect/YakitSelect"
 import {v4 as uuidv4} from "uuid"
 import {ExclamationCircleOutlined} from "@ant-design/icons"
+import i18next from "../../i18n"
 export interface ConfigNetworkPageProp {}
 
 export interface AuthInfo {
@@ -135,7 +136,7 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
             if (Array.isArray(ClientCertificates) && ClientCertificates.length > 0 && format === 1) {
                 let newArr = ClientCertificates.map((item, index) => {
                     const {Pkcs12Bytes, Pkcs12Password} = item
-                    return {Pkcs12Bytes, Pkcs12Password, name: `证书${index + 1}`}
+                    return {Pkcs12Bytes, Pkcs12Password, name: i18next.t("证书${index + 1}", {v1: index + 1})}
                 })
                 setCertificateParams(newArr)
                 currentIndex.current = ClientCertificates.length
@@ -150,7 +151,7 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
 
     const onCertificate = useMemoizedFn((file: any) => {
         if (!["application/x-pkcs12"].includes(file.type)) {
-            warn("仅支持格式为：application/x-pkcs12")
+            warn(i18next.t("仅支持格式为：application/x-pkcs12"))
             return false
         }
         ipcRenderer
@@ -168,7 +169,7 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                             setCertificateParams([
                                 ...(certificateParams || []),
                                 {
-                                    name: `证书${currentIndex.current}`,
+                                    name: i18next.t("证书${index + 1}", {v1: currentIndex.current}),
                                     Pkcs12Bytes: res,
                                     Pkcs12Password: new Uint8Array()
                                 }
@@ -178,7 +179,7 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                             setCertificateParams([
                                 ...(certificateParams || []),
                                 {
-                                    name: `证书${currentIndex.current}`,
+                                    name: i18next.t("证书${index + 1}", {v1: currentIndex.current}),
                                     Pkcs12Bytes: res,
                                     Pkcs12Password: new Uint8Array(),
                                     password: true
@@ -188,7 +189,7 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                     })
             })
             .catch((e) => {
-                failed(`无法获取该文件内容，请检查后后重试！${e}`)
+                failed(i18next.t("无法获取该文件内容，请检查后后重试！${e}", { v1: e }))
             })
         return false
     })
@@ -196,7 +197,7 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
     const ipcSubmit = useMemoizedFn((params: GlobalNetworkConfig, isNtml?: boolean) => {
         // console.log("SetGlobalNetworkConfig", params)
         ipcRenderer.invoke("SetGlobalNetworkConfig", params).then(() => {
-            yakitInfo("更新配置成功")
+            yakitInfo(i18next.t("更新配置成功"))
             update()
             if (isNtml) setVisible(false)
         })
@@ -218,7 +219,7 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                 certificateParams.length > 0 &&
                 certificateParams.filter((item) => item.password === true).length === certificateParams.length
             ) {
-                warn("无效证书")
+                warn(i18next.t("无效证书"))
                 return
             }
             const obj: ClientCertificatePem = {
@@ -281,16 +282,16 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                     </div>
                     <div className={styles["title"]}>{item.name}</div>
                     <SolidLockClosedIcon />
-                    <div className={styles["content"]}>未解密</div>
+                    <div className={styles["content"]}>{i18next.t("未解密")}</div>
                     <YakitButton
                         type='outline2'
                         onClick={() => {
                             const m = showYakitModal({
-                                title: "密码解锁",
+                                title: i18next.t("密码解锁"),
                                 content: (
                                     <div style={{padding: 20}}>
                                         <YakitInput.Password
-                                            placeholder='请输入证书密码'
+                                            placeholder={i18next.t("请输入证书密码")}
                                             allowClear
                                             onChange={(e) => {
                                                 const {value} = e.target
@@ -322,15 +323,14 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                                                     m.destroy()
                                                 }
                                             } else {
-                                                failed(`密码错误`)
+                                                failed(i18next.t("密码错误"))
                                             }
                                         })
                                 },
                                 width: 400
                             })
                         }}
-                    >
-                        密码解锁
+                    >{i18next.t("密码解锁")}
                     </YakitButton>
                 </div>
             </div>
@@ -359,7 +359,7 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                     </div>
                     <div className={styles["title"]}>{item.name}</div>
                     <SolidCheckCircleIcon />
-                    <div className={styles["content"]}>可用</div>
+                    <div className={styles["content"]}>{i18next.t("可用")}</div>
                     <div className={styles["password"]}>******</div>
                 </div>
             </div>
@@ -382,7 +382,7 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
         <>
             <div ref={configRef}>
                 <AutoCard style={{height: "auto"}}>
-                    <AutoSpin spinning={loading} tip='网络配置加载中...'>
+                    <AutoSpin spinning={loading} tip={i18next.t("网络配置加载中...")}>
                         {params && (
                             <Form
                                 size={"small"}
@@ -390,17 +390,16 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                                 wrapperCol={{span: 14}}
                                 onSubmitCapture={() => submit()}
                             >
-                                <Divider orientation={"left"} style={{marginTop: "0px"}}>
-                                    DNS 配置
+                                <Divider orientation={"left"} style={{marginTop: "0px"}}>{i18next.t("DNS 配置")}
                                 </Divider>
                                 <SwitchItem
-                                    label={"禁用系统 DNS"}
+                                    label={i18next.t("禁用系统 DNS")}
                                     setValue={(DisableSystemDNS) => setParams({...params, DisableSystemDNS})}
                                     value={params.DisableSystemDNS}
                                     oldTheme={false}
                                 />
                                 <ManyMultiSelectForString
-                                    label={"备用 DNS"}
+                                    label={i18next.t("备用 DNS")}
                                     setValue={(CustomDNSServers) =>
                                         setParams({...params, CustomDNSServers: CustomDNSServers.split(",")})
                                     }
@@ -409,30 +408,29 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                                     mode={"tags"}
                                 />
                                 <SwitchItem
-                                    label={"启用 TCP DNS"}
+                                    label={i18next.t("启用 TCP DNS")}
                                     setValue={(DNSFallbackTCP) => setParams({...params, DNSFallbackTCP})}
                                     value={params.DNSFallbackTCP}
                                     oldTheme={false}
                                 />
                                 <SwitchItem
-                                    label={"启用 DoH 抗污染"}
+                                    label={i18next.t("启用 DoH 抗污染")}
                                     setValue={(DNSFallbackDoH) => setParams({...params, DNSFallbackDoH})}
                                     value={params.DNSFallbackDoH}
                                     oldTheme={false}
                                 />
                                 {params.DNSFallbackDoH && (
                                     <ManyMultiSelectForString
-                                        label={"备用 DoH"}
+                                        label={i18next.t("备用 DoH")}
                                         setValue={(data) => setParams({...params, CustomDoHServers: data.split(",")})}
                                         value={params.CustomDoHServers.join(",")}
                                         data={[]}
                                         mode={"tags"}
                                     />
                                 )}
-                                <Divider orientation={"left"} style={{marginTop: "0px"}}>
-                                    TLS 客户端证书（双向认证）
+                                <Divider orientation={"left"} style={{marginTop: "0px"}}>{i18next.t("TLS 客户端证书（双向认证）")}
                                 </Divider>
-                                <Form.Item label={"选择格式"}>
+                                <Form.Item label={i18next.t("选择格式")}>
                                     <YakitRadioButtons
                                         size='small'
                                         value={format}
@@ -443,18 +441,18 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                                         options={[
                                             {
                                                 value: 1,
-                                                label: "p12/pfx 格式"
+                                                label: i18next.t("p12/pfx 格式")
                                             },
                                             {
                                                 value: 2,
-                                                label: "pem 格式"
+                                                label: i18next.t("pem 格式")
                                             }
                                         ]}
                                     />
                                 </Form.Item>
                                 {format === 1 && (
                                     <>
-                                        <Form.Item label={"添加证书"}>
+                                        <Form.Item label={i18next.t("添加证书")}>
                                             {/*
                                     PEM: 3 - CERT / KEY / CA-CERT
                                     PKCS12(P12/PFX)(.p12 .pfx): File + Password
@@ -466,7 +464,7 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                                                 showUploadList={false}
                                                 beforeUpload={(file) => onCertificate(file)}
                                             >
-                                                <YakitButton type={"outline2"}>添加 TLS 客户端证书</YakitButton>
+                                                <YakitButton type={"outline2"}>{i18next.t("添加 TLS 客户端证书")}</YakitButton>
                                             </Upload>
                                             {certificateList}
                                         </Form.Item>
@@ -482,17 +480,16 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                                         }}
                                     />
                                 )}
-                                <Divider orientation={"left"} style={{marginTop: "0px"}}>
-                                    第三方应用配置
+                                <Divider orientation={"left"} style={{marginTop: "0px"}}>{i18next.t("第三方应用配置")}
                                 </Divider>
-                                <Form.Item label={"第三方应用"}>
+                                <Form.Item label={i18next.t("第三方应用")}>
                                     {(params.AppConfigs || []).map((i, index) => {
                                         return (
                                             <YakitTag
                                                 key={index}
                                                 onClick={() => {
                                                     let m = showYakitModal({
-                                                        title: "修改第三方应用",
+                                                        title: i18next.t("修改第三方应用"),
                                                         width: 600,
                                                         okButtonProps: {hidden: true},
                                                         closable: true,
@@ -529,7 +526,7 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                                         type={"outline1"}
                                         onClick={() => {
                                             let m = showYakitModal({
-                                                title: "添加第三方应用",
+                                                title: i18next.t("添加第三方应用"),
                                                 width: 600,
                                                 okButtonProps: {hidden: true},
                                                 closable: true,
@@ -559,18 +556,15 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                                                 )
                                             })
                                         }}
-                                    >
-                                        添加第三方应用
+                                    >{i18next.t("添加第三方应用")}
                                     </YakitButton>
                                 </Form.Item>
-                                <Divider orientation={"left"} style={{marginTop: "0px"}}>
-                                    其他配置
+                                <Divider orientation={"left"} style={{marginTop: "0px"}}>{i18next.t("其他配置")}
                                 </Divider>
-                                <Form.Item label={"HTTP认证全局配置"}>
+                                <Form.Item label={i18next.t("HTTP认证全局配置")}>
                                     <div className={styles["form-rule-body"]}>
                                         <div className={styles["form-rule"]} onClick={() => setVisible(true)}>
-                                            <div className={styles["form-rule-text"]}>
-                                                现有配置 {params.AuthInfos.filter((item) => !item.Forbidden).length} 条
+                                            <div className={styles["form-rule-text"]}>{i18next.t("现有配置")} {params.AuthInfos.filter((item) => !item.Forbidden).length} 条
                                             </div>
                                             <div className={styles["form-rule-icon"]}>
                                                 <CogIcon />
@@ -579,8 +573,8 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                                     </div>
                                 </Form.Item>
                                 <Form.Item
-                                    label={"禁用IP"}
-                                    tooltip='配置禁用IP后，yakit将会过滤不会访问，配置多个IP用逗号分隔'
+                                    label={i18next.t("禁用IP")}
+                                    tooltip={i18next.t("配置禁用IP后，yakit将会过滤不会访问，配置多个IP用逗号分隔")}
                                 >
                                     <YakitInput.TextArea
                                         autoSize={{minRows: 1, maxRows: 3}}
@@ -594,8 +588,8 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                                     />
                                 </Form.Item>
                                 <Form.Item
-                                    label={"禁用域名"}
-                                    tooltip='配置禁用域名后，yakit将会过滤不会访问，配置多个域名用逗号分隔'
+                                    label={i18next.t("禁用域名")}
+                                    tooltip={i18next.t("配置禁用域名后，yakit将会过滤不会访问，配置多个域名用逗号分隔")}
                                 >
                                     <YakitInput.TextArea
                                         autoSize={{minRows: 1, maxRows: 3}}
@@ -608,7 +602,7 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                                         }}
                                     />
                                 </Form.Item>
-                                <Form.Item label={"全局代理"}>
+                                <Form.Item label={i18next.t("全局代理")}>
                                     <YakitInput
                                         allowClear
                                         size='small'
@@ -620,8 +614,8 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                                     />
                                 </Form.Item>
                                 <Form.Item
-                                    label={"系统代理"}
-                                    tooltip='开启以后如未配置代理，会默认走系统代理；如配置其他代理，其优先级高于系统代理'
+                                    label={i18next.t("系统代理")}
+                                    tooltip={i18next.t("开启以后如未配置代理，会默认走系统代理；如配置其他代理，其优先级高于系统代理")}
                                 >
                                     <YakitSwitch
                                         checked={params.EnableSystemProxyFromEnv}
@@ -630,7 +624,7 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                                         }
                                     />
                                 </Form.Item>
-                                <Form.Item label={"保存HTTP流量"} tooltip='打开则会保存MITM以外的流量数据到History表中'>
+                                <Form.Item label={i18next.t("保存HTTP流量")} tooltip={i18next.t("打开则会保存MITM以外的流量数据到History表中")}>
                                     <YakitSwitch
                                         checked={!params.SkipSaveHTTPFlow}
                                         onChange={(val) => setParams({...params, SkipSaveHTTPFlow: !val})}
@@ -638,20 +632,19 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                                 </Form.Item>
                                 <Form.Item colon={false} label={" "}>
                                     <Space>
-                                        <YakitButton type='primary' htmlType='submit'>
-                                            更新全局网络配置
+                                        <YakitButton type='primary' htmlType='submit'>{i18next.t("更新全局网络配置")}
                                         </YakitButton>
                                         <YakitPopconfirm
-                                            title={"确定需要重置网络配置吗？"}
+                                            title={i18next.t("确定需要重置网络配置吗？")}
                                             onConfirm={() => {
                                                 ipcRenderer.invoke("ResetGlobalNetworkConfig", {}).then(() => {
                                                     update()
-                                                    yakitInfo("重置配置成功")
+                                                    yakitInfo(i18next.t("重置配置成功"))
                                                 })
                                             }}
                                             placement='top'
                                         >
-                                            <YakitButton type='outline1'> 重置网络配置 </YakitButton>
+                                            <YakitButton type='outline1'>{i18next.t("重置网络配置")} </YakitButton>
                                         </YakitPopconfirm>
                                     </Space>
                                 </Form.Item>
@@ -722,11 +715,11 @@ export const NTMLConfig: React.FC<NTMLConfigProps> = (props) => {
     const onClose = useMemoizedFn(() => {
         if (JSON.stringify(initData.current) !== JSON.stringify(data)) {
             Modal.confirm({
-                title: "温馨提示",
+                title: i18next.t("温馨提示"),
                 icon: <ExclamationCircleOutlined />,
-                content: "请问是否要保存HTTP认证全局配置并关闭弹框？",
-                okText: "保存",
-                cancelText: "不保存",
+                content: i18next.t("请问是否要保存HTTP认证全局配置并关闭弹框？"),
+                okText: i18next.t("保存"),
+                cancelText: i18next.t("不保存"),
                 closable: true,
                 closeIcon: (
                     <div
@@ -795,7 +788,7 @@ export const NTMLConfig: React.FC<NTMLConfigProps> = (props) => {
     const columns: ColumnsTypeProps[] = useMemo<ColumnsTypeProps[]>(() => {
         return [
             {
-                title: "执行顺序",
+                title: i18next.t("执行顺序"),
                 dataKey: "Index",
                 fixed: "left",
                 width: 130,
@@ -807,23 +800,23 @@ export const NTMLConfig: React.FC<NTMLConfigProps> = (props) => {
                 width: 150
             },
             {
-                title: "用户名",
+                title: i18next.t("用户名"),
                 dataKey: "AuthUsername",
                 width: 150
             },
             {
-                title: "密码",
+                title: i18next.t("密码"),
                 dataKey: "AuthPassword",
                 width: 150,
                 render: () => <>***</>
             },
             {
-                title: "认证类型",
+                title: i18next.t("认证类型"),
                 dataKey: "AuthType"
                 // minWidth: 120
             },
             {
-                title: "操作",
+                title: i18next.t("操作"),
                 dataKey: "action",
                 fixed: "right",
                 width: 128,
@@ -889,9 +882,9 @@ export const NTMLConfig: React.FC<NTMLConfigProps> = (props) => {
                 return item
             })
             setData(newData)
-            success("编辑成功")
+            success(i18next.t("编辑成功"))
         } else {
-            success("新增成功")
+            success(i18next.t("新增成功"))
             setData([v, ...data])
         }
         setModalStatus(false)
@@ -913,9 +906,8 @@ export const NTMLConfig: React.FC<NTMLConfigProps> = (props) => {
                 contentWrapperStyle={{boxShadow: "0px -2px 4px rgba(133, 137, 158, 0.2)"}}
                 title={
                     <div className={styles["heard-title"]}>
-                        <div className={styles["title"]}>HTTP认证全局配置</div>
-                        <div className={styles["table-total"]}>
-                            共 <span>{params.AuthInfos.length}</span> 条NTML
+                        <div className={styles["title"]}>{i18next.t("HTTP认证全局配置")}</div>
+                        <div className={styles["table-total"]}>{i18next.t("共")} <span>{params.AuthInfos.length}</span>{i18next.t("条NTML")}
                         </div>
                     </div>
                 }
@@ -925,11 +917,9 @@ export const NTMLConfig: React.FC<NTMLConfigProps> = (props) => {
                             type='primary'
                             className={styles["button-create"]}
                             onClick={() => onCreateAuthInfo()}
-                        >
-                            新增
+                        >{i18next.t("新增")}
                         </YakitButton>
-                        <YakitButton type='primary' className={styles["button-save"]} onClick={() => onOk()}>
-                            保存
+                        <YakitButton type='primary' className={styles["button-save"]} onClick={() => onOk()}>{i18next.t("保存")}
                         </YakitButton>
                         <div onClick={() => onClose()} className={styles["icon-remove"]}>
                             <RemoveIcon />
@@ -1036,7 +1026,7 @@ export const NTMLConfigModal: React.FC<NTMLConfigModalProps> = (props) => {
                 if (ipv4RegexWithPort.test(value) || domainRegex.test(value) || cidrRegexWithPort.test(value)) {
                     return Promise.resolve()
                 } else {
-                    return Promise.reject("请输入符合要求的Host")
+                    return Promise.reject(i18next.t("请输入符合要求的Host"))
                 }
             }
         }
@@ -1044,7 +1034,7 @@ export const NTMLConfigModal: React.FC<NTMLConfigModalProps> = (props) => {
     return (
         <YakitModal
             maskClosable={false}
-            title={isEdit ? "编辑" : "新增"}
+            title={isEdit ? i18next.t("编辑") : i18next.t("新增")}
             visible={modalStatus}
             onCancel={() => onClose()}
             closable
@@ -1059,17 +1049,17 @@ export const NTMLConfigModal: React.FC<NTMLConfigModalProps> = (props) => {
                 wrapperCol={{span: 16}}
                 className={styles["modal-from"]}
             >
-                <Form.Item label='Host' name='Host' rules={[{required: true, message: "该项为必填"}, ...judgeUrl()]}>
-                    <YakitInput placeholder='请输入...' />
+                <Form.Item label='Host' name='Host' rules={[{required: true, message: i18next.t("该项为必填")}, ...judgeUrl()]}>
+                    <YakitInput placeholder={i18next.t("请输入...")} />
                 </Form.Item>
-                <Form.Item label='用户名' name='AuthUsername' rules={[{required: true, message: "该项为必填"}]}>
-                    <YakitInput placeholder='请输入...' />
+                <Form.Item label={i18next.t("用户名")} name='AuthUsername' rules={[{required: true, message: i18next.t("该项为必填")}]}>
+                    <YakitInput placeholder={i18next.t("请输入...")} />
                 </Form.Item>
-                <Form.Item label='密码' name='AuthPassword' rules={[{required: true, message: "该项为必填"}]}>
-                    <YakitInput placeholder='请输入...' />
+                <Form.Item label={i18next.t("密码")} name='AuthPassword' rules={[{required: true, message: i18next.t("该项为必填")}]}>
+                    <YakitInput placeholder={i18next.t("请输入...")} />
                 </Form.Item>
-                <Form.Item label='认证类型' name='AuthType' rules={[{required: true, message: "该项为必填"}]}>
-                    <YakitSelect placeholder='请选择...'>
+                <Form.Item label={i18next.t("认证类型")} name='AuthType' rules={[{required: true, message: i18next.t("该项为必填")}]}>
+                    <YakitSelect placeholder={i18next.t("请选择...")}>
                         <YakitSelect value='ntml'>ntml</YakitSelect>
                         <YakitSelect value='any'>any</YakitSelect>
                         <YakitSelect value='basic'>basic</YakitSelect>

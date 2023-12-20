@@ -282,7 +282,7 @@ export const HTTLFlowFilterDropdownForm: React.FC<FilterDropdownStringProp> = (p
                     <Space>
                         <Button type='primary' htmlType='submit'>
                             {" "}
-                            设置搜索条件{" "}
+                            {i18next.t("设置搜索条件")}{" "}
                         </Button>
                         <Button
                             onClick={() => {
@@ -299,7 +299,7 @@ export const HTTLFlowFilterDropdownForm: React.FC<FilterDropdownStringProp> = (p
                             }}
                         >
                             {" "}
-                            重置搜索{" "}
+                            {i18next.t("重置搜索")}{" "}
                         </Button>
                     </Space>
                 </Form.Item>
@@ -380,7 +380,7 @@ export const HTTLFlowFilterDropdownForms: React.FC<FilterDropdownStringsProp> = 
                     <Space>
                         <Button type='primary' htmlType='submit'>
                             {" "}
-                            设置搜索条件{" "}
+                            {i18next.t("设置搜索条件")}{" "}
                         </Button>
                         <Button
                             onClick={() => {
@@ -393,7 +393,7 @@ export const HTTLFlowFilterDropdownForms: React.FC<FilterDropdownStringsProp> = 
                             }}
                         >
                             {" "}
-                            重置搜索{" "}
+                            {i18next.t("重置搜索")}{" "}
                         </Button>
                     </Space>
                 </Form.Item>
@@ -404,7 +404,7 @@ export const HTTLFlowFilterDropdownForms: React.FC<FilterDropdownStringsProp> = 
 
 export const onExpandHTTPFlow = (flow: HTTPFlow | undefined, onClosed?: () => any) => {
     if (!flow) {
-        return <Empty>找不到该请求详情</Empty>
+        return <Empty>{i18next.t("找不到该请求详情")}</Empty>
     }
 
     return (
@@ -513,61 +513,61 @@ const TableRowColor = (key: string) => {
 export const availableColors = [
     {
         color: "RED",
-        title: "红色[#F4736B]",
+        title: i18next.t("红色")+"[#F4736B]",
         className: TableRowColor("RED"),
         searchWord: "YAKIT_COLOR_RED",
         render: (
             <div className={classNames(style["history-color-tag"])}>
                 <div className={classNames(style["tag-color-display"], "color-bg-red")}></div>
-                红色
+                {i18next.t("红色")}
             </div>
         )
     },
     {
         color: "GREEN",
-        title: "绿色[#56C991]",
+        title: i18next.t("绿色")+"[#56C991]",
         className: TableRowColor("GREEN"),
         searchWord: "YAKIT_COLOR_GREEN",
         render: (
             <div className={classNames(style["history-color-tag"])}>
                 <div className={classNames(style["tag-color-display"], "color-bg-green")}></div>
-                绿色
+                {i18next.t("绿色")}
             </div>
         )
     },
     {
         color: "BLUE",
-        title: "蓝色[#4A94F8]",
+        title: i18next.t("蓝色")+"[#4A94F8]",
         className: TableRowColor("BLUE"),
         searchWord: "YAKIT_COLOR_BLUE",
         render: (
             <div className={classNames(style["history-color-tag"])}>
                 <div className={classNames(style["tag-color-display"], "color-bg-blue")}></div>
-                蓝色
+                {i18next.t("蓝色")}
             </div>
         )
     },
     {
         color: "YELLOW",
-        title: "黄色[#FFD583]",
+        title: i18next.t("黄色")+"[#FFD583]",
         searchWord: "YAKIT_COLOR_YELLOW",
         className: TableRowColor("YELLOW"),
         render: (
             <div className={classNames(style["history-color-tag"])}>
                 <div className={classNames(style["tag-color-display"], "color-bg-yellow")}></div>
-                黄色
+                {i18next.t("黄色")}
             </div>
         )
     },
     {
         color: "ORANGE",
-        title: "橙色[#FFB660]",
+        title: i18next.t("橙色")+"[#FFB660]",
         searchWord: "YAKIT_COLOR_ORANGE",
         className: TableRowColor("ORANGE"),
         render: (
             <div className={classNames(style["history-color-tag"])}>
                 <div className={classNames(style["tag-color-display"], "color-bg-orange")}></div>
-                橙色
+                {i18next.t("橙色")}
             </div>
         )
     },
@@ -579,31 +579,31 @@ export const availableColors = [
         render: (
             <div className={classNames(style["history-color-tag"])}>
                 <div className={classNames(style["tag-color-display"], "color-bg-purple")}></div>
-                紫色
+                {i18next.t("紫色")}
             </div>
         )
     },
     {
         color: "CYAN",
-        title: "天蓝色[#35D8EE]",
+        title: i18next.t("天蓝色")+"[#35D8EE]",
         searchWord: "YAKIT_COLOR_CYAN",
         className: TableRowColor("CYAN"),
         render: (
             <div className={classNames(style["history-color-tag"])}>
                 <div className={classNames(style["tag-color-display"], "color-bg-cyan")}></div>
-                天蓝色
+                {i18next.t("天蓝色")}
             </div>
         )
     },
     {
         color: "GREY",
-        title: "灰色[#B4BBCA]",
+        title: i18next.t("灰色")+"[#B4BBCA]",
         searchWord: "YAKIT_COLOR_GREY",
         className: TableRowColor("GREY"),
         render: (
             <div className={classNames(style["history-color-tag"])}>
                 <div className={classNames(style["tag-color-display"], "color-bg-grey")}></div>
-                灰色
+                {i18next.t("灰色")}
             </div>
         )
     }
@@ -1590,7 +1590,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                 beforeIconExtra: (
                     <div className={classNames(style["body-length-checkbox"])}>
                         <YakitCheckbox checked={checkBodyLength} onChange={(e) => onCheckThan0(e.target.checked)} />
-                        <span className={style["tip"]}>大于0</span>
+                        <span className={style["tip"]}>{i18next.t("大于0")}</span>
                     </div>
                 ),
                 filterProps: {
@@ -2668,11 +2668,11 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                                                     setDrawerFormVisible(true)
                                                 }}
                                             >
-                                                高级筛选
+                                                {i18next.t("高级筛选")}
                                             </YakitButton>
                                             {isFilter && (
                                                 <YakitTag color={"success"}>
-                                                    已配置
+                                                    {i18next.t("已配置")}
                                                     <CheckedSvgIcon style={{marginLeft: 8}} />
                                                 </YakitTag>
                                             )}
@@ -2680,7 +2680,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                                             <div className={classNames(style["http-history-table-right-item"])}>
                                                 {size?.width && size?.width > 1060 && (
                                                     <div className={style["http-history-table-right-label"]}>
-                                                        协议类型
+                                                        {i18next.t("协议类型")}
                                                     </div>
                                                 )}
                                                 <YakitSelect
@@ -2694,7 +2694,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                                                         }, 50)
                                                     }}
                                                 >
-                                                    <YakitSelect.Option value=''>全部</YakitSelect.Option>
+                                                    <YakitSelect.Option value=''>{i18next.t("全部")}</YakitSelect.Option>
                                                     <YakitSelect.Option value='http/https'>
                                                         http/https
                                                     </YakitSelect.Option>
@@ -2770,7 +2770,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                                                                 e.stopPropagation()
                                                             }}
                                                         >
-                                                            批量操作
+                                                            {i18next.t("批量操作")}
                                                             <ChevronDownIcon style={{color: "#85899E"}} />
                                                         </YakitButton>
                                                     )) || (
@@ -2881,7 +2881,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                                                                     e.stopPropagation()
                                                                 }}
                                                             >
-                                                                批量操作
+                                                                {i18next.t("批量操作")}
                                                                 <ChevronDownIcon />
                                                             </YakitButton>
                                                         </YakitPopover>
@@ -2923,7 +2923,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                                                 }}
                                             >
                                                 <YakitButton type='outline1' colors='danger'>
-                                                    清空
+                                                    {i18next.t("清空")}
                                                 </YakitButton>
                                             </YakitDropdownMenu>
                                         )}
@@ -3063,7 +3063,7 @@ export const HTTPFlowShield: React.FC<HTTPFlowShieldProps> = React.memo((props: 
                     overlayClassName={style["http-history-table-shield-popover"]}
                 >
                     <div className={style["http-history-table-left-shield"]}>
-                        <span className='content-ellipsis'>已屏蔽条件</span>
+                        <span className='content-ellipsis'>{i18next.t("已屏蔽条件")}</span>
                         <span className={style["http-history-table-left-number"]}>{shieldData?.data.length}</span>
                         <StatusOfflineIcon className={style["http-history-table-left-shield-icon"]} />
                     </div>
@@ -3303,7 +3303,7 @@ const MultipleSelect: React.FC<MultipleSelectProps> = (props) => {
                                         {checked && <CheckIcon className={style["check-icon"]} />}
                                     </div>
                                 )
-                            })) || <div className={style["no-data"]}>暂无数据</div>}
+                            })) || <div className={style["no-data"]}>{i18next.t("暂无数据")}</div>}
                     </div>
                 </div>
                 <FooterBottom onReset={onReset} onSure={onSure} />
@@ -3393,7 +3393,7 @@ export const CalloutColor = (flow: HTTPFlow, i: any, data: HTTPFlow[], setData) 
             Tags: existedTags
         })
         .then(() => {
-            yakitNotify("success", `设置 HTTPFlow 颜色成功`)
+            yakitNotify("success", i18next.t("设置 HTTPFlow 颜色成功"))
             let newData: HTTPFlow[] = []
             const l = data.length
             for (let index = 0; index < l; index++) {
@@ -3419,7 +3419,7 @@ export const onRemoveCalloutColor = (flow: HTTPFlow, data: HTTPFlow[], setData) 
             Tags: existedTags
         })
         .then(() => {
-            yakitNotify("success", `清除 HTTPFlow 颜色成功`)
+            yakitNotify("success", i18next.t("清除 HTTPFlow 颜色成功"))
             let newData: HTTPFlow[] = []
             const l = data.length
             for (let index = 0; index < l; index++) {

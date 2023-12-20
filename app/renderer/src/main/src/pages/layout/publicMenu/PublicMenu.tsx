@@ -37,6 +37,7 @@ import {getRemoteValue,setRemoteValue} from "@/utils/kv"
 
 import classNames from "classnames"
 import styles from "./PublicMenu.module.scss"
+import i18next from "../../../i18n"
 
 const {ipcRenderer} = window.require("electron")
 
@@ -197,7 +198,7 @@ const PublicMenu: React.FC<PublicMenuProps> = React.memo((props) => {
                     })
             })
             .catch((e) => {
-                yakitNotify("error", `获取用户菜单失败: ${e}`)
+                yakitNotify("error", i18next.t("获取用户菜单失败: ${e}", { v1: e }))
                 setTimeout(() => setLoading(false), 300)
             })
     })
@@ -238,7 +239,7 @@ const PublicMenu: React.FC<PublicMenuProps> = React.memo((props) => {
                 }
             })
             .catch((err) => {
-                yakitNotify("error", "下载菜单插件失败：" + err)
+                yakitNotify("error", i18next.t("下载菜单插件失败：") + err)
             })
             .finally(() => {
                 setTimeout(() => setLoading(false), 300)
@@ -256,14 +257,14 @@ const PublicMenu: React.FC<PublicMenuProps> = React.memo((props) => {
                     .invoke("AddToNavigation", {Data: menus})
                     .then((rsp) => {})
                     .catch((e) => {
-                        yakitNotify("error", `保存菜单失败：${e}`)
+                        yakitNotify("error", i18next.t("保存菜单失败：${e}", { v1: e }))
                     })
                     .finally(() => {
                         setTimeout(() => setLoading(false), 300)
                     })
             })
             .catch((e: any) => {
-                yakitNotify("error", `更新菜单失败:${e}`)
+                yakitNotify("error", i18next.t("更新菜单失败:${e}", { v1: e }))
                 setTimeout(() => setLoading(false), 300)
             })
     })
@@ -342,7 +343,7 @@ const PublicMenu: React.FC<PublicMenuProps> = React.memo((props) => {
                     if (callback) setTimeout(() => callback(), 200)
                 }
             })
-            .catch((err) => yakitNotify("error", "下载菜单插件失败：" + err))
+            .catch((err) => yakitNotify("error", i18next.t("下载菜单插件失败：") + err))
     })
     /** 插件菜单未下载提示框 */
     const onOpenDownModal = useMemoizedFn((menuItem: RouteToPageProps, source: string) => {
@@ -352,16 +353,15 @@ const PublicMenu: React.FC<PublicMenuProps> = React.memo((props) => {
         const m = YakitModalConfirm({
             width: 420,
             closable: false,
-            title: "插件加载失败",
+            title: i18next.t("插件加载失败"),
             showConfirmLoading: true,
             content: (
                 <div className={styles["modal-content"]}>
-                    {showName}菜单丢失，需点击重新下载，如仍无法下载，请前往插件商店查找
-                    <span className={styles["menuItem-yakScripName"]}>{menuItem.pluginName}</span>
-                    插件
+                    {showName}{i18next.t("菜单丢失，需点击重新下载，如仍无法下载，请前往插件商店查找")}
+                    <span className={styles["menuItem-yakScripName"]}>{menuItem.pluginName}</span>{i18next.t("插件")}
                 </div>
             ),
-            onOkText: "重新下载",
+            onOkText: i18next.t("重新下载"),
             onOk: () => {
                 singleDownloadPlugin(menuItem, source, () => {
                     // 下载插件成功，自动销毁弹框
@@ -407,7 +407,7 @@ const PublicMenu: React.FC<PublicMenuProps> = React.memo((props) => {
             <>
                 {defaultMenu.map((item, index) => {
                     const data =
-                        item.label === "插件"
+                        item.label === i18next.t("插件")
                             ? routeToMenu(
                                   (item.children || []).concat(
                                       plugins.length === 0
@@ -415,8 +415,8 @@ const PublicMenu: React.FC<PublicMenuProps> = React.memo((props) => {
                                           : [
                                                 {
                                                     page: undefined,
-                                                    label: "常用插件",
-                                                    menuName: "常用插件",
+                                                    label: i18next.t("常用插件"),
+                                                    menuName: i18next.t("常用插件"),
                                                     children: plugins
                                                 }
                                             ]
@@ -506,13 +506,13 @@ const PublicMenu: React.FC<PublicMenuProps> = React.memo((props) => {
                         />
                     )}
 
-                    {defaultMenu[activeMenu]?.label !== "插件" ? (
+                    {defaultMenu[activeMenu]?.label !== i18next.t("插件") ? (
                         <div className={styles["divider-style"]}></div>
                     ) : (
                         <div></div>
                     )}
                     <div className={styles["tool-wrapper"]}>
-                        {defaultMenu[activeMenu]?.label === "插件" && (
+                        {defaultMenu[activeMenu]?.label === i18next.t("插件") && (
                             <MenuPlugin
                                 loading={loading}
                                 pluginList={pluginMenu}
@@ -525,7 +525,7 @@ const PublicMenu: React.FC<PublicMenuProps> = React.memo((props) => {
 
                         <div
                             className={
-                                defaultMenu[activeMenu]?.label !== "插件"
+                                defaultMenu[activeMenu]?.label !== i18next.t("插件")
                                     ? styles["tool-body"]
                                     : styles["hide-tool-body"]
                             }

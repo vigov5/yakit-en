@@ -3,6 +3,7 @@ import ReactResizeDetector from "react-resize-detector"
 import {useDebounceEffect, useMemoizedFn, useSize, useThrottleFn, useVirtualList, useDeepCompareEffect} from "ahooks"
 import {LoadingOutlined} from "@ant-design/icons"
 import "./RollingLoadList.scss"
+import i18next from "../../i18n"
 
 export interface RollingLoadListProps<T> {
     rowKey?: string
@@ -246,7 +247,7 @@ export const RollingLoadList = <T extends any>(props: RollingLoadListProps<T>) =
                         </div>
                     )}
                     {!loading && !hasMore && (page || 0) > 0 && (
-                        <div className='grid-block text-center no-more-text'>暂无更多数据</div>
+                        <div className='grid-block text-center no-more-text'>{i18next.t("暂无更多数据")}</div>
                     )}
                 </div>
             </div>

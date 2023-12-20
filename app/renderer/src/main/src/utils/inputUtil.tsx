@@ -588,14 +588,14 @@ export const InputFileNameItem: React.FC<InputFileNameItemProps> = p => {
                     value={p.content} textarea={true} textareaRow={6}
                     placeholder={i18next.t("请输入绝对路径")}
                     isBubbing={true}
-                    help={p.hint ? p.hint : (<div>{i18next.t("可将文件拖入框内或")}<span style={{color: 'rgb(25,143,255)'}}>{i18next.t("点击此处")}</span>{i18next.t("上传")}
+                    help={p.hint ? p.hint : (<div>{i18next.t("可将文件拖入框内或")} <span style={{color: 'rgb(25,143,255)'}}>{i18next.t("点击此处")}</span> {i18next.t("上传")}
                     </div>)}
                 /> : <InputItem
                     autoComplete={p.autoComplete}
                     label={""}
                     value={p.filename} setValue={f => p.setFileName && p.setFileName(f)}
                     placeholder={i18next.t("请输入绝对路径")}
-                    isBubbing={true} allowClear={false} help={p.hint ? p.hint : (<div>{i18next.t("可将文件拖入框内或")}<span style={{color: 'rgb(25,143,255)'}}>{i18next.t("点击此处")}</span>{i18next.t("上传")}
+                    isBubbing={true} allowClear={false} help={p.hint ? p.hint : (<div>{i18next.t("可将文件拖入框内或")} <span style={{color: 'rgb(25,143,255)'}}>{i18next.t("点击此处")}</span> {i18next.t("上传")}
                 </div>)}
                 />
                 }

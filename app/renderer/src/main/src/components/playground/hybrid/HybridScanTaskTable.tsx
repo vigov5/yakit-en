@@ -158,7 +158,7 @@ export const HybridScanTaskTable: React.FC<HybridScanTaskTableProp> = (props) =>
                 <Divider/>
                 <Space direction={"vertical"}>
                     {activeTasks.map(i => {
-                        return <YakitTag>{i.Index}: [{i.PluginName}] 执行目标: {i.Url}</YakitTag>
+                        return <YakitTag>{i.Index}: [{i.PluginName}] {i18next.t("执行目标:")} {i.Url}</YakitTag>
                     })}
                 </Space>
             </Space>

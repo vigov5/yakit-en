@@ -155,7 +155,7 @@ export const WebsocketClientOperator: React.FC<WebsocketClientOperatorProp> = (p
                                         ]}
                                     />
                                     <InputInteger
-                                        label={"设置超时(s)"}
+                                        label={i18next.t("设置超时(s)")}
                                         value={timeoutSeconds}
                                         setValue={setTimeoutSeconds}
                                         min={10}

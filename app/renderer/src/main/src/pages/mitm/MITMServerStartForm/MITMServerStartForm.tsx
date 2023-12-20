@@ -281,7 +281,7 @@ export const MITMServerStartForm: React.FC<MITMServerStartFormProp> = React.memo
                     label={i18next.t("国密劫持")}
                     name='enableGMTLS'
                     initialValue={true}
-                    help={"适配国密算法的 TLS (GM-tls) 劫持，对目标网站发起国密 TLS 的连接"}
+                    help={i18next.t("适配国密算法的 TLS (GM-tls) 劫持，对目标网站发起国密 TLS 的连接")}
                     valuePropName='checked'
                 >
                     <YakitSwitch size='large' />
@@ -304,7 +304,7 @@ export const MITMServerStartForm: React.FC<MITMServerStartFormProp> = React.memo
                 >
                     <div className={styles["form-rule-body"]}>
                         <div className={styles["form-rule"]} onClick={() => props.setVisible(true)}>
-                            <div className={styles["form-rule-text"]}>{i18next.t("现有规则")} {rules.length} 条</div>
+                            <div className={styles["form-rule-text"]}>{i18next.t("现有规则")} {rules.length} {i18next.t("条")}</div>
                             <div className={styles["form-rule-icon"]}>
                                 <CogIcon />
                             </div>

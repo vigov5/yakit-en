@@ -50,7 +50,7 @@ interface NewCodeSubType {
 
 const codecAllList: NewCodecType[] = [
     {
-        verbose: "国密算法(sm4)对称加解密",
+        verbose: i18next.t("国密算法(sm4)对称加解密"),
         subTypes: [
             {key: "sm4-cbc-encrypt", verbose: i18next.t("SM4-CBC 加密"),},
             {key: "sm4-cbc-decrypt", verbose: i18next.t("SM4-CBC 解密"),},
@@ -76,9 +76,9 @@ const codecAllList: NewCodecType[] = [
     {
         verbose: "Java",
         subTypes: [
-            {key: "java-unserialize-hex-dumper", verbose: "反序列化(SerialDumper)"},
-            {key: "java-unserialize-hex", verbose: "反序列化 Java 对象流(hex)"},
-            {key: "java-unserialize-base64", verbose: "反序列化 Java 对象流(base64)"},
+            {key: "java-unserialize-hex-dumper", verbose: i18next.t("反序列化(SerialDumper)")},
+            {key: "java-unserialize-hex", verbose: i18next.t("反序列化 Java 对象流(hex)")},
+            {key: "java-unserialize-base64", verbose: i18next.t("反序列化 Java 对象流(base64)")},
             {key: "java-serialize-json", verbose: i18next.t("Java 对象流序列化（JSON=>HEX）")}
         ]
     },
@@ -110,10 +110,10 @@ const codecAllList: NewCodecType[] = [
         ]
     },
     {
-        verbose: "计算(HASH)",
+        verbose: i18next.t("计算(HASH)"),
         subTypes: [
             {key: "md5", verbose: i18next.t("计算 md5")},
-            {key: "sm3", verbose: "计算 SM3(国密3)"},
+            {key: "sm3", verbose: i18next.t("计算 SM3(国密3)")},
             {key: "sha1", verbose: i18next.t("计算 Sha1")},
             {key: "sha256", verbose: i18next.t("计算 Sha256")},
             {key: "sha512", verbose: i18next.t("计算 Sha512")}
@@ -146,9 +146,9 @@ const codecAllList: NewCodecType[] = [
         ]
     },
     {
-        verbose: "模糊测试(标签同 Web Fuzzer)",
+        verbose: i18next.t("模糊测试(标签同 Web Fuzzer)"),
         subTypes: [
-            {key: "fuzz", verbose: "模糊测试(标签同 Web Fuzzer)"},
+            {key: "fuzz", verbose: i18next.t("模糊测试(标签同 Web Fuzzer)")},
         ]
     },
     {
@@ -167,9 +167,9 @@ const codecAllList: NewCodecType[] = [
 ]
 
 const AllTypeMap = new Map<string, string>([
-    ["java-unserialize-hex-dumper", "反序列化(SerialDumper)"],
-    ["java-unserialize-hex", "反序列化 Java 对象流(hex)"],
-    ["java-unserialize-base64", "反序列化 Java 对象流(base64)"],
+    ["java-unserialize-hex-dumper", i18next.t("反序列化(SerialDumper)")],
+    ["java-unserialize-hex", i18next.t("反序列化 Java 对象流(hex)")],
+    ["java-unserialize-base64", i18next.t("反序列化 Java 对象流(base64)")],
     ["java-serialize-json", i18next.t("Java 对象流序列化（JSON=>HEX）")],
     ["base64-decode", i18next.t("Base64 解码")],
     ["htmldecode", i18next.t("HTML 解码")],
@@ -189,7 +189,7 @@ const AllTypeMap = new Map<string, string>([
     ["hex-encode", i18next.t("十六进制编码")],
     ["json-unicode", i18next.t("Unicode 中文编码")],
     ["md5", i18next.t("计算 md5")],
-    ["sm3", "计算 SM3(国密3)"],
+    ["sm3", i18next.t("计算 SM3(国密3)")],
     ["sha1", i18next.t("计算 Sha1")],
     ["sha256", i18next.t("计算 Sha256")],
     ["sha512", i18next.t("计算 Sha512")],
@@ -204,7 +204,7 @@ const AllTypeMap = new Map<string, string>([
     ["pretty-packet", i18next.t("HTTP 数据包美化")],
     ["packet-from-url", i18next.t("从 URL 中加载数据包")],
     ["packet-to-curl", i18next.t("数据包转 CURL 命令")],
-    ["fuzz", "模糊测试(标签同 Web Fuzzer)"],
+    ["fuzz", i18next.t("模糊测试(标签同 Web Fuzzer)")],
     ["jwt-parse-weak", i18next.t("JWT解析与弱密码")],
     ["sm4-cbc-encrypt", i18next.t("SM4-CBC 加密")],
     ["sm4-cbc-decrypt", i18next.t("SM4-CBC 解密")],

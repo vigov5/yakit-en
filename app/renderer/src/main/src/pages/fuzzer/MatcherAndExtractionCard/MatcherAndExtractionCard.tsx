@@ -733,7 +733,7 @@ export const MatcherItem: React.FC<MatcherItemProps> = React.memo((props) => {
                         ]}
                     />
                 </LabelNodeItem>
-                <LabelNodeItem label='不匹配(取反)' column={isSmallMode}>
+                <LabelNodeItem label={i18next.t("不匹配(取反)")} column={isSmallMode}>
                     <YakitSwitch checked={matcherItem.Negative} onChange={(checked) => onEdit("Negative", checked)} />
                 </LabelNodeItem>
             </div>

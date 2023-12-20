@@ -47,6 +47,7 @@ import {YakitSelect} from "../yakitUI/YakitSelect/YakitSelect"
 import {YakitProtoCheckbox} from "./YakitProtoCheckbox/YakitProtoCheckbox"
 import {YakitTag} from "../yakitUI/YakitTag/YakitTag"
 import {randomString} from "@/utils/randomUtil"
+import i18next from "../../i18n"
 const {RangePicker} = DatePicker
 
 /**
@@ -857,19 +858,19 @@ const Table = <T extends any>(props: TableVirtualResizeProps<T>) => {
                             color='info'
                             onClick={() => onDateTimeSearch([moment().subtract(1, "minute"), moment()], filterKey)}
                         >
-                            1分钟
+                            {i18next.t("1分钟")}
                         </YakitTag>
                         <YakitTag
                             color='info'
                             onClick={() => onDateTimeSearch([moment().subtract(1, "hours"), moment()], filterKey)}
                         >
-                            1小时
+                            {i18next.t("1小时")}
                         </YakitTag>
                         <YakitTag
                             color='info'
                             onClick={() => onDateTimeSearch([moment().subtract(1, "day"), moment()], filterKey)}
                         >
-                            1天
+                            {i18next.t("1天")}
                         </YakitTag>
                     </div>
                 </div>
@@ -964,7 +965,7 @@ const Table = <T extends any>(props: TableVirtualResizeProps<T>) => {
                 </div>
             )}
             </>}
-            {(width === 0 && <Spin spinning={true} tip='加载中...'></Spin>) || (
+            {(width === 0 && <Spin spinning={true} tip={i18next.t("加载中...")}></Spin>) || (
                 <Spin spinning={loading !== undefined ? loading && pagination?.page == 1 : false}>
                     <div
                         className={classNames(styles["virtual-table-body"])}
@@ -1074,7 +1075,7 @@ const Table = <T extends any>(props: TableVirtualResizeProps<T>) => {
                                         [styles["pagination-text-show"]]: scroll.scrollBottom < 10 || list.length === 0
                                     })}
                                 >
-                                    暂无更多数据
+                                    {i18next.t("暂无更多数据")}
                                 </div>
                             )}
                         </div>
@@ -1889,7 +1890,7 @@ export const SelectSearch: React.FC<SelectSearchProps> = React.memo((props) => {
                                         ? filterOptionRender(item.data)
                                         : item.data.label || item.data.value}
                                 </div>
-                            ))) || <div className={classNames(styles["no-data"])}>暂无数据</div>}
+                            ))) || <div className={classNames(styles["no-data"])}>{i18next.t("暂无数据")}</div>}
                     </div>
                 </div>
             </div>
@@ -1986,7 +1987,7 @@ export const SelectSearch: React.FC<SelectSearchProps> = React.memo((props) => {
                                         {checked && <CheckIcon className={styles["check-icon"]} />}
                                     </div>
                                 )
-                            })) || <div className={classNames(styles["no-data"])}>暂无数据</div>}
+                            })) || <div className={classNames(styles["no-data"])}>{i18next.t("暂无数据")}</div>}
                     </div>
                     <FooterBottom onReset={onReset} onSure={onSure} />
                 </div>
@@ -2007,10 +2008,10 @@ export const FooterBottom: React.FC<FooterBottomProps> = React.memo((props) => {
     return (
         <div className={classNames(styles["select-footer"], className)}>
             <div className={classNames(styles["footer-bottom"], styles["select-reset"])} onClick={() => onReset()}>
-                重置
+                {i18next.t("重置")}
             </div>
             <div className={classNames(styles["footer-bottom"], styles["select-sure"])} onClick={() => onSure()}>
-                确定
+                {i18next.t("确定")}
             </div>
         </div>
     )

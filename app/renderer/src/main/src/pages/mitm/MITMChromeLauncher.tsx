@@ -177,7 +177,7 @@ const MITMChromeLauncher: React.FC<MITMChromeLauncherProp> = (props) => {
                             type={"success"}
                             message={
                                 <>
-                                    本按钮将会启动一个代理已经被正确配置的 Chrome (使用系统 Chrome 浏览器配置)
+                                    {i18next.t("本按钮将会启动一个代理已经被正确配置的 Chrome (使用系统 Chrome 浏览器配置)")}
                                     <br /> <Text mark={true}>{i18next.t("无需用户额外启用代理")}</Text>{i18next.t("，同时把测试浏览器和日常浏览器分离")}
                                 </>
                             }

@@ -417,7 +417,7 @@ const HeardMenu: React.FC<HeardMenuProps> = React.memo((props) => {
             showConfirmLoading: true,
             content: (
                 <div className={style["modal-content"]}>
-                    {showName}菜单丢失，需点击重新下载，如仍无法下载，请前往插件商店查找
+                    {showName}{i18next.t("菜单丢失，需点击重新下载，如仍无法下载，请前往插件商店查找")}
                     <span className={style["menuItem-yakScripName"]}>{menuItem.pluginName}</span>{i18next.t("插件")}
                 </div>
             ),

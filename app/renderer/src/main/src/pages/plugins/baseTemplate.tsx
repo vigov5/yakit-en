@@ -1046,7 +1046,7 @@ export const PluginAddParamModal: React.FC<PluginAddParamModalProps> = memo((pro
                     onFinish={onFinish}
                 >
                     <Form.Item
-                        label='参数名(英文)'
+                        label={i18next.t("参数名(英文)")}
                         name='Field'
                         required={true}
                         rules={[
@@ -1061,7 +1061,7 @@ export const PluginAddParamModal: React.FC<PluginAddParamModalProps> = memo((pro
                         <YakitInput placeholder={i18next.t("填入想要增加的参数名")} maxLength={30} />
                     </Form.Item>
                     <Form.Item
-                        label='参数显示名称(可中文)'
+                        label={i18next.t("参数显示名称(可中文)")}
                         name='FieldVerbose'
                         rules={[
                             {

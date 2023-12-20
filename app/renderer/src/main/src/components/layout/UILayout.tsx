@@ -1357,7 +1357,7 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
             <YakitHint
                 visible={linkDatabaseHint}
                 title={i18next.t("是否进入项目管理")}
-                content='如果有正在进行中的任务，回到项目管理页则都会停止，确定回到项目管理页面吗?'
+                content={i18next.t("如果有正在进行中的任务，回到项目管理页则都会停止，确定回到项目管理页面吗?")}
                 onOk={() => {
                     setYakitMode("soft")
                     setLinkDatabase(true)

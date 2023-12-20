@@ -215,7 +215,7 @@ export const BrutePage: React.FC<BrutePageProp> = (props) => {
                                             setValue: (Targets) => setParams({...params, Targets}),
                                             value: params.Targets,
                                             rows: 1,
-                                            placeholder: "内容规则 域名(:端口)/IP(:端口)/IP段，如需批量输入请在此框以逗号分割"
+                                            placeholder: i18next.t("内容规则 域名(:端口)/IP(:端口)/IP段，如需批量输入请在此框以逗号分割")
                                         }}
                                         suffixNode={
                                             loading ? (

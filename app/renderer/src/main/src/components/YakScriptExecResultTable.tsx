@@ -182,7 +182,7 @@ export const YakScriptExecResultTable: React.FC<YakScriptExecResultTableProp> = 
                                     />
                                 </div>
                                 <Popconfirm
-                                    title='是否删除所有插件?'
+                                    title={i18next.t("是否删除所有插件?")}
                                     onConfirm={() => onRemoveAll()}
                                     okText='Yes'
                                     cancelText='No'

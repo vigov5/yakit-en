@@ -822,7 +822,7 @@ const SecondMenu: React.FC<SecondMenuProps> = React.memo((props) => {
             <div className={style["second-menu-heard"]}>
                 <div className={style["second-menu-heard-input"]}>
                     <Input
-                        placeholder='未命名1 (菜单名建议 4-16 个英文字符内最佳)'
+                        placeholder={i18next.t("未命名1 (菜单名建议 4-16 个英文字符内最佳)")}
                         bordered={false}
                         suffix={
                             <YakitPopconfirm

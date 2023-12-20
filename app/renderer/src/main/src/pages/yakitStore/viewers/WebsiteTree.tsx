@@ -195,7 +195,7 @@ export const WebsiteTreeViewer: React.FC<WebsiteTreeViewerProp> = (props) => {
                         })
                     })
                     .catch((e: any) => {
-                        failed("数据导出失败 " + `${e}`)
+                        failed(i18next.t("数据导出失败 ") + `${e}`)
                     })
             }
         })

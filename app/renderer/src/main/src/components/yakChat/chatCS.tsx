@@ -926,8 +926,8 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                                                 })} */}
                                                 <div className={styles["info-hint-wrapper"]}>
                                                     <OutlineInformationcircleIcon />
-                                                    ChatCS模型参数：6.5b，训练Token: 1.5T
-                                                    显卡资源：A40*4，使用文心增强知识推理能力
+                                                    {i18next.t(`ChatCS模型参数：6.5b，训练Token: 1.5T
+                                                    显卡资源：A40*4，使用文心增强知识推理能力`)}
                                                 </div>
                                             </div>
                                         </div>
@@ -993,7 +993,7 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                                     <Input.TextArea
                                         className={styles["text-area-wrapper"]}
                                         bordered={false}
-                                        placeholder='问我任何问题...(shift + enter 换行)'
+                                        placeholder={i18next.t("问我任何问题...(shift + enter 换行)")}
                                         value={question}
                                         autoSize={true}
                                         onChange={(e) => setQuestion(e.target.value)}
@@ -1752,7 +1752,7 @@ const PromptWidget: React.FC<PromptWidgetProps> = memo((props) => {
                                     {item.templateArr.map((itemIn) => (
                                         <span className={styles["span-label"]}>{itemIn}</span>
                                     ))}
-                                    将自动为你生成 Prompt
+                                    {i18next.t("将自动为你生成 Prompt")}
                                 </div>
                                 <ExampleCard content={item.eg[0]} />
                             </>

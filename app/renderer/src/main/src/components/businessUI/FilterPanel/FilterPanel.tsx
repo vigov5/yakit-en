@@ -13,6 +13,7 @@ import {API} from "@/services/swagger/resposeType"
 
 import styles from "./FilterPanel.module.scss"
 import classNames from "classnames"
+import i18next from "../../../i18n"
 
 const {YakitPanel} = YakitCollapse
 
@@ -56,8 +57,8 @@ export const FilterPanel: React.FC<FilterPanelProps> = React.memo((props) => {
         <div className={classNames(styles["filter-panel-wrapper"], wrapperClassName || "")}>
             <div className={styles["filter-panel-container"]}>
                 <div className={styles["panel-header"]}>
-                    <span className={styles["header-title"]}>高级筛选</span>
-                    <Tooltip title='收起筛选' placement='top' overlayClassName='plugins-tooltip'>
+                    <span className={styles["header-title"]}>{i18next.t("高级筛选")}</span>
+                    <Tooltip title={i18next.t("收起筛选")} placement='top' overlayClassName='plugins-tooltip'>
                         <YakitButton
                             type='text2'
                             onClick={onClose}
@@ -87,7 +88,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = React.memo((props) => {
                                                     onClear(item.groupKey)
                                                 }}
                                             >
-                                                清空
+                                                {i18next.t("清空")}
                                             </YakitButton>
                                         }
                                     >
@@ -127,9 +128,9 @@ export const FilterPanel: React.FC<FilterPanelProps> = React.memo((props) => {
                                     </YakitPanel>
                                 ))}
                             </YakitCollapse>
-                            {groupList.length > 0 && <div className={styles["to-end"]}>已经到底啦～</div>}
+                            {groupList.length > 0 && <div className={styles["to-end"]}>{i18next.t("已经到底啦～")}</div>}
                             {groupList.length === 0 && (
-                                <YakitEmpty style={{paddingTop: 48}} title={noDataHint || "暂无数据"} />
+                                <YakitEmpty style={{paddingTop: 48}} title={noDataHint || i18next.t("暂无数据")} />
                             )}
                         </div>
                     </YakitSpin>

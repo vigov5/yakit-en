@@ -2421,7 +2421,7 @@ const AddAllPlugin: React.FC<AddAllPluginProps> = (props) => {
                 <>
                     {(oneImport && (
                         <Popconfirm
-                            title={user ? "确定将我的插件所有数据导入到本地吗?" : "确定将插件商店所有数据导入到本地吗?"}
+                            title={user ? i18next.t("确定将我的插件所有数据导入到本地吗?") : i18next.t("确定将插件商店所有数据导入到本地吗?")}
                             onConfirm={AddAllPlugin}
                             okText='Yes'
                             cancelText='No'
@@ -2440,7 +2440,7 @@ const AddAllPlugin: React.FC<AddAllPluginProps> = (props) => {
                                     title={
                                         user
                                             ? i18next.t("确定将我的插件所有数据导入到本地吗?")
-                                            : "确定将插件商店所有数据导入到本地吗?"
+                                            : i18next.t("确定将插件商店所有数据导入到本地吗?")
                                     }
                                     onConfirm={AddAllPlugin}
                                     okText='Yes'

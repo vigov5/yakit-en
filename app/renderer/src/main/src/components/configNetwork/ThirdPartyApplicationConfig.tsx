@@ -5,6 +5,7 @@ import {InputItem} from "@/utils/inputUtil";
 import {DemoItemSelectOne} from "@/demoComponents/itemSelect/ItemSelect";
 import {DemoItemSwitch} from "@/demoComponents/itemSwitch/ItemSwitch";
 import {YakitButton} from "@/components/yakitUI/YakitButton/YakitButton";
+import i18next from "../../i18n"
 
 export interface ThirdPartyApplicationConfigProp {
     data?: ThirdPartyApplicationConfig
@@ -24,7 +25,7 @@ export const ThirdPartyApplicationConfigForm: React.FC<ThirdPartyApplicationConf
         }}
     >
         <DemoItemSelectOne
-            label={"类型"}
+            label={i18next.t("类型")}
             data={[
                 {label: "ZoomEye", value: "zoomeye"},
                 {label: "Shodan", value: "shodan"},
@@ -42,26 +43,26 @@ export const ThirdPartyApplicationConfigForm: React.FC<ThirdPartyApplicationConf
             help={"APIKey / Token"} required={true}
         />
         <InputItem
-            label={"用户信息"} value={params.UserIdentifier}
+            label={i18next.t("用户信息")} value={params.UserIdentifier}
             setValue={val => setParams({...params, UserIdentifier: val})}
             help={"email / username"}
         />
         <DemoItemSwitch
-            label={"其他信息"}
+            label={i18next.t("其他信息")}
             value={advanced} setValue={setAdvanced}
         />
         {
             advanced && <>
                 <InputItem
-                    label={"用户密码"} value={params.UserSecret}
+                    label={i18next.t("用户密码")} value={params.UserSecret}
                     setValue={val => setParams({...params, UserSecret: val})}
                 />
                 <InputItem
-                    label={"命名空间"} value={params.Namespace}
+                    label={i18next.t("命名空间")} value={params.Namespace}
                     setValue={val => setParams({...params, Namespace: val})}
                 />
                 <InputItem
-                    label={"域"} value={params.Domain}
+                    label={i18next.t("域")} value={params.Domain}
                     setValue={val => setParams({...params, Domain: val})}
                 />
                 <InputItem
@@ -75,7 +76,7 @@ export const ThirdPartyApplicationConfigForm: React.FC<ThirdPartyApplicationConf
                 <YakitButton
                     type={"primary"} loading={false}
                     onClick={() => props.onAdd(params)}
-                >确定添加改应用信息</YakitButton>
+                >{i18next.t("确定添加改应用信息")}</YakitButton>
             </Space>
         </Form.Item>
 

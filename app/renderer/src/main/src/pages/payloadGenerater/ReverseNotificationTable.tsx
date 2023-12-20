@@ -3,6 +3,7 @@ import {Form, Space, Table, Tag, Button, Alert} from "antd"
 import {ReverseNotification} from "./PayloadGeneraterPage"
 import {CopyableField, ManyMultiSelectForString, SwitchItem} from "../../utils/inputUtil"
 import {AutoSpin} from "../../components/AutoSpin"
+import i18next from "../../i18n"
 
 export interface ReverseNotificationTableProps {
     getInfo: any
@@ -39,14 +40,14 @@ export const ReverseNotificationTable = React.memo<ReverseNotificationTableProps
                                         <Form onSubmitCapture={(e) => e.preventDefault()} layout={"inline"}>
                                             <SwitchItem
                                                 size={"small"}
-                                                label={"只看Token"}
+                                                label={i18next.t("只看Token")}
                                                 value={withToken}
                                                 setValue={setWithToken}
                                                 formItemStyle={{marginBottom: 0}}
                                             />
 
                                             <ManyMultiSelectForString
-                                                label={"类型"}
+                                                label={i18next.t("类型")}
                                                 value={type}
                                                 setValue={(e) => {
                                                     setWithToken(false)
@@ -54,8 +55,8 @@ export const ReverseNotificationTable = React.memo<ReverseNotificationTableProps
                                                 }}
                                                 formItemStyle={{marginBottom: 0, minWidth: 200}}
                                                 data={[
-                                                    {value: "rmi", label: "RMI连接"},
-                                                    {value: "rmi-handshake", label: "RMI握手"},
+                                                    {value: "rmi", label: i18next.t("RMI连接")},
+                                                    {value: "rmi-handshake", label: i18next.t("RMI握手")},
                                                     {value: "http", label: "HTTP"},
                                                     {value: "https", label: "HTTPS"},
                                                     {value: "tcp", label: "TCP"},
@@ -69,7 +70,7 @@ export const ReverseNotificationTable = React.memo<ReverseNotificationTableProps
                                                         props.closeHandle()
                                                     }}
                                                 >
-                                                    关闭
+                                                    {i18next.t("关闭")}
                                                 </Button>
                                             </Form.Item>
                                             <Form.Item name='clear'>
@@ -78,7 +79,7 @@ export const ReverseNotificationTable = React.memo<ReverseNotificationTableProps
                                                         props.clearHandle()
                                                     }}
                                                 >
-                                                    清空
+                                                    {i18next.t("清空")}
                                                 </Button>
                                             </Form.Item>
                                         </Form>
@@ -96,13 +97,13 @@ export const ReverseNotificationTable = React.memo<ReverseNotificationTableProps
                 rowKey={(i) => i.uuid}
                 columns={[
                     {
-                        title: "反连类型",
+                        title: i18next.t("反连类型"),
                         render: (i: ReverseNotification) => {
                             switch (i.type) {
                                 case "rmi":
-                                    return <Tag color={"red"}>RMI连接</Tag>
+                                    return <Tag color={"red"}>{i18next.t("RMI连接")}</Tag>
                                 case "rmi-handshake":
-                                    return <Tag color={"orange"}>RMI握手</Tag>
+                                    return <Tag color={"orange"}>{i18next.t("RMI握手")}</Tag>
                                 case "http":
                                     return <Tag color={"red"}>HTTP</Tag>
                                 case "https":
@@ -119,7 +120,7 @@ export const ReverseNotificationTable = React.memo<ReverseNotificationTableProps
                         }
                     },
                     {
-                        title: "连接来源",
+                        title: i18next.t("连接来源"),
                         render: (i: ReverseNotification) => (
                             <CopyableField text={i.remote_addr} noCopy={!i.remote_addr} />
                         )
@@ -129,7 +130,7 @@ export const ReverseNotificationTable = React.memo<ReverseNotificationTableProps
                         render: (i: ReverseNotification) => <CopyableField text={i.token} noCopy={!i.token} />
                     },
                     {
-                        title: "响应",
+                        title: i18next.t("响应"),
                         render: (i: ReverseNotification) => <Space>{i.response_info}</Space>
                     }
                 ]}
