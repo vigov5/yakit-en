@@ -153,10 +153,10 @@ export const HTTPFlowTableFormConfiguration: React.FC<HTTPFlowTableFormConfigura
                                 setVisible(false)
                             }}
                         >
-                            取消
+                            {i18next.t("取消")}
                         </YakitButton>
                         <YakitButton type='primary' onClick={() => onSaveSetting()}>
-                            保存
+                            {i18next.t("保存")}
                         </YakitButton>
                     </div>
                 </div>
@@ -185,7 +185,7 @@ export const HTTPFlowTableFormConfiguration: React.FC<HTTPFlowTableFormConfigura
                 <Form.Item
                     label={i18next.t("URL路径")}
                     name='urlPath'
-                    help={"可理解为 URI 匹配，例如 /main/index.php?a=123 或者 /*/index 或 /admin* "}
+                    help={i18next.t("可理解为 URI 匹配，例如 /main/index.php?a=123 或者 /*/index 或 /admin* ")}
                 >
                     <YakitSelect mode='tags'></YakitSelect>
                 </Form.Item>
@@ -197,7 +197,7 @@ export const HTTPFlowTableFormConfiguration: React.FC<HTTPFlowTableFormConfigura
                 </Form.Item>
                 <Form.Item label={" "} colon={false}>
                     <YakitButton type='text' onClick={reset}>
-                        重置
+                        {i18next.t("重置")}
                     </YakitButton>
                 </Form.Item>
             </Form>

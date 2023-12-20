@@ -826,7 +826,7 @@ export const HTTPFlowDetailRequestAndResponse: React.FC<HTTPFlowDetailRequestAnd
                 menu: [
                     {
                         key: "copy-request-base64-body",
-                        label: "复制请求Body (Base64)"
+                        label: i18next.t("复制请求Body (Base64)")
                     }
                 ],
                 onRun: () => {
@@ -843,7 +843,7 @@ export const HTTPFlowDetailRequestAndResponse: React.FC<HTTPFlowDetailRequestAnd
                 menu: [
                     {
                         key: "copy-response-base64-body",
-                        label: "复制响应Body (Base64)"
+                        label: i18next.t("复制响应Body (Base64)")
                     }
                 ],
                 onRun: () => {

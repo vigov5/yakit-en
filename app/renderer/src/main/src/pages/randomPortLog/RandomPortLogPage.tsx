@@ -116,11 +116,11 @@ export const RandomPortLogPage: React.FC<RandomPortLogPageProp> = (props) => {
                         render: (i: RandomPortTriggerNotification) => <CopyableField text={i?.RemoteAddr}/>
                     },
                     {
-                        title: "同主机其他连接(一分钟内)",
+                        title: i18next.t("同主机其他连接(一分钟内)"),
                         render: (i: RandomPortTriggerNotification) => i?.CurrentRemoteCachedConnectionCount || 1
                     },
                     {
-                        title: "同端口历史(一分钟内)",
+                        title: i18next.t("同端口历史(一分钟内)"),
                         render: (i: RandomPortTriggerNotification) => <Tooltip
                             title={i18next.t("对当前端口(${i?.LocalPort})来说，除了当前连接，还有${i?.LocalPortCachedHistoryConnectionCount || 1}个来自其他远端的连接", {v1: i?.LocalPort, v2: i?.LocalPortCachedHistoryConnectionCount || 1})}>
                             <a href="#" onClick={(e) => {

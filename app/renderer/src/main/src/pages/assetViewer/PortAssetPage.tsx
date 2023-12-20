@@ -395,7 +395,7 @@ export const PortAssetTable: React.FC<PortAssetTableProp> = (props) => {
                     })
                 })
                 .catch((e: any) => {
-                    failed("数据导出失败 " + `${e}`)
+                    failed(i18next.t("数据导出失败 ") + `${e}`)
                 })
         })
     })
@@ -637,7 +637,7 @@ export const PortAssetTable: React.FC<PortAssetTableProp> = (props) => {
                                             />
                                             <YakitPopconfirm
                                                 title={
-                                                    selected.length > 0 ? i18next.t("确定删除勾选数据吗？") : "确定清空列表数据吗?"
+                                                    selected.length > 0 ? i18next.t("确定删除勾选数据吗？") : i18next.t("确定清空列表数据吗?")
                                                 }
                                                 onConfirm={() => {
                                                     onRemove()

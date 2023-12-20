@@ -830,7 +830,7 @@ const BugTestExecutor: React.FC<YakBatchExecutorsProp> = (props) => {
                                                             wrapperCol={{span: 14}}
                                                         >
                                                             <InputInteger
-                                                                label={"并发量(线程)"}
+                                                                label={i18next.t("并发量(线程)")}
                                                                 setValue={(Concurrent) =>
                                                                     setParams({...params, Concurrent})
                                                                 }

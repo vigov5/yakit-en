@@ -76,7 +76,7 @@ export const InputCertificateForm: React.FC<InputCertificateFormProp> = React.fo
             {isShowCerName&&<Form.Item name='CerName' rules={[{required: true, message: i18next.t("该项必填")}]}>
                 <YakitInput placeholder={i18next.t("请为你的证书对取一个名字（必填）")} />
             </Form.Item>}
-            <Form.Item label={"客户端证书(PEM)"} name='CrtPem' rules={[{required: true, message: i18next.t("该项必填")}]}>
+            <Form.Item label={i18next.t("客户端证书(PEM)")} name='CrtPem' rules={[{required: true, message: i18next.t("该项必填")}]}>
                 <YakEditor
                     type={"html"}
                     noMiniMap={true}
@@ -88,7 +88,7 @@ export const InputCertificateForm: React.FC<InputCertificateFormProp> = React.fo
                     // value={Uint8ArrayToString(params.CrtPem)}
                 />
             </Form.Item>
-            <Form.Item label={"客户端私钥(PEM)"} name='KeyPem' rules={[{required: true, message: i18next.t("该项必填")}]}>
+            <Form.Item label={i18next.t("客户端私钥(PEM)")} name='KeyPem' rules={[{required: true, message: i18next.t("该项必填")}]}>
                 <YakEditor
                     type={"html"}
                     setValue={(KeyPem) => {

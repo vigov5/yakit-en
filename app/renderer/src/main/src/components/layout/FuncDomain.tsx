@@ -1994,11 +1994,11 @@ interface RisksProps {
 
 /** 漏洞与风险等级对应关系 */
 const RiskType: {[key: string]: string} = {
-    "信息/指纹": "info",
-    低危: "low",
-    中危: "middle",
-    高危: "high",
-    严重: "critical"
+    "Information/Fingerprint": "info",
+    "Low Risk": "low",
+    "Medium Risk": "middle",
+    "High Risk": "high",
+    "Critical": "critical"
 }
 const UIOpRisk: React.FC<UIOpRiskProp> = React.memo((props) => {
     const {isEngineLink} = props

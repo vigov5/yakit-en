@@ -169,7 +169,7 @@ const GeneralExporterForm: React.FC<GeneralExporterFormProp> = (props) => {
             </Form.Item>
             <Form.Item label={i18next.t("文件名")} valuePropName='checked'>
                 <YakitInput
-                    placeholder={"'*' 可作为随机字符串填空，不需要填写后缀"}
+                    placeholder={i18next.t("'*' 可作为随机字符串填空，不需要填写后缀")}
                     onChange={(e) => setParams({...params, FilePattern: e.target.value})}
                     value={params.FilePattern}
                 />

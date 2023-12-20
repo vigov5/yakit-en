@@ -823,7 +823,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
             setSubscribeClose(YakitRoute.ModifyYakitScript, {
                 close: {
                     title: i18next.t("插件未保存"),
-                    content: "是否要将修改内容保存到本地?",
+                    content: i18next.t("是否要将修改内容保存到本地?"),
                     confirmLoading: saveLoading,
                     onOk: (m) => {
                         modalRef.current = m
@@ -836,7 +836,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                 },
                 reset: {
                     title: i18next.t("插件未保存"),
-                    content: "是否要将修改内容保存到本地，并编辑另一个插件?",
+                    content: i18next.t("是否要将修改内容保存到本地，并编辑另一个插件?"),
                     confirmLoading: saveLoading,
                     onOk: (m) => {
                         modalRef.current = m
@@ -856,7 +856,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
             setSubscribeClose(YakitRoute.AddYakitScript, {
                 close: {
                     title: i18next.t("插件未保存"),
-                    content: "是否要将插件保存到本地?",
+                    content: i18next.t("是否要将插件保存到本地?"),
                     confirmLoading: saveLoading,
                     onOk: (m) => {
                         modalRef.current = m
@@ -869,7 +869,7 @@ export const PluginEditDetails: React.FC<PluginEditDetailsProps> = (props) => {
                 },
                 reset: {
                     title: i18next.t("插件未保存"),
-                    content: "是否要将插件保存到本地，并新建插件?",
+                    content: i18next.t("是否要将插件保存到本地，并新建插件?"),
                     confirmLoading: saveLoading,
                     onOk: (m) => {
                         modalRef.current = m
@@ -1449,7 +1449,7 @@ const PluginSyncAndCopyModal: React.FC<PluginSyncAndCopyModalProps> = memo((prop
                                 setType("private")
                             }}
                         >
-                            私密(仅自己可见)
+                            {i18next.t("私密(仅自己可见)")}
                         </Radio>
                         <Radio
                             className='plugins-radio-wrapper'
@@ -1459,7 +1459,7 @@ const PluginSyncAndCopyModal: React.FC<PluginSyncAndCopyModalProps> = memo((prop
                                 setType("public")
                             }}
                         >
-                            公开(审核通过后，将上架到插件商店)
+                            {i18next.t("公开(审核通过后，将上架到插件商店)")}
                         </Radio>
                     </div>
                 </div>

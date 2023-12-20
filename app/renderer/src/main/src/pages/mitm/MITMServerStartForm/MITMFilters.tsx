@@ -66,7 +66,7 @@ export const MITMFilters: React.FC<MITMFiltersProp> = React.forwardRef((props, r
                 </Form.Item>
                 <Form.Item
                     label={i18next.t("包含 URL 路径")}
-                    help={"可理解为 URI 匹配，例如 /main/index.php?a=123 或者 /*/index 或 /admin* "}
+                    help={i18next.t("可理解为 URI 匹配，例如 /main/index.php?a=123 或者 /*/index 或 /admin* ")}
                 >
                     <YakitSelect
                         mode='tags'
@@ -76,7 +76,7 @@ export const MITMFilters: React.FC<MITMFiltersProp> = React.forwardRef((props, r
                         }}
                     ></YakitSelect>
                 </Form.Item>
-                <Form.Item label={i18next.t("排除 URL 路径")} help={"可理解为 URI 过滤，例如 /main/index "}>
+                <Form.Item label={i18next.t("排除 URL 路径")} help={i18next.t("可理解为 URI 过滤，例如 /main/index ")}>
                     <YakitSelect
                         mode='tags'
                         value={params?.excludeUri || undefined}

@@ -244,7 +244,7 @@ export const HTTPFuzzerPageTable: React.FC<HTTPFuzzerPageTableProps> = React.mem
                           }
                       },
                       {
-                          title: "延迟(ms)",
+                          title: i18next.t("延迟(ms)"),
                           dataKey: "DurationMs",
                           width: 100,
                           sorterProps: {

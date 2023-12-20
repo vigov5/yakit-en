@@ -215,7 +215,7 @@ export const YakScriptCreatorForm: React.FC<YakScriptCreatorFormProp> = (props) 
         }
         setSubscribeClose(YakitRoute.AddYakitScript, {"close":{
             title: i18next.t("插件未保存"),
-            content: "是否要保存该插件?",
+            content: i18next.t("是否要保存该插件?"),
             confirmLoading: saveLoading,
             onOk: (m) => {
                 modalRef.current = m
@@ -531,7 +531,7 @@ export const YakScriptCreatorForm: React.FC<YakScriptCreatorFormProp> = (props) 
                                     >{i18next.t("默认启动")}{" "}
                                         <Tooltip
                                             title={
-                                                "设置默认启动后，将在恰当时候启动该插件(Yak插件不会自动启动，但会自动增加在左侧基础安全工具菜单栏)"
+                                                i18next.t("设置默认启动后，将在恰当时候启动该插件(Yak插件不会自动启动，但会自动增加在左侧基础安全工具菜单栏)")
                                             }
                                         >
                                             <Button type={"link"} icon={<QuestionCircleOutlined />} />
@@ -755,23 +755,23 @@ export const YakScriptFormContent: React.FC<YakScriptFormContentProps> = (props)
                                 <List.Item key={p.Field}>
                                     <Space size={1}>
                                         {p.Required && <div className='form-item-required-title'>*</div>}
-                                        参数名：
+                                        {i18next.t("参数名：")}
                                     </Space>
                                     <Tag color={"geekblue"}>
                                         {p.FieldVerbose && `${p.FieldVerbose} / `}
                                         {p.Field}
                                     </Tag>{i18next.t("类型：")}
                                     <Tag color={"blue"}>
-                                        {p.TypeVerbose} {p.DefaultValue && `默认值：${p.DefaultValue}`}
+                                        {p.TypeVerbose} {p.DefaultValue && i18next.t(`默认值`) + `：${p.DefaultValue}`}
                                     </Tag>
-                                    {p.DefaultValue && `默认值为: ${p.DefaultValue}`}
+                                    {p.DefaultValue && i18next.t(`默认值为`) + `: ${p.DefaultValue}`}
                                     {(!isNucleiPoC && (
                                         <Space style={{marginLeft: 20}}>
                                             <Button
                                                 size={"small"}
                                                 onClick={() => {
                                                     let m = showModal({
-                                                        title: `修改已知参数: ${p.FieldVerbose}(${p.Field})`,
+                                                        title: i18next.t("修改已知参数: ${p.FieldVerbose}(${p.Field})", { v1: p.FieldVerbose, v2: p.Field }),
                                                         width: "60%",
                                                         content: (
                                                             <>
@@ -855,7 +855,7 @@ export const YakScriptFormContent: React.FC<YakScriptFormContentProps> = (props)
                             setValue={(res) => {
                                 setParams({...params, PluginSelectorTypes: res})
                             }}
-                            help={"通过 cli.String(`yakit-plugin-file`) 获取用户选择的插件"}
+                            help={i18next.t("通过 cli.String(`yakit-plugin-file`) 获取用户选择的插件")}
                             disabled={disabled}
                         />
                     )}
@@ -1073,7 +1073,7 @@ export const CreateYakScriptParamForm: React.FC<CreateYakScriptParamFormProp> = 
                     help={i18next.t("参数名应该避免特殊符号，只允许英文 / '-' 等")}
                 />
                 <InputItem
-                    label={"参数显示名称(可中文)"}
+                    label={i18next.t("参数显示名称(可中文)")}
                     placeholder={i18next.t("输入想要显示的参数名")}
                     setValue={(FieldVerbose) => setParams({...params, FieldVerbose})}
                     value={params.FieldVerbose}
@@ -1105,7 +1105,7 @@ export const CreateYakScriptParamForm: React.FC<CreateYakScriptParamFormProp> = 
                         placeholder={i18next.t("该参数的默认值")}
                         setValue={(DefaultValue) => setParams({...params, DefaultValue})}
                         value={params.DefaultValue}
-                        help={params.TypeVerbose === "select" ? "使用 逗号(,) 作为选项分隔符 " : undefined}
+                        help={params.TypeVerbose === "select" ? i18next.t("使用 逗号(,) 作为选项分隔符 ") : undefined}
                     />
                 )}
                 {["boolean"].includes(params.TypeVerbose) && (
@@ -1143,7 +1143,7 @@ export const CreateYakScriptParamForm: React.FC<CreateYakScriptParamFormProp> = 
                 <Form.Item colon={false} label={" "}>
                     <Button type='primary' htmlType='submit'>
                         {" "}
-                        添加参数{" "}
+                        {i18next.t("添加参数")}{" "}
                     </Button>
                 </Form.Item>
             </Form>
@@ -1223,7 +1223,7 @@ export const YakScriptLargeEditor: React.FC<YakScriptLargeEditorProp> = (props) 
                             }}
                         >
                             {" "}
-                            调试：创建(修改)并立即执行{" "}
+                            {i18next.t("调试：创建(修改)并立即执行")}{" "}
                         </Button>
                     </Space>
                 }

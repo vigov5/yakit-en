@@ -307,7 +307,7 @@ export const NewPayloadTable: React.FC<NewPayloadTableProps> = (props) => {
                             }}
                         />
                     )}
-                    序号
+                    {i18next.t("序号")}
                 </div>
             ),
             dataIndex: "index",

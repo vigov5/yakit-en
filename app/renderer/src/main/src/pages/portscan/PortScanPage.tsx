@@ -901,7 +901,7 @@ export const ScanPortForm: React.FC<ScanPortFormProp> = (props) => {
                     <Divider orientation={"left"}>{i18next.t("基础爬虫配置")}</Divider>
                     <Form.Item
                         label={i18next.t("爬虫设置")}
-                        help={"在发现网站内容是一个 HTTP(s) 服务后，进行最基础的爬虫以发现更多数据"}
+                        help={i18next.t("在发现网站内容是一个 HTTP(s) 服务后，进行最基础的爬虫以发现更多数据")}
                     >
                         <Space>
                             <Checkbox

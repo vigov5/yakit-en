@@ -1241,7 +1241,7 @@ const AddAllPlugin: React.FC<AddAllPluginProps> = (props) => {
                     OnlineIDs: onlineIDs
                 } as DownloadOnlinePluginByIdsRequest)
                 .then(() => {
-                    yakitNotify("success", `共添加${selectedRowKeysRecord.length}条数据到本地`)
+                    yakitNotify("success", i18next.t("共添加${selectedRowKeysRecord.length}条数据到本地", { v1: selectedRowKeysRecord.length }))
                     onFinish()
                 })
                 .catch((e) => {

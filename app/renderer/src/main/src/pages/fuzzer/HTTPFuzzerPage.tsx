@@ -674,7 +674,7 @@ const HTTPFuzzerPage: React.FC<HTTPFuzzerPageProp> = (props) => {
         setSubscribeClose(YakitRoute.HTTPFuzzer, {
             close: {
                 title: i18next.t("关闭提示"),
-                content: "关闭一级菜单会关闭一级菜单下的所有二级菜单?",
+                content: i18next.t("关闭一级菜单会关闭一级菜单下的所有二级菜单?"),
                 onOkText: i18next.t("确定"),
                 onCancelText: i18next.t("取消"),
                 onOk: (m) => onCloseTab(m)

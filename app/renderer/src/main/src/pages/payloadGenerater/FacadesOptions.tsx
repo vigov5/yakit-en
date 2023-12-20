@@ -129,7 +129,7 @@ export const FacadeOptions: React.FC<FacadeOptionsProp> = (props) => {
                     <Form.Item colon={false} label={""}>
                         <Button type='primary' htmlType='submit'>
                             {" "}
-                            启动FacadeServer{" "}
+                            {i18next.t("启动FacadeServer")}{" "}
                         </Button>
                     </Form.Item>
                 </Form>

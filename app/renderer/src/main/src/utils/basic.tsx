@@ -136,7 +136,7 @@ export const YakitVersion: React.FC<YakVersionProp> = (props) => {
                             openExternalWebsite("https://github.com/yaklang/yakit/releases")
                         }}
                     >Yakit Github 发布界面</Button> 下载最新版并升级！ */}
-                        我们推荐您点击右上角退出到启用页升级最新版
+                        {i18next.t("我们推荐您点击右上角退出到启用页升级最新版")}
                     </>
                 })
             }}>

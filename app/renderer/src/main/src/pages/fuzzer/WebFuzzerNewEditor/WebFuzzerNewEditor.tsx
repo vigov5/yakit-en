@@ -101,7 +101,7 @@ export const WebFuzzerNewEditor: React.FC<WebFuzzerNewEditorProps> = React.memo(
                             key: "insert-label-tag",
                             label: i18next.t("插入标签/字典"),
                             children: [
-                                {key: "insert-nullbyte", label: "插入空字节标签: {{hexd(00)}}"},
+                                {key: "insert-nullbyte", label: i18next.t("插入空字节标签: {{hexd(00)}}")},
                                 {key: "insert-temporary-file-tag", label: i18next.t("插入临时字典")},
                                 {key: "insert-intruder-tag", label: i18next.t("插入模糊测试字典标签")},
                                 {key: "insert-hotpatch-tag", label: i18next.t("插入热加载标签")},

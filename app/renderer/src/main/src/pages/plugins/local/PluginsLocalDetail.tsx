@@ -220,7 +220,7 @@ export const PluginsLocalDetail: React.FC<PluginsLocalDetailProps> = (props) => 
     const onAddToMenu = useMemoizedFn(() => {
         if (!plugin) return
         const m = showYakitModal({
-            title: `添加到菜单栏中[${plugin.Id}]`,
+            title: i18next.t("添加到菜单栏中[${plugin.Id}]", { v1: plugin.Id }),
             content: <AddToMenuActionForm visible={true} setVisible={() => m.destroy()} script={plugin} />,
             onCancel: () => {
                 m.destroy()

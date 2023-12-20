@@ -173,7 +173,7 @@ export const FuzzerResponseTableEx: React.FC<FuzzerResponseTableProp> = React.me
                 }, width: 300,
             },
             {
-                name: "延迟(ms)",
+                name: i18next.t("延迟(ms)"),
                 code: "DurationMs",
                 render: (value: any, row: any, rowIndex: number) => {
                     return value

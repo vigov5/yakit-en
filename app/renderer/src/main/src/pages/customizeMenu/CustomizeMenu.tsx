@@ -1112,7 +1112,7 @@ const SystemRouteMenuDataItem: React.FC<SystemRouteMenuDataItemProps> = React.me
                 <>
                     {isHovering ? (
                         <div className={style["menu-cancel"]} onClick={() => onRemoveMenu(item)}>
-                            取&nbsp;消
+                            {i18next.t("取消")}
                         </div>
                     ) : (
                         <div className={style["have-add"]}>{i18next.t("已添加")}</div>
@@ -1315,7 +1315,7 @@ const PluginLocalItem: React.FC<PluginLocalItemProps> = React.memo((props) => {
                 <>
                     {isHovering ? (
                         <div className={style["menu-cancel"]} onClick={() => onRemove()}>
-                            取&nbsp;消
+                            {i18next.t("取消")}
                         </div>
                     ) : (
                         <div className={style["have-add"]}>{i18next.t("已添加")}</div>

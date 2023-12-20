@@ -79,7 +79,7 @@ export const AllKillEngineConfirm: React.FC<AllKillEngineConfirmProps> = React.m
             for (let i of otherPS) {
                 killFlag = await ipcRenderer.invoke("kill-yak-grpc", i.pid)
                 if (!!killFlag) {
-                    failed(`引擎进程(pid:${i.pid},port:${i.port})关闭失败 ${killFlag}`)
+                    failed(i18next.t("引擎进程(pid:${i.pid},port:${i.port})关闭失败 ${killFlag}", {v1: i.pid, v2: i.port, v3: killFlag}))
                     setLoading(false)
                     return
                 } else {
@@ -132,17 +132,17 @@ export const AllKillEngineConfirm: React.FC<AllKillEngineConfirmProps> = React.m
                     </div>
                     {!loading && (
                         <div className={styles["body-content"]}>
-                            关闭所有引擎，包括正在连接的本地引擎进程，同时页面将进入加载页。
+                            {i18next.t("关闭所有引擎，包括正在连接的本地引擎进程，同时页面将进入加载页。")}
                         </div>
                     )}
 
                     {!loading && (
                         <div className={styles["body-btn"]}>
                             <YakitButton loading={loading} type='outline2' size='max' onClick={onCancel}>
-                                稍后再说
+                                {i18next.t("稍后再说")}
                             </YakitButton>
                             <YakitButton loading={loading} size='max' onClick={onOK}>
-                                立即关闭
+                                {i18next.t("立即关闭")}
                             </YakitButton>
                         </div>
                     )}

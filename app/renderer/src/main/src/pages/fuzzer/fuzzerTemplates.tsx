@@ -338,7 +338,7 @@ export const encodeOperators: FuzzOperatorItem[] = [
             <EncodeTag
                 {...{origin: s, setOrigin: callback}}
                 tag={"str"}
-                help={'解析成字符串（例如{{str("\xA0\x45")}}），用于转换不可见字符'}
+                help={i18next.t('解析成字符串（例如{{str("\xA0\x45")}}），用于转换不可见字符')}
             />
         ),
         tag: "str"

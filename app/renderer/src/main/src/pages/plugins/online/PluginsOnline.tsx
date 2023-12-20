@@ -950,7 +950,7 @@ const PluginsOnlineHeard: React.FC<PluginsOnlineHeardProps> = React.memo((props)
                     <div className={styles["plugin-online-heard-content-top-tip"]}>Hello everyone! 👋</div>
                     <div className={styles["plugin-online-heard-content-top-title"]}>{i18next.t("Yakit 插件商店")}</div>
                     <div className={styles["plugin-online-heard-content-top-subTitle"]}>
-                        未封闭的牛头&nbsp;&nbsp;YAK&nbsp;等待你来填满
+                        {i18next.t("未封闭的牛头")}&nbsp;&nbsp;YAK&nbsp;{i18next.t("等待你来填满")}
                     </div>
                     <YakitCombinationSearchCircle value={search} onChange={setSearch} onSearch={onSearch} />
                 </div>

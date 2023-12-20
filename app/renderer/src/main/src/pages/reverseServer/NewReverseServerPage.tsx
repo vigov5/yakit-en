@@ -63,7 +63,7 @@ export const NewReverseServerPage: React.FC<FacadeOptionsProp> = (props) => {
                 setStatus("start")
             })
             .catch((e: any) => {
-                failed("启动FacadeServer失败: " + `${e}`)
+                failed(i18next.t("启动FacadeServer失败: ") + `${e}`)
             })
     })
 
@@ -183,7 +183,7 @@ export const SettingReverseServer: React.FC<SettingReverseServerProp> = (props) 
             })
             .then((data: {IP: string}) => (remoteIp.current = data.IP))
             .catch((e: any) => {
-                failed("获取远程地址失败: " + `${e}`)
+                failed(i18next.t("获取远程地址失败: ") + `${e}`)
                 remoteIp.current = ""
             })
             .finally(() => setTimeout(() => setLoading(false), 300))
@@ -219,7 +219,7 @@ export const SettingReverseServer: React.FC<SettingReverseServerProp> = (props) 
                                             <Text code={true} copyable={true}>
                                                 yak bridge --secret [your-pass]
                                             </Text>{" "}
-                                            启动 Yak Bridge 公网服务 <Divider type={"vertical"} />
+                                            {i18next.t("启动 Yak Bridge 公网服务")} <Divider type={"vertical"} />
                                             <Text style={{color: "#999"}}>yak version {`>=`} v1.0.11-sp9</Text>
                                         </div>
                                     }

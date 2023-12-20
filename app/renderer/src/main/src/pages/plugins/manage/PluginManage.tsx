@@ -916,7 +916,7 @@ const ModifyAuthorModal: React.FC<ModifyAuthorModalProps> = memo((props) => {
                     label={<>{i18next.t("作者：")}</>}
                     help={
                         <>{i18next.t("共选择了")} <span className={styles["modify-author-hint-span"]}>{plugins.length || 0}</span>{" "}
-                            个插件
+                            {i18next.t("个插件")}
                         </>
                     }
                     validateStatus={status}

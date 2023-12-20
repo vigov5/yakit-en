@@ -42,8 +42,8 @@ export const ShellReceiverPage: React.FC<ShellReceiverPageProp> = (props) => {
         }
 
         if (addrs.includes(addr)) {
-            Modal.error({title: "该地址已经被占用: " + addr})
-            failed("该地址已经被占用: " + addr)
+            Modal.error({ title: i18next.t("该地址已经被占用: ") + addr})
+            failed(i18next.t("该地址已经被占用: ") + addr)
             return;
         }
 

@@ -311,7 +311,7 @@ export const JavaPayloadPage: React.FC<JavaPayloadPageProp> = React.memo((props)
                 }, 200)
             })
             .catch((e: any) => {
-                failed("启动FacadeServer失败: " + `${e}`)
+                failed(i18next.t("启动FacadeServer失败: ") + `${e}`)
             })
             .finally(() => setTimeout(() => setLoading(false), 300))
     }
@@ -352,7 +352,7 @@ export const JavaPayloadPage: React.FC<JavaPayloadPageProp> = React.memo((props)
                         setRemoteIp(data.IP)
                         startUpFacadeServer(value, reverseAddr, data.IP)
                     })
-                    .catch((e: any) => failed("获取远程地址失败: " + `${e}`))
+                    .catch((e: any) => failed(i18next.t("获取远程地址失败: ") + `${e}`))
                     .finally(() => setTimeout(() => setLoading(false), 300))
             } else startUpFacadeServer(value, reverseAddr, "")
         }
@@ -436,7 +436,7 @@ export const JavaPayloadPage: React.FC<JavaPayloadPageProp> = React.memo((props)
                                                                                 >
                                                                                     yak bridge --secret [your-pass]
                                                                                 </Typography.Text>{" "}
-                                                                                启动 Yak Bridge 公网服务{" "}
+                                                                                {i18next.t("启动 Yak Bridge 公网服务")}{" "}
                                                                                 <Divider type={"vertical"} />
                                                                                 <Typography.Text
                                                                                     style={{color: "#fff"}}
@@ -736,7 +736,7 @@ export const PayloadForm: React.FC<PayloadFormProp> = React.memo((props) => {
                 })
                 useGadget ? setOptions(optionArr) : setSelectOptions(optionArr)
             })
-            .catch((e: any) => failed(`${isGadget ? "获取利用链失败: " : "获取恶意类失败: "} ${e}`))
+            .catch((e: any) => failed(`${isGadget ? i18next.t("获取利用链失败: ") : i18next.t("获取恶意类失败: ")} ${e}`))
     }
     const loadClassOptions = useMemoizedFn((selectedOptions: any[]) => {
         const targetOption = selectedOptions[selectedOptions.length - 1]
@@ -1046,7 +1046,7 @@ export const PayloadForm: React.FC<PayloadFormProp> = React.memo((props) => {
                                         placeholder={
                                             item.Type === FormParamsType.Base64Bytes
                                                 ? i18next.t("填写内容需Base64编码")
-                                                : `请输入${item.KeyVerbose}`
+                                                : i18next.t("请输入${item.KeyVerbose}", {v1: item.KeyVerbose})
                                         }
                                         value={params[item.Key] as string}
                                         onChange={(e) => setParamsValue([{key: item.Key, value: e.target.value}])}
@@ -1185,7 +1185,7 @@ export const PayloadCode: React.FC<PayloadCodeProp> = React.memo((props) => {
                     })
             })
             .catch((e: any) => {
-                failed("生成Base64失败: " + `${e}`)
+                failed(i18next.t("生成Base64失败: ") + `${e}`)
             })
             .finally(() => setTimeout(() => setLoading(false), 300))
     })
@@ -1200,7 +1200,7 @@ export const PayloadCode: React.FC<PayloadCodeProp> = React.memo((props) => {
                 setCode(Buffer.from(d.Bytes).toString("hex"))
             })
             .catch((e: any) => {
-                failed("生成字节码失败: " + `${e}`)
+                failed(i18next.t("生成字节码失败: ") + `${e}`)
             })
             .finally(() => setTimeout(() => setLoading(false), 300))
     })
@@ -1217,7 +1217,7 @@ export const PayloadCode: React.FC<PayloadCodeProp> = React.memo((props) => {
                 setCode(d.Code)
             })
             .catch((e: any) => {
-                failed("生成代码失败: " + `${e}`)
+                failed(i18next.t("生成代码失败: ") + `${e}`)
             })
             .finally(() => setTimeout(() => setLoading(false), 300))
     })

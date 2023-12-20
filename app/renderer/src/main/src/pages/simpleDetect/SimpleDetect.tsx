@@ -1167,7 +1167,7 @@ export const DownloadAllPlugin: React.FC<DownloadAllPluginProps> = (props) => {
                 </Button>
             ) : (
                 <Popconfirm
-                    title={"确定将插件商店所有数据导入到本地吗?"}
+                        title={i18next.t("确定将插件商店所有数据导入到本地吗?")}
                     onConfirm={AddAllPlugin}
                     okText='Yes'
                     cancelText='No'
@@ -1178,7 +1178,7 @@ export const DownloadAllPlugin: React.FC<DownloadAllPluginProps> = (props) => {
             )}
             {userInfo.role !== "admin" && (
                 <Popconfirm
-                    title={"确定将插件商店所有本地数据清除吗?"}
+                    title={i18next.t("确定将插件商店所有本地数据清除吗?")}
                     onConfirm={onRemoveAllLocalPlugin}
                     okText='Yes'
                     cancelText='No'

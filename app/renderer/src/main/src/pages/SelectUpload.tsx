@@ -130,7 +130,7 @@ const SelectUpload: React.FC<SelectUploadProps> = (props) => {
                     setProjectList(rsp.Projects)
                     setPagination({...getPagination(), Limit: rsp.Pagination.Limit, Page: rsp.Pagination.Page})
                 } catch (e) {
-                    failed("处理项目数据失败: " + `${e}`)
+                    failed(i18next.t("处理项目数据失败: ") + `${e}`)
                 }
             })
             .catch((e) => {

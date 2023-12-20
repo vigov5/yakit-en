@@ -25,7 +25,7 @@ export const HTTPFlowForWebsocketViewer: React.FC<HTTPFlowForWebsocketViewerProp
                 {value: "request", text: i18next.t("请求")},
                 {value: "response", text: i18next.t("响应")},
             ]} value={mode} setValue={setMode} size={"small"} formItemStyle={{marginBottom: 0}}/>
-            <Tag>{mode === "request" ? `请求大小：${flow.RequestSizeVerbose}` : `Body大小: ${flow.BodySizeVerbose}`}</Tag>
+            <Tag>{mode === "request" ? i18next.t("请求大小") + `：${flow.RequestSizeVerbose}` : i18next.t("Body大小") + `: ${flow.BodySizeVerbose}`}</Tag>
         </Space>} size={"small"}
         bodyStyle={{padding: 0}}
         extra={<Space>

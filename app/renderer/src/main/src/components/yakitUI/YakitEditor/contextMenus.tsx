@@ -8,7 +8,7 @@ import { YakitButton } from "../YakitButton/YakitButton"
 import { monacoEditorClear, monacoEditorWrite } from "@/pages/fuzzer/fuzzerTemplates"
 import { failed } from "@/utils/notification"
 import { fetchCursorContent, fetchSelectionRange } from "./editorUtils"
-
+import i18next from "../../../i18n"
 
 const { ipcRenderer } = window.require("electron")
 
@@ -18,18 +18,18 @@ export const baseMenuLists: OtherMenuListProps = {
         menu: [
             {
                 key: "font-size",
-                label: "字体大小",
+                label: i18next.t("字体大小"),
                 children: [
-                    { key: "font-size-small", label: "小" },
-                    { key: "font-size-middle", label: "中" },
-                    { key: "font-size-large", label: "大" }
+                    { key: "font-size-small", label: i18next.t("小") },
+                    { key: "font-size-middle", label: i18next.t("中") },
+                    { key: "font-size-large", label: i18next.t("大") }
                 ]
             }
         ],
         onRun: (editor: YakitIMonacoEditor, key: string) => { }
     },
     cut: {
-        menu: [{ key: "cut", label: "剪切" }],
+        menu: [{ key: "cut", label: i18next.t("剪切") }],
         onRun: (editor: YakitIMonacoEditor, key: string) => {
             if (editor?.executeEdits) {
                 /** 获取需要剪切的范围 */
@@ -54,14 +54,14 @@ export const baseMenuLists: OtherMenuListProps = {
         }
     },
     copy: {
-        menu: [{ key: "copy", label: "复制" }],
+        menu: [{ key: "copy", label: i18next.t("复制") }],
         onRun: (editor: YakitIMonacoEditor, key: string) => {
             if (editor) ipcRenderer.invoke("set-copy-clipboard", `${fetchCursorContent(editor, true)}`)
             return
         }
     },
     paste: {
-        menu: [{ key: "paste", label: "粘贴" }],
+        menu: [{ key: "paste", label: i18next.t("粘贴") }],
         onRun: (editor: YakitIMonacoEditor, key: string) => {
             if (!editor) return
 
@@ -99,24 +99,24 @@ interface MutateHTTPRequestParams {
 
 /** @name 编码模块子菜单 */
 const codeSubmenu: { key: string; label: string }[] = [
-    { key: "double-urlencode", label: "双重 URL 编码" },
-    { key: "base64-url-encode", label: "先 Base64 后 URL 编码" },
-    { key: "base64", label: "Base64 编码" },
-    { key: "hex-encode", label: "HEX 编码（十六进制编码）" },
-    { key: "htmlencode", label: "HTML 编码" },
+    { key: "double-urlencode", label: i18next.t("双重 URL 编码") },
+    { key: "base64-url-encode", label: i18next.t("先 Base64 后 URL 编码") },
+    { key: "base64", label: i18next.t("Base64 编码") },
+    { key: "hex-encode", label: i18next.t("HEX 编码（十六进制编码）") },
+    { key: "htmlencode", label: i18next.t("HTML 编码") },
     { key: "unicode-encode", label: "Unicode 编码（\\uXXXX 编码）" },
-    { key: "urlencode", label: "URL 编码" },
-    { key: "urlescape", label: "URL 编码(只编码特殊字符)" }
+    { key: "urlencode", label: i18next.t("URL 编码") },
+    { key: "urlescape", label: i18next.t("URL 编码(只编码特殊字符)") }
 ]
 /** @name 解码模块子菜单 */
 const decodeSubmenu: { key: string; label: string }[] = [
-    { key: "url-base64-decode", label: "先 URL 后 Base64 解码" },
-    { key: "base64-decode", label: "Base64 解码" },
-    { key: "hex-decode", label: "HEX 解码（十六进制解码）" },
-    { key: "htmldecode", label: "HTML 解码" },
-    { key: "jwt-parse-weak", label: "JWT 解析（同时测试弱 Key）" },
+    { key: "url-base64-decode", label: i18next.t("先 URL 后 Base64 解码") },
+    { key: "base64-decode", label: i18next.t("Base64 解码") },
+    { key: "hex-decode", label: i18next.t("HEX 解码（十六进制解码）") },
+    { key: "htmldecode", label: i18next.t("HTML 解码") },
+    { key: "jwt-parse-weak", label: i18next.t("JWT 解析（同时测试弱 Key）") },
     { key: "unicode-decode", label: "Unicode 解码（\\uXXXX 解码）" },
-    { key: "urlunescape", label: "URL 解码" }
+    { key: "urlunescape", label: i18next.t("URL 解码") }
 ]
 /** @name 自定义HTTP数据包变形模块子菜单 */
 /** @name HTTP数据包变形模块子菜单 */
@@ -128,7 +128,7 @@ const httpSubmenu: {
 }[] = [
         {
             key: "mutate-http-method-get",
-            label: "改变 HTTP 方法成 GET",
+            label: i18next.t("改变 HTTP 方法成 GET"),
             params: { FuzzMethods: ["GET"] } as MutateHTTPRequestParams,
             keybindings: [
                 process.platform === "darwin" ? YakitEditorKeyCode.Meta : YakitEditorKeyCode.Control,
@@ -138,16 +138,16 @@ const httpSubmenu: {
         },
         {
             key: "mutate-http-method-post",
-            label: "改变 HTTP 方法成 POST",
+            label: i18next.t("改变 HTTP 方法成 POST"),
             params: { FuzzMethods: ["POST"] } as MutateHTTPRequestParams
         },
         {
             key: "mutate-http-method-head",
-            label: "改变 HTTP 方法成 HEAD",
+            label: i18next.t("改变 HTTP 方法成 HEAD"),
             params: { FuzzMethods: ["HEAD"] } as MutateHTTPRequestParams
         },
-        { key: "mutate-chunked", label: "HTTP Chunk 编码", params: { ChunkEncode: true } as MutateHTTPRequestParams },
-        { key: "mutate-upload", label: "修改为上传数据包", params: { UploadEncode: true } as MutateHTTPRequestParams }
+        { key: "mutate-chunked", label: i18next.t("HTTP Chunk 编码"), params: { ChunkEncode: true } as MutateHTTPRequestParams },
+        { key: "mutate-upload", label: i18next.t("修改为上传数据包"), params: { UploadEncode: true } as MutateHTTPRequestParams }
     ]
 /** @name 内置菜单组配置信息 */
 
@@ -156,7 +156,7 @@ export const extraMenuLists: OtherMenuListProps = {
         menu: [
             {
                 key: "code",
-                label: "编码",
+                label: i18next.t("编码"),
                 children: [...codeSubmenu] as any as EditorMenuItemType[]
             }
         ],
@@ -174,7 +174,7 @@ export const extraMenuLists: OtherMenuListProps = {
         menu: [
             {
                 key: "decode",
-                label: "解码",
+                label: i18next.t("解码"),
                 children: [...decodeSubmenu] as any as EditorMenuItemType[]
             }
         ],
@@ -192,7 +192,7 @@ export const extraMenuLists: OtherMenuListProps = {
         menu: [
             {
                 key: "http",
-                label: "HTTP数据包变形",
+                label: i18next.t("HTTP数据包变形"),
                 children: [...httpSubmenu] as any as EditorMenuItemType[]
             }
         ],
@@ -212,7 +212,7 @@ export const extraMenuLists: OtherMenuListProps = {
         menu: [
             {
                 key: "customhttp",
-                label: "自定义HTTP数据包变形",
+                label: i18next.t("自定义HTTP数据包变形"),
                 //  generate from YakitEditor.tsx
                 children: [],
             }
@@ -246,7 +246,7 @@ const execCodec = async (
                     width: "50%",
                     content: (
                         <AutoCard
-                            title={"编码结果"}
+                            title={i18next.t("编码结果")}
                             bordered={false}
                             extra={
                                 <YakitButton
@@ -260,8 +260,7 @@ const execCodec = async (
                                         }
                                         m.destroy()
                                     }}
-                                >
-                                    替换内容
+                                >{i18next.t("替换内容")}
                                 </YakitButton>
                             }
                             size={"small"}
@@ -276,7 +275,7 @@ const execCodec = async (
 
             if (noPrompt) {
                 showModal({
-                    title: "编码结果",
+                    title: i18next.t("编码结果"),
                     width: "50%",
                     content: (
                         <div style={{ width: "100%" }}>

@@ -161,7 +161,7 @@ export const ChaosMakerOperators: React.FC<ChaosMakerOperatorsProp> = (props) =>
                                                             okButtonProps: {hidden: true},
                                                             cancelButtonProps: {hidden: true},
                                                         })
-                                                        failed(`添加 BAS Agent 失败：${data.Reason}`)
+                                                        failed(i18next.t(`添加 BAS Agent 失败`) + `：${data.Reason}`)
                                                     }
                                                 }}/>
                                             )

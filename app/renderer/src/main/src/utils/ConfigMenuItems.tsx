@@ -148,7 +148,7 @@ const ConfigMenuItems: React.FC<ConfigMenuItemsProp> = (props) => {
                             {(mode === "import" || mode === "import-file") && (
                                 <Button type='primary' htmlType='submit'>
                                     {" "}
-                                    导入{" "}
+                                    {i18next.t("导入")}{" "}
                                 </Button>
                             )}
                             <Popconfirm
@@ -162,7 +162,7 @@ const ConfigMenuItems: React.FC<ConfigMenuItemsProp> = (props) => {
                             >
                                 <Button type={"primary"} danger={true}>
                                     {" "}
-                                    删除全部{" "}
+                                    {i18next.t("删除全部")}{" "}
                                 </Button>
                             </Popconfirm>
                         </Space>

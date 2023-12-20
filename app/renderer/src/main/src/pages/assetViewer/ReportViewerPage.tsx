@@ -168,7 +168,7 @@ export const ReportList: React.FC<ReportListProp> = (props) => {
                         title={
                             selectedRowKeys.length > 0
                                 ? i18next.t("确定删除选择的报告吗？不可恢复")
-                                : "确定删除所有报告吗? 不可恢复"
+                                : i18next.t("确定删除所有报告吗? 不可恢复")
                         }
                         onConfirm={onRemove}
                     >

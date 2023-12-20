@@ -284,14 +284,14 @@ export const ReverseServer_New: React.FC<FacadeOptionsProp> = (props) => {
                                 resolve()
                             })
                             .catch((e: any) => {
-                                failed("启动FacadeServer失败: " + `${e}`)
+                                failed(i18next.t("启动FacadeServer失败: ") + `${e}`)
                                 setFacadesIsConnect(false)
                                 reject(e)
                             })
                             .finally()
                     })
                     .catch((e: any) => {
-                        failed("获取远程地址失败: " + `${e}`)
+                        failed(i18next.t("获取远程地址失败: ") + `${e}`)
                         ipcRenderer.invoke("cancel-StartFacadesWithYsoObject", token)
                         setFacadesIsConnect(false)
                         reject(e)
@@ -312,7 +312,7 @@ export const ReverseServer_New: React.FC<FacadeOptionsProp> = (props) => {
                         resolve()
                     })
                     .catch((e: any) => {
-                        failed("启动FacadeServer失败: " + `${e}`)
+                        failed(i18next.t("启动FacadeServer失败: ") + `${e}`)
                         setFacadesIsConnect(false)
                         reject(e)
                     })

@@ -76,22 +76,22 @@ const mergeFieldNames = (f: Fields) => {
 }
 
 export const cellColorFontSetting = {
-    调试信息: {
+    "Debug Information": {
         font: {
             color: {rgb: "000000"}
         }
     },
-    "信息/指纹": {
+    "Information/Fingerprint": {
         font: {
             color: {rgb: "8c8c8c"}
         }
     },
-    中危: {
+    "Medium Risk": {
         font: {
             color: {rgb: "ff7a45"}
         }
     },
-    严重: {
+    "Critical": {
         font: {
             color: {rgb: "a8071a"}
         }
@@ -502,7 +502,7 @@ export const RiskTable: React.FC<RiskTableProp> = (props) => {
                     })
                 })
                 .catch((e) => {
-                    failed("数据导出失败 " + `${e}`)
+                    failed(i18next.t("数据导出失败 ") + `${e}`)
                 })
         })
     })
@@ -560,7 +560,7 @@ export const RiskTable: React.FC<RiskTableProp> = (props) => {
                                             title={
                                                 selectedRowKeys.length > 0
                                                     ? i18next.t("确定删除选择的风险与漏洞吗？不可恢复")
-                                                    : "确定删除所有风险与漏洞吗? 不可恢复"
+                                                    : i18next.t("确定删除所有风险与漏洞吗? 不可恢复")
                                             }
                                             onConfirm={onRemove}
                                         >

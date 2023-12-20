@@ -82,7 +82,7 @@ const MITMHijackedContent: React.FC<MITMHijackedContentProps> = React.memo((prop
 
     useEffect(() => {
         ipcRenderer.invoke("mitm-auto-forward", !isManual).finally(() => {
-            console.info(`设置服务端自动转发：${!isManual}`)
+            console.info(i18next.t(`设置服务端自动转发`) + `：${!isManual}`)
         })
     }, [autoForward])
     useEffect(() => {

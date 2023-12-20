@@ -319,8 +319,8 @@ export const InstallEngine: React.FC<InstallEngineProps> = React.memo((props) =>
                                             <div className={styles["hint-right-macarm"]}>
                                                 <div>
                                                     <div className={styles["mac-arm-hint"]}>
-                                                        当前系统为(darwin-arm64)，如果未安装 Rosetta 2, 将无法运行 Yak
-                                                        核心引擎
+                                                        {i18next.t(`当前系统为(darwin-arm64)，如果未安装 Rosetta 2, 将无法运行 Yak
+                                                        核心引擎`)}
                                                         <br/>{i18next.t("运行以下命令可手动安装 Rosetta，如已安装可忽略")}
                                                     </div>
                                                     <div className={styles["mac-arm-command"]}>
@@ -495,7 +495,7 @@ const AgreementContentModal: React.FC<AgrAndQSModalProps> = React.memo((props) =
                         <div className={styles["modal-body"]}>
                             <div className={styles["body-title"]}>{i18next.t("免责声明")}</div>
                             <div className={styles["body-content"]}>{i18next.t("1. 本工具仅面向")} <span className={styles["sign-content"]}>{i18next.t("合法授权")}</span>{" "}
-                                的企业安全建设行为与个人学习行为，如您需要测试本工具的可用性，请自行搭建靶机环境。
+                                {i18next.t("的企业安全建设行为与个人学习行为，如您需要测试本工具的可用性，请自行搭建靶机环境。")}
                                 <br/>{i18next.t("2. 在使用本工具进行检测时，您应确保该行为符合当地的法律法规，并且已经取得了足够的授权。")}
                                 <span className={styles["underline-content"]}>{i18next.t("请勿对非授权目标进行扫描。")}</span>
                                 <br/>{i18next.t("3. 禁止对本软件实施逆向工程、反编译、试图破译源代码，植入后门传播恶意软件等行为。")}

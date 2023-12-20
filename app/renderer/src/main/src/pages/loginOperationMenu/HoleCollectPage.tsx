@@ -320,7 +320,7 @@ export const HoleCollectPage: React.FC<HoleCollectPageProps> = (props) => {
                     })
                 })
                 .catch((e) => {
-                    failed("数据导出失败 " + `${e}`)
+                    failed(i18next.t("数据导出失败 ") + `${e}`)
                 })
                 .finally(() => {})
         })
@@ -362,7 +362,7 @@ export const HoleCollectPage: React.FC<HoleCollectPageProps> = (props) => {
                                         title={
                                             selectedRowKeys.length > 0
                                                 ? i18next.t("确定删除选择的风险与漏洞吗？不可恢复")
-                                                : "确定删除所有风险与漏洞吗? 不可恢复"
+                                                : i18next.t("确定删除所有风险与漏洞吗? 不可恢复")
                                         }
                                         onConfirm={onRemove}
                                     >

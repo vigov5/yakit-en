@@ -269,7 +269,7 @@ export const DomainAssetPage: React.FC<DomainAssetPageProps> = (props: DomainAss
                     })
                 })
                 .catch((e) => {
-                    failed("数据导出失败 " + `${e}`)
+                    failed(i18next.t("数据导出失败 ") + `${e}`)
                 })
         })
     })
@@ -361,7 +361,7 @@ export const DomainAssetPage: React.FC<DomainAssetPageProps> = (props: DomainAss
                                     <Popconfirm
                                         title={
                                             checkedAll
-                                                ? "确定删除所有域名资产吗? 不可恢复"
+                                                ? i18next.t("确定删除所有域名资产吗? 不可恢复")
                                                 : i18next.t("确定删除选择的域名资产吗？不可恢复")
                                         }
                                         onConfirm={onRemove}

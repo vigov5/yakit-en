@@ -251,7 +251,7 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
                 })
                 .catch((e) => {
                     outputToWelcomeConsole(i18next.t("手动引擎启动失败！"))
-                    outputToWelcomeConsole(`失败原因:${e}`)
+                    outputToWelcomeConsole(i18next.t(`失败原因`) + `:${e}`)
                 })
         }
     })
@@ -361,7 +361,7 @@ export const YakitLoading: React.FC<YakitLoadingProp> = (props) => {
         })
         .catch((e) => {
             outputToWelcomeConsole(i18next.t("手动引擎启动失败！"))
-            outputToWelcomeConsole(`失败原因:${e}`)
+            outputToWelcomeConsole(i18next.t(`失败原因`) + `:${e}`)
         })
     }
 
@@ -677,7 +677,7 @@ export const YakitControlLoading: React.FC<YakitControlLoadingProp> = (props) =>
         })
         .catch((e) => {
             outputToWelcomeConsole(i18next.t("手动引擎启动失败！"))
-            outputToWelcomeConsole(`失败原因:${e}`)
+            outputToWelcomeConsole(i18next.t(`失败原因`)+`:${e}`)
         })
     }
     return <div className={styles["yakit-loading-wrapper"]}>
@@ -753,7 +753,7 @@ const DownloadYaklang: React.FC<DownloadYaklangProps> = React.memo((props) => {
             .then((data: string) => setLatestVersion(data))
             .catch((e: any) => {
                 if (isBreakRef.current) return
-                failed(`获取引擎最新版本失败 ${e}`)
+                failed(i18next.t(`获取引擎最新版本失败`) + ` ${e}`)
                 setIsFailed(true)
             })
             .finally(() => {
@@ -781,7 +781,7 @@ const DownloadYaklang: React.FC<DownloadYaklangProps> = React.memo((props) => {
                     })
                     .catch((e: any) => {
                         if (isBreakRef.current) return
-                        failed(`引擎下载失败: ${e}`)
+                        failed(i18next.t(`引擎下载失败`) + `: ${e}`)
                         setDownloadProgress(undefined)
                         setIsFailed(true)
                     })
@@ -819,7 +819,7 @@ const DownloadYaklang: React.FC<DownloadYaklangProps> = React.memo((props) => {
                 success(i18next.t("安装成功，如未生效，重启 ${getReleaseEditionName()} 即可", {v1: getReleaseEditionName()}))
             })
             .catch((err: any) => {
-                failed(`安装失败: ${err.message.indexOf("operation not permitted") > -1 ? i18next.t("请关闭引擎后重试") : err}`)
+                failed(i18next.t(`安装失败`) + `: ${err.message.indexOf("operation not permitted") > -1 ? i18next.t("请关闭引擎后重试") : err}`)
             })
             .finally(() => {
                 onInstallClose()
@@ -967,7 +967,7 @@ const DatabaseErrorHint: React.FC<DatabaseErrorHintProps> = React.memo((props) =
                 onSuccess()
             })
             .catch((e) => {
-                failed(`修复数据库权限错误：${e}`)
+                failed(i18next.t(`修复数据库权限错误`) + `：${e}`)
             })
             .finally(() => {
                 setTimeout(() => {

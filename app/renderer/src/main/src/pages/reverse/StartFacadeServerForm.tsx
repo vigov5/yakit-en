@@ -69,7 +69,7 @@ export const StartFacadeServerForm: React.FC<StartFacadeServerFormProp> = (props
                 setValue={LocalFacadePort => setParams({...params, LocalFacadePort})} value={params.LocalFacadePort}
             />
             <SwitchItem label={"DNSLog"} setValue={EnableDNSLogServer => setParams({...params, EnableDNSLogServer})}
-                        value={params.EnableDNSLogServer} help={"在本地启动一个 DNS 服务器(UDP)"}
+                value={params.EnableDNSLogServer} help={i18next.t("在本地启动一个 DNS 服务器(UDP)")}
             />
             {params.EnableDNSLogServer && <>
                 <InputInteger

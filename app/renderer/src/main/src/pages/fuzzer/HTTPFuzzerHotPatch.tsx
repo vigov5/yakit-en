@@ -174,7 +174,7 @@ export const HTTPFuzzerHotPatch: React.FC<HTTPFuzzerHotPatchProp> = (props) => {
                                                     }}
                                                 >
                                                     {" "}
-                                                    复制 Fuzz 标签
+                                                    {i18next.t("复制 Fuzz 标签")}
                                                 </YakitButton>
                                             </Space>
                                         }

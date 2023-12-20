@@ -185,7 +185,7 @@ export const HackerPlugin: React.FC<HackerPluginProps> = React.memo((props) => {
                 <AutoCard
                     size='small'
                     bordered={false}
-                    title={"数据包扫描插件(暂只支持单选)"}
+                    title={i18next.t("数据包扫描插件(暂只支持单选)")}
                     bodyStyle={{padding: "0 4px", overflowY: "hidden"}}
                     extra={
                         <Space>

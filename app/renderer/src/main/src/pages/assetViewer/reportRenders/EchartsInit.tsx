@@ -157,7 +157,7 @@ export const StackedVerticalBar: React.FC<VerticalOptionBarProps> = (props) => {
             data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
         },
         yAxis: {
-            name: "风险数(个)",
+            name: i18next.t("风险数(个)"),
             type: "value"
         },
         series: [

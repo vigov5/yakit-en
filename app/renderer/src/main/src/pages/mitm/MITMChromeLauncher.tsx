@@ -282,7 +282,7 @@ const ChromeLauncherButton: React.FC<ChromeLauncherButtonProp> = React.memo((pro
                         {(started && <ChromeSvgIcon />) || (
                             <ChromeFrameSvgIcon style={{height: 16, color: "var(--yakit-body-text-color)"}} />
                         )}
-                        免配置启动
+                        {i18next.t("免配置启动")}
                         {started && <CheckOutlined style={{color: "var(--yakit-success-5)", marginLeft: 8}} />}
                     </YakitButton>
                     {started && (

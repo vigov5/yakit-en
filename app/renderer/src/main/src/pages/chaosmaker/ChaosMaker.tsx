@@ -51,7 +51,7 @@ const groups: ChaosMakerRuleGroup[] = [
         "Solution": i18next.t("为了防止ICMP隧道回连攻击，建议采取以下措施：1. 限制ICMP流量，对出入口流量进行监控与过滤；2. 在网络边界部署防火墙，实施严格的安全策略；3. 增强内部网络安全，监控异常行为；4. 定期进行安全审计和渗透测试，检查系统漏洞。")
     },
     {
-        "Title": "挖矿外连(DNS协议)",
+        "Title": i18next.t("挖矿外连(DNS协议)"),
         "Description": i18next.t("DNS协议下挖矿外连是指攻击者利用DNS协议在受害者设备中植入恶意挖矿程序，通过DNS请求将挖矿收益传输至攻击者的指定服务器，可能导致受害者设备资源被滥用、性能下降等问题。"),
         "Keywords": "mine",
         "Protocols": [
@@ -70,7 +70,7 @@ const groups: ChaosMakerRuleGroup[] = [
     },
     {
         "Title": i18next.t("攻击 大数据平台"),
-        "Description": "对常见的大数据平台比如hadoop(HDFS、hbase、hive、zookeeper)、spark、kafka、splunk、Apache Dubbo、OpenStack、Apache Flink、Elasticsearch历史漏洞进行攻击",
+        "Description": i18next.t("对常见的大数据平台比如hadoop(HDFS、hbase、hive、zookeeper)、spark、kafka、splunk、Apache Dubbo、OpenStack、Apache Flink、Elasticsearch历史漏洞进行攻击"),
         "Keywords": "hdfs,hbase,hive,zookeeper,spark,kafka,splunk,dubbo,openstack,flink,elasticsearch",
         "Protocols": [],
         "Solution": i18next.t("对于已知的漏洞,大数据平台的开发团队通常会发布修复程序,用户应该及时升级软件版本以避免漏洞被攻击者利用。启用访问控制：大数据平台包括许多组件和模块,用户可以根据自身需求和安全要求配置相应的访问控制策略,如限制访问IP、授权用户访问、配置防火墙等。")

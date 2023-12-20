@@ -874,7 +874,7 @@ const PluginContList: React.FC<PluginContListProps> = React.memo(
                                 }}
                                 disabled={selectedPlugins.length === 0}
                             >
-                                清&nbsp;空
+                                {i18next.t("清空")}
                             </YakitButton>
                         </div>
                     )}

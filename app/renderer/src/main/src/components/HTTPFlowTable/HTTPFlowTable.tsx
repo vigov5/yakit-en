@@ -573,7 +573,7 @@ export const availableColors = [
     },
     {
         color: "PURPLE",
-        title: "紫色[#8863F7]",
+        title: i18next.t("紫色") + "[#8863F7]",
         searchWord: "YAKIT_COLOR_PURPLE",
         className: TableRowColor("PURPLE"),
         render: (

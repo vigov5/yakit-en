@@ -513,7 +513,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                     }
                     setSearch({name: param.ProjectName || "", total: +rsp.Total})
                 } catch (e) {
-                    failed("处理项目数据失败: " + `${e}`)
+                    failed(i18next.t("处理项目数据失败: ") + `${e}`)
                 }
             })
             .catch((e) => {
@@ -1214,7 +1214,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                                                                         <span className={styles["file-style"]}>
                                                                             {files[files.length - 1].ProjectName}
                                                                         </span>{" "}
-                                                                        内暂无项目内容
+                                                                        {i18next.t("内暂无项目内容")}
                                                                     </div>
                                                                     <div className={styles["operate-btn"]}>
                                                                         <YakitButton
@@ -1344,7 +1344,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
                 visible={delShow}
                 title={delId.Type === "file" ? i18next.t("删除文件夹") : i18next.t("删除项目")}
                 content={
-                    delId.Type === "file" ? "删除文件夹是否同时清除文件夹里所有本地文件?" : "是否同时清除本地文件?"
+                    delId.Type === "file" ? i18next.t("删除文件夹是否同时清除文件夹里所有本地文件?") : i18next.t("是否同时清除本地文件?")
                 }
                 okButtonText={i18next.t("保留")}
                 cancelButtonText={i18next.t("清除")}
@@ -1444,7 +1444,7 @@ export const NewProjectAndFolder: React.FC<NewProjectAndFolderProps> = memo((pro
                         setData([...getData()])
                     }, 300)
                 } catch (e) {
-                    failed("处理项目数据失败: " + `${e}`)
+                    failed(i18next.t("处理项目数据失败: ") + `${e}`)
                 }
             })
             .catch((e) => {
@@ -1470,7 +1470,7 @@ export const NewProjectAndFolder: React.FC<NewProjectAndFolderProps> = memo((pro
                         })
                     )
                 } catch (e) {
-                    failed("处理项目数据失败: " + `${e}`)
+                    failed(i18next.t("处理项目数据失败: ") + `${e}`)
                 }
             })
             .catch((e) => {

@@ -117,7 +117,7 @@ const PluginIsPrivateSelection: React.FC<PluginIsPrivateSelectionProps> = React.
                         setIsPrivate(true)
                     }}
                 >
-                    私密(仅自己可见)
+                    {i18next.t("私密(仅自己可见)")}
                 </Radio>
                 <Radio
                     className='plugins-radio-wrapper'
@@ -126,7 +126,7 @@ const PluginIsPrivateSelection: React.FC<PluginIsPrivateSelectionProps> = React.
                         setIsPrivate(false)
                     }}
                 >
-                    公开(审核通过后，将上架到插件商店)
+                    {i18next.t("公开(审核通过后，将上架到插件商店)")}
                 </Radio>
             </div>
             <div className={styles["plugin-local-upload-steps-action"]}>
@@ -532,7 +532,7 @@ const PluginIsPrivateSelectionSingle: React.FC<PluginIsPrivateSelectionSinglePro
                         setIsPrivate(true)
                     }}
                 >
-                    私密(仅自己可见)
+                    {i18next.t("私密(仅自己可见)")}
                 </Radio>
                 <Radio
                     className='plugins-radio-wrapper'
@@ -541,7 +541,7 @@ const PluginIsPrivateSelectionSingle: React.FC<PluginIsPrivateSelectionSinglePro
                         setIsPrivate(false)
                     }}
                 >
-                    公开(审核通过后，将上架到插件商店)
+                    {i18next.t("公开(审核通过后，将上架到插件商店)")}
                 </Radio>
             </div>
             <div className={styles["plugin-local-upload-steps-action"]}>

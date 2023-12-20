@@ -1970,7 +1970,7 @@ export const LoadYakitPluginForm = React.memo((p: {onFinished: () => any; onlyId
             <Form.Item colon={false} label={" "}>
                 <Button type='primary' htmlType='submit'>
                     {" "}
-                    导入{" "}
+                    {i18next.t("导入")}{" "}
                 </Button>
             </Form.Item>
         </Form>
@@ -2380,7 +2380,7 @@ const AddAllPlugin: React.FC<AddAllPluginProps> = (props) => {
                     OnlineIDs: onlineIDs
                 } as DownloadOnlinePluginByIdsRequest)
                 .then(() => {
-                    success(`共添加${selectedRowKeysRecord.length}条数据到本地`)
+                    success(i18next.t("共添加${selectedRowKeysRecord.length}条数据到本地", {v1: selectedRowKeysRecord.length}))
                     onFinish()
                 })
                 .catch((e) => {

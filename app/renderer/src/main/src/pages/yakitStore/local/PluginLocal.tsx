@@ -2401,7 +2401,7 @@ const LoadYakitPluginForm = React.memo((p: {onFinished: () => any; onlyId?: bool
             <Form.Item colon={false} label={" "}>
                 <Button type='primary' htmlType='submit'>
                     {" "}
-                    导入{" "}
+                    {i18next.t("导入")}{" "}
                 </Button>
             </Form.Item>
         </Form>

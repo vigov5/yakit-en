@@ -585,7 +585,7 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                                                 }}
                                             >
                                                 {" "}
-                                                停用
+                                                {i18next.t("停用")}
                                             </YakitButton>
                                         </div>
                                     ) : (

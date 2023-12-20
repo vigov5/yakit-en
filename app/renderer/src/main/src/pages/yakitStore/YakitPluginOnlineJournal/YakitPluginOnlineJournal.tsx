@@ -180,8 +180,8 @@ export const YakitPluginOnlineJournal: React.FC<YakitPluginOnlineJournalProps> =
                                                 {moment.unix(item.created_at).format("YYYY-MM-DD HH:mm")}
                                                 &emsp;
                                                 {(["admin", "superAdmin"].includes(item.role || "") &&
-                                                    `管理员${item.user_name}修改插件`) ||
-                                                    `${item.user_name}申请修改插件`}
+                                                    i18next.t("管理员${item.user_name}修改插件", { v1: item.user_name })) ||
+                                                    i18next.t("${item.user_name}申请修改插件", {v1: item.user_name})}
                                             </div>
                                             <div className='journal-item-operation'>
                                                 <Button

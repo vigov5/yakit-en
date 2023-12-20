@@ -143,7 +143,7 @@ export const ExecHistoryTable: React.FC<ExecHistoryTableProp> = (props) => {
                     title: i18next.t("状态"),
                     render: (r: ExecHistoryRecord) => r.Ok ? <Tag color={"green"}>{i18next.t("执行成功")}</Tag> : <Tag>{i18next.t("执行失败")}</Tag>
                 },
-                {title: "执行间隔(ms)", render: (r: ExecHistoryRecord) => <Tag color={"geekblue"}>{r.DurationMs}ms</Tag>},
+                {title: i18next.t("执行间隔(ms)"), render: (r: ExecHistoryRecord) => <Tag color={"geekblue"}>{r.DurationMs}ms</Tag>},
                 {
                     title: i18next.t("执行结果/失败原因"), render: (r: ExecHistoryRecord) => r.Ok ? <Space>
                         {r.Stdout && <Tag color={"geekblue"}>{i18next.t("标准输出内容长度")}[{(r.StdoutLen)}]</Tag>}

@@ -18,7 +18,7 @@ import styles from "@/pages/screenRecorder/ScreenRecorderPage.module.scss";
 import {ChromeFrameSvgIcon, ChromeSvgIcon} from "@/assets/newIcon";
 import {CheckOutlined} from "@ant-design/icons";
 import {openExternalWebsite} from "@/utils/openWebsite";
-import i18next from "../../../i18n"
+import i18next from "../../i18n"
 
 export interface VulinboxManagerProp {
 
@@ -236,7 +236,7 @@ export const InstallVulinboxPrompt: React.FC<InstallVulinboxPromptProp> = (props
                 strokeColor='#F28B44'
                 trailColor='#F0F2F5'
                 percent={percent}
-                format={(percent) => {i18next.t("已下载 ${percent}%", { v1: percent })}}
+                format={(percent) => i18next.t("已下载") + ` ${percent}%`}
             />
         </div>
         <div className={styles["download-progress-messages"]}>

@@ -421,7 +421,7 @@ export const MITMPluginHijackContent: React.FC<MITMPluginHijackContentProps> = (
                                 className={styles["plugin-loaded-list-heard-empty"]}
                                 onClick={() => onSelectAll(false)}
                             >
-                                清&nbsp;空
+                                {i18next.t("清空")}
                             </div>
                         </div>
                         <div className={styles["plugin-loaded-hooks-list"]}>

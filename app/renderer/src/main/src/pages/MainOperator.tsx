@@ -633,7 +633,7 @@ const Main: React.FC<MainProp> = React.memo((props) => {
                 title={i18next.t("收到远程连接请求")}
                 content={
                     <div>{i18next.t("用户")} <span style={{color: "#F28B44"}}>Alex-null</span>{" "}
-                        正在向你发起远程连接请求，是否同意对方连接？
+                        {i18next.t("正在向你发起远程连接请求，是否同意对方连接？")}
                     </div>
                 }
                 cancelButtonText={i18next.t("拒绝")}

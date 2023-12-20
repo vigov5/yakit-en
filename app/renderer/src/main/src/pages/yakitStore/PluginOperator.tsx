@@ -967,7 +967,7 @@ export const OutputPluginForm: React.FC<OutputPluginFormProp> = React.memo((prop
                 <Form.Item colon={false} label={" "}>
                     <Button type='primary' htmlType='submit'>
                         {" "}
-                        导出到目标路径{" "}
+                        {i18next.t("导出到目标路径")}{" "}
                     </Button>
                 </Form.Item>
             </Form>

@@ -94,7 +94,7 @@ const InsertFileFuzzTag: React.FC<InsertFileFuzzTagProp> = (props) => {
             <Form.Item colon={false} label={" "}>
                 <Button type='primary' htmlType='submit'>
                     {" "}
-                    确定所选内容{" "}
+                    {i18next.t("确定所选内容")}{" "}
                 </Button>
             </Form.Item>
         </Form>
@@ -148,7 +148,7 @@ const InsertTextToFuzzTag: React.FC<InsertFileFuzzTagProp> = (props) => {
             <Form.Item colon={false} label={" "}>
                 <Button type='primary' htmlType='submit'>
                     {" "}
-                    确定插入标签{" "}
+                    {i18next.t("确定插入标签")}{" "}
                 </Button>
             </Form.Item>
         </Form>
