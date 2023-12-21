@@ -225,7 +225,7 @@ const UIEngineList: React.FC<UIEngineListProp> = React.memo((props) => {
                                                 {`yak grpc --port ${i.port === 0 ? i18next.t("获取中") : i.port}`}
                                                 &nbsp;
                                                 {isLocal && +i.port === port && (
-                                                    <span className={styles["current-ps-info"]}>{"(当前)"}</span>
+                                                    <span className={styles["current-ps-info"]}>{i18next.t("(当前)")}</span>
                                                 )}
                                             </div>
                                         </div>

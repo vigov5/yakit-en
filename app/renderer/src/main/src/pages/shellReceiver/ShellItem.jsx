@@ -3,6 +3,7 @@ import {Button, PageHeader, Popconfirm, Space, Spin, Switch, Tag} from "antd";
 import {useGetState, useMemoizedFn} from "ahooks";
 import {AutoSpin} from "../../components/AutoSpin";
 import {CVXterm, TERMINAL_INPUT_KEY} from "../../components/CVXterm";
+import i18next from "../../i18n"
 
 const {ipcRenderer} = window.require("electron");
 
@@ -57,40 +58,37 @@ export const ShellItem = (props) => {
         <div style={{width: "100%", height: "100%", display: "flex", flexFlow: "column"}}>
             <PageHeader
                 title={<Space>
-                    {"正在监听端口: " + addr}
+                    {i18next.t("正在监听端口: ") + addr}
                 </Space>}
                 subTitle={
                     <Space>
                         {local && remote ? (
-                            <Tag color={"geekblue"}>
-                                本地端口:{local} &lt;== 远程端口:{remote}
+                            <Tag color={"geekblue"}>{i18next.t("本地端口:")}{local} &lt;== {i18next.t("远程端口")}:{remote}
                             </Tag>
                         ) : (
-                            <Tag color={"green"}>等待 TCP 连接接入</Tag>
+                            <Tag color={"green"}>{i18next.t("等待 TCP 连接接入")}</Tag>
                         )}
                     </Space>
                 }
                 extra={
                     <Space>
-                        <span>
-                        客户端回显:
+                        <span>{i18next.t("客户端回显:")}
                         <Switch size={"small"} checked={echoBack} onChange={setEchoBack}/>
                     </span>
                         <Popconfirm
-                            title={"确定关闭该端口吗？"}
+                            title={i18next.t("确定关闭该端口吗？")}
                             onConfirm={() => {
                                 removeListenPort(addr)
                             }}
                         >
-                            <Button danger={true} type={"primary"}>
-                                强制断开端口
+                            <Button danger={true} type={"primary"}>{i18next.t("强制断开端口")}
                             </Button>
                         </Popconfirm>
                     </Space>
                 }
             />
             <div style={{flex: 1, overflowY: "hidden"}}>
-                <AutoSpin spinning={!haveConnIn} tip={"正在等待 TCP 连接连入..."}>
+                <AutoSpin spinning={!haveConnIn} tip={i18next.t("正在等待 TCP 连接连入...")}>
                     <CVXterm
                         ref={xtermRef}
                         options={{

@@ -885,7 +885,7 @@ export const PublicCommonPlugins: PublicRouteMenuProps[] = [
     {
         page: undefined,
         label: i18next.t("子域名收集"),
-        children: [i18next.t("crt子域名收集"), i18next.t("纯暴力子域名收集"), i18next.t("SEO综合查询"), i18next.t("被动子域名收集")].map((item) => {
+        children: ["crt子域名收集", "纯暴力子域名收集", "SEO综合查询", "被动子域名收集"].map((item) => {
             return {page: YakitRoute.Plugin_OP, label: item, yakScripName: item}
         })
     },
@@ -893,15 +893,15 @@ export const PublicCommonPlugins: PublicRouteMenuProps[] = [
         page: undefined,
         label: i18next.t("基础工具"),
         children: [
-            i18next.t("域名、IP提取"),
-            i18next.t("域名批量转IP并查CDN"),
-            i18next.t("IP反查域名"),
-            i18next.t("批量备案查询"),
-            i18next.t("空间引擎集成版本"),
-            i18next.t("网站信息获取"),
-            i18next.t("主域名提取"),
-            i18next.t("杀软匹配tasklist /svc"),
-            i18next.t("按行去重")
+            "域名、IP提取",
+            "域名批量转IP并查CDN",
+            "IP反查域名",
+            "批量备案查询",
+            "空间引擎集成版本",
+            "网站信息获取",
+            "主域名提取",
+            "杀软匹配tasklist /svc",
+            "按行去重"
         ].map((item) => {
             return {page: YakitRoute.Plugin_OP, label: item, yakScripName: item}
         })
