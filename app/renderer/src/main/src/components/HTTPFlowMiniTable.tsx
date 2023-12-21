@@ -107,7 +107,7 @@ export const HTTPFlowMiniTable: React.FC<HTTPFlowMiniTableProp> = React.memo((pr
                                         ),
                                     })
                                 }}
-                            >详情</Button>
+                            >{i18next.t("详情")}</Button>
                         </Space>
                     </>
                 },
@@ -161,7 +161,7 @@ export const HTTPFlowMiniTable: React.FC<HTTPFlowMiniTableProp> = React.memo((pr
                                         })
                                     }
                                 }}
-                            >发送到Fuzzer</Button>}
+                            >{i18next.t("发送到Fuzzer")}</Button>}
                             <Button
                                 type={"link"} size={"small"}
                                 onClick={() => {
@@ -173,7 +173,7 @@ export const HTTPFlowMiniTable: React.FC<HTTPFlowMiniTableProp> = React.memo((pr
                                         )
                                     })
                                 }}
-                            >详情</Button>
+                            >{i18next.t("详情")}</Button>
                         </Space>
                     </>
                 },

@@ -60,6 +60,7 @@ export const ContentUploadInput: React.FC<ContentUploadInputProps> = (props) => 
                     help: (
                         <div className='content-upload-input-help'>
                             {uploadHelpText||i18next.t("可将TXT、Excel文件拖入框内或")}
+                            &nbsp;
                             <Upload
                                 // accept={"text/plain"}
                                 multiple={false}
@@ -73,6 +74,7 @@ export const ContentUploadInput: React.FC<ContentUploadInputProps> = (props) => 
                             >
                                 <span className='help-hint-title'>{i18next.t("点击此处")}</span>
                             </Upload>
+                            &nbsp;
                             {i18next.t("上传")}
                             {otherHelpNode}
                         </div>

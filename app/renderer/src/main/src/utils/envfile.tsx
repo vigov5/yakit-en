@@ -1,6 +1,7 @@
 import {info} from "@/utils/notification";
 import {setRemoteValue} from "@/utils/kv";
 import {RemoteGV} from "@/yakitGV";
+import i18next from "../i18n"
 
 enum PRODUCT_RELEASE_EDITION {
     Yakit = 0,

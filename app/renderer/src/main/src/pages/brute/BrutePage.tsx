@@ -358,7 +358,7 @@ export const BruteParamsForm: React.FC<BruteParamsFormProp> = (props) => {
             onSubmitCapture={(e) => {
                 e.preventDefault()
             }}
-            labelCol={{span: 5}}
+            labelCol={{span: 6}}
             wrapperCol={{span: 14}}
         >
             <SelectItem

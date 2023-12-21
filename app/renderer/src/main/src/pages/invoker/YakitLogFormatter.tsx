@@ -130,7 +130,7 @@ export const YakitLogFormatter: React.FC<YakitLogFormatterProp> = (props) => {
                 {props.timestamp > 0 &&
                 <Tag color={"geekblue"}>{formatTimestamp(props.timestamp, props.onlyTime)}</Tag>}
                 <Card
-                    size={"small"} title={<Tag color={"green"}>直接结果(表格)</Tag>}
+                    size={"small"} title={<Tag color={"green"}>{i18next.t("直接结果(表格)")}</Tag>}
                     extra={[
                         <Button onClick={e => showModal({
                             title: i18next.t("JSON 数据"),
@@ -174,7 +174,7 @@ export const YakitLogFormatter: React.FC<YakitLogFormatterProp> = (props) => {
                 {props.timestamp > 0 &&
                 <Tag color={"geekblue"}>{formatTimestamp(props.timestamp, props.onlyTime)}</Tag>}
                 <Card
-                    size={"small"} title={<Tag color={"green"}>直接结果(图)</Tag>}
+                    size={"small"} title={<Tag color={"green"}>{i18next.t("直接结果(图)")}</Tag>}
                     extra={[
                         <Button onClick={e => showModal({
                             title: i18next.t("JSON 数据"),

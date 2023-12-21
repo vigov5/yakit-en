@@ -1000,7 +1000,7 @@ export const HTTPFlowDetailRequestAndResponse: React.FC<HTTPFlowDetailRequestAnd
                                                 }
                                             }}
                                         >
-                                            请求
+                                            {i18next.t("请求")}
                                         </YakitCheckableTag>
                                         <YakitCheckableTag
                                             checked={resType === "request"}
@@ -1010,7 +1010,7 @@ export const HTTPFlowDetailRequestAndResponse: React.FC<HTTPFlowDetailRequestAnd
                                                 }
                                             }}
                                         >
-                                            原始请求
+                                            {i18next.t("原始请求")}
                                         </YakitCheckableTag>
                                     </div>
                                 )
@@ -1050,7 +1050,7 @@ export const HTTPFlowDetailRequestAndResponse: React.FC<HTTPFlowDetailRequestAnd
                         }}
                         // 这个为了解决不可见字符的问题
                         defaultPacket={!!flow?.SafeHTTPRequest ? flow.SafeHTTPRequest : undefined}
-                        extra={flow.InvalidForUTF8Request ? <Tag color={"red"}>含二进制流</Tag> : undefined}
+                        extra={flow.InvalidForUTF8Request ? <Tag color={"red"}>{i18next.t("含二进制流")}</Tag> : undefined}
                         defaultSearchKeyword={search}
                         editorOperationRecord='HTTP_FLOW_DETAIL_REQUEST_AND_REQUEST'
                         extraEditorProps={{
@@ -1093,7 +1093,7 @@ export const HTTPFlowDetailRequestAndResponse: React.FC<HTTPFlowDetailRequestAnd
                                                 }
                                             }}
                                         >
-                                            响应
+                                            {i18next.t("响应")}
                                         </YakitCheckableTag>
                                         <YakitCheckableTag
                                             checked={rspType === "response"}
@@ -1103,7 +1103,7 @@ export const HTTPFlowDetailRequestAndResponse: React.FC<HTTPFlowDetailRequestAnd
                                                 }
                                             }}
                                         >
-                                            原始响应
+                                            {i18next.t("原始响应")}
                                         </YakitCheckableTag>
                                     </div>
                                 ]
@@ -1112,7 +1112,7 @@ export const HTTPFlowDetailRequestAndResponse: React.FC<HTTPFlowDetailRequestAnd
                             if (flow?.IsTooLargeResponse) {
                                 titleEle.push(
                                     <YakitTag style={{marginLeft: 8}} color='danger'>
-                                        超大响应
+                                        {i18next.t("超大响应")}
                                     </YakitTag>
                                 )
                             }
@@ -1176,7 +1176,7 @@ export const HTTPFlowDetailRequestAndResponse: React.FC<HTTPFlowDetailRequestAnd
                                             }}
                                         >
                                             <YakitButton type='primary' size='small'>
-                                                完整响应
+                                                {i18next.t("完整响应")}
                                             </YakitButton>
                                         </YakitDropdownMenu>
                                     )

@@ -227,7 +227,7 @@ export const WebFuzzerResponseExtractor: React.FC<WebFuzzerResponseExtractorProp
                     {mode === "regexp-between" && (
                         <Space direction={"vertical"} style={{ width: "100%", justifyContent: "center" }}>
                             <div className={styles["space-item"]}>
-                                <span>前缀(正则)：</span>
+                                <span>{i18next.t("前缀(正则)：")}</span>
                                 <div style={{ flex: 1, maxWidth: "90%" }}>
                                     <RegexpInput
                                         initialTagShow={true}
@@ -238,7 +238,7 @@ export const WebFuzzerResponseExtractor: React.FC<WebFuzzerResponseExtractorProp
                                 </div>
                             </div>
                             <div className={styles["space-item"]}>
-                                <span>后缀(正则)：</span>
+                                <span>{i18next.t("后缀(正则)：")}</span>
                                 <div style={{ flex: 1, maxWidth: "90%" }}>
                                     <RegexpInput
                                         initialTagShow={true}

@@ -117,7 +117,7 @@ export const RiskStatsTag: React.FC<RiskStatsTagProp> = React.memo((props) => {
                 <Button onClick={() => {
                     setOriginTotal(0)
                     setOriginCriticalOrHigh(0)
-                }} size={"small"}>标为已读(全部)</Button>
+                }} size={"small"}>{i18next.t("标为已读(全部)")}</Button>
                 {viewAll("high|critical")}
             </Space>}
         >
@@ -132,7 +132,7 @@ export const RiskStatsTag: React.FC<RiskStatsTagProp> = React.memo((props) => {
                 <Button onClick={() => {
                     setOriginTotal(0)
                     setOriginCriticalOrHigh(0)
-                }} size={"small"}>标为已读(全部)</Button>
+                }} size={"small"}>{i18next.t("标为已读(全部)")}</Button>
                 {viewAll()}
             </Space>}
         >

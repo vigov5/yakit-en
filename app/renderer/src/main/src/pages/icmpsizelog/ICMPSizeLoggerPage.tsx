@@ -112,7 +112,7 @@ export const ICMPSizeLoggerPage: React.FC<ICMPSizeLoggerPageProp> = (props) => {
                     <div>{i18next.t("命令")}</div>
                 </Space>
                 <Space>
-                    <div>在 MacOS/Linux/*nix 系统中，使用</div>
+                    <div>{i18next.t("在 MacOS/Linux/*nix 系统中，使用")}</div>
                     {host === "" || sizeNow <= 0 ? <Spin/> :
                         <CopyableField mark={true} text={`ping -c 4 -s ${sizeNow} ${host}`}/>}
                     <div>{i18next.t("命令")}</div>

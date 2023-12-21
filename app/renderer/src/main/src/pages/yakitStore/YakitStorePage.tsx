@@ -558,7 +558,7 @@ export const YakModule: React.FC<YakModuleProp> = (props) => {
                             onChange={onChangeSwitch}
                             checked={isShowYAMLPOC}
                         />
-                        <span>&nbsp;&nbsp;展示YAML POC</span>
+                        <span>&nbsp;&nbsp;{i18next.t("展示YAML POC")}</span>
                     </div>
                     {userInfoLocal.HeadImg && (
                         <div className='plugin-headImg'>

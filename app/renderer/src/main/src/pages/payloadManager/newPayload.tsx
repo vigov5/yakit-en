@@ -462,7 +462,7 @@ export const CreateDictionaries: React.FC<CreateDictionariesProps> = (props) => 
                                         <div className={styles["title"]}>{i18next.t("可将文件拖入框内，或")}
                                             <span className={styles["hight-light"]}>{i18next.t("点击此处导入")}</span>
                                         </div>
-                                        <div className={styles["sub-title"]}>支持文件夹批量上传(支持文件类型txt/csv)</div>
+                                        <div className={styles["sub-title"]}>{i18next.t("支持文件夹批量上传(支持文件类型txt/csv)")}</div>
                                     </div>
                                 </div>
                             </Dragger>

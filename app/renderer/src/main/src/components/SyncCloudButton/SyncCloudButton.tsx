@@ -330,8 +330,8 @@ export const ModalSyncSelect: React.FC<ModalSyncSelect> = (props) => {
         >
             <Radio.Group onChange={onChange} value={type}>
                 <Space direction='vertical'>
-                    <Radio value={1}>私密(仅自己可见)</Radio>
-                    <Radio value={2}>公开(审核通过后，将上架到插件商店)</Radio>
+                    <Radio value={1}>{i18next.t("私密(仅自己可见)")}</Radio>
+                    <Radio value={2}>{i18next.t("公开(审核通过后，将上架到插件商店)")}</Radio>
                 </Space>
             </Radio.Group>
         </Modal>

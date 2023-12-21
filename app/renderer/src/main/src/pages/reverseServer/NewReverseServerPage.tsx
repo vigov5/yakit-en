@@ -202,7 +202,7 @@ export const SettingReverseServer: React.FC<SettingReverseServerProp> = (props) 
                 <Form
                     form={formInstance}
                     initialValues={{...props.defaultSetting}}
-                    labelCol={{span: 5}}
+                    labelCol={{span: 10}}
                     wrapperCol={{span: 19}}
                     onFinish={submit}
                 >

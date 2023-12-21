@@ -338,7 +338,7 @@ export const DNSLogPage: React.FC<DNSLogPageProp> = (props) => {
                 <div>
                     <Space>
                         DNSLog
-                        <div style={{color: "#999"}}>{i18next.t("使用")} {getReleaseEditionName()} 自带的 DNSLog 反连服务</div>
+                        <div style={{color: "#999"}}>{i18next.t("使用")} {getReleaseEditionName()} {i18next.t("自带的 DNSLog 反连服务")}</div>
                     </Space>
                     <div
                         style={{

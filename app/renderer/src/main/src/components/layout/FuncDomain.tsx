@@ -108,7 +108,7 @@ export const judgeDynamic = (userInfo, avatarColor: string, active: boolean, dyn
                 <div
                     className={classNames(styles["judge-avatar-text"], {[styles["judge-avatar-active-text"]]: active})}
                 >
-                    远程中
+                    {i18next.t("远程中")}
                 </div>
             )}
         </div>
@@ -215,7 +215,7 @@ export const UploadYakitEE: React.FC<UploadYakitEEProps> = (props) => {
                             cancleUpload()
                         }}
                     >
-                        取消
+                        {i18next.t("取消")}
                     </YakitButton>
                 ) : (
                     <YakitButton
@@ -226,7 +226,7 @@ export const UploadYakitEE: React.FC<UploadYakitEEProps> = (props) => {
                             uploadYakitEEPackage()
                         }}
                     >
-                        确定
+                        {i18next.t("确定")}
                     </YakitButton>
                 )}
             </div>
@@ -810,7 +810,7 @@ const RunNodeModal: React.FC<RunNodeContProp> = (props) => {
         >
             <div style={{padding: 15}}>
                 <div style={{fontSize: 12, color: "#85899e", marginBottom: 10}}>
-                    运行节点会占用引擎资源，建议运行节点的时候，适度使用Yakit，否则会造成节点运行任务缓慢，可以运行多个节点（运行在不同平台，或统一平台节点名称不同）。
+                    {i18next.t("运行节点会占用引擎资源，建议运行节点的时候，适度使用Yakit，否则会造成节点运行任务缓慢，可以运行多个节点（运行在不同平台，或统一平台节点名称不同）。")}
                 </div>
                 <Form
                     form={form}
@@ -1391,7 +1391,7 @@ const UIOpUpdateYaklang: React.FC<UIOpUpdateProps> = React.memo((props) => {
                     {!isRemoteMode && isUpdate && (
                         <div className={styles["update-btn"]} onClick={() => onDownload("yaklang")}>
                             <UpdateSvgIcon style={{marginRight: 4}} />
-                            立即更新
+                           {i18next.t(" 立即更新")}
                         </div>
                     )}
                     {!isRemoteMode && isKillEngine && (
@@ -1453,7 +1453,7 @@ const UIOpLetter: React.FC<UIOpLetterProps> = React.memo((props) => {
                     <div className={styles["info-content"]}>
                         <div className={styles["content-body"]}>
                             <span className={styles["accent-content"]}>{i18next.t("又又呀～")}</span>
-                            &nbsp;关注了你
+                            &nbsp;{i18next.t("关注了你")}
                         </div>
                         <div className={styles["content-time"]}>{i18next.t("3 小时前")}</div>
                     </div>
@@ -1462,7 +1462,7 @@ const UIOpLetter: React.FC<UIOpLetterProps> = React.memo((props) => {
                     <div className={styles["info-content"]}>
                         <div className={styles["content-body"]}>
                             <span className={styles["accent-content"]}>{i18next.t("桔子爱吃橘子")}</span>
-                            &nbsp;赞了你的插件&nbsp;
+                            &nbsp;{i18next.t("赞了你的插件")}&nbsp;
                             <span className={styles["accent-content"]}>{i18next.t("致远OA Session泄露漏洞检测")}</span>
                         </div>
                         <div className={styles["content-time"]}>{i18next.t("7 小时前")}</div>
@@ -1472,7 +1472,7 @@ const UIOpLetter: React.FC<UIOpLetterProps> = React.memo((props) => {
                     <div className={styles["info-content"]}>
                         <div className={styles["content-body"]}>
                             <span className={styles["accent-content"]}>{i18next.t("桔子爱吃橘子")}</span>
-                            &nbsp;评论了你的插件&nbsp;
+                            &nbsp;{i18next.t("评论了你的插件")}&nbsp;
                             <span className={styles["accent-content"]}>{i18next.t("Websphere弱口令检测")}</span>
                         </div>
                         <div className={styles["content-commit"]}>{i18next.t("“大佬，牛批！”")}</div>
@@ -1483,7 +1483,7 @@ const UIOpLetter: React.FC<UIOpLetterProps> = React.memo((props) => {
                     <div className={styles["info-content"]}>
                         <div className={styles["content-body"]}>
                             <span className={styles["accent-content"]}>Alex-null</span>
-                            &nbsp;向你提交了&nbsp;
+                            &nbsp;{i18next.t("向你提交了")}&nbsp;
                             <span className={styles["accent-content"]}>issue</span>
                         </div>
                         <div className={styles["content-time"]}>2022-10-09</div>
@@ -1495,7 +1495,7 @@ const UIOpLetter: React.FC<UIOpLetterProps> = React.memo((props) => {
                             <span className={styles["accent-content"]}>{i18next.t("系统消息")}</span>
                         </div>
                         <div className={styles["content-commit"]}>
-                            手把手教学，从入门到实战！Yak Events 9月16号下午3点，Yak Project直播间不见不散！
+                            {i18next.t("手把手教学，从入门到实战！Yak Events 9月16号下午3点，Yak Project直播间不见不散！")}
                         </div>
                         <div className={styles["content-time"]}>2022-10-01</div>
                     </div>
@@ -1823,7 +1823,7 @@ const UIOpNotice: React.FC<UIOpNoticeProp> = React.memo((props) => {
                     <div className={styles["notice-version-header"]}>
                         <div className={styles["header-title"]}>{i18next.t("更新通知")}</div>
                         <div className={styles["switch-title"]}>
-                            启动检测更新
+                            {i18next.t("启动检测更新")}
                             <YakitSwitch
                                 style={{marginLeft: 4}}
                                 showInnerText={true}
@@ -1882,7 +1882,7 @@ const UIOpNotice: React.FC<UIOpNoticeProp> = React.memo((props) => {
                                     className={styles["content-style"]}
                                     onClick={() => ipcRenderer.invoke("open-url", CodeGV.HistoricalVersion)}
                                 >
-                                    <GithubSvgIcon className={styles["icon-style"]} /> 历史版本
+                                    <GithubSvgIcon className={styles["icon-style"]} /> {i18next.t("历史版本")}
                                 </div>
                             </div>
                         </div>
