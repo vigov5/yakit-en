@@ -1032,7 +1032,7 @@ const YakitCombinationSearchCircle: React.FC<YakitCombinationSearchCircleProps> 
         <div className={styles["yakit-combination-search-circle"]}>
             <YakitSelect
                 defaultValue='keyword'
-                wrapperStyle={{width: 75}}
+                wrapperStyle={{width: 96}}
                 wrapperClassName={styles["yakit-combination-search-circle-select-wrapper"]}
                 bordered={false}
                 options={funcSearchType}

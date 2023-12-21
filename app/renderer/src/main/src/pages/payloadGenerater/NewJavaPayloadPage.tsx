@@ -396,7 +396,7 @@ export const JavaPayloadPage: React.FC<JavaPayloadPageProp> = React.memo((props)
                                 isStart ? (
                                     <></>
                                 ) : !params.useGadget ? (
-                                    <Form size='small' labelCol={{span: 8}} wrapperCol={{span: 16}} colon={false}>
+                                    <Form size='small' labelCol={{span: 10}} wrapperCol={{span: 16}} colon={false}>
                                         <Form.Item
                                             label={
                                                 <div className='form-item-label-title'>{i18next.t("高级设置")}

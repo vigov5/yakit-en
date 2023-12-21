@@ -248,6 +248,7 @@ export const YakitFormDragger: React.FC<YakitFormDraggerProps> = React.memo((pro
                     {renderContent(
                         <div className={styles["form-item-help"]}>
                             <span>{i18next.t("点击此处")}
+                                &nbsp;
                                 <span className={styles["dragger-help-active"]} onClick={() => onUploadFolder()}>{i18next.t("上传文件夹")}
                                 </span>
                             </span>

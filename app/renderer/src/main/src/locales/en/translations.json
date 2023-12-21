@@ -161,7 +161,7 @@
   "JWT 解析（同时测试弱 Key）": "JWT parsing (while testing weak keys)",
   "JWT解析与弱密码": "JWT Parsing and Weak Passwords",
   "Java 对象流序列化（JSON=>HEX）": "Java Object Stream Serialization (JSON=>HEX)",
-  "JavaPayload 配置": "JavaPayload Configuration",
+  "JavaPayload 配置": "Java Payload Configuration",
   "Json处理": "JSON Processing",
   "LDAP反连地址": "LDAP Reverse Connection Address",
   "Lax 策略": "Lax Policy",

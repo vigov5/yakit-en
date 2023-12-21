@@ -115,7 +115,7 @@ const decodeSubmenu: { key: string; label: string }[] = [
     { key: "hex-decode", label: i18next.t("HEX 解码（十六进制解码）") },
     { key: "htmldecode", label: i18next.t("HTML 解码") },
     { key: "jwt-parse-weak", label: i18next.t("JWT 解析（同时测试弱 Key）") },
-    { key: "unicode-decode", label: "Unicode 解码（\\uXXXX 解码）" },
+    { key: "unicode-decode", label: i18next.t("Unicode 解码（\\uXXXX 解码）") },
     { key: "urlunescape", label: i18next.t("URL 解码") }
 ]
 /** @name 自定义HTTP数据包变形模块子菜单 */

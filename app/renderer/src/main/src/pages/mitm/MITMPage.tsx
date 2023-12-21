@@ -870,7 +870,7 @@ export const ImportLocalPlugin: React.FC<ImportLocalPluginProps> = React.memo((p
             visible={visible}
             onCancel={() => setVisible(false)}
             onOk={() => onOk()}
-            width={680}
+            width={800}
             closable={true}
             title={i18next.t("导入插件方式")}
             className={style["import-local-plugin-modal"]}

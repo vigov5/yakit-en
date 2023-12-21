@@ -1043,6 +1043,7 @@ const UIOpSetting: React.FC<UIOpSettingProp> = React.memo((props) => {
                     return
                 }
                 const m = showYakitModal({
+                    width: 800,
                     title: i18next.t("配置私有域"),
                     type: "white",
                     footer: null,
