@@ -45,9 +45,9 @@ fs.readFile(inputFilePath, 'utf8', (err, data) => {
           const translationPromise = translate(key, { to: 'en' })
             .then((result) => {
               // Update the value with the translated text
-              const formatted = result.text.charAt(0).toUpperCase() + result.text.slice(1);
-              console.log(`${key} => ${formatted}`);
-              translations[key] = fixPlaceholder(formatted);
+              // const formatted = result.text.charAt(0).toUpperCase() + result.text.slice(1);
+              console.log(`${key} => ${result.text}`);
+              translations[key] = fixPlaceholder(result.text);
             })
             .catch((error) => {
               console.error(`Error translating "${key}":`, error.message);

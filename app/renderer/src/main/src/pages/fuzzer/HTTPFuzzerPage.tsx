@@ -2017,7 +2017,7 @@ export const SecondNodeExtra: React.FC<SecondNodeExtraProps> = React.memo((props
                     const {value} = e.target
                     onSearchValueChange(value)
                 }}
-                style={{maxWidth: 200}}
+                style={{maxWidth: 400}}
                 onSearch={() => onSearch()}
                 onPressEnter={(e) => {
                     e.preventDefault()
@@ -2439,7 +2439,7 @@ export const SecondNodeTitle: React.FC<SecondNodeTitleProps> = React.memo((props
             <>
                 {rsp.IsHTTPS && <YakitTag>{rsp.IsHTTPS ? "https" : ""}</YakitTag>}
                 <YakitTag>
-                    {rsp.BodyLength}bytes / {rsp.DurationMs}ms
+                    {rsp.BodyLength} bytes / {rsp.DurationMs} ms
                 </YakitTag>
             </>
         )

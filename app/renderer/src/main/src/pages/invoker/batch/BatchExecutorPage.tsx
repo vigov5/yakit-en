@@ -622,7 +622,7 @@ export const ExecSelectedPlugins: React.FC<ExecSelectedPluginsProp> = React.memo
                                         layout={"horizontal"}
                                         size={"small"}
                                         onSubmitCapture={(e) => e.preventDefault()}
-                                        labelCol={{span: 8}}
+                                        labelCol={{span: 10}}
                                         wrapperCol={{span: 14}}
                                     >
                                         <InputItem

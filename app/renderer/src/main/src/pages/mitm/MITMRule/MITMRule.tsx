@@ -755,7 +755,7 @@ export const MITMRule: React.FC<MITMRuleProp> = (props) => {
                         title={
                             <div className={styles["table-title-body"]}>
                                 <div className={styles["table-title"]}>{i18next.t("现有 MITM 内容规则")}</div>
-                                <div className={styles["table-total"]}>{i18next.t("共")} <span>{rules.length}</span>{i18next.t("条规则")}
+                                <div className={styles["table-total"]}>{i18next.t("共")} <span>{rules.length}</span> {i18next.t("条规则")}
                                 </div>
                             </div>
                         }

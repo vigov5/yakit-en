@@ -319,7 +319,7 @@ export const HTTPFuzzerClickEditorMenu: React.FC<HTTPFuzzerClickEditorMenuProps>
                     style={{
                         ...directionStyle(editorInfo, false),
                         maxHeight: menuHeight ? menuHeight : 350,
-                        width: menuWidth ? menuWidth : 360
+                        width: menuWidth ? menuWidth : 480
                     }}
                 >
                     <div className={styles["menu-header"]}>
@@ -381,7 +381,7 @@ export const HTTPFuzzerClickEditorMenu: React.FC<HTTPFuzzerClickEditorMenuProps>
                                                                 <div
                                                                     className={styles["menu-list-item-info"]}
                                                                     style={{
-                                                                        maxWidth: menuWidth ? menuWidth - 100 : 260
+                                                                        maxWidth: menuWidth ? menuWidth - 100 : 380
                                                                     }}
                                                                 >
                                                                     <DragSortIcon
@@ -818,7 +818,7 @@ export const HTTPFuzzerRangeEditorMenu: React.FC<HTTPFuzzerRangeEditorMenuProps>
                         style={{
                             ...directionStyle(editorInfo),
                             maxHeight: menuHeight ? menuHeight : 360,
-                            width: menuWidth ? menuWidth : 360
+                            width: menuWidth ? menuWidth : 480
                         }}
                         className={classNames(styles["http-fuzzer-range-editor-menu"])}
                         onMouseLeave={() => {
@@ -915,7 +915,7 @@ export const HTTPFuzzerRangeReadOnlyEditorMenu: React.FC<HTTPFuzzerRangeReadOnly
                     style={{
                         ...directionStyle(editorInfo),
                         maxHeight: menuHeight ? menuHeight : 250,
-                        width: menuWidth ? menuWidth : 360
+                        width: menuWidth ? menuWidth : 480
                     }}
                     className={classNames(styles["http-fuzzer-range-read-only-editor-menu"])}
                     onMouseLeave={() => setSegmentedType(undefined)}
