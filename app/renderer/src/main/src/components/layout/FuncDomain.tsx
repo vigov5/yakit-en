@@ -73,7 +73,9 @@ import classNames from "classnames"
 import styles from "./funcDomain.module.scss"
 import yakitImg from "../../assets/yakit.jpg"
 import {onImportPlugin} from "@/pages/fuzzer/components/ShareImport"
+import { useTemporaryProjectStore } from "@/store/temporaryProject"
 import i18next from "../../i18n"
+
 
 const {ipcRenderer} = window.require("electron")
 const {Dragger} = Upload
@@ -808,7 +810,7 @@ const RunNodeModal: React.FC<RunNodeContProp> = (props) => {
             onCancel={onCloseModal}
             onOk={onOKFun}
         >
-            <div style={{padding: 15}}>
+            <div>
                 <div style={{fontSize: 12, color: "#85899e", marginBottom: 10}}>
                     {i18next.t("运行节点会占用引擎资源，建议运行节点的时候，适度使用Yakit，否则会造成节点运行任务缓慢，可以运行多个节点（运行在不同平台，或统一平台节点名称不同）。")}
                 </div>
@@ -1011,6 +1013,8 @@ const UIOpSetting: React.FC<UIOpSettingProp> = React.memo((props) => {
     const [available, setAvailable] = useState(false) // cve数据库是否可用
     const [isDiffUpdate, setIsDiffUpdate] = useState(false)
     const {dynamicStatus} = yakitDynamicStatus()
+    const {temporaryProjectId, setTemporaryProjectId} = useTemporaryProjectStore()
+
     useEffect(() => {
         onIsCVEDatabaseReady()
     }, [])
@@ -1121,7 +1125,7 @@ const UIOpSetting: React.FC<UIOpSettingProp> = React.memo((props) => {
                 addToTab("**beta-codec")
                 return
             case "invalidCache":
-                invalidCacheAndUserData()
+                invalidCacheAndUserData(temporaryProjectId, setTemporaryProjectId)
                 return
             case "pcapfix":
                 showPcapPermission()
@@ -1954,13 +1958,15 @@ const UIOpNotice: React.FC<UIOpNoticeProp> = React.memo((props) => {
                 centered={true}
                 closable={true}
                 type='white'
+                size="large"
                 visible={editShow.visible}
-                cancelButtonProps={{size: "large", loading: editLoading}}
-                okButtonProps={{size: "large", loading: editLoading}}
+                cancelButtonProps={{loading: editLoading}}
+                okButtonProps={{loading: editLoading}}
                 onCancel={() => setEditShow({visible: false, type: "yakit"})}
                 onOk={onSubmitEdit}
+                bodyStyle={{padding: "16px 24px"}}
             >
-                <div className={styles["version-content-wrapper"]}>
+                <div>
                     <YakitInput.TextArea
                         rows={10}
                         value={editInfo}

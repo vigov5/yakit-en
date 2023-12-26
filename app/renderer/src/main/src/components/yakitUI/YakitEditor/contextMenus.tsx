@@ -104,7 +104,7 @@ const codeSubmenu: { key: string; label: string }[] = [
     { key: "base64", label: i18next.t("Base64 编码") },
     { key: "hex-encode", label: i18next.t("HEX 编码（十六进制编码）") },
     { key: "htmlencode", label: i18next.t("HTML 编码") },
-    { key: "unicode-encode", label: "Unicode 编码（\\uXXXX 编码）" },
+    { key: "unicode-encode", label: i18next.t("Unicode 编码（\\uXXXX 编码）") },
     { key: "urlencode", label: i18next.t("URL 编码") },
     { key: "urlescape", label: i18next.t("URL 编码(只编码特殊字符)") }
 ]

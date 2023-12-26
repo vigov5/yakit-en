@@ -198,8 +198,8 @@ const MITMFiltersModal: React.FC<MITMFiltersModalProps> = React.memo((props) => 
             onCancel={() => {
                 setVisible(false)
             }}
-            closable={false}
-            title={i18next.t("过滤器配置")}
+            closable={true}
+            title={i18next.t('过滤器配置')}
             width={720}
             maskClosable={false}
             subTitle={
@@ -266,6 +266,7 @@ const MITMFiltersModal: React.FC<MITMFiltersModalProps> = React.memo((props) => 
                     onSetFilter()
                 }
             }}
+            bodyStyle={{padding: 0}}
         >
             <MITMFilters filter={_mitmFilter} onFinished={() => onSetFilter()} ref={filtersRef} />
         </YakitModal>

@@ -124,6 +124,7 @@ export const showConfigSystemProxyForm = (addr?: string) => {
         footer: null,
         closable: false,
         centered: true,
+        hiddenHeader: true,
         content: (
             <>
                 <ConfigSystemProxy
@@ -219,6 +220,7 @@ export const showConfigChromePathForm = (fun) => {
         footer: null,
         closable: false,
         centered: true,
+        hiddenHeader: true,
         content: (
             <>
                 <ConfigChromePath

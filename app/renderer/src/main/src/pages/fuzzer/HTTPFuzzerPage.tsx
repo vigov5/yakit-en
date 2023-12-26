@@ -1166,6 +1166,7 @@ const HTTPFuzzerPage: React.FC<HTTPFuzzerPageProp> = (props) => {
             footer: null,
             maskClosable: false,
             closable: false,
+            hiddenHeader: true,
             style: {top: "10%"},
             content: (
                 <HTTPFuzzerHotPatch
@@ -2380,6 +2381,7 @@ export const SecondNodeExtra: React.FC<SecondNodeExtraProps> = React.memo((props
                     maskClosable={false}
                     footer={null}
                     closable={true}
+                    bodyStyle={{padding: 0}}
                 >
                     <WebFuzzerResponseExtractor responses={successFuzzer} sendPayloadsType={sendPayloadsType} />
                 </YakitModal>

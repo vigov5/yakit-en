@@ -312,6 +312,7 @@ const ChromeLauncherButton: React.FC<ChromeLauncherButtonProp> = React.memo((pro
                     closable={true}
                     width='50%'
                     footer={null}
+                    bodyStyle={{padding: 0}}
                 >
                     <MITMChromeLauncher
                         host={host}

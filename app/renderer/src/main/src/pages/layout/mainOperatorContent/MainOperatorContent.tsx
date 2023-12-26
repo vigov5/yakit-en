@@ -1535,6 +1535,7 @@ export const MainOperatorContent: React.FC<MainOperatorContentProps> = React.mem
                 type='white'
                 title={<></>}
                 closable={true}
+                bodyStyle={{padding: 0}}
             >
                 <div style={{padding: "0 24px"}}>
                     <Form.Item label={i18next.t("专项漏洞类型")}>
@@ -2834,6 +2835,7 @@ const SubTabs: React.FC<SubTabsProps> = React.memo(
             const m = showYakitModal({
                 footer: null,
                 closable: false,
+                hiddenHeader: true,
                 content: (
                     <React.Suspense fallback={<div>loading...</div>}>
                         <TabRenameModalContent
@@ -3932,7 +3934,6 @@ const onModalSecondaryConfirm = (props?: YakitSecondaryConfirmProps) => {
         type: "white",
         onCancelText: i18next.t("不保存"),
         onOkText: i18next.t("保存"),
-        icon: <ExclamationCircleOutlined />,
         ...(props || {}),
         onOk: () => {
             if (props?.onOk) {
@@ -3941,17 +3942,6 @@ const onModalSecondaryConfirm = (props?: YakitSecondaryConfirmProps) => {
                 m.destroy()
             }
         },
-        closeIcon: (
-            <div
-                onClick={(e) => {
-                    e.stopPropagation()
-                    m.destroy()
-                }}
-                className='modal-remove-icon'
-            >
-                <RemoveIcon />
-            </div>
-        ),
         content: <div style={{paddingTop: 8}}>{props?.content}</div>
     })
     return m

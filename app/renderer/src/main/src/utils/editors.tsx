@@ -386,7 +386,7 @@ export const YakEditor: React.FC<EditorProps> = (props) => {
                                         : props.value
                                 }
                                 onChange={props.setValue}
-                                language={props.type || "http"}
+                                language={language || "http"}
                                 height={100}
                                 editorDidMount={(editor: IMonacoEditor, monaco: any) => {
                                     setEditor(editor)
@@ -1289,7 +1289,8 @@ export const NewHTTPPacketEditor: React.FC<NewHTTPPacketEditorProp> = React.memo
             },
             width: 1200,
             footer: null,
-            closable: false
+            closable: false,
+            hiddenHeader: true
         })
         }, 500);
     })

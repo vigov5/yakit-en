@@ -909,6 +909,7 @@ const ModifyAuthorModal: React.FC<ModifyAuthorModalProps> = memo((props) => {
             confirmLoading={submitLoading}
             onCancel={cancel}
             onOk={submit}
+            bodyStyle={{padding: 0}}
         >
             <div className={styles["modify-author-modal-body"]}>
                 <Form.Item
@@ -992,6 +993,7 @@ export const ReasonModal: React.FC<ReasonModalProps> = memo((props) => {
             visible={visible}
             onCancel={setVisible}
             onOk={onSubmit}
+            bodyStyle={{padding: 0}}
         >
             <div className={styles["reason-modal-body"]}>
                 <YakitInput.TextArea

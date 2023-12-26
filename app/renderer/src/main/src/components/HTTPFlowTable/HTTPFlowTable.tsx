@@ -1408,6 +1408,16 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
         }, 100)
     })
 
+    // useEffect(() => {
+    //     if (!selectedRowKeys.length) {
+    //         setIsAllSelect(false)
+    //     }
+    // }, [selectedRowKeys])
+
+    // useEffect(() => {
+    //     setIsAllSelect(false)
+    // }, [total, queryParams])
+
     const onSelectAll = (newSelectedRowKeys: string[], selected: HTTPFlow[], checked: boolean) => {
         setIsAllSelect(checked)
         setSelectedRowKeys(newSelectedRowKeys)
@@ -1573,7 +1583,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
                     filterSearchInputProps: {
                         size: "small"
                     },
-                    filterIcon: <SearchIcon />,
+                    filterIcon: <SearchIcon onClick={() => getHTTPFlowsFieldGroup(true)} />,
                     filters: tags
                 }
             },
@@ -2528,7 +2538,7 @@ export const HTTPFlowTable = React.memo<HTTPFlowTableProp>((props) => {
             return
         }
         const m = showYakitModal({
-            title: i18next.t("导入分享数据"),
+            title: i18next.t("分享数据"),
             content: <ShareModal module={YakitRoute.DB_HTTPHistory} shareContent={JSON.stringify(ids)} />,
             onCancel: () => {
                 m.destroy()

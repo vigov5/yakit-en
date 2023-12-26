@@ -344,15 +344,13 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
     })
     /** 解析后端流内的内容数据 */
     const analysisFlowData: (flow: string) => ChatCSAnswerProps | undefined = useMemoizedFn((flow) => {
-        try {
-            const regex = /data:({.*?})/g
             const objects: ChatCSAnswerProps[] = []
             let answer: ChatCSAnswerProps | undefined = undefined
-            let match
-            while ((match = regex.exec(flow)) !== null) {
-                // @ts-ignore
-                objects.push(JSON.parse(match[1]))
-            }
+            flow.split("data:").filter((item)=>item.length!==0).forEach((itemIn)=>{
+                try {
+                  objects.push(JSON.parse(itemIn))  
+                } catch (error) {}
+            })
             let resultAll: string = ""
             objects.map((item, index) => {
                 const {id = "", role = "", result = ""} = item
@@ -362,7 +360,6 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                 }
             })
             return answer
-        } catch (error) {}
         // if (!flow) return undefined
         // const lastIndex = flow.lastIndexOf("data:")
         // if (lastIndex === -1) return undefined
@@ -418,6 +415,7 @@ export const YakChatCS: React.FC<YakChatCSProps> = (props) => {
                     onDownloadProgress: ({event}) => {
                         if (!event.target) return
                         const {responseText} = event.target
+
                         let answer: ChatCSAnswerProps | undefined = analysisFlowData(responseText)
 
                         // 正常数据中，如果没有答案，则后端返回的text为空，这种情况数据自动抛弃
@@ -1986,6 +1984,7 @@ const EditNameModal: React.FC<EditNameModalProps> = memo((props) => {
 
     return (
         <YakitModal
+            hiddenHeader={true}
             getContainer={getContainer}
             centered={true}
             closable={false}
@@ -1995,6 +1994,7 @@ const EditNameModal: React.FC<EditNameModalProps> = memo((props) => {
             width={modalWidth}
             visible={visible}
             onCancel={() => setVisible(false)}
+            bodyStyle={{padding: 0}}
         >
             <div className={styles["name-edit-modal"]}>
                 <div className={styles["name-edit-modal-heard"]}>

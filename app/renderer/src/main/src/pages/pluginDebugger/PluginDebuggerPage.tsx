@@ -443,6 +443,7 @@ const SecondNodeHeader: React.FC<SecondNodeHeaderProps> = React.memo(
                 width: 1200,
                 onOkText: i18next.t("合并"),
                 closable: false,
+                hiddenHeader: true,
                 content: (
                     <DataCompareModal
                         leftTitle={i18next.t("原始源码")}
@@ -624,6 +625,7 @@ const PluginBaseInspect: React.FC<PluginBaseInspectProps> = React.memo((props) =
             okButtonProps={{style: {display: "none"}}}
             footer={loading ? undefined : null}
             onCancel={() => setVisible(false)}
+            bodyStyle={{padding: 0}}
         >
             <div className={styles["plugin-base-inspect-body"]}>
                 <div className={styles["header-wrapper"]}>

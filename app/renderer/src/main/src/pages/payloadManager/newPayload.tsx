@@ -1227,6 +1227,7 @@ export const NewPayloadList: React.FC<NewPayloadListProps> = (props) => {
                                                 type: "white",
                                                 closable: false,
                                                 maskClosable: false,
+                                                hiddenHeader: true,
                                                 content: (
                                                     <CreateDictionaries
                                                         title={i18next.t("新建字典")}
@@ -1738,6 +1739,7 @@ export const FolderComponent: React.FC<FolderComponentProps> = (props) => {
                                                     type: "white",
                                                     closable: false,
                                                     maskClosable: false,
+                                                    hiddenHeader: true,
                                                     content: (
                                                         <CreateDictionaries
                                                             title={i18next.t("新建子集字典")}
@@ -2373,6 +2375,7 @@ export const FileComponent: React.FC<FileComponentProps> = (props) => {
                                                     type: "white",
                                                     closable: false,
                                                     maskClosable: false,
+                                                    hiddenHeader: true,
                                                     content: (
                                                         <CreateDictionaries
                                                             title={i18next.t("扩充到护网专用工具")}
@@ -2434,6 +2437,8 @@ export const FileComponent: React.FC<FileComponentProps> = (props) => {
                 width={520}
                 type='white'
                 closable={false}
+                hiddenHeader={true}
+                bodyStyle={{padding: 0}}
             >
                 <UploadStatusInfo
                     title={i18next.t("转为数据库存储中，请耐心等待...")}
@@ -2921,6 +2926,7 @@ export const PayloadContent: React.FC<PayloadContentProps> = (props) => {
                                     type: "white",
                                     closable: false,
                                     maskClosable: false,
+                                    hiddenHeader: true,
                                     content: (
                                         <CreateDictionaries
                                             title={i18next.t("扩充到护网专用工具")}
@@ -3055,6 +3061,8 @@ export const PayloadContent: React.FC<PayloadContentProps> = (props) => {
                 width={520}
                 type='white'
                 closable={false}
+                hiddenHeader={true}
+                bodyStyle={{padding: 0}}
             >
                 <UploadStatusInfo
                     title={i18next.t("自动去重中，请耐心等待...")}
@@ -3190,6 +3198,8 @@ export const ExportByGrpc: React.FC<ExportByGrpcProps> = (props) => {
             width={520}
             type='white'
             closable={false}
+            hiddenHeader={true}
+            bodyStyle={{padding: 0}}
         >
             <UploadStatusInfo
                 title={i18next.t("导出中，请耐心等待...")}
@@ -3434,6 +3444,7 @@ export const NewPayload: React.FC<NewPayloadProps> = (props) => {
                                         type: "white",
                                         closable: false,
                                         maskClosable: false,
+                                        hiddenHeader: true,
                                         content: (
                                             <CreateDictionaries
                                                 title={i18next.t("新建字典")}
@@ -3503,6 +3514,8 @@ export const NewPayload: React.FC<NewPayloadProps> = (props) => {
                 width={520}
                 type='white'
                 closable={false}
+                hiddenHeader={true}
+                bodyStyle={{padding: 0}}
             >
                 <UploadStatusInfo
                     title={i18next.t("迁移数据中，请耐心等待...")}

@@ -51,6 +51,7 @@ const MITMCertificateDownloadModal: React.FC<MITMCertificateDownloadModalProps> 
                 </div>
             }
             onOk={() => onDown()}
+            bodyStyle={{padding: 0}}
         >
             <div className={styles["certificate-download-modal-body"]}>
                 <YakEditor bytes={true} valueBytes={caCerts.CaCerts} />

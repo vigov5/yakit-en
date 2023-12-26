@@ -902,6 +902,7 @@ export const ImportLocalPlugin: React.FC<ImportLocalPluginProps> = React.memo((p
                     ]}
                 ></YakitRadioButtons>
             }
+            bodyStyle={{padding: 0}}
         >
             <Form
                 form={form}
@@ -977,7 +978,7 @@ export const AddLocalPluginGroup: React.FC<AddPluginGroupProps> = React.memo((pr
         return cacheData.map((ele) => ({value: ele.name, label: ele.name})) || []
     }, [cacheData])
     return (
-        <YakitModal visible={visible} onCancel={() => setVisible(false)} footer={null} closable={false}>
+        <YakitModal visible={visible} onCancel={() => setVisible(false)} footer={null} closable={false} hiddenHeader={true} bodyStyle={{padding: 0}}>
             <div className={style["plugin-group-modal"]}>
                 <div className={style["plugin-group-heard"]}>
                     <div className={style["plugin-group-title"]}>{i18next.t("添加至插件组")}</div>

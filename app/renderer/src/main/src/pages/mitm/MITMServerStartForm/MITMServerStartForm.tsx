@@ -439,7 +439,7 @@ const AgentConfigModal: React.FC<AgentConfigModalProp> = React.memo((props) => {
     return (
         <YakitModal
             visible={agentConfigModalVisible}
-            title={i18next.t("代理劫持")}
+            title={i18next.t('配置用户名密码')}
             width={506}
             maskClosable={false}
             closable
@@ -447,6 +447,7 @@ const AgentConfigModal: React.FC<AgentConfigModalProp> = React.memo((props) => {
             okText={i18next.t("确认")}
             onCancel={onClose}
             onOk={onOKFun}
+            bodyStyle={{padding: 0}}
         >
             <div style={{padding: 15}}>
                 <Form
