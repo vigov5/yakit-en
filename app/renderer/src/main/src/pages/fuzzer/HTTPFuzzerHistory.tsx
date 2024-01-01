@@ -252,9 +252,9 @@ export const HTTPFuzzerHistorySelector: React.FC<HTTPFuzzerHistorySelectorProp> 
                                                 </YakitTag>
                                             </div>
 
-                                            <YakitTag>{i18next.t("共")}{i.HTTPFlowTotal}个</YakitTag>
+                                            <YakitTag>{i18next.t("共{i.HTTPFlowTotal}个", { v1: i.HTTPFlowTotal })}</YakitTag>
                                             {i.HTTPFlowSuccessCount != i.HTTPFlowTotal && (
-                                                <YakitTag>{i18next.t("成功:")}{i.HTTPFlowSuccessCount}个</YakitTag>
+                                                <YakitTag>{i18next.t("成功: {i.HTTPFlowSuccessCount}个", {v1: i.HTTPFlowSuccessCount})}</YakitTag>
                                             )}
                                             {currentSelectId == i.Id && <CheckIcon className={styles["check-icon"]} />}
                                         </div>

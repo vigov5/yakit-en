@@ -564,7 +564,7 @@ export const ConfigNetworkPage: React.FC<ConfigNetworkPageProp> = (props) => {
                                 <Form.Item label={i18next.t("HTTP认证全局配置")}>
                                     <div className={styles["form-rule-body"]}>
                                         <div className={styles["form-rule"]} onClick={() => setVisible(true)}>
-                                            <div className={styles["form-rule-text"]}>{i18next.t("现有配置")} {params.AuthInfos.filter((item) => !item.Forbidden).length} 条
+                                            <div className={styles["form-rule-text"]}>{i18next.t("现有配置")} {params.AuthInfos.filter((item) => !item.Forbidden).length} {i18next.t("条")}
                                             </div>
                                             <div className={styles["form-rule-icon"]}>
                                                 <CogIcon />

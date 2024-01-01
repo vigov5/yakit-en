@@ -146,12 +146,12 @@ app.whenReady().then(() => {
                 .showMessageBox(win, {
                     icon: nativeImage.createFromPath(path.join(__dirname, "../assets/yakitlogo.pic.jpg")),
                     type: "none",
-                    title: "提示",
+                    title: "Tip",
                     defaultId: 0,
                     cancelId: 3,
-                    message: "确定要关闭吗？",
-                    buttons: ["最小化", "直接退出"],
-                    checkboxLabel: "不再展示关闭二次确认？",
+                    message: "Are you sure you want to close?",
+                    buttons: ["Minimize", "Exit Directly"],
+                    checkboxLabel: "Do not show the close confirmation again?",
                     checkboxChecked: false,
                     noLink: true
                 })

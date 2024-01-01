@@ -1566,7 +1566,7 @@ export const FolderComponent: React.FC<FolderComponentProps> = (props) => {
                     })
             }
         } else {
-            !pass && warn("名称不允许出现/*,")
+            !pass && warn(i18next.t("名称不允许出现/*,"))
             // 创建时为空则不创建
             if (folder.isCreate) {
                 setData(data.filter((item) => !item.isCreate))
@@ -2068,7 +2068,7 @@ export const FileComponent: React.FC<FileComponentProps> = (props) => {
                 })
         } else {
             file.name !== inputName && allFileName.includes(inputName) && warn(i18next.t("名称重复，编辑失败"))
-            !pass && warn("名称不允许出现/*,")
+            !pass && warn(i18next.t("名称不允许出现/*,"))
             setInputName(file.name)
         }
     })

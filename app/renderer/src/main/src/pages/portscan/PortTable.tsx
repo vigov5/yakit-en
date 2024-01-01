@@ -104,7 +104,7 @@ export const OpenPortTableViewer: React.FC<PortTableProp> = (props) => {
                                     disabled={props.data.length === 0}
                                 >{i18next.t("全选")}
                                 </Checkbox>
-                                {selectedRowKeys.length > 0 && <Tag color='blue'>{i18next.t("已选")}{selectedRowKeys?.length}条</Tag>}
+                                {selectedRowKeys.length > 0 && <Tag color='blue'>{i18next.t("已选")} {selectedRowKeys?.length} {i18next.t("条")}</Tag>}
                             </Col>
                             <Col span={12} style={{textAlign: "right"}}>
                                 {!isSimple && (

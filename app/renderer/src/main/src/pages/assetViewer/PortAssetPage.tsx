@@ -480,7 +480,7 @@ export const PortAssetTable: React.FC<PortAssetTableProp> = (props) => {
                                     selectedRows.length > 0 ? (
                                         <div className={styles["context-menu-remove"]}>
                                             <span>{i18next.t("删除框选数据")}</span>
-                                            <span className={styles["number"]}>{selectedRows.length}条</span>
+                                            <span className={styles["number"]}>{selectedRows.length} {i18next.t("条")}</span>
                                         </div>
                                     ) : (
                                         i18next.t("删除")

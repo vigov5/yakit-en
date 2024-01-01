@@ -341,7 +341,7 @@ export const UpdateYakitAndYaklang: React.FC<UpdateYakitAndYaklangProps> = React
                                 </div>
                             ) : (
                                 <>
-                                    <div className={styles["hint-right-title"]}>{i18next.t("检测到")} {getReleaseEditionName()} i18next.t("版本升级")</div>
+                                    <div className={styles["hint-right-title"]}>{i18next.t("检测到")} {getReleaseEditionName()} {i18next.t("版本升级")}</div>
                                     <div className={styles["hint-right-content"]}>
                                         {/* {`当前版本：v${currentYakit}`}
                                         <br />

@@ -232,7 +232,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
             {
                 key: "ProjectName",
                 name: typeToName["all"],
-                width: "10%",
+                width: "20%",
                 headerRender: (index) => {
                     return (
                         <DropdownMenu
@@ -706,7 +706,7 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
             setTemporaryProjectId(newTemporaryId)
             // setRemoteValue(RemoteGV.TemporaryProjectId, newTemporaryId)
             await ipcRenderer.invoke("SetCurrentProject", {Id: newTemporaryId})
-            info("切换临时项目成功")
+            info(i18next.t("切换临时项目成功"))
             onFinish()
         } catch (error) {
             yakitFailed(error + "")
@@ -1397,20 +1397,20 @@ const ProjectManage: React.FC<ProjectManageProp> = memo((props) => {
 
             <YakitHint
                 visible={inquireIntoProjectVisible}
-                title='提示'
-                content={`是否需要进入新建项目${newProjectInfo?.ProjectName}`}
+                title={i18next.t('提示')}
+                content={i18next.t("是否需要进入新建项目${newProjectInfo?.ProjectName}", { v1: newProjectInfo?.ProjectName })}
                 onOk={() => {
                     setLoading(true)
                     setInquireIntoProjectVisible(false)
                     ipcRenderer
                         .invoke("SetCurrentProject", {Id: newProjectInfo?.Id})
                         .then((e) => {
-                            info("已切换数据库")
+                            info(i18next.t("已切换数据库"))
                             setNewProjectInfo({Id: "", ProjectName: ""})
                             onFinish()
                         })
                         .catch((e) => {
-                            failed("切换数据库失败：" + `${e}`)
+                            failed(i18next.t("切换数据库失败：") + `${e}`)
                         })
                         .finally(() => {
                             setTimeout(() => {

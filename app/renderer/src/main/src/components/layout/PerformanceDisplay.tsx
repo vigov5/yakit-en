@@ -325,7 +325,7 @@ const UIEngineList: React.FC<UIEngineListProp> = React.memo((props) => {
                                                         .then((val) => {
                                                             if (!val) {
                                                                 isLocal && +i.port === port && typeCallback("break")
-                                                                success("引擎进程关闭中...")
+                                                                success(i18next.t("引擎进程关闭中..."))
                                                             }
                                                         })
                                                         .catch((e: any) => {})
@@ -333,7 +333,7 @@ const UIEngineList: React.FC<UIEngineListProp> = React.memo((props) => {
                                                 }}
                                             >
                                                 <YakitButton type='outline1' colors='danger'>
-                                                    关闭引擎
+                                                    {i18next.t("关闭引擎")}
                                                 </YakitButton>
                                             </Popconfirm>
                                         </div>

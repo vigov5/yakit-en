@@ -1609,17 +1609,17 @@ log.setLevel("info")
 
 localPath = cli.String("local-path")
 if localPath == "" {
-    yakit.Error("本地仓库路径为空")
+    yakit.Error("Local repository path is empty")
     return
 }
 
 err = yakit.UpdateYakitStoreLocal(localPath)
 if err != nil {
-    yakit.Error("更新本地仓库失败：%v", err)
+    yakit.Error("Failed to update local repository: %v", err)
     die(err)
 }
 
-yakit.Output("更新本地仓库成功")
+yakit.Output("Local repository updated successfully")
 `;
 
 export const loadNucleiPoCFromLocal = `yakit.AutoInitYakit();
@@ -2602,7 +2602,7 @@ export const YakModuleUser: React.FC<YakModuleUserProps> = (props) => {
                     <Checkbox checked={isSelectAllUser} onChange={(e) => onSelectAllUser(e.target.checked)}>{i18next.t("全选")}
                     </Checkbox>
                     {selectedRowKeysRecordUser.length > 0 && (
-                        <Tag color='blue'>{i18next.t("已选")}{isSelectAllUser ? totalUser : selectedRowKeysRecordUser.length}条</Tag>
+                        <Tag color='blue'>{i18next.t("已选")} {isSelectAllUser ? totalUser : selectedRowKeysRecordUser.length} {i18next.t("条")}</Tag>
                     )}
                     <Tag>Total:{totalUser}</Tag>
                     <Divider type='vertical' />

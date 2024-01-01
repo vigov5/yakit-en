@@ -186,19 +186,19 @@ export const TemporaryProjectPop: React.FC<TemporaryProjectPopProp> = React.forw
     return (
         <YakitHint
             visible={true}
-            title='退出临时项目'
+            title={i18next.t("'退出临时项目'")}
             footerExtra={
                 <YakitCheckbox
                     value={temporaryProjectNoPrompt}
                     onChange={(e) => setTemporaryProjectNoPrompt(e.target.checked)}
                 >
-                    下次不再提醒
+                    {i18next.t("下次不再提醒")}
                 </YakitCheckbox>
             }
             content={
                 <>
-                    <div>确认退出后，临时项目所有数据都不会保存，包括流量数据、端口数据、域名数据和漏洞数据等。</div>
-                    <div>退出前可在设置-项目管理中导出数据</div>
+                    <div>{i18next.t("确认退出后，临时项目所有数据都不会保存，包括流量数据、端口数据、域名数据和漏洞数据等。")}</div>
+                    <div>{i18next.t("退出前可在设置-项目管理中导出数据")}</div>
                 </>
             }
             onOk={props.onOk}

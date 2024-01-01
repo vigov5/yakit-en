@@ -521,9 +521,9 @@ export const GlobalState: React.FC<GlobalReverseStateProp> = React.memo((props) 
                                                 setShow(false)
                                                 showModal({
                                                     title: i18next.t("配置全局反连"),
-                                                    width: 800,
+                                                    width: 1000,
                                                     content: (
-                                                        <div style={{width: 800}}>
+                                                        <div style={{width: 1000}}>
                                                             <ConfigGlobalReverse />
                                                         </div>
                                                     )

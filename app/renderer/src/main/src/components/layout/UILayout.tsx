@@ -635,7 +635,7 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
         // 引擎未连接或便携版 显示默认title
         if (!engineLink || isEnpriTraceAgent()) return getReleaseEditionName()
         else if (temporaryProjectId && temporaryProjectId === (currentProject?.Id ? currentProject?.Id + "" : "")) {
-            return "临时项目"
+            return i18next.t("临时项目")
         } else {
             return ProjectName
                 ? ProjectName.length > 10
@@ -681,10 +681,10 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
                 // 临时项目暂不支持导出
                 if (temporaryProjectId) {
                     const m = showYakitModal({
-                        title: "提示",
+                        title: i18next.t("提示"),
                         content: (
                             <div style={{padding: 20}}>
-                                临时项目导出还在开发中，会安排尽快上线
+                                {i18next.t("临时项目导出还在开发中，会安排尽快上线")}
                             </div>
                         ),
                         onCancel: () => {
@@ -708,10 +708,10 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
                 // 临时项目暂不支持导出
                 if (temporaryProjectId) {
                     const m = showYakitModal({
-                        title: "提示",
+                        title: i18next.t("提示"),
                         content: (
                             <div style={{padding: 20}}>
-                                临时项目导出还在开发中，会安排尽快上线
+                                {i18next.t("临时项目导出还在开发中，会安排尽快上线")}
                             </div>
                         ),
                         onCancel: () => {
@@ -2120,7 +2120,7 @@ const DownloadYakit: React.FC<DownloadYakitProps> = React.memo((props) => {
                             <div className={styles["hint-right-wrapper"]}>
                                 <div className={styles["hint-right-download"]}>
                                     <div className={styles["hint-right-title"]}>
-                                        {getReleaseEditionName()} 软件下载中...
+                                        {getReleaseEditionName()} {i18next.t("软件下载中...")}
                                     </div>
                                     <div className={styles["download-progress"]}>
                                         <Progress

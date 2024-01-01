@@ -1463,7 +1463,7 @@ const YakModuleUser: React.FC<YakModuleUserProps> = (props) => {
                     <Checkbox checked={isSelectAllUser} onChange={(e) => onSelectAllUser(e.target.checked)}>{i18next.t("全选")}
                     </Checkbox>
                     {selectedRowKeysRecordUser.length > 0 && (
-                        <Tag color='blue'>{i18next.t("已选")}{isSelectAllUser ? totalUser : selectedRowKeysRecordUser.length}条</Tag>
+                        <Tag color='blue'>{i18next.t("已选")} {isSelectAllUser ? totalUser : selectedRowKeysRecordUser.length} {i18next.t("条")}</Tag>
                     )}
                     <Tag>Total:{totalUser}</Tag>
                     <Divider type='vertical' />

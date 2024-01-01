@@ -2040,17 +2040,17 @@ log.setLevel("info")
 
 localPath = cli.String("local-path")
 if localPath == "" {
-    yakit.Error("本地仓库路径为空")
+    yakit.Error("Local repository path is empty")
     return
 }
 
 err = yakit.UpdateYakitStoreLocal(localPath)
 if err != nil {
-    yakit.Error("更新本地仓库失败：%v", err)
+    yakit.Error("Failed to update local repository: %v", err)
     die(err)
 }
 
-yakit.Output("更新本地仓库成功")
+yakit.Output("Local repository updated successfully")
 `;
 
 const loadNucleiPoCFromLocal = `yakit.AutoInitYakit();

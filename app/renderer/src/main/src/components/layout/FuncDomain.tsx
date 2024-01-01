@@ -1059,9 +1059,9 @@ const UIOpSetting: React.FC<UIOpSettingProp> = React.memo((props) => {
             case "reverse":
                 showModal({
                     title: i18next.t("配置全局反连"),
-                    width: 800,
+                    width: 1000,
                     content: (
-                        <div style={{width: 800}}>
+                        <div style={{width: 1000}}>
                             <ConfigGlobalReverse />
                         </div>
                     )
