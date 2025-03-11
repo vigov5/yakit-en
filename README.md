@@ -1,3 +1,5 @@
+Please use: https://github.com/vigov5/yakit-tweaks
+
 # English Translated versions of Yakit
 
 My attempt at translating Yakit UI and some UI adjustments while waiting for official English version: https://github.com/yaklang/yakit/issues/1255#issuecomment-1849453926
